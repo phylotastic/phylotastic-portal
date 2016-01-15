@@ -15,4 +15,8 @@
 /log/*
 !/log/.keep
 /tmp
-/Gemfile.log
+/Gemfile.lock
+
+# Ignore Spring files.
+/spring/*.pid
+
