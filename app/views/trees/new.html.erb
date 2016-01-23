@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-5">
+    <h2>Choose settings below to get a tree for your list of species</h2>
+    <%= form_for @tree do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+      <div class="field">
+        <p>1. Prune your list as desired using the table at right</p>
+      </div>
+      <div class="field">
+        <p>2. Choose source of trees</p>
+        <%= select "tree", "phylo_source", options_for_select(phylo_sources_for_select), prompt: "Please select a source" %>
+      </div>
+      <div class="field">
+        <%= f.check_box(:public, {}, "yes", "no") %>
+      </div>
+      <%= f.submit "Get tree from source", class: "btn" %>
+    <% end %>
+  </div>
+  
+  <div class="col-md-7">
+    
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Phylotastic Web Portal</title>
+  <link rel="stylesheet" media="all" href="/assets/application.self-a7548123b9b04483360fd9c1eaa478dce0ebb9425f4cf7282c291279fee472ce.css?body=1" data-turbolinks-track="true" />
+  <script src="/assets/jquery.self-c64a74367bda6ef8b860f19e74df08927ca99d2be2ac934e9e92d5fd361e0da4.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/turbolinks.self-c37727e9bd6b2735da5c311aa83fead54ed0be6cc8bd9a65309e9c5abe2cbfff.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/affix.self-3555752f8a930795ee9e56751a52e6871104ae85d01b3ab8363da3802a5ecc78.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/alert.self-d8b7bd612b3dcfdefb7b5539b9d5848d66ccbd3e7af8bb8d48bfb3288aaa7be8.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/button.self-e74d33ba39500940a78d6fa4d2d64f6ca7fd86d60a2149641f7fde7ba711d8a1.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/carousel.self-35d204878d906298e55bc24553e11fd89b980fc4ffe5792fe36af8c0da289c54.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/collapse.self-056c40532d9f0f126ec17e839f60c942f573fbd61a086e7f156306e3fc5e8c1f.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/dropdown.self-e56c2ffee4618411d43ecf15c89273f6223847ad756e1cd17545d04afa732ed4.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/modal.self-62463080dba6b9d024ff0a3192da0e76eacbc683194f3395047c6f5cfa0acb59.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/scrollspy.self-52afd90e8ba97d9f08617a13986e8869d6c4a45751c0bff59a6f91241e722aca.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/tab.self-dad0d5c377f9fae26394484535ebb23ccf68afae084f896af6ea4cdf8c9f6ae0.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/transition.self-3b268d4cd8c79e46ded7392885f72f64ffb5b0d49948a12b8cf9779f6163e13a.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/tooltip.self-facdc69246a072acb927ded77ff655f7c27a518b9357fddd45d119fbc8a0ab9f.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap/popover.self-210cff1fb4b72b71a29b5122180cb5937c8145cd13a934dc838280f1d9607a3e.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/bootstrap-sprockets.self-fbfa5ad7d9aa0afe439ec4ff3883acc4cb92b62cb67c40d674320c9aa1d4642d.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/jquery_ujs.self-d602bdfe68ffc63b9f9cc512872aa3cfff046228a0a36e90dd476e8ef54c1b09.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/static_pages.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/application.self-7862a8a8b42407b4741a1adeeea35f0d13ddc4f702ec532adb0674491d296495.js?body=1" data-turbolinks-track="true"></script>
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="RNX9V1Ml8s2MR5RsjaeKv2RSTb61WKS3pSrEDCHPVRs4TUBDfvErq4Om6I00hVZdplgaPQhYrwFkGhC4MfR9aA==" />
+</head>
+<body>
+  <p class="navbar-text pull-right">
+    <a class="navbar-link" href="/users/sign_up">Sign up</a> |
+    <a class="navbar-link" href="/users/sign_in">Login</a>
+  
+    <p class="alert alert-danger">You need to sign in or sign up before continuing.</p>
+
+  <h2>Log in</h2>
+
+<form class="new_user" id="new_user" action="/users/sign_in" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Bfk2pZxqYCsJmqyGvN8hk2BQd4YFvQE9dvMEXXhFZmV5YYuxsb65TQZ70GcF/f1xologBbi9Cou3w9DpaH5OFg==" />
+  <div class="field">
+    <label for="user_email">Email</label><br />
+    <input autofocus="autofocus" type="email" value="" name="user[email]" id="user_email" />
+  </div>
+
+  <div class="field">
+    <label for="user_password">Password</label><br />
+    <input autocomplete="off" type="password" name="user[password]" id="user_password" />
+  </div>
+
+    <div class="field">
+      <input name="user[remember_me]" type="hidden" value="0" /><input type="checkbox" value="1" name="user[remember_me]" id="user_remember_me" />
+      <label for="user_remember_me">Remember me</label>
+    </div>
+
+  <div class="actions">
+    <input type="submit" name="commit" value="Log in" />
+  </div>
+</form>
+
+  <a href="/users/sign_up">Sign up</a><br />
+
+  <a href="/users/password/new">Forgot your password?</a><br />
+
+
+
+
+
+
+</body>
+</html>

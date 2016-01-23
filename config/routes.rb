@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :trees
+  
   devise_for :users
   
   root 'static_pages#home'
