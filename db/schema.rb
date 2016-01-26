@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160123133640) do
+ActiveRecord::Schema.define(version: 20160125203252) do
 
   create_table "phylo_sources", force: :cascade do |t|
     t.string   "name"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20160123133640) do
     t.integer  "phylo_source_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "branch_length"
+    t.boolean  "images_from_EOL"
   end
 
   add_index "trees", ["phylo_source_id"], name: "index_trees_on_phylo_source_id"
