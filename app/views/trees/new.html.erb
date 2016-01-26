@@ -1,23 +1,75 @@
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-4">
     <h2>Choose settings below to get a tree for your list of species</h2>
-    <%= form_for @tree do |f| %>
+    <%= form_for @tree, html: { class: "form-horizontal" } do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-      <div class="field">
-        <p>1. Prune your list as desired using the table at right</p>
+      <p>1. Prune your list as desired using the table at right</p>
+      <p>2. Choose source of trees</p>
+      <div class="form-group left-indent">
+        <%= select "tree", "phylo_source_id", options_for_select(phylo_sources_for_select), {}, { class: "form-control" } %>
       </div>
-      <div class="field">
-        <p>2. Choose source of trees</p>
-        <%= select "tree", "phylo_source", options_for_select(phylo_sources_for_select), prompt: "Please select a source" %>
+      <p>3. Any extras:</p>
+      <div class="form-group left-indent">
+        <div class="checkbox">
+          <%= f.label :branch_length do %>
+            <%= f.check_box :branch_length %>
+            Add branch lengths
+          <% end %>
+        </div>
       </div>
-      <div class="field">
-        <%= f.check_box(:public, {}, "yes", "no") %>
+      <div class="form-group left-indent">
+        <div class="checkbox">
+          <%= f.label :images_from_EOL do %>
+            <%= f.check_box :images_from_EOL %>
+            Get images from EOL
+          <% end %>
+        </div>
       </div>
-      <%= f.submit "Get tree from source", class: "btn" %>
+      <%= f.submit "Get tree from source", class: "btn btn-default btn-lg btn-block" %>
     <% end %>
   </div>
   
-  <div class="col-md-7">
-    
+  <div class="col-md-offset-1 col-md-7">
+    <div id="name-matching-report">
+      <%= link_to "Show report on name matching", root_path, class: "btn btn-default" %>
+    </div>
+    <table class="table table-bordered table-hover scroll">
+      <thead> 
+        <tr> 
+          <th>Species</th> 
+          <th>Kingdom</th> 
+          <th>Use to uncheck all</th> 
+        </tr> 
+      </thead>
+      <tbody>
+        <% @species.each do |e| %>
+          <tr>
+            <td class="success"><%= e %></td>
+            <td class="warning">TODO</td>
+            <td class="danger">...</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
+
+<<script type="text/javascript">
+// Change the selector if needed
+var $table = $('table.scroll'),
+    $bodyCells = $table.find('tbody tr:first').children(),
+    colWidth;
+
+// Adjust the width of thead cells when window resizes
+$(window).resize(function() {
+    // Get the tbody columns width array
+    colWidth = $bodyCells.map(function() {
+        return $(this).width();
+    }).get();
+    
+    // Set the width of thead columns
+    $table.find('thead tr').children().each(function(i, v) {
+        $(v).width(colWidth[i]);
+    });    
+}).resize(); // Trigger resize handler
+</script>>
