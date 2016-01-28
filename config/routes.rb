@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :con_files
+  resources :con_links
+  
+  get 'raw_extractions/new_from_file_and_web'
+
   resources :trees
   
   devise_for :users

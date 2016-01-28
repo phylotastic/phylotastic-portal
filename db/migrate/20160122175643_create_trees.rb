@@ -5,6 +5,7 @@ class CreateTrees < ActiveRecord::Migration
       t.text :choosen_species
       t.references :user, index: true, foreign_key: true
       t.references :phylo_source, index: true, foreign_key: true
+      t.references :raw_extraction, index: true, foreign_key: true
       
       t.timestamps
     end
