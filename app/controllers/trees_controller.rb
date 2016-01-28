@@ -17,6 +17,19 @@ class TreesController < ApplicationController
     end
   end
   
+  def show
+    @tree = Tree.find_by(id: params[:id])
+    if @tree.nil? 
+      redirect_to root_url
+    else
+      if !@tree.public
+        if @tree.user != current_user
+          redirect_to root_url
+        end
+      end
+    end
+  end
+  
   private
     def tree_params
       params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL)

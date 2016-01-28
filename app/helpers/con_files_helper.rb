@@ -1,0 +1,2 @@
+module ConFilesHelper
+end

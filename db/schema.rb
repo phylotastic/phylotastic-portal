@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125203252) do
+ActiveRecord::Schema.define(version: 20160128175944) do
+
+  create_table "con_files", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "con_files", ["user_id"], name: "index_con_files_on_user_id"
+
+  create_table "con_links", force: :cascade do |t|
+    t.string   "uri"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "con_links", ["user_id"], name: "index_con_links_on_user_id"
 
   create_table "phylo_sources", force: :cascade do |t|
     t.string   "name"
@@ -19,11 +36,22 @@ ActiveRecord::Schema.define(version: 20160125203252) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "raw_extractions", force: :cascade do |t|
+    t.text     "species"
+    t.integer  "contributable_id"
+    t.string   "contributable_type"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "raw_extractions", ["contributable_type", "contributable_id"], name: "index_raw_extraction_for_contributable"
+
   create_table "trees", force: :cascade do |t|
-    t.boolean  "public",          default: false
+    t.boolean  "public",            default: false
     t.text     "choosen_species"
     t.integer  "user_id"
     t.integer  "phylo_source_id"
+    t.integer  "raw_extraction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "branch_length"
@@ -31,6 +59,7 @@ ActiveRecord::Schema.define(version: 20160125203252) do
   end
 
   add_index "trees", ["phylo_source_id"], name: "index_trees_on_phylo_source_id"
+  add_index "trees", ["raw_extraction_id"], name: "index_trees_on_raw_extraction_id"
   add_index "trees", ["user_id", "created_at"], name: "index_trees_on_user_id_and_created_at"
   add_index "trees", ["user_id"], name: "index_trees_on_user_id"
 
