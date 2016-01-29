@@ -1,0 +1,15 @@
+Induced & Synonym errors for tests indicated by _problem
+
+Felix sylvestris (Felis silvestris)
+Corylus avelana (Corylus avellana)
+Caracol caracol (Caracal caracal)
+Microcebus mamirata (Microcebus mamiratra)
+Lynx ruphus (Lynx rufus)
+Elaphe guttata (Pantheropsis guttata)
+Juncus arctica (Juncus arcticus)
+
+Felis viverrina (Prionailurus viverrinus)
+Cyprinus auratus (Carassius auratus)
+Nephelium litchi (Litchi chinesis)
+Lemur chrysampyx (Eulemur coronatus)
+Arenaria cylindrocarpa (Arenaria humifusa)
