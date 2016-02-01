@@ -22,7 +22,7 @@ Author/User provides the file
      * Community
 
 * Extensions
-     *3. Add missing names that the scraper didn’t catch.
+     * 3. Add missing names that the scraper didn’t catch.
      
 
 # **USE CASE 2**
@@ -73,7 +73,6 @@ Author/User provides the file
      * Phylotastic Project (EOL)
      * Community that wants to focus on a specific area of a species list
           * e.g. A researcher has a plant list of NA plants, but wants to focus only on the Asteraceae to verify if they have a new citation for NA.
- 
 
 
 # **USE CASE 4**
@@ -96,4 +95,4 @@ Author/User provides the file
 * Stakeholders
      * Authors
      * Publishers
-     *	Community
+     * Community
