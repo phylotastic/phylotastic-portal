@@ -1,0 +1,65 @@
+digraph "GUI workflow" { 
+CI [label="Start", style=filled, fillcolor="pink"];
+
+# interactive elements 
+CI_examples [label="Choose\npre-built\nexample", shape=octagon, style=filled, fillcolor="lightgrey"];
+CI_taxon [label="Specify\ntaxon", shape=octagon, style=filled, fillcolor="lightgrey"];
+CI_extract [label="Extract-\nfrom-file\nwidget", shape=octagon, style=filled, fillcolor="lightgrey"];
+sample [label="Taxon\nsampling\nwidget", shape=octagon, style=filled, fillcolor="lightgrey"]
+prune [label="Prune\nnames\nwidget", shape=octagon, style=filled, fillcolor="lightgrey"];
+gettree [label="Get \nsubtree\nwidget", shape=octagon, style=filled, fillcolor="lightgrey"];
+extras [label="Extras\nwidget", shape=octagon, style=filled, fillcolor="lightgrey"];
+viewer [label="Viewer", shape=octagon, style=filled, fillcolor="lightgrey"];
+export [label="Exporter", shape=octagon, style=filled, fillcolor="lightgrey"];
+
+# external services 
+GNRD [shape=oval]; 
+OpenTree [shape=oval];
+TreeBASE [shape=oval]; 
+ToLWeb [shape=oval]; 
+DateLifeTrees [label="DateLife\n(trees)", shape=oval]; 
+DateLifeScaling [label="DateLife\n(scaling)", shape=oval]; 
+images [label="image\nserver", shape=oval]
+
+# inputs, outputs and intermediates
+infile [label="input\nfile", shape=box]; 
+vname [label="Valid\ntaxon name", shape=box]; 
+vlist [label="List of\nvalidated\nspecies names", shape=box, style=filled, fillcolor="green"]; 
+rawlist [label="Valid\nextracted\nnames", shape=box]; 
+tree [label="tree", shape=box, style=filled, fillcolor="green"]; 
+treefile [label="tree\nfile", shape=box, style=filled, fillcolor="green"];
+image [label="image\nfile", shape=box, style=filled, fillcolor="green"];
+
+# user makes initial choice of path 
+{ rank = same; CI_examples; CI_taxon; CI_extract; }
+CI -> CI_examples; 
+CI -> CI_taxon; 
+CI -> CI_extract; 
+
+# step 2a. pre-built examples with valid names
+CI_examples -> vlist; 
+
+# step 2b. sample from a taxon 
+CI_taxon -> vname -> sample -> vlist; 
+
+# step 2c. extract from user file or web site
+infile -> CI_extract -> GNRD -> rawlist -> prune -> vlist; 
+
+# step 3
+vlist -> gettree; 
+{ rank = same; OpenTree; ToLWeb; TreeBASE; DateLifeTrees;}
+gettree -> OpenTree -> tree; 
+gettree -> ToLWeb -> tree; 
+gettree -> TreeBASE -> tree; 
+gettree -> DateLifeTrees -> tree; 
+
+# step 4 extras (scaling, images, export)
+tree -> extras -> tree; 
+extras -> DateLifeScaling -> extras; 
+extras -> images -> extras; 
+tree -> export -> treefile; 
+
+# vis
+tree -> viewer -> image; 
+
+}
