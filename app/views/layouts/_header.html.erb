@@ -1,0 +1,58 @@
+<div class="center">
+  <%= image_tag "phylo-toolbox-logo-huge.png", alt: "Home" %>
+</div>
+
+<nav class="navbar navbar-static">
+  <div class="container">
+    <a class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+      <span class="glyphicon glyphicon-chevron-down"></span>
+    </a>
+    <div class="nav-collapse collase">
+      <ul class="nav navbar-nav">  
+        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "About", static_pages_about_path %></li>
+        <li><%= link_to "FAQ", static_pages_faq_path %></li>
+        <li><%= link_to "Videos", static_pages_faq_path %></li>
+        <li><%= link_to "Gallery", static_pages_faq_path %></li>
+        <li><%= link_to "Feedback", static_pages_faq_path %></li>
+      </ul>
+      <ul class="nav navbar-right navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+          <ul class="dropdown-menu" style="padding:12px;">
+              <form class="form-inline">
+                 <div class="input-group">
+                   <input type="text" class="form-control" placeholder="Search">
+                   <div class="input-group-btn">
+   			       <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                   </div>
+                </div>
+              </form>
+            </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <% if user_signed_in? %>
+              <%= current_user.email.partition('@').first %>
+              <i class="glyphicon glyphicon-chevron-down"></i>
+            <% else %>
+              <i class="glyphicon glyphicon-user"></i> 
+              <i class="glyphicon glyphicon-chevron-down"></i>
+            <% end %>
+          </a>
+          <ul class="dropdown-menu">
+            <% if user_signed_in? %>
+              <li><%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+            <% else %>
+              <li><%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %></li>
+            <% end %>
+           </ul>
+        </li>  
+      </ul>
+    </div>		
+  </div>
+</nav><!-- /.navbar -->

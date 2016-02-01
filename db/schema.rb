@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160128175944) do
+ActiveRecord::Schema.define(version: 20160128203534) do
 
   create_table "con_files", force: :cascade do |t|
     t.integer  "user_id"
@@ -29,6 +29,15 @@ ActiveRecord::Schema.define(version: 20160128175944) do
   end
 
   add_index "con_links", ["user_id"], name: "index_con_links_on_user_id"
+
+  create_table "con_taxons", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "con_taxons", ["user_id"], name: "index_con_taxons_on_user_id"
 
   create_table "phylo_sources", force: :cascade do |t|
     t.string   "name"

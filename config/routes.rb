@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  resources :con_taxons
   resources :con_files
   resources :con_links
   

@@ -7,15 +7,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <p class="navbar-text pull-right">
-  <% if user_signed_in? %>
-    Logged in as <strong><%= current_user.email %></strong>.
-    <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-    <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-  <% else %>
-    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-    <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-  <% end %>
+  <%= render 'layouts/header' %>
   
   <% if notice %>
     <p class="alert alert-success"><%= notice %></p>
@@ -24,14 +16,13 @@
     <p class="alert alert-danger"><%= alert %></p>
   <% end %>
 
-  <%= render 'layouts/header' %>
   <div class="container">
     <% flash.each do |message_type, message| %>
       <div class="alert alert-<%= message_type %>"><%= message %></div>
     <% end %>
     <%= yield %>
-    <%= render 'layouts/footer' %>
   </div>
+  <%= render 'layouts/footer' %>
   
 </body>
 </html>
