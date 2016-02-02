@@ -10,4 +10,5 @@ class ConFile < ActiveRecord::Base
                                                                   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
                                                                   "application/msword",
                                                                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ] }
+  validates_attachment_presence :document
 end
