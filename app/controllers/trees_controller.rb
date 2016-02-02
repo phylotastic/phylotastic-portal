@@ -7,7 +7,6 @@ class TreesController < ApplicationController
   end
   
   def create
-    binding.pry
     @tree = current_user.trees.build(tree_params)
     if @tree.save
       flash[:success] = "Tree created!"

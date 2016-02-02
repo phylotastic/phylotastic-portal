@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 Gemfile.lock
+dump.rdb
 
 # Ignore Spring files.
 /spring/*.pid
