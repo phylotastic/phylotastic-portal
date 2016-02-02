@@ -38,6 +38,10 @@ gem 'slim'
 # File management
 gem "paperclip", "~> 4.3"
 
+# eventmachine webserver
+gem 'tubesock'
+gem 'puma'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

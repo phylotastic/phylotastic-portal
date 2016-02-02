@@ -6,7 +6,6 @@ class ConLinksController < ApplicationController
       TreesWorker.perform_async(@con_link.id, "ConLink")
       redirect_to root_url
     else
-      flash.now[:danger] = "Could not process URL"
       @con_file = ConFile.new
       render 'raw_extractions/new_from_file_and_web'
     end

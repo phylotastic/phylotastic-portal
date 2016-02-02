@@ -138,6 +138,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    puma (2.12.2)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -218,6 +219,9 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
+    tubesock (0.2.5)
+      rack (>= 1.5.0)
+      websocket (>= 1.1.0)
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -232,6 +236,7 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (>= 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    websocket (1.2.2)
 
 PLATFORMS
   ruby
@@ -249,6 +254,7 @@ DEPENDENCIES
   paperclip (~> 4.3)
   pg (= 0.17.1)
   pry
+  puma
   rails (= 4.2.3)
   rails_12factor (= 0.0.2)
   sass-rails (~> 5.0)
@@ -258,6 +264,7 @@ DEPENDENCIES
   slim
   spring
   sqlite3
+  tubesock
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)

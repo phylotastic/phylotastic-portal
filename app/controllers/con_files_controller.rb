@@ -6,7 +6,6 @@ class ConFilesController < ApplicationController
       TreesWorker.perform_async(@con_file.id, "ConFile")
       redirect_to root_url
     else
-      flash.now[:danger] = "Could not process file"
       @con_link = ConLink.new
       render 'raw_extractions/new_from_file_and_web'
     end
@@ -14,6 +13,6 @@ class ConFilesController < ApplicationController
   
   private
     def con_file_params
-      params.require(:con_file).permit(:document)
+      params.fetch(:con_file, {}).permit(:document)
     end
 end
