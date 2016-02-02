@@ -30,6 +30,14 @@ gem 'bootstrap-sass', '~> 3.3.6'
 
 gem 'pry'
 
+# Background processing
+gem 'sidekiq', '>= 4.0.0'
+gem 'sinatra', require: false
+gem 'slim'
+
+# File management
+gem "paperclip", "~> 4.3"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
