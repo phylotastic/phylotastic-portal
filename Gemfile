@@ -34,6 +34,7 @@ gem 'pry'
 gem 'sidekiq', '>= 4.0.0'
 gem 'sinatra', require: false
 gem 'slim'
+gem 'sidekiq-status'
 
 # File management
 gem "paperclip", "~> 4.3"

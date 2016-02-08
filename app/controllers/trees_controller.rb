@@ -29,6 +29,10 @@ class TreesController < ApplicationController
     end
   end
   
+  def index
+    @trees = current_user.trees
+  end
+  
   private
     def tree_params
       params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL)

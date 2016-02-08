@@ -1,0 +1,22 @@
+<% provide(:title, "Gallery") %>
+
+<table class="table table-striped table-hover">
+  <thead> 
+    <tr> 
+      <th>Id</th> 
+      <th>Status</th> 
+      <th>Last Name</th> 
+      <th>Username</th> 
+    </tr> 
+  </thead>
+  <tbody> 
+    <%= @trees.each do |t| %>
+      <tr> 
+        <th scope="row"><%= t.id %></th> 
+        <td><%= t.status %></td> 
+        <td>Otto</td> 
+        <td>@mdo</td> 
+      </tr> 
+    <% end %>
+  </tbody>
+</table>
