@@ -1,14 +1,15 @@
 class TrackersController < ApplicationController
   include Tubesock::Hijack
 
-  def chat
+  def track
     hijack do |tubesock|
       tubesock.onopen do
         tubesock.send_data "Hello, friend"
       end
 
       tubesock.onmessage do |data|
-        job_id = MyJob.perform_async(*args)
+        binding.pry
+        job_id = params[:job_id]
         data = Sidekiq::Status::get_all job_id
         data # => {status: 'complete', update_time: 1360006573, vino: 'veritas'}
         Sidekiq::Status::get     job_id, :vino #=> 'veritas'

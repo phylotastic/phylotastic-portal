@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get '/track' => 'trackers#track'
+  
   require 'sidekiq/web'
   # ...
   mount Sidekiq::Web, at: '/sidekiq'

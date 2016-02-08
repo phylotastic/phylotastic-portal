@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208150542) do
+ActiveRecord::Schema.define(version: 20160208153932) do
 
   create_table "con_files", force: :cascade do |t|
     t.integer  "user_id"
@@ -63,14 +63,14 @@ ActiveRecord::Schema.define(version: 20160208150542) do
     t.boolean  "public",            default: false
     t.text     "choosen_species"
     t.integer  "user_id"
-    t.integer  "phylo_source_id"
-    t.integer  "raw_extraction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "branch_length"
     t.boolean  "images_from_EOL"
     t.string   "bg_job"
     t.string   "status"
+    t.integer  "phylo_source_id"
+    t.integer  "raw_extraction_id"
   end
 
   add_index "trees", ["bg_job"], name: "index_trees_on_bg_job"
