@@ -1,5 +1,7 @@
 <% provide(:title, "Gallery") %>
 
+<div id="output"></div>
+
 <table class="table table-striped table-hover">
   <thead> 
     <tr> 
@@ -20,3 +22,20 @@
     <% end %>
   </tbody>
 </table>
+
+<script type="text/javascript">
+socket = new WebSocket("ws://" + window.location.host + "/track")
+
+socket.onmessage = function(event) {
+  if(event.data.length);
+    $("#output").append(event.data);
+}
+
+$("body").on("submit", "form.chat", function(event) {
+  event.preventDefault();
+  $input = $(this).find("input");
+  socket.send($input.val());
+  $input.val(null);
+})
+
+</script>
