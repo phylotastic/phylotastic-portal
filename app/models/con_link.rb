@@ -4,5 +4,6 @@ class ConLink < ActiveRecord::Base
   has_many :raw_extraction, as: :contributable  
   
   validates :user_id, presence: true
+  # TODO: format url
   validates :uri, presence: true
 end
