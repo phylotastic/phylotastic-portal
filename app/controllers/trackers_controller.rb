@@ -8,7 +8,7 @@ class TrackersController < ApplicationController
       end
 
       tubesock.onmessage do |tree_id|
-        sleep 3
+        sleep rand(3)
         tree = current_user.trees.find_by_id(tree_id.to_i)
         if tree.nil?
           tubesock.send_data "#{tree_id} not found"
