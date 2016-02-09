@@ -31,6 +31,7 @@ class TreesController < ApplicationController
   
   def index
     @trees = current_user.trees
+    @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   
   private
