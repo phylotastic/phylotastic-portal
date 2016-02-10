@@ -6,20 +6,38 @@
       <th>Id</th> 
       <th>Status</th> 
       <th>Polling</th> 
-      <th>Username</th> 
+      <th>Source</th> 
+      <th>Prune</th>
     </tr> 
   </thead>
   <tbody> 
     <%= @trees.each do |t| %>
       <tr> 
-        <th scope="row"><%= t.id %></th> 
+        <th scope="row"><%= link_to t.id, tree_path(t.id) %></th> 
         <td class="tree-status"><%= t.status %></td> 
         <td class="check-status-manual-btn">
           <% if t.status != "completed" %>
             <%= link_to "Check status", "#", class: "check-status", id: t.id %>
           <% end %>
         </td> 
-        <td>@mdo</td> 
+        <td>          
+          <% begin %>
+            <% source = t.raw_extraction.contributable %>
+            <% case source %>
+            <% when ConLink %>
+              <%= "URI: #{source.uri}" %>
+            <% when ConFile %>
+              <%= "File: #{source.filename}" %>
+            <% end %>
+          <% rescue %>
+            <%= "" %>
+          <% end %>
+        </td> 
+        <td class="action-prune">
+          <% if t.status == "extracted" %>
+            <%= link_to "Prune tree", edit_tree_path(t.id) %>
+          <% end %>
+        </td>
       </tr> 
     <% end %>
   </tbody>
@@ -39,23 +57,35 @@ $(document).ready(function() {
   }
   socket = new WebSocket("ws://" + window.location.host + "/track")
 
+  socket.onopen = function(event) {
+    for (i=0; i < processing_trees.length; i++) {
+      socket.send(processing_trees[i]);
+      $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
+    }
+  } 
+  
   socket.onmessage = function(event) {
     data = JSON.parse(event.data);
     if(event.data.length) {
       // Change status of tree in view
       $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(data["status"]);
       
-      // Remove that tree in processing_trees and remove "check status" btn
       if (data["status"] == "completed") {        
+        // Remove the tree that "completed" in processing_trees and remove "check status" btn
         index = processing_trees.indexOf(parseInt(data["tree_id"]));
         if (index > -1) {
           processing_trees.splice(index, 1);
         }
         $("#" + data["tree_id"]).parents(".check-status-manual-btn").html("");
+        
+        // Send notification
+        spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);        
+      } else if (data["status"] == "extracted") {
+        console.log(data["tree_id"]);
+        $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Prune tree</a>")
+        // Send notification
+        spawnNotification("Come back to prune your tree!", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is ready");
       }
-      
-      // Send notification
-      spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);
     }
   }
 
@@ -65,13 +95,6 @@ $(document).ready(function() {
     socket.send(params);
     $("#" + params).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
   })
-  
-  setInterval( function() {
-    for (i=0; i < processing_trees.length; i++) {
-      socket.send(processing_trees[i]);
-      $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
-    }
-   }, 10000);
 });
 
 

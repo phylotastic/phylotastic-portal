@@ -3,13 +3,21 @@ class TreesWorker
   # sidekiq_options retry: false
   include Sidekiq::Status::Worker
   
-  def perform(source_id, source_type)
+  def perform(tree_id)
     # snippet = Snippet.find(snippet_id)
     # uri = URI.parse("http://pygments.appspot.com/")
     # request = Net::HTTP.post_form(uri, lang: snippet.language, code: snippet.plain_code)
     # snippet.update_attribute(:highlighted_code, request.body)
-    puts source_id
-    puts source_type
+    tree = Tree.find_by_id(tree_id)
+    if tree.nil?
+      logger.info "Oops! Tree not found"
+    else
+      logger.info "Success!"
+      puts tree
+    end
+
+    tree.update_attributes(status: "resoluting names")
+    # TODO: call services
     
     total 100 # by default
     at 5, "Almost done"
