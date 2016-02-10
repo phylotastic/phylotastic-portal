@@ -57,7 +57,7 @@ class ExtractionsWorker
       end
     end
     # TODO: remove sleep
-    sleep 40
+    sleep 20
     tree.update_attributes(raw_extraction_id: extraction.id, bg_job: "-1", status: "extracted")
   end
 end

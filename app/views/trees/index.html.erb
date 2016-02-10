@@ -11,7 +11,7 @@
     </tr> 
   </thead>
   <tbody> 
-    <%= @trees.each do |t| %>
+    <% @trees.each do |t| %>
       <tr> 
         <th scope="row"><%= link_to t.id, tree_path(t.id) %></th> 
         <td class="tree-status"><%= t.status %></td> 
@@ -78,11 +78,15 @@ $(document).ready(function() {
         }
         $("#" + data["tree_id"]).parents(".check-status-manual-btn").html("");
         
+        // Remove "Prune" btn
+        $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("");
+        
         // Send notification
         spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);        
       } else if (data["status"] == "extracted") {
         console.log(data["tree_id"]);
-        $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Prune tree</a>")
+        $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Prune tree</a>");
+        
         // Send notification
         spawnNotification("Come back to prune your tree!", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is ready");
       }

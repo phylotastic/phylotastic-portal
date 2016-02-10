@@ -22,6 +22,7 @@ class TrackersController < ApplicationController
           
           while Sidekiq::Status::working?(tree.bg_job) || Sidekiq::Status::queued?(tree.bg_job)
             sleep 10
+            puts "sleeping"
           end
           bg_job_status = Sidekiq::Status::get_all tree.bg_job
           if bg_job_status.nil?

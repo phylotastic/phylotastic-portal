@@ -44,6 +44,7 @@ class TreesController < ApplicationController
     if @tree.update_attributes(tree_params)
       flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
       job_id = TreesWorker.perform_async(@tree.id)
+      @tree.update_attributes(bg_job: job_id)  
       redirect_to trees_path
     else
       render 'edit'
