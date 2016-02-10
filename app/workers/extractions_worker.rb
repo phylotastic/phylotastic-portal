@@ -56,7 +56,8 @@ class ExtractionsWorker
         tree = owner.trees.create(bg_job: self.jid)
       end
     end
-    sleep 20
+    # TODO: remove sleep
+    sleep 40
     tree.update_attributes(raw_extraction_id: extraction.id, bg_job: "-1", status: "extracted")
   end
 end
