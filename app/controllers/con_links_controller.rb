@@ -1,4 +1,6 @@
 class ConLinksController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     @con_link = current_user.con_links.build(con_link_params)
     if @con_link.save

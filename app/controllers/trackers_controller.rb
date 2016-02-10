@@ -1,4 +1,5 @@
 class TrackersController < ApplicationController
+  before_action :authenticate_user!
   include Tubesock::Hijack
 
   def track
