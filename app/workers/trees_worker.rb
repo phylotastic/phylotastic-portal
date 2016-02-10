@@ -13,11 +13,14 @@ class TreesWorker
       logger.info "Oops! Tree not found"
     else
       logger.info "Success!"
-      puts tree
+      puts tree.id
     end
 
     tree.update_attributes(status: "resoluting names")
     # TODO: call services
+    
+    # TODO: remove sleep
+    sleep 20
     
     total 100 # by default
     at 5, "Almost done"
@@ -28,5 +31,7 @@ class TreesWorker
     # a way of retrieving said data
     # remember that retrieved data is always is String|nil
     vino = retrieve :vino
+    
+    tree.update_attributes(status: "completed", bg_job: "-1")
   end
 end
