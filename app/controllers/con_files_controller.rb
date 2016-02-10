@@ -1,4 +1,6 @@
 class ConFilesController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     @con_file = current_user.con_files.build(con_file_params)
     if @con_file.save
