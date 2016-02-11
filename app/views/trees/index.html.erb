@@ -27,7 +27,7 @@
             <% when ConLink %>
               <%= "URI: #{source.uri}" %>
             <% when ConFile %>
-              <%= "File: #{source.filename}" %>
+              <%= "File: #{source.document.original_filename}" %>
             <% end %>
           <% rescue %>
             <%= "" %>
