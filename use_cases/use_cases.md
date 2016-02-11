@@ -1,5 +1,5 @@
-# **USE CASE 1** 
-## Extract taxon names from a document and verify the spelling
+## **USE CASE 1** 
+### Extract taxon names from a document and verify the spelling
 
 **Goal**: Extract the names from a document, verify the spelling, list extracted input and corrected spelling, correct the input document 
 
@@ -25,9 +25,9 @@ Author/User provides the file
      * 3. Add missing names that the scraper didn’t catch.
      
 
-# **USE CASE 2**
+## **USE CASE 2**
 
-## Extract names from a document and provide taxonomical authority
+### Extract names from a document and provide taxonomical authority
 
 **Goal**: Extract the names from a document and provide the taxonomic authority according to the correct Nomenclature Code
 
@@ -53,9 +53,9 @@ Author/User provides the file
 
  
 
-# **USE CASE 3**
+## **USE CASE 3**
 
-## Extract names of an input to a restricted focal clade
+### Extract names of an input to a restricted focal clade
 
 **Goal**: Extract names from a document/url restricted to a focal taxon and provide this list to the user
 
@@ -75,9 +75,9 @@ Author/User provides the file
           * e.g. A researcher has a plant list of NA plants, but wants to focus only on the Asteraceae to verify if they have a new citation for NA.
 
 
-# **USE CASE 4**
+## **USE CASE 4**
 
-## Extract taxon names and provide synonyms with their respective authority and reference
+### Extract taxon names and provide synonyms with their respective authority and reference
 
 **Goal**: Extract names from a document, verify if these are valid names, and provide the synonyms 
 
