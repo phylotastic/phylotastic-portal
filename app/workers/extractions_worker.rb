@@ -35,7 +35,26 @@ class ExtractionsWorker
     
     # TODO: query source
     # TODO: call services to extract
-
+    case source_type
+    when "ConLink"
+      begin
+        RestClient.post "http://httpbin.org/post", 
+                        { 
+                          {'x' => 1 }.to_json, 
+                          :content_type => :json, 
+                          :accept => :json
+                        })
+      rescue => e
+        e.response
+      end
+    when "ConFile"
+      begin
+        RestClient.post 'http://httpbin.org/post', :myfile => File.new(ConFile.find_by_id(source_id).document.path, 'rb')
+      rescue => e
+        e.response
+      end
+    end
+    
     # create RawExtraction, TODO: change species with data got from service
     extraction = source_type.constantize.find_by_id(source_id).raw_extraction.create(species: "123")
 

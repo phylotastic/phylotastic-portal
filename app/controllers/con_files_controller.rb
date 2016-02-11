@@ -5,7 +5,8 @@ class ConFilesController < ApplicationController
     @con_file = current_user.con_files.build(con_file_params)
     if @con_file.save
       flash[:success] = "Processing file!"
-      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile")
+      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
+      current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to trees_path
     else
       @con_link = ConLink.new

@@ -41,6 +41,9 @@ gem "paperclip", "~> 4.3"
 gem 'tubesock'
 gem 'puma'
 
+# call request to Phylo web services
+gem 'rest-client'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
