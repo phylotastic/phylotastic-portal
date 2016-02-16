@@ -4,60 +4,35 @@ class ExtractionsWorker
   include Sidekiq::Status::Worker
   
   def perform(source_id, source_type, current_user_id)
-    # snippet = Snippet.find(snippet_id)
-    # uri = URI.parse("http://pygments.appspot.com/")
-    # request = Net::HTTP.post_form(uri, lang: snippet.language, code: snippet.plain_code)
-    # snippet.update_attribute(:highlighted_code, request.body)
     puts source_id
     puts source_type
     puts self.jid
     
-    total 100 # by default
-    at 5, "Almost done"
-    sleep 3
-    # a way to associate data with your job
-    store vino: 'veritas'
-    at 20, "Done in a sec"
-    # a way of retrieving said data
-    # remember that retrieved data is always is String|nil
-    vino = retrieve :vino
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     owner = User.find_by_id(current_user_id)
     
-    # TODO: query source
-    # TODO: call services to extract
+    # call extracting service based on types of source
     case source_type
     when "ConLink"
       begin
-        RestClient.post "http://httpbin.org/post", 
-                        { 
-                          {'x' => 1 }.to_json, 
-                          :content_type => :json, 
-                          :accept => :json
-                        })
+        extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri
       rescue => e
-        e.response
+        binding.pry
+        puts e
       end
     when "ConFile"
       begin
-        RestClient.post 'http://httpbin.org/post', :myfile => File.new(ConFile.find_by_id(source_id).document.path, 'rb')
+        file_url = APP_CONFIG['domain'] + ConFile.find_by_id(source_id).document.url
+        extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + file_url
       rescue => e
-        e.response
+        binding.pry
+        puts e
       end
     end
     
-    # create RawExtraction, TODO: change species with data got from service
-    extraction = source_type.constantize.find_by_id(source_id).raw_extraction.create(species: "123")
+    # raw extraction
+    extraction = source_type.constantize.find_by_id(source_id).raw_extraction.create(species: extracted_response)
 
+    # retrieve tree corresponding to the above raw extraction
     tries = 3
     begin
       tree = Tree.find_by_bg_job(self.jid)
@@ -75,8 +50,35 @@ class ExtractionsWorker
         tree = owner.trees.create(bg_job: self.jid)
       end
     end
-    # TODO: remove sleep
-    sleep 20
-    tree.update_attributes(raw_extraction_id: extraction.id, bg_job: "-1", status: "extracted")
+   
+    # if extracting service has problems, it is time to terminate
+    if extracted_response.nil?
+      tree.update_attributes( raw_extraction_id: extraction.id, 
+                              bg_job: "-1", 
+                              status: "unsucessfully-extracted" )
+      return
+    end
+    
+    # update status "extracted" to tree
+    tree.update_attributes( raw_extraction_id: extraction.id, 
+                            status: "extracted" )
+
+    # call to resolution names service
+    begin
+      resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
+                                           extracted_response )
+    rescue => e
+      binding.pry
+      puts e
+    end
+    
+    # update state of tree
+    if resolved_response.nil?
+      tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
+    else
+      # TODO: update 'species' field with a suitable format so displaying in tree getter will be easier
+      extraction.update_attributes(species: resolved_response)
+      tree.update_attributes(bg_job: "-1", status: "resolved")
+    end
   end
 end

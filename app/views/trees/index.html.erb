@@ -58,7 +58,7 @@ $(document).ready(function() {
   socket = new WebSocket("ws://" + window.location.host + "/track")
 
   socket.onopen = function(event) {
-    for (i=0; i < processing_trees.length; i++) {
+    for (i=processing_trees.length-1; i>=0 ; i--) {
       socket.send(processing_trees[i]);
       $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
     }
