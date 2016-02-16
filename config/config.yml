@@ -1,0 +1,21 @@
+development:
+  sv_findnames:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
+    method: "get"
+  sv_resolvenames:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
+    method: "post"
+  domain: "http://0.0.0.0:3000"
+  
+test:
+  sv_findnames_url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
+  sv_resolvenames_url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/resolve?names="
+
+production:
+  sv_findnames:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
+    method: "get"
+  sv_resolvenames:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
+    method: "post"
+    domain: "http://..."
