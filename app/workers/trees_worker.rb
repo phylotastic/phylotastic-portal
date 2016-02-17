@@ -17,8 +17,11 @@ class TreesWorker
     end
 
     tree.update_attributes(status: "resoluting names")
-    # TODO: call services
-        
+    
+    resolved_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
+                                         extracted_response,
+                                         :content_type => :json, 
+                                         :accept => :json )        
     total 100 # by default
     at 5, "Almost done"
     # a way to associate data with your job
