@@ -40,7 +40,6 @@ class TreesController < ApplicationController
   end
   
   def update
-    binding.pry
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
       flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"

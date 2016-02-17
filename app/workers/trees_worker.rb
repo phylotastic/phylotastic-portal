@@ -18,13 +18,9 @@ class TreesWorker
 
     tree.update_attributes(status: "resoluting names")
     # TODO: call services
-    
-    # TODO: remove sleep
-    sleep 20
-    
+        
     total 100 # by default
     at 5, "Almost done"
-    sleep 3
     # a way to associate data with your job
     store vino: 'veritas'
     at 20, "Done in a sec"
