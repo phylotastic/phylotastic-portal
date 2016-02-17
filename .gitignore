@@ -23,4 +23,4 @@ public/system/con_files/
 /spring/*.pid
 
 # Ignore database config file
-/config/database.yml
+config/database.yml
