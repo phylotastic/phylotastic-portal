@@ -66,7 +66,9 @@ class ExtractionsWorker
     # call to resolution names service
     begin
       resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
-                                           extracted_response )
+                                           extracted_response,
+                                           :content_type => :json, 
+                                           :accept => :json )
     rescue => e
       binding.pry
       puts e
