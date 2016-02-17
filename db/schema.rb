@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20160208153932) do
 
   create_table "trees", force: :cascade do |t|
     t.boolean  "public",            default: false
-    t.text     "choosen_species"
+    t.text     "chosen_species"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
