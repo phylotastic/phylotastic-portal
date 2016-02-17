@@ -5,6 +5,9 @@ development:
   sv_resolvenames:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
     method: "post"
+  sv_gettree:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
+    method: "post"
   domain: "http://0.0.0.0:3000"
   
 test:
@@ -18,4 +21,8 @@ production:
   sv_resolvenames:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
     method: "post"
-    domain: "http://..."
+  sv_gettree:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
+    method: "post"
+  domain: "http://..."
+    
