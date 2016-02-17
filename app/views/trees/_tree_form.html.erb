@@ -39,32 +39,46 @@
     <table class="table table-bordered table-hover scroll">
       <thead> 
         <tr> 
-          <th>Species</th> 
-          <th>Kingdom</th> 
-          <th>Use to uncheck all</th> 
+          <th class="species-heading-row">Species</th> 
+          <th class="species-heading-row">Kingdom</th> 
+          <th class="species-cb-column species-heading-row">
+            Select/Deselect all<br>
+            <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+          </th> 
         </tr> 
       </thead>
       <tbody>
           <% species.each do |e| %>
-            <tr>
-              <td class="success"><%= e %></td>
-              <td class="">TODO</td>
-              <td class="">
-                <% if tree.chosen_species.nil? %>
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 1, true) %>
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 0, false) %>
-                <% else %>
-                  <% chosen_species = JSON.parse Tree.first.chosen_species.gsub('=>', ':') %>
-                  <% if chosen_species[e] == "1" %>
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 1, true) %>
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 0, false) %>
-                  <% else %>
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 1, false) %>
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 0, true) %>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
+            <% if tree.chosen_species.nil? %>
+              <% cb_flag = 1 %>
+            <% else %>
+              <% chosen_species = JSON.parse tree.chosen_species.gsub('=>', ':') %>
+              <% if chosen_species[e] == "1" %>
+                <% cb_flag = 1 %>
+              <% else %>
+                <% cb_flag = 0 %>
+              <% end %>
+            <% end %>
+
+            <% if cb_flag == 1 %>
+              <tr class="species-row success">
+                <td class=""><%= e %></td>
+                <td class="">TODO</td>
+                <td class="species-cb-column">                            
+                  <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
+                  <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
+                </td>
+              </tr>
+            <% else %>
+              <tr class="species-row">
+                <td class=""><%= e %></td>
+                <td class="">TODO</td>
+                <td class="species-cb-column">                            
+                  <%= check_box_tag("tree[chosen_species][#{e}]", 1, false, class: "species-cb") %>
+                  <%= check_box_tag("tree[chosen_species][#{e}]", 0, true, class: "hidden") %>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         
       </tbody>
@@ -72,3 +86,39 @@
   </div>
   <% end %>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".species-cb").click(function() {
+    event.stopPropagation();
+    if($(this).is(':checked')) {
+      $(this).siblings("input[type='checkbox']").attr('checked', false);
+      $(this).parents(".species-row").addClass("success");
+    } else {          
+      $(this).siblings("input[type='checkbox']").attr('checked', true);
+      $(this).parents(".species-row").removeClass("success");
+    }
+  });
+  
+  $(".species-row").click(function(event) {
+    $(this).find('.species-cb').click();
+  });
+  
+  $("#species-toggle-all-cb").click(function() {
+    if($(this).is(':checked')) {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( !$($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    } else {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( $($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    }
+  })
+  
+})
+</script>

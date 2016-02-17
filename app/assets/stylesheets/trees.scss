@@ -10,3 +10,15 @@
   margin: 20px;
   text-align: center;
 }
+
+.species-row, #species-toggle-all-cb {
+  cursor: pointer;
+}
+
+.species-cb-column {
+  text-align: center;
+}
+
+.species-heading-row {
+  vertical-align: middle !important;
+}
