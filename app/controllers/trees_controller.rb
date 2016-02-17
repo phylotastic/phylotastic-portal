@@ -54,6 +54,7 @@ class TreesController < ApplicationController
   
   private
     def tree_params
-      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species)
+      properties_keys = params[:tree][:chosen_species].keys
+      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species => properties_keys)
     end
 end
