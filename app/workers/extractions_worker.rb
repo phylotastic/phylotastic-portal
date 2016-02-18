@@ -69,7 +69,7 @@ class ExtractionsWorker
     # call to resolution names service
     begin
       x = "{\"scientificNames\":[\"Formica exsectoides\",\"Formica pecefica\"]}"
-      # TODO: change remove sample
+      # TODO: remove sample
       resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
                                            #extracted_response,
                                            x,

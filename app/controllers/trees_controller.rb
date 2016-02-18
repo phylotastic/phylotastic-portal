@@ -41,10 +41,11 @@ class TreesController < ApplicationController
   
   def update
     @tree = current_user.trees.find_by_id(params[:id])
+    params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json  
     if @tree.update_attributes(tree_params)
       flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
       job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes(bg_job: job_id, status: "constructing")
+      @tree.update_attributes( bg_job: job_id, status: "constructing")
       redirect_to trees_path
     else
       render 'edit'
@@ -53,7 +54,6 @@ class TreesController < ApplicationController
   
   private
     def tree_params
-      properties_keys = params[:tree][:chosen_species].keys
-      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species => properties_keys)
+      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species)
     end
 end

@@ -3,7 +3,7 @@ development:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
     method: "get"
   sv_resolvenames:
-    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/gnr/names"
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
     method: "post"
   sv_gettree:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
@@ -19,7 +19,7 @@ production:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
     method: "get"
   sv_resolvenames:
-    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/gnr/names"
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
     method: "post"
   sv_gettree:
     url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
