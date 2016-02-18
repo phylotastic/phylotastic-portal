@@ -31,3 +31,6 @@ db/schema.rb
 
 # Ignore precompile asset
 public/assets/
+
+# Ignore config
+config/config.yml
