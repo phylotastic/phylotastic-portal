@@ -25,3 +25,9 @@ public/system/con_files/
 # Ignore database config file
 config/database.yml
 db/schema.rb
+
+# Ignore rbenv enviroment variables
+.rbenv-vars
+
+# Ignore precompile asset
+public/assets/
