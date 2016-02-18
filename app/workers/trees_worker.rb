@@ -41,7 +41,6 @@ class TreesWorker
     if constructed_response.nil?
       tree.update_attributes(status: "unsuccessfully-constructed", bg_job: "-1")
     else
-      binding.pry
       tree.update_attributes(status: "completed", bg_job: "-1")
     end
   end
