@@ -34,7 +34,7 @@
           <% end %>
         </td> 
         <td class="action-prune">
-          <% if t.status == "extracted" %>
+          <% if t.status == "resolved" %>
             <%= link_to "Prune tree", edit_tree_path(t.id) %>
           <% end %>
         </td>
@@ -83,7 +83,7 @@ $(document).ready(function() {
         
         // Send notification
         spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);        
-      } else if (data["status"] == "extracted") {
+      } else if (data["status"] == "resolved") {
         console.log(data["tree_id"]);
         $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Prune tree</a>");
         
