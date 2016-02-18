@@ -16,21 +16,33 @@ class TreesWorker
       puts tree.id
     end
 
-    tree.update_attributes(status: "resoluting names")
+    tree.update_attributes(status: "constructing")
     
-    resolved_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
-                                         extracted_response,
-                                         :content_type => :json, 
-                                         :accept => :json )        
-    total 100 # by default
-    at 5, "Almost done"
-    # a way to associate data with your job
-    store vino: 'veritas'
-    at 20, "Done in a sec"
-    # a way of retrieving said data
-    # remember that retrieved data is always is String|nil
-    vino = retrieve :vino
+    resolved = JSON.parse(tree.raw_extraction.species)
+    chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
+    resolved["resolvedNames"].each do |r|
+      if !chosen_species.include? r["matched_name"]
+        binding.pry
+        resolved["resolvedNames"].delete r
+      end
+    end
+        
+    begin
+      constructed_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
+                                              resolved.to_json,
+                                              :content_type => :json, 
+                                              :accept => :json)
+    rescue => e
+      puts e
+      logger.info "Call service error"
+    end
     
-    tree.update_attributes(status: "completed", bg_job: "-1")
+    # TODO: save constructed tree
+    if constructed_response.nil?
+      tree.update_attributes(status: "unsuccessfully-constructed", bg_job: "-1")
+    else
+      binding.pry
+      tree.update_attributes(status: "completed", bg_job: "-1")
+    end
   end
 end

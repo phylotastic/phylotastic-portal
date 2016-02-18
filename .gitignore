@@ -24,3 +24,4 @@ public/system/con_files/
 
 # Ignore database config file
 config/database.yml
+db/schema.rb
