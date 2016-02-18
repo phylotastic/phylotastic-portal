@@ -37,11 +37,12 @@ class TreesWorker
       logger.info "Call service error"
     end
     
-    # TODO: save constructed tree
     if constructed_response.nil?
       tree.update_attributes(status: "unsuccessfully-constructed", bg_job: "-1")
     else
-      tree.update_attributes(status: "completed", bg_job: "-1")
+      tree.update_attributes( status: "completed", 
+                              bg_job: "-1",
+                              representation: constructed_response )
     end
   end
 end
