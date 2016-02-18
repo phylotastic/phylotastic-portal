@@ -36,7 +36,7 @@ class TreesController < ApplicationController
   
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
-    @species = ["Admiral", "Ackbar", "Padm", "Amidala", "Wedge", "Antilles", "Cad", "Bane", "BB-8", "Darth", "Bane", "Jar", "Jar", "Binks", "C-3PO", "Lando", "Calrissian", "Chewbacca", "Poe", "Dameron", "Count", "Dooku", "(Darth", "Tyranus)", "Boba", "Fett", "Jango", "Fett", "Finn", "Greedo", "General", "Grievous", "Jabba", "the", "Hutt", "Qui-Gon", "Jinn", "Maz", "Kanata", "Obi-Wan", "Kenobi", "Princess", "Leia", "Darth", "Maul", "Palpatine", "(Darth", "Sidious)", "Captain", "Phasma", "R2-D2", "Rey", "Anakin", "Skywalker", "(Darth", "Vader)", "Luke", "Skywalker", "Kylo", "Ren", "Han", "Solo", "Ahsoka", "Tano", "Grand", "Moff", "Wilhuff", "Tarkin", "Asajj", "Ventress", "Watto", "Mace", "Windu", "Yoda"]
+    @resolved_names = JSON.parse @tree.raw_extraction.species
   end
   
   def update

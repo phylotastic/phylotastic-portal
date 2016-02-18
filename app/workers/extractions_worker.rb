@@ -16,16 +16,16 @@ class ExtractionsWorker
       begin
         extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri
       rescue => e
-        binding.pry
         puts e
+        logger.info "Call service error"
       end
     when "ConFile"
       begin
         file_url = APP_CONFIG['domain'] + ConFile.find_by_id(source_id).document.url
         extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + file_url
       rescue => e
-        binding.pry
         puts e
+        logger.info "Call service error"
       end
     end
     
@@ -59,19 +59,25 @@ class ExtractionsWorker
       return
     end
     
+    # save extracted_response in raw extraction
+    extraction.update_attributes(species: extracted_response)
+
     # update status "extracted" to tree
     tree.update_attributes( raw_extraction_id: extraction.id, 
                             status: "extracted" )
-
+    
     # call to resolution names service
     begin
+      x = "{\"scientificNames\":[\"Formica exsectoides\",\"Formica pecefica\"]}"
+      # TODO: change remove sample
       resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
-                                           extracted_response,
+                                           #extracted_response,
+                                           x,
                                            :content_type => :json, 
                                            :accept => :json )
     rescue => e
-      binding.pry
       puts e
+      logger.info "Call service error"
     end
     
     # update state of tree

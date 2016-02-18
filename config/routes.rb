@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'matched_names/show'
+
   get '/track' => 'trackers#track'
   
   require 'sidekiq/web'
