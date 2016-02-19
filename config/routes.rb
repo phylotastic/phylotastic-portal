@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :con_links
   
   get 'raw_extractions/new_from_file_and_web'
+  get 'raw_extractions/new_from_pre_built_examples'
 
   resources :trees
   
