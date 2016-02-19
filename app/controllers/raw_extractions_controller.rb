@@ -5,4 +5,8 @@ class RawExtractionsController < ApplicationController
     @con_link = ConLink.new
     @con_file = ConFile.new
   end
+  
+  def new_from_pre_built_examples
+  end
+  
 end

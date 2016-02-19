@@ -107,18 +107,18 @@
             </tr> 
           </thead>
           <tbody>
-              <% resolved_names.each do |r| %>
-                <tr class="species-row">
-                  <td class=""><%= r["search_string"] %></td>
-                  <td class=""><%= r["matched_name"] %></td>
-                  <td class=""><%= r["match_type"] %></td>
-                  <td class="">
-                    <% r["synonyms"].each do |s| %>
-                      <%= s %><br>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
+            <% resolved_names.each do |r| %>
+              <tr class="species-row">
+                <td class=""><%= r["search_string"] %></td>
+                <td class=""><%= r["matched_name"] %></td>
+                <td class=""><%= r["match_type"] %></td>
+                <td class="">
+                  <% r["synonyms"].each do |s| %>
+                    <%= s %><br>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
       </div>

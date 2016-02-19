@@ -16,19 +16,22 @@ class ExtractionsWorker
       begin
         extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri
       rescue => e
-        puts e
+        puts e.message
         logger.info "Call service error"
       end
     when "ConFile"
       begin
-        file_url = APP_CONFIG['domain'] + ConFile.find_by_id(source_id).document.url
+        file_url = ConFile.find_by_id(source_id).document.url
+        file_url.slice!(/[?]\d*\z/)
+        file_url = APP_CONFIG['domain'] + file_url
         extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + file_url
       rescue => e
-        puts e
+        puts e.message
         logger.info "Call service error"
       end
     end
     
+    binding.pry
     # raw extraction
     extraction = source_type.constantize.find_by_id(source_id).raw_extraction.create(species: extracted_response)
 
@@ -76,7 +79,7 @@ class ExtractionsWorker
                                            :content_type => :json, 
                                            :accept => :json )
     rescue => e
-      puts e
+      puts e.message
       logger.info "Call service error"
     end
     
