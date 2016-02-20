@@ -5,5 +5,5 @@ class ConLink < ActiveRecord::Base
   
   validates :user_id, presence: true
   # TODO: format url
-  validates :uri, presence: true
+  validates :uri, :presence => true, :url => true
 end

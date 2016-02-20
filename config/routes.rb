@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   
   get 'raw_extractions/new_from_file_and_web'
   get 'raw_extractions/new_from_pre_built_examples'
+  get 'raw_extractions/new_from_taxon'
 
   resources :trees
   
