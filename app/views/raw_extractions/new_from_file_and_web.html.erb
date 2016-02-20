@@ -8,7 +8,7 @@
     <%= form_for @con_link do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.text_field :uri, class: "form-control", placeholder: "URL" %>
+        <%= f.text_field :uri, class: "form-control", placeholder: "URI" %>
       </div>
       <%= f.submit "Extract names from web page", class: "btn btn-default btn-lg btn-block" %>
     <% end %>
