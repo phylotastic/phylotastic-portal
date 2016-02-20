@@ -8,5 +8,6 @@ class User < ActiveRecord::Base
   has_many :con_files, dependent: :destroy
   has_many :con_links, dependent: :destroy
   has_many :con_taxons, dependent: :destroy
-  
+  has_many :selection_taxons, dependent: :destroy
+  has_many :subset_taxons, dependent: :destroy
 end

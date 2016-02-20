@@ -31,9 +31,8 @@ class ExtractionsWorker
       end
     end
     
-    binding.pry
     # raw extraction
-    extraction = source_type.constantize.find_by_id(source_id).raw_extraction.create(species: extracted_response)
+    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(species: extracted_response)
 
     # retrieve tree corresponding to the above raw extraction
     tries = 3
