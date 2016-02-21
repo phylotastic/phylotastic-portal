@@ -22,11 +22,10 @@ class TreesWorker
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
     resolved["resolvedNames"].each do |r|
       if !chosen_species.include? r["matched_name"]
-        binding.pry
         resolved["resolvedNames"].delete r
       end
     end
-        
+binding.pry        
     begin
       constructed_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
                                               resolved.to_json,

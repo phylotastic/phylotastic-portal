@@ -28,6 +28,19 @@
               <%= "URI: #{source.uri}" %>
             <% when ConFile %>
               <%= "File: #{source.document.original_filename}" %>
+            <% when ConTaxon %>
+              <% case source.specific %>
+              <% when SelectionTaxon %>
+                <%= "Taxon: #{source.name}" %><br>
+                <%= "Number of species: #{source.nb_species}" %><br>
+                <%= "By: #{source.criterion}" %>
+              <% when SubsetTaxon %>
+                <%= "Taxon: #{source.name}" %><br>
+                <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
+                <%= "In country: #{source.country.name}" %>
+              <% else %>
+                <%= "Taxon: #{source.name}" %>
+              <% end %>
             <% end %>
           <% rescue %>
             <%= "" %>
