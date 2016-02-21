@@ -9,4 +9,10 @@ class RawExtractionsController < ApplicationController
   def new_from_pre_built_examples
   end
   
+  def new_from_taxon
+    @con_taxon = ConTaxon.new
+    @selection_taxon = SelectionTaxon.new
+    @subset_taxon = SubsetTaxon.new
+  end
+  
 end

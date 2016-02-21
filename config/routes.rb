@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
   
   resources :con_taxons
+  resources :selection_taxons
+  resources :subset_taxons
   resources :con_files
   resources :con_links
   

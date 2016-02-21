@@ -2,38 +2,133 @@
 
 <h1>Choose some or all of the species from a taxon</h1>
 
-<%= form_for ConTaxon.new, html: {class: "form-horizontal"} do |f| %>
-  <div class="form-group">
-    <%= f.label :name, "1. Start by entering a taxon name:", class: "col-sm-4 control-label" %>
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
     <div class="col-sm-4">
-      <%= f.text_field :name, class: "form-control" %>
+      1. Start by entering a taxon name:
     </div>
-  </div>
-  <div>
-<% end %>
-
-
-<div>
-  2. Then choose one of 3 approaches (note the options)
-  <div class="row">
-    <div class="col-md-4">
-      <button type="button" class="btn btn-default btn-lg btn-block scenario-selection">Pre-built examples</button>
-      <p>Choose from pre-composed lists, e.g., crop species, pets, mammalian orders</p>
-    </div>
-
-    <div class="col-md-4">
-      <%= form_for ConTaxon.new, html: {class: "form-horizontal"} do |f| %>
-        <div class="form-group">
-          <%= f.hidden_field :name %>
-          <%= f.submit "Choose from a Specified Taxon", class: "btn btn-default btn-lg btn-block scenario-selection"%>
-        </div>
-      <% end %>
-      <p>Name a taxon (e.g., Primates), then choose all or some members</p>
-    </div>
-
-    <div class="col-md-4">
-      <%= link_to "Extract from file or online source", raw_extractions_new_from_file_and_web_path, class: "btn btn-default btn-lg btn-block scenario-selection" %>
-      <p>Get names from a web site or a file</p>
+    <div class="col-sm-8">
+      <%= text_field_tag 'taxon_name', nil, id: 'taxon-name-field', placeholder: "Allakhazam", class: "form-control" %>
     </div>
   </div>
 </div>
+
+<div class="row" id="taxon-approaches">
+  <div class="row">
+    <div class="col-md-4" id="instruction-taxon-2">
+      2. Then choose one of 3 approaches (note the options)
+    </div>
+    <div class="col-sm-8">
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                I want to specify number of species fetched to result tree
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+              <%= form_for @selection_taxon, html: {class: "form-horizontal"} do |f| %>
+                <div class="">
+                  <%= f.hidden_field :name, value: "", class: "taxon-name" %>          
+                  <div class="row">
+                    <div class="col-sm-2 col-sm-offset-1">
+                      Choose 
+                    </div>
+                    <div class="col-sm-4">
+                      <%= f.select :nb_species, [10, 20, 30], {}, { class: "form-control" } %>
+                    </div>
+                    <div class="col-sm-2">
+                      species
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-2 col-sm-offset-1">
+                      By 
+                    </div>
+                    <div class="col-sm-6">
+                      <%= f.select :criterion, ["Populatity", "Random"], {}, { class: "form-control" } %>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                      <%= f.submit "Select species displayed in tree", class: "btn btn-default btn-lg btn-block scenario-selection"%>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                I want to use all of found species in that taxon
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+              <%= form_for @con_taxon, html: {class: "form-horizontal"} do |f| %>
+                <div class="">
+                  <%= f.hidden_field :name, class: "taxon-name" %>
+                  <%= f.submit "Use all species", class: "btn btn-default btn-lg btn-block scenario-selection"%>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                I want to include a subset of species in the result tree
+              </a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+              <%= form_for @subset_taxon, html: {class: "form-horizontal"} do |f| %>
+                <div class="">
+                  <%= f.hidden_field :name, value: "", class: "taxon-name" %>          
+                  <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                      <%= f.label :has_genome_in_ncbi do %>
+                      <%= f.check_box :has_genome_in_ncbi %>
+                        Has genome sequence in NCBI
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-3 col-sm-offset-1">
+                      Found in 
+                    </div>
+                    <div class="col-sm-6">
+                      <%= f.select :country, options_from_collection_for_select(Country.all, "id", "name"), {}, { class: "form-control" } %>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                      <%= f.submit "Find subset of species", class: "btn btn-default btn-lg btn-block scenario-selection"%>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#taxon-name-field').keyup(function() {
+    $('.taxon-name').val($(this).val());
+  })
+})
+</script>

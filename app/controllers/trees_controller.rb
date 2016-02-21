@@ -7,13 +7,13 @@ class TreesController < ApplicationController
   end
   
   def create
-    @tree = current_user.trees.build(tree_params)
-    if @tree.save
-      flash[:success] = "Tree created!"
-      redirect_to root_url
-    else
-      render 'static_pages/home'
-    end
+    # @tree = current_user.trees.build(tree_params)
+#     if @tree.save
+#       flash[:success] = "Tree created!"
+#       redirect_to root_url
+#     else
+#       render 'static_pages/home'
+#     end
   end
   
   def show
@@ -36,6 +36,7 @@ class TreesController < ApplicationController
   
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
+    binding.pry
     @resolved_names = JSON.parse @tree.raw_extraction.species
   end
   
