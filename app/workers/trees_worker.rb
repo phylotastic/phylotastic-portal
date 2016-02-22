@@ -12,7 +12,7 @@ class TreesWorker
     if tree.nil?
       logger.info "Oops! Tree not found"
     else
-      logger.info "Success!"
+      logger.info "Found tree ##{tree_id}!"
       puts tree.id
     end
 

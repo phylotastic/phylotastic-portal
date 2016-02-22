@@ -1,6 +1,6 @@
 class SubsetTaxonsController < ApplicationController
   def create
-    binding.pry
+    # binding.pry
     begin 
       response = RestClient.get APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:subset_taxon][:name]
     rescue Exception => e
