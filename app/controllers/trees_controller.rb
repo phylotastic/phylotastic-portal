@@ -36,7 +36,6 @@ class TreesController < ApplicationController
   
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
-    binding.pry
     @resolved_names = JSON.parse @tree.raw_extraction.species
   end
   

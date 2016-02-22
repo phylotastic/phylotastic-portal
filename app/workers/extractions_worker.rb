@@ -69,14 +69,11 @@ class ExtractionsWorker
                             status: "extracted" )
     
     # call to resolution names service
+    binding.pry
     begin
-      x = "{\"scientificNames\":[\"Formica exsectoides\",\"Formica pecefica\"]}"
-      # TODO: remove sample
       resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
-                                           #extracted_response,
-                                           x,
-                                           :content_type => :json, 
-                                           :accept => :json )
+                                           extracted_response,
+                                           :content_type => :json)
     rescue => e
       puts e.message
       logger.info "Call service error"
