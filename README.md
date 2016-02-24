@@ -14,7 +14,7 @@ Some design documents, including a workflow, are in the design folder, and there
 6. 
 
 To run, execute the following commands in separate terminals: 
-rails server 
-redis-server
-bundle exec sidekiq
+* rails server 
+* redis-server
+* bundle exec sidekiq
 
