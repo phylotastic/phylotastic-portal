@@ -24,7 +24,6 @@ class ConTaxonsController < ApplicationController
       if @con_taxon.save
         resolved = convert_to_resolved_format(response)
         chosen_species = convert_to_chosen_species_format(response)
-        binding.pry
         extraction = @con_taxon.create_raw_extraction(species: resolved)
         
         tree = current_user.trees.create( bg_job: "-1", 

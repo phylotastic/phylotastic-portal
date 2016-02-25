@@ -24,7 +24,6 @@ class SelectionTaxonsController < ApplicationController
                                           raw_extraction_id: extraction.id )
         redirect_to edit_tree_path(tree.id)
       else
-        binding.pry
         render 'raw_extractions/new_from_taxon'
       end
     else

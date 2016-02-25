@@ -68,7 +68,6 @@ class ExtractionsWorker
                             status: "extracted" )
     
     # call to resolution names service
-    binding.pry
     begin
       resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
                                            extracted_response,
