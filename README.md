@@ -41,7 +41,7 @@ cd`
 
 `rbenv rehash`
 
-##### 3. Install Javascript runtim
+##### 3. Install Javascript runtime
 
 `sudo add-apt-repository ppa:chris-lea/node.js`
 
@@ -55,7 +55,7 @@ cd`
 
 ##### 5. Install redis and sidekiq
 
-##### 6. Generate SSH (if you didnot have one)
+##### 6. Generate SSH (if you don't have one)
 
 `ssh-keygen -t rsa -b 4096 -C "your_email@pikachu.com"`
 
@@ -77,7 +77,7 @@ cd`
   * Then change parameters as you want
   
 ##### 10. To run, execute the following commands in separate terminals: 
-  * `rails server`
+  * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
 
