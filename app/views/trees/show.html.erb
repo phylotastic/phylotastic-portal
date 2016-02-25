@@ -22,8 +22,8 @@ $(document).ready(function(){
 var newick = Newick.parse("<%= JSON.parse(Tree.first.representation)['newick'] %>")
 
 var m = [20, 120, 20, 120],
-    w = 1280 - m[1] - m[3],
-    h = 800 - m[0] - m[2],
+    w = 4280 - m[1] - m[3],
+    h = 2000 - m[0] - m[2],
     i = 0,
     root;
 
