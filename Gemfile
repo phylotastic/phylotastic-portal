@@ -47,6 +47,9 @@ gem 'rest-client'
 # Multiple table inheritance
 gem 'active_record-acts_as'
 
+# Tree representation
+gem "d3-rails"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
