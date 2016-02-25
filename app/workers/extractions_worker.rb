@@ -6,7 +6,7 @@ class ExtractionsWorker
   def perform(source_id, source_type, current_user_id)
     puts source_id
     puts source_type
-    puts self.jid
+    # puts self.jid
     
     owner = User.find_by_id(current_user_id)
     
@@ -39,7 +39,6 @@ class ExtractionsWorker
     begin
       tree = Tree.find_by_bg_job(self.jid)
       raise "Cannot find tree executed by background job #{self.jid}." if tree.nil?
-      logger.info "Success!"
     rescue Exception => e  
       puts e.message  
       puts e.backtrace.inspect
