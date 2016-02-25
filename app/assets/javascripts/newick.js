@@ -67,13 +67,13 @@
       switch (token) {
         case '(': // new branchset
           var subtree = {};
-          tree.branchset = [subtree];
+          tree.children = [subtree];
           ancestors.push(tree);
           tree = subtree;
           break;
         case ',': // another branch
           var subtree = {};
-          ancestors[ancestors.length-1].branchset.push(subtree);
+          ancestors[ancestors.length-1].children.push(subtree);
           tree = subtree;
           break;
         case ')': // optional name next

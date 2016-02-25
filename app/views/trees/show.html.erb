@@ -19,8 +19,7 @@
 <script type="text/javascript">
  
 $(document).ready(function(){
-  var newick = Newick.parse("(((Crotalus_oreganus_oreganus_cytochrome_b:0.00800,Crotalus_horridus_cytochrome_b:0.05866):0.04732,(Thamnophis_elegans_terrestris_cytochrome_b:0.00366,Thamnophis_atratus_cytochrome_b:0.00172):0.06255):0.00555,(Pituophis_catenifer_vertebralis_cytochrome_b:0.00552,Lampropeltis_getula_cytochrome_b:0.02035):0.05762,((Diadophis_punctatus_cytochrome_b:0.06486,Contia_tenuis_cytochrome_b:0.05342):0.01037,Hypsiglena_torquata_cytochrome_b:0.05346):0.00779);")
-
+var newick = Newick.parse("<%= JSON.parse(Tree.first.representation)['newick'] %>")
 
 var m = [20, 120, 20, 120],
     w = 1280 - m[1] - m[3],
@@ -39,28 +38,39 @@ var vis = d3.select("#graph").append("svg:svg")
     .attr("height", h + m[0] + m[2])
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-d3.json(newick, function(json) {
-  root = json;
-  root.x0 = h / 2;
-  root.y0 = 0;
-
-  function toggleAll(d) {
-    if (d.children) {
-      d.children.forEach(toggleAll);
-      toggle(d);
-    }
+    
+root = newick;
+    
+function toggleAll(d) {
+  if (d.children) {
+    d.children.forEach(toggleAll);
+    toggle(d);
   }
+}
+update(root);
 
-  // Initialize the display to show a few nodes.
-  root.children.forEach(toggleAll);
-  toggle(root.children[1]);
-  toggle(root.children[1].children[2]);
-  toggle(root.children[9]);
-  toggle(root.children[9].children[0]);
-
-  update(root);
-});
+// d3.json("http://mbostock.github.io/d3/talk/20111018/flare.json", function(json) {
+//   console.log(json);
+//   root = json
+//   root.x0 = h / 2;
+//   root.y0 = 0;
+//
+//   function toggleAll(d) {
+//     if (d.children) {
+//       d.children.forEach(toggleAll);
+//       toggle(d);
+//     }
+//   }
+//
+//   // Initialize the display to show a few nodes.
+//   root.children.forEach(toggleAll);
+//   toggle(root.children[1]);
+//   toggle(root.children[1].children[2]);
+//   toggle(root.children[9]);
+//   toggle(root.children[9].children[0]);
+//
+//   update(root);
+// });
 
 function update(source) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
