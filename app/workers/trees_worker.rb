@@ -25,7 +25,7 @@ class TreesWorker
         resolved["resolvedNames"].delete r
       end
     end
-binding.pry        
+
     begin
       constructed_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
                                               resolved.to_json,
