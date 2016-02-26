@@ -6,7 +6,7 @@ class SelectionTaxonsController < ApplicationController
       logger.info "Cannot get species from a taxon"
       puts e.message
       flash[:danger] = "Sorry! Service is unavailable. We will fix it soon."
-      redirect_to home_path
+      redirect_to root_path
       return
     end
     
@@ -17,12 +17,19 @@ class SelectionTaxonsController < ApplicationController
     when 200
       @selection_taxon = current_user.selection_taxons.build(selection_taxon_params)
       if @selection_taxon.save
-        resolved = convert_format(response)
+        resolved = convert_to_resolved_format(response)
+        chosen_species = convert_to_chosen_species_format( response, 
+                                                           @selection_taxon.nb_species,
+                                                           @selection_taxon.criterion )
         extraction = @selection_taxon.create_raw_extraction(species: resolved)
         tree = current_user.trees.create( bg_job: "-1", 
-                                          status: "resolved", 
+                                          chosen_species: chosen_species,
                                           raw_extraction_id: extraction.id )
-        redirect_to edit_tree_path(tree.id)
+                                          
+        flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
+        job_id = TreesWorker.perform_async(tree.id)
+        tree.update_attributes( bg_job: job_id, status: "constructing")
+        redirect_to trees_path
       else
         render 'raw_extractions/new_from_taxon'
       end

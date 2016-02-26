@@ -4,20 +4,36 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   def convert_to_resolved_format(response_species)
-    faker = {"resolvedNames": []}
+    faker = {resolvedNames: []}
     JSON.parse(response_species)["species"].each do |n| 
-      faker[:resolvedNames] << { "match_type": "Exact", 
-                                  "resolver_name": "OT", 
-                                  "matched_name": n, 
-                                  "search_string": n, 
-                                  "synonyms": [] }
+      faker[:resolvedNames] << { match_type: "Exact", 
+                                 resolver_name: "OT", 
+                                 matched_name: n, 
+                                 search_string: n, 
+                                 synonyms: [] }
     end
     return faker.to_json
   end
 
-  def convert_to_chosen_species_format(response_species)
+  def convert_to_chosen_species_format(response_species, nb_species, criterion)
     faker = {}
-    JSON.parse(response_species)["species"].each {|n| faker[n] = "1"}
+    species = JSON.parse(response_species)["species"]
+    case criterion
+    when "Populatity"
+      if nb_species < species.count
+        # TODO: call services to determine which species will be included in tre
+        # for now, take all
+        species.each {|n| faker[n] = "1"}
+      else
+        species.each {|n| faker[n] = "1"}
+      end
+    when "Random"
+      if nb_species < species.count
+        species.sample(nb_species).each {|n| faker[n] = "1"}
+      else
+        species.each {|n| faker[n] = "1"}
+      end
+    end
     return faker.to_json
   end
   
