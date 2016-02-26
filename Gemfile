@@ -50,6 +50,9 @@ gem 'active_record-acts_as'
 # Tree representation
 gem "d3-rails"
 
+# Carousel
+gem 'jquery-slick-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
