@@ -19,7 +19,7 @@
 <script type="text/javascript">
  
 $(document).ready(function(){
-var newick = Newick.parse("<%= JSON.parse(Tree.first.representation)['newick'] %>")
+var newick = Newick.parse("<%= JSON.parse(@tree.representation)['newick'] %>")
 
 var m = [20, 120, 20, 120],
     w = 4280 - m[1] - m[3],
