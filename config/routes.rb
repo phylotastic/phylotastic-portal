@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-
+  get 'trees/gallery'
+  
   get 'matched_names/show'
 
   get '/track' => 'trackers#track'

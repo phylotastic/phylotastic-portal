@@ -11,3 +11,4 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 
 Rails.application.config.assets.precompile += %w( phylo-toolbox-logo-huge.png )
+Rails.application.config.assets.precompile += %w( error.gif extracted.png extracting.gif resolved.png )

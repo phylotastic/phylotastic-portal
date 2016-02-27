@@ -34,6 +34,11 @@ class TreesController < ApplicationController
     @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   
+  def gallery
+    @trees = current_user.trees
+    @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
+  end
+  
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
     @resolved_names = JSON.parse @tree.raw_extraction.species
