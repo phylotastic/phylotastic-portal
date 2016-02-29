@@ -1,8 +1,44 @@
 <div class="slider-for-each row">
-  <div class="col-md-3">
-    <%= text %>
+  <div class="col-md-4">
+    <table class="table">
+      <tbody> 
+        <tr> 
+          <th>Status</th>
+          <td class="tree-status"><%= t.status %></td> 
+        </tr>
+        <tr>
+          <th>Source</th>
+          <td>          
+            <% begin %>
+              <% source = t.raw_extraction.contributable %>
+              <% case source %>
+              <% when ConLink %>
+                <%= "URI: #{source.uri}" %>
+              <% when ConFile %>
+                <%= "File: #{source.document.original_filename}" %>
+              <% when ConTaxon %>
+                <% case source.specific %>
+                <% when SelectionTaxon %>
+                  <%= "Taxon: #{source.name}" %><br>
+                  <%= "Number of species: #{source.nb_species}" %><br>
+                  <%= "By: #{source.criterion}" %>
+                <% when SubsetTaxon %>
+                  <%= "Taxon: #{source.name}" %><br>
+                  <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
+                  <%= "In country: #{source.country.name}" %>
+                <% else %>
+                  <%= "Taxon: #{source.name}" %>
+                <% end %>
+              <% end %>
+            <% rescue %>
+              <%= "" %>
+            <% end %>
+          </td> 
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="col-md-8 col-md-offset-1">
+  <div class="col-md-8">
     <div style="background: url(<%= '/assets/' + photo %>) no-repeat center; width: 600px; height: 450px; border-radius: 5%; background-size: contain;"></div>
   </div>
 </div>
