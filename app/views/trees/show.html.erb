@@ -4,11 +4,13 @@
   <%= link_to "View tree report", root_path, class: "btn btn-default" %>
   <%= link_to "Add to my Gallery", root_path, class: "btn btn-default" %>
   <%= link_to "Save tree view", root_path, class: "btn btn-default" %>
-  <%= link_to "Save tree to disk", root_path, class: "btn btn-default" %>
+  <%= link_to "Save tree to disk", "#", class: "btn btn-default", id: "save-to-disk" %>
 </div>
 
 <div class="">
   <div id='graph'></div>
+  <div id='svgdataurl' class=""></div>
+  <canvas></canvas>
 </div>
 
 <script type="text/javascript">
@@ -94,14 +96,18 @@ $(document).ready(function(){
 
     nodeEnter.append("svg:circle")
         .attr("r", 1e-6)
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+        .style("stroke", "steelblue")
+        .style("fill", "#fff")
+        .style("stroke-width", "1.5px");
+        
     nodeEnter.append("svg:text")
         .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
         .text(function(d) { return d.name; })
-        .style("fill-opacity", 1e-6);
+        .style("fill-opacity", 1e-6)
+        .style("font-size", "11px");
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -130,7 +136,7 @@ $(document).ready(function(){
     // Update the links…
     var link = vis.selectAll("path.link")
         .data(tree.links(nodes), function(d) { return d.target.id; });
-
+        
     // Enter any new links at the parent's previous position.
     link.enter().insert("svg:path", "g")
         .attr("class", "link")
@@ -138,6 +144,9 @@ $(document).ready(function(){
           var o = {x: source.x0, y: source.y0};
           return diagonal({source: o, target: o});
         })
+        .attr("fill", "none")
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", "1.5px")
       .transition()
         .duration(duration)
         .attr("d", diagonal);
@@ -174,5 +183,39 @@ $(document).ready(function(){
     }
   }
 
+  // save image of tree to disk
+  d3.select("#save-to-disk").on("click", function(){
+    var html = d3.select("svg")
+          .attr("version", 1.1)
+          .attr("xmlns", "http://www.w3.org/2000/svg")
+          .node().parentNode.innerHTML;
+
+    // console.log(html);
+    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+    var img = '<img src="'+imgsrc+'">'; 
+    d3.select("#svgdataurl").html(img);
+
+
+    var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
+    canvas.width = 2000;
+    canvas.height = 2000;
+    
+    var image = new Image;
+    image.src = imgsrc;
+    image.onload = function() {
+  	  context.drawImage(image, 0, 0);
+
+      var canvasdata = canvas.toDataURL("image/png");
+      var pngimg = '<img src="'+canvasdata+'">';
+              d3.select("#pngdataurl").html(pngimg);
+
+      var a = document.createElement("a");
+      a.download = "sample.png";
+      a.href = canvasdata;
+      a.click();
+    };
+
+  });
+  
 });
 </script>

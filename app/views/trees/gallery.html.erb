@@ -2,26 +2,25 @@
 
 <div class="slider-for">
   <% @trees.each do |t| %>
-  
     <% unless t.image.nil? %>
       <% case t.status %>
       <% when "extracting" %>
-        <%= render partial: "slider_for_each", locals: { text: "Extracting", photo: "extracting.gif" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
       <% when "extracted" %>
-        <%= render partial: "slider_for_each", locals: { text: "Hey! Found something", photo: "extracting.gif" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
       <% when "resolving" %>
-        <%= render partial: "slider_for_each", locals: { text: "Resolving", photo: "extracting.gif" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
       <% when "resolved" %>
-        <%= render partial: "slider_for_each", locals: { text: "Looks good", photo: "resolved.png" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "resolved.png" } %>
       <% when "constructing" %>
-        <%= render partial: "slider_for_each", locals: { text: "Constructing", photo: "resolved.png" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "resolved.png" } %>
       <% when "completed" %>
-        <%= render partial: "slider_for_each", locals: { text: "Done", photo: "resolved.png" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "resolved.png" } %>
       <% else %>
-        <%= render partial: "slider_for_each", locals: { text: "Where is my banana?", photo: "error.gif" } %>
+        <%= render partial: "slider_for_each", locals: { t: t, photo: "error.gif" } %>
       <% end %>
     <% else %>
-      <%= render partial: "slider_for_each", locals: { text: "Resolving", photo: t.image.url } %>
+      <%= render partial: "slider_for_each", locals: { t: t, photo: t.image.url } %>
     <% end %>
   <% end %>
 </div>
