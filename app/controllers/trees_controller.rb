@@ -57,8 +57,21 @@ class TreesController < ApplicationController
     end
   end
   
+  def update_image
+    @tree = current_user.trees.find_by_id(params[:id])
+    if @tree.update_attributes(tree_params)
+      respond_to do |format|
+        format.html { redirect_to tree_path(params[:id]) }
+        format.js { render 'update_image.js.erb'}
+      end
+    else
+      flash[:danger] = "Cannot save tree image"
+      redirect_to tree_path(params[:id])
+    end
+  end
+  
   private
     def tree_params
-      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species)
+      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species, :image)
     end
 end

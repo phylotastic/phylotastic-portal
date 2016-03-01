@@ -22,8 +22,12 @@ class ConTaxonsController < ApplicationController
     when 200
       @con_taxon = current_user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
-        resolved = convert_to_resolved_format(response)
-        chosen_species = convert_to_chosen_species_format(response)
+        extracted_response = convert_to_extracted_response(response)
+        resolved = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
+                                    extracted_response,
+                                    :content_type => :json)
+
+        chosen_species = convert_to_chosen_species_format(response, 0, "All")
         extraction = @con_taxon.create_raw_extraction(species: resolved)
         
         tree = current_user.trees.create( bg_job: "-1", 

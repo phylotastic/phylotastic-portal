@@ -39,6 +39,10 @@
     </table>
   </div>
   <div class="col-md-8">
-    <div style="background: url(<%= '/assets/' + photo %>) no-repeat center; width: 600px; height: 450px; border-radius: 5%; background-size: contain;"></div>
+    <% if t.image.exists? %>
+      <div style="background: url(<%= photo %>) no-repeat center; width: 600px; height: 450px; border-radius: 5%; background-size: contain;"></div>
+    <% else %>
+      <div style="background: url(<%= '/assets/' + photo %>) no-repeat center; width: 600px; height: 450px; border-radius: 5%; background-size: contain;"></div>
+    <% end %>
   </div>
 </div>
