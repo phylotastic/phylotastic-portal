@@ -23,6 +23,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Authentication
 gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-google'
+gem 'omniauth-github'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 
