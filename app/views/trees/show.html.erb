@@ -1,49 +1,75 @@
 <% provide(:title, "Tree viewer") %>
 
-<div class="center">
-  <%= link_to "View tree report", root_path, class: "btn btn-default" %>
-  <%= link_to "Add to my Gallery", root_path, class: "btn btn-default" %>
+<div class="col-md-3">
+  <%= link_to "View tree report", root_path, class: "btn btn-default btn-block" %>
+  <%= link_to "Add to my Gallery", root_path, class: "btn btn-default btn-block" %>
   
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#show-tree-format">
+  <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-format">
     Show Newick format
   </button>
   
-  <%= link_to "Save tree view", "#", class: "btn btn-default", id: "save-to-server" %>
-  <%= link_to "Save tree to disk", "#", class: "btn btn-default", id: "save-to-disk" %>
+  <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
+  <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk" %>
+  
+  <% if @tree.image.exists? %>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-image">
+      <%= image_tag @tree.image.url(:thumb) %>
+    </button>
+  <% end %>
 </div>
 
-<div class="">
-  <!-- Modal -->
-  <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard">Copy</button></h4>
-        </div>
-        <div class="modal-body">
-          <div style="word-break: break-all;" id="tree-in-string-format"><%= JSON.parse(@tree.representation)['newick'] %></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="col-md-9">
   <div id="tree-in-newick"></div>
   <div id='graph'></div>
   <div id='svgdataurl' class="hidden"></div>
   <canvas class="hidden"></canvas>
+  <div class="fb-like" data-href="<%= request.original_url %>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard">Copy</button></h4>
+      </div>
+      <div class="modal-body">
+        <div style="word-break: break-all;" id="tree-in-string-format"><%= JSON.parse(@tree.representation)['newick'] %></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body">
+        <%= image_tag @tree.image.url if @tree.image.exists? %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
  
 $(document).ready(function(){
 
   var newick = Newick.parse("<%= JSON.parse(@tree.representation)['newick'] %>")
   
-  var canvas_width = 2000, canvas_height = 1500;
+  var canvas_width = 800, canvas_height = 600;
   var m = [10, 20, 10, 20],
       w = canvas_width - m[1] - m[3],
       h = canvas_height - m[0] - m[2],
