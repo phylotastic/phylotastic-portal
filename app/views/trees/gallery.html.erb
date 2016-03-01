@@ -2,7 +2,9 @@
 
 <div class="slider-for">
   <% @trees.each do |t| %>
-    <% unless t.image.nil? %>
+    <% if t.image.exists? %>
+      <%= render partial: "slider_for_each", locals: { t: t, photo: t.image.url } %>
+    <% else %>
       <% case t.status %>
       <% when "extracting" %>
         <%= render partial: "slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
@@ -19,8 +21,6 @@
       <% else %>
         <%= render partial: "slider_for_each", locals: { t: t, photo: "error.gif" } %>
       <% end %>
-    <% else %>
-      <%= render partial: "slider_for_each", locals: { t: t, photo: t.image.url } %>
     <% end %>
   <% end %>
 </div>
@@ -69,120 +69,7 @@
     </div> 
   <% end %>
 </div>
-
-<table class="table table-striped table-hover">
-  <thead> 
-    <tr> 
-      <th>Id</th> 
-      <th>Status</th> 
-      <th>Polling</th> 
-      <th>Source</th> 
-      <th>Prune</th>
-    </tr> 
-  </thead>
-  <tbody> 
-    <% @trees.each do |t| %>
-      <tr> 
-        <th scope="row"><%= link_to t.id, tree_path(t.id) %></th> 
-        <td class="tree-status"><%= t.status %></td> 
-        <td class="check-status-manual-btn">
-          <% if t.status != "completed" %>
-            <%= link_to "Check status", "#", class: "check-status", id: t.id %>
-          <% end %>
-        </td> 
-        <td>          
-          <% begin %>
-            <% source = t.raw_extraction.contributable %>
-            <% case source %>
-            <% when ConLink %>
-              <%= "URI: #{source.uri}" %>
-            <% when ConFile %>
-              <%= "File: #{source.document.original_filename}" %>
-            <% when ConTaxon %>
-              <% case source.specific %>
-              <% when SelectionTaxon %>
-                <%= "Taxon: #{source.name}" %><br>
-                <%= "Number of species: #{source.nb_species}" %><br>
-                <%= "By: #{source.criterion}" %>
-              <% when SubsetTaxon %>
-                <%= "Taxon: #{source.name}" %><br>
-                <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
-                <%= "In country: #{source.country.name}" %>
-              <% else %>
-                <%= "Taxon: #{source.name}" %>
-              <% end %>
-            <% end %>
-          <% rescue %>
-            <%= "" %>
-          <% end %>
-        </td> 
-        <td class="action-prune">
-          <% if t.status == "resolved" %>
-            <%= link_to "Prune tree", edit_tree_path(t.id) %>
-          <% end %>
-        </td>
-      </tr> 
-    <% end %>
-  </tbody>
-</table>
          
 <script type="text/javascript">
-// $(document).ready(function() {
-//   var processing_trees = <%= @processing %>;
-//
-//   Notification.requestPermission();
-//   function spawnNotification(theBody,theIcon,theTitle) {
-//     var options = {
-//         body: theBody,
-//         icon: theIcon
-//     }
-//     var n = new Notification(theTitle,options);
-//   }
-//   socket = new WebSocket("ws://" + window.location.host + "/track")
-//
-//   socket.onopen = function(event) {
-//     for (i=processing_trees.length-1; i>=0 ; i--) {
-//       socket.send(processing_trees[i]);
-//       $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
-//     }
-//   }
-//
-//   socket.onmessage = function(event) {
-//     data = JSON.parse(event.data);
-//     if(event.data.length) {
-//       // Change status of tree in view
-//       $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(data["status"]);
-//
-//       if (data["status"] == "completed") {
-//         // Remove the tree that "completed" in processing_trees and remove "check status" btn
-//         index = processing_trees.indexOf(parseInt(data["tree_id"]));
-//         if (index > -1) {
-//           processing_trees.splice(index, 1);
-//         }
-//         $("#" + data["tree_id"]).parents(".check-status-manual-btn").html("");
-//
-//         // Remove "Prune" btn
-//         $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("");
-//
-//         // Send notification
-//         spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);
-//       } else if (data["status"] == "resolved") {
-//         console.log(data["tree_id"]);
-//         $("#" + data["tree_id"]).parents("td").siblings('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Prune tree</a>");
-//
-//         // Send notification
-//         spawnNotification("Come back to prune your tree!", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is ready");
-//       }
-//     }
-//   }
-//
-//   $(".check-status").click(function(event) {
-//     event.preventDefault();
-//     params = $(this).attr('id');
-//     socket.send(params);
-//     $("#" + params).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
-//   })
-// });
-
 
 </script>

@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     case criterion
     when "Populatity"
       if nb_species < species.count
-        # TODO: call services to determine which species will be included in tre
+        # TODO: call services to determine which species will be included in tree
         # for now, take all
         species.each {|n| faker[n] = "1"}
       else
@@ -33,8 +33,17 @@ class ApplicationController < ActionController::Base
       else
         species.each {|n| faker[n] = "1"}
       end
+    when "All"
+      species.each {|n| faker[n] = "1"}
     end
     return faker.to_json
   end
   
+  def convert_to_extracted_response(response_species)
+    species = JSON.parse(response_species)["species"]
+    faker = {scientificNames: []}
+    faker[:scientificNames].concat species
+    return faker.to_json
+  end
+
 end

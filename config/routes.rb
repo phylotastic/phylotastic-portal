@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'trees/gallery'
   
   get 'matched_names/show'
 
@@ -19,7 +18,12 @@ Rails.application.routes.draw do
   get 'raw_extractions/new_from_pre_built_examples'
   get 'raw_extractions/new_from_taxon'
 
-  resources :trees
+  resources :trees do
+    collection do
+      get 'gallery'
+      patch ':id/update_image' => 'trees#update_image', as: :update_image
+    end
+  end
   
   devise_for :users
   

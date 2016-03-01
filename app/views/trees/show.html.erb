@@ -1,16 +1,40 @@
 <% provide(:title, "Tree viewer") %>
 
-<div class="">
+<div class="center">
   <%= link_to "View tree report", root_path, class: "btn btn-default" %>
   <%= link_to "Add to my Gallery", root_path, class: "btn btn-default" %>
-  <%= link_to "Save tree view", root_path, class: "btn btn-default" %>
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#show-tree-format">
+    Show Newick format
+  </button>
+  
+  <%= link_to "Save tree view", "#", class: "btn btn-default", id: "save-to-server" %>
   <%= link_to "Save tree to disk", "#", class: "btn btn-default", id: "save-to-disk" %>
 </div>
 
 <div class="">
+  <!-- Modal -->
+  <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard">Copy</button></h4>
+        </div>
+        <div class="modal-body">
+          <div style="word-break: break-all;" id="tree-in-string-format"><%= JSON.parse(@tree.representation)['newick'] %></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tree-in-newick"></div>
   <div id='graph'></div>
-  <div id='svgdataurl' class=""></div>
-  <canvas></canvas>
+  <div id='svgdataurl' class="hidden"></div>
+  <canvas class="hidden"></canvas>
 </div>
 
 <script type="text/javascript">
@@ -18,10 +42,11 @@
 $(document).ready(function(){
 
   var newick = Newick.parse("<%= JSON.parse(@tree.representation)['newick'] %>")
-
+  
+  var canvas_width = 2000, canvas_height = 1500;
   var m = [10, 20, 10, 20],
-      w = 2000 - m[1] - m[3],
-      h = 2000 - m[0] - m[2],
+      w = canvas_width - m[1] - m[3],
+      h = canvas_height - m[0] - m[2],
       i = 0,
       root;
 
@@ -183,7 +208,7 @@ $(document).ready(function(){
     }
   }
 
-  // save image of tree to disk
+  // save tree image to disk
   d3.select("#save-to-disk").on("click", function(){
     var html = d3.select("svg")
           .attr("version", 1.1)
@@ -197,8 +222,8 @@ $(document).ready(function(){
 
 
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = 2000;
-    canvas.height = 2000;
+    canvas.width = canvas_width;
+    canvas.height = canvas_height;
     
     var image = new Image;
     image.src = imgsrc;
@@ -216,6 +241,78 @@ $(document).ready(function(){
     };
 
   });
+  
+  // Save tree image to server
+  $("#save-to-server").click(function() {
+    $(this).html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
+    var html = d3.select("svg")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML;
+
+    // console.log(html);
+    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+    var img = '<img src="'+imgsrc+'">'; 
+    d3.select("#svgdataurl").html(img);  
+    var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
+    canvas.width = canvas_width;
+    canvas.height = canvas_height;
+    
+    var image = new Image;
+    image.src = imgsrc;
+	  context.drawImage(image, 0, 0);
+
+    var canvasdata = canvas.toDataURL("image/png"); 
+    
+    // Get our file
+    var file= dataURLtoBlob(canvasdata);
+    // Create new form data
+    var fd = new FormData();
+    // Append our Canvas image file to the form data
+    fd.append("tree[image]", file);
+    // And send it
+    $.ajax({
+       url: "/trees/<%= @tree.id %>/update_image.js",
+       type: "PATCH",
+       data: fd,
+       processData: false,
+       contentType: false,
+    });
+  });
+  
+  function dataURLtoBlob(dataURL) {
+    // Decode the dataURL    
+    var binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    // Return our Blob object
+    return new Blob([new Uint8Array(array)], {type: 'image/png'});
+  }
+  
+  $("#copy-to-clipboard").mouseup(function(e){
+  	e.preventDefault();
+  });
+
+  // Copy to clipboard button
+  $("#copy-to-clipboard").click(function () {
+    var $temp = $("<input type='text' />");
+    $("body").append($temp);
+    $temp.val($("#tree-in-string-format").text()).select();
+    
+    var result = false;
+    try {
+      result = document.execCommand("copy");
+    } catch (err) {
+      console.log("Copy error: " + err);
+    }
+
+    $temp.remove();
+    console.log(result);
+  });
+  
   
 });
 </script>
