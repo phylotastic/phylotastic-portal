@@ -17,7 +17,10 @@ class SelectionTaxonsController < ApplicationController
     when 200
       @selection_taxon = current_user.selection_taxons.build(selection_taxon_params)
       if @selection_taxon.save
-        resolved = convert_to_resolved_format(response)
+        extracted_response = convert_to_extracted_response(response)
+        resolved = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
+                                    extracted_response,
+                                    :content_type => :json)
         chosen_species = convert_to_chosen_species_format( response, 
                                                            @selection_taxon.nb_species,
                                                            @selection_taxon.criterion )
