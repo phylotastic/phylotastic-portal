@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
         species.each {|n| faker[n] = "1"}
       end
     when "Random"
+      binding.pry
       if nb_species < species.count
         species.sample(nb_species).each {|n| faker[n] = "1"}
       else
