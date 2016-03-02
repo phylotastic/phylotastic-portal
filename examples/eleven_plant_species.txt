@@ -1,1 +1,12 @@
-Canis lupus familiaris,Felis catus,Oryctolagus cuniculus,Cricetus cricetus,Mesocricetus auratus,Phodopus campbelli,Eublepharis macularius,Rhacodactylus ciliatus,Serinus canaria,Carduelis tristis,Taeniopygia guttata,Erythrura gouldiae,Nymphicus hollandicus,Agapornis fischeri,Melopsittacus undulatus,Psittacus erithacus erithacus,Mustela putorius furo,Trachemys scripta elegans,Terrapene carolina carolina,Cavia porcellus,Betta splendens,Carassius auratus,Poecilia reticulata,Chinchilla chinchilla,Lampropeltis getula californiae,Pantherophis guttatus,Python regius,Coenobita clypeatus,Brachypelma smithi,Grammostola rosea
+# 11 plant species from Longwood Gardens visit 
+Adonidia merrillii
+Aechmea fasciata
+Agave americanus
+Alluaudia ascendens
+Aloe arborescens
+Codiaeum var.iegatum var. pictum
+Corynocarpus laevigata
+Leucophyta brownii
+Oncidium sawyeri
+Polyscias balfouriana
+Pteris ensiformims
