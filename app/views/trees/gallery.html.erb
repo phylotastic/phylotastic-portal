@@ -28,13 +28,8 @@
 <div class="slider-nav">
   <% @trees.each do |t| %>
     <div class="slider-nav-tree-info"> 
-      <div><%= link_to t.id, tree_path(t.id) %></div> 
+      <div><%= t.id %></div> 
       <div class="tree-status"><%= t.status %></div> 
-      <div class="check-status-manual-btn">
-        <% if t.status != "completed" %>
-          <%= link_to "Check status", "#", class: "check-status", id: t.id %>
-        <% end %>
-      </div> 
       <div>          
         <% begin %>
           <% source = t.raw_extraction.contributable %>
@@ -61,15 +56,27 @@
           <%= "" %>
         <% end %>
       </div> 
-      <div class="action-prune">
-        <% if t.status == "resolved" %>
-          <%= link_to "Prune tree", edit_tree_path(t.id) %>
-        <% end %>
-      </div>
     </div> 
   <% end %>
 </div>
-         
-<script type="text/javascript">
 
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.slider-for').slick({
+   slidesToShow: 1,
+   slidesToScroll: 1,
+   arrows: false,
+   fade: true,
+   asNavFor: '.slider-nav'
+ });
+ 
+ $('.slider-nav').slick({
+   slidesToShow: 3,
+   slidesToScroll: 1,
+   asNavFor: '.slider-for',
+   dots: true,
+   centerMode: true,
+   focusOnSelect: true
+ });
+});
 </script>

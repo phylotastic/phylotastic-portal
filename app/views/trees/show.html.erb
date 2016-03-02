@@ -9,7 +9,10 @@
     Show Newick format
   </button>
   
-  <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
+  <% if @tree.user == current_user %>
+    <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
+  <% end %>
+  
   <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk" %>
   
   <% if @tree.image.exists? %>
@@ -54,7 +57,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body center">
         <%= image_tag @tree.image.url if @tree.image.exists? %>
       </div>
       <div class="modal-footer">

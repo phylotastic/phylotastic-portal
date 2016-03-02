@@ -2,6 +2,10 @@
   <div class="col-md-4">
     <table class="table">
       <tbody> 
+        <tr>
+          <th>Creator</th>
+          <td><%= t.user.email.partition('@').first %></td>
+        </tr>
         <tr> 
           <th>Status</th>
           <td class="tree-status"><%= t.status %></td> 
@@ -35,8 +39,13 @@
             <% end %>
           </td> 
         </tr>
+        <tr>
+          <th>Created at</th>
+          <td><%= t.created_at %></td>
+        </tr>
       </tbody>
     </table>
+    <%= link_to "Play with this tree", tree_path(t.id), class: "btn btn-default" %>
   </div>
   <div class="col-md-8">
     <% if t.image.exists? %>
