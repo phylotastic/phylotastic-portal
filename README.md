@@ -12,34 +12,9 @@ Some design documents, including a workflow, are in the design folder, and there
 
 ##### 2. Install Ruby
 
-https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
-
-`sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
-cd`
-
-`git clone git://github.com/sstephenson/rbenv.git .rbenv`
-
-`echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile`
-
-`echo 'eval "$(rbenv init -)"' >> ~/.bash_profile`
-
-`git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build`
-
-`echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bash_profile`
-
-`source ~/.bash_profile`
-
-`rbenv install -v 2.2.1`
-
-`rbenv global 2.2.1`
-
-`echo "gem: --no-document" > ~/.gemrc`
-
-`gem install bundler`
-
-`gem install rails`
-
-`rbenv rehash`
+We recommend to install Ruby on Rails using rbenv.  
+* OSX: see https://gorails.com/setup/osx/10.10-yosemite
+* Ubuntu: see https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
 
 ##### 3. Install Javascript runtime
 
@@ -51,11 +26,9 @@ cd`
 
 `sudo apt-get install redis-server`
 
-##### 4. Install Rails
+##### 4. Install redis and sidekiq
 
-##### 5. Install redis and sidekiq
-
-##### 6. Generate SSH (if you don't have one)
+##### 5. Generate SSH (if you don't have one)
 
 `ssh-keygen -t rsa -b 4096 -C "your_email@pikachu.com"`
 
@@ -65,18 +38,33 @@ cd`
 
 `cat $HOME/.ssh/id_rsa.pub`
 
-##### 7. Clone code from repo
+##### 6. Get the phylotastic portal code from github
 
-##### 8. Run `bundle install at the top level of this repository to install any needed ruby gems. 
+`git clone https://github.com/phylotastic/phylotastic-portal.git`
 
-##### 9. Config database
-  * First, use database.yml.example as a template 
+##### 7. Install any needed ruby gems. 
+
+* In top level of repository 
+
+`bundle install`
+   
+##### 8. Config database
+
+* Make a postgres user.  You will be prompted for a password. Write it down. 
+
+`createuser -PSDR portal-app 
+
+* Make the db
+
+   `createdb -O portal-app phylotastic-portal` 
+
+* Set up the config file that the app will use 
   
   `cp config/database.yml.example database.yml`
+    
+  * Then edit the password to indicate the password written down previously. 
   
-  * Then change parameters as you want
-  
-##### 10. To run, execute the following commands in separate terminals: 
+##### 9. To run, execute the following commands in separate terminals: 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
