@@ -58,7 +58,7 @@
         <h4 class="modal-title" id="myModalLabel"></h4>
       </div>
       <div class="modal-body center">
-        <%= image_tag @tree.image.url if @tree.image.exists? %>
+        <%= image_tag @tree.image.url, width: "100%" %>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -72,10 +72,11 @@ $(document).ready(function(){
 
   var newick = Newick.parse("<%= JSON.parse(@tree.representation)['newick'] %>")
   
-  var canvas_width = 800, canvas_height = 600;
+  var canvasWidth = 800, canvasHeight = 600;
+  var newWidth = 0, newHeight = 0;
   var m = [10, 20, 10, 20],
-      w = canvas_width - m[1] - m[3],
-      h = canvas_height - m[0] - m[2],
+      w = canvasWidth - m[1] - m[3],
+      h = canvasHeight - m[0] - m[2],
       i = 0,
       root;
 
@@ -84,13 +85,7 @@ $(document).ready(function(){
 
   var diagonal = d3.svg.diagonal()
       .projection(function(d) { return [d.y, d.x]; });
-
-  var vis = d3.select("#graph").append("svg:svg")
-      .attr("width", w + m[1] + m[3])
-      .attr("height", h + m[0] + m[2])
-    .append("svg:g")
-      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-    
+  
   root = newick;
   root.x0 = h/2;
   root.y0 = 0;
@@ -132,6 +127,33 @@ $(document).ready(function(){
   function update(source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
+    // compute the new height
+    var levelWidth = [1];
+    var childCount = function(level, n) {
+      if(n.children && n.children.length > 0) {
+        if(levelWidth.length <= level + 1) levelWidth.push(0);      
+        levelWidth[level+1] += n.children.length;
+        n.children.forEach(function(d) {
+          childCount(level + 1, d);
+        });
+      }
+    };
+    console.log(levelWidth);
+    
+    childCount(0, root);  
+
+    newHeight = d3.max(levelWidth) * 60; // 60 pixels per line    
+    newWidth  = levelWidth.length * 180; // 180 pixels per child level
+    tree = tree.size([newHeight, newWidth]);
+
+    $("svg").remove();//TO REMOVE THE ALREADY SVG CONTENTS AND RELOAD ON EVERY UPDATE
+    
+    vis = d3.select("#graph").append("svg:svg")
+        .attr("width", newWidth + m[1] + m[3])
+        .attr("height", newHeight + m[0] + m[2])
+        .append("svg:g")
+        .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+    
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse();
 
@@ -251,8 +273,8 @@ $(document).ready(function(){
 
 
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = canvas_width;
-    canvas.height = canvas_height;
+    canvas.width = newWidth;
+    canvas.height = newHeight;
     
     var image = new Image;
     image.src = imgsrc;
@@ -284,8 +306,8 @@ $(document).ready(function(){
     var img = '<img src="'+imgsrc+'">'; 
     d3.select("#svgdataurl").html(img);  
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = canvas_width;
-    canvas.height = canvas_height;
+    canvas.width = newWidth;
+    canvas.height = newHeight;
     
     var image = new Image;
     image.src = imgsrc;
