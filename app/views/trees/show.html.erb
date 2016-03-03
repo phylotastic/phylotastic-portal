@@ -274,7 +274,7 @@ $(document).ready(function(){
 
 
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = newWidth;
+    canvas.width = newWidth + 100;
     canvas.height = newHeight;
     
     var image = new Image;
@@ -307,7 +307,7 @@ $(document).ready(function(){
     var img = '<img src="'+imgsrc+'">'; 
     d3.select("#svgdataurl").html(img);  
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = newWidth;
+    canvas.width = newWidth + 100;
     canvas.height = newHeight;
     
     var image = new Image;
