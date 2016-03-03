@@ -74,7 +74,7 @@ $(document).ready(function(){
   
   var canvasWidth = 800, canvasHeight = 600;
   var newWidth = 0, newHeight = 0;
-  var m = [10, 20, 10, 20],
+  var m = [10, 100, 10, 100],
       w = canvasWidth - m[1] - m[3],
       h = canvasHeight - m[0] - m[2],
       i = 0,
@@ -183,7 +183,8 @@ $(document).ready(function(){
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
         .text(function(d) { return d.name.replace(/_ott\d*/, ''); })
         .style("fill-opacity", 1e-6)
-        .style("font-size", "11px");
+        .style("font-size", "11px")
+        .style("cursor", "pointer");
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
