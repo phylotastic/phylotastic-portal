@@ -43,3 +43,16 @@ path.link {
 .slider-nav-tree-info {
   text-align: center;
 }
+
+#watch-form, #publicise-tree {
+  margin: 5px 0px;
+}
+
+#masonry-view {
+  margin: 0 auto;
+  .grid-item {
+    width: 310px;
+    height: 310px;
+    text-align: center;
+  }
+}

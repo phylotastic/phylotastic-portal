@@ -1,0 +1,154 @@
+<% provide(:title, "Gallery") %>
+
+<% if @trees.empty? %>
+  You are having no tree in gallery
+<% end %>
+
+<div class="slider-for">
+  <% @trees.each do |t| %>
+    <% if t.image.exists? %>
+      <%= render partial: "trees/slider_for_each", locals: { t: t, photo: t.image.url } %>
+    <% else %>
+      <% case t.status %>
+      <% when "extracting" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
+      <% when "extracted" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
+      <% when "resolving" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "extracting.gif" } %>
+      <% when "resolved" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "resolved.png" } %>
+      <% when "constructing" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "resolved.png" } %>
+      <% when "completed" %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "resolved.png" } %>
+      <% else %>
+        <%= render partial: "trees/slider_for_each", locals: { t: t, photo: "error.gif" } %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="slider-nav">
+  <% @trees.each do |t| %>
+    <div class="slider-nav-tree-info"> 
+      <div><%= t.id %></div> 
+      <div class="tree-status"><%= t.status %></div> 
+      <div>          
+        <% begin %>
+          <% source = t.raw_extraction.contributable %>
+          <% case source %>
+          <% when ConLink %>
+            <%= "URI: #{source.uri}" %>
+          <% when ConFile %>
+            <%= "File: #{source.document.original_filename}" %>
+          <% when ConTaxon %>
+            <% case source.specific %>
+            <% when SelectionTaxon %>
+              <%= "Taxon: #{source.name}" %><br>
+              <%= "Number of species: #{source.nb_species}" %><br>
+              <%= "By: #{source.criterion}" %>
+            <% when SubsetTaxon %>
+              <%= "Taxon: #{source.name}" %><br>
+              <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
+              <%= "In country: #{source.country.name}" %>
+            <% else %>
+              <%= "Taxon: #{source.name}" %>
+            <% end %>
+          <% end %>
+        <% rescue %>
+          <%= "" %>
+        <% end %>
+      </div> 
+    </div> 
+  <% end %>
+</div>
+
+<div id="masonry-view">
+  <% @trees.each do |t| %>  
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div><div class="grid-item">
+      <% if t.image.exists? %>
+        <%= image_tag t.image.url, width: 300, height: 225 %>
+      <% else %>
+        <%= image_tag '/assets/' + "error.gif", width: 300, height: 225 %>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <div class="grid-item grid-item--width2">...</div>
+  <div class="grid-item">...</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.slider-for').slick({
+   slidesToShow: 1,
+   slidesToScroll: 1,
+   arrows: false,
+   fade: true,
+   asNavFor: '.slider-nav'
+ });
+ 
+ $('.slider-nav').slick({
+   slidesToShow: 3,
+   slidesToScroll: 1,
+   asNavFor: '.slider-for',
+   dots: true,
+   centerMode: true,
+   focusOnSelect: true
+ });
+ 
+ $('#masonry-view').masonry({
+   itemSelector: '.grid-item',
+   columnWidth: 310
+ });
+ 
+ $(window).resize(function() {
+   var new_width = Math.floor($('body .container').width() / 310) * 310;
+   $('#masonry-view').width(new_width);
+   console.log(new_width);
+ });
+ 
+});
+</script>

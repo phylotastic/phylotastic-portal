@@ -1,5 +1,9 @@
 <% provide(:title, "Gallery") %>
 
+<% if @trees.empty? %>
+  You are having no tree in gallery
+<% end %>
+
 <div class="slider-for">
   <% @trees.each do |t| %>
     <% if t.image.exists? %>

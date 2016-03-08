@@ -1,5 +1,5 @@
 <% species = resolved_names.map { |n| n["matched_name"] } %>
-<% chosen_species = JSON.parse tree.chosen_species.gsub('=>', ':') %>
+<% chosen_species = JSON.parse tree.chosen_species.gsub('=>', ':') unless tree.chosen_species.nil? %>
 
 <div class="row">
   <%= form_for tree, html: { class: "form-horizontal" } do |f| %>
@@ -120,7 +120,6 @@
                   <% end %>
                 </td>
                 <td>
-                  <%= chosen_species[r["matched_name"]] %>
                 </td>
               </tr>
             <% end %>
