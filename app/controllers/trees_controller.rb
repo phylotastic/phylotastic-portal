@@ -34,9 +34,8 @@ class TreesController < ApplicationController
     @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   
-  def gallery
-    @trees = current_user.trees
-    @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
+  def explore
+    @trees = Tree.where(public: true)
   end
   
   def edit
@@ -70,8 +69,20 @@ class TreesController < ApplicationController
     end
   end
   
+  def public
+    @tree = current_user.trees.find_by_id(params[:id])
+    if @tree.update_attributes(tree_params)
+      respond_to do |format|
+        format.html { redirect_to tree_path(params[:id]) }
+        format.js { render 'public.js.erb'}
+      end
+    end
+  end
+  
   private
     def tree_params
-      params.require(:tree).permit(:phylo_source_id, :branch_length, :images_from_EOL, :chosen_species, :image)
+      params.require(:tree).permit(:phylo_source_id, :branch_length, 
+                                   :images_from_EOL, :chosen_species, 
+                                   :image, :public)
     end
 end

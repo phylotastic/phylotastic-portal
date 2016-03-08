@@ -20,12 +20,17 @@ Rails.application.routes.draw do
 
   resources :trees do
     collection do
-      get 'gallery'
       patch ':id/update_image' => 'trees#update_image', as: :update_image
+      patch ':id/public' => 'trees#public', as: :public
+      get 'explore'      
     end
   end
   
   devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
+  
+  get 'user/:id/gallery', to: "watch_relationships#gallery", as: :gallery
+  
+  resources :watch_relationships, only: [:create, :destroy]
   
   root 'static_pages#home'
   get 'static_pages/about'

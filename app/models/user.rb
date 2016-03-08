@@ -11,7 +11,9 @@ class User < ActiveRecord::Base
   has_many :con_taxons, dependent: :destroy
   has_many :selection_taxons, dependent: :destroy
   has_many :subset_taxons, dependent: :destroy
-  
+  has_many :watch_relationships, dependent: :destroy
+  has_many :watched_trees, through: :watch_relationships, source: :tree
+         
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   
   def self.from_omniauth(auth)
@@ -22,4 +24,20 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
     end
   end
+  
+  # Watchs a tree.
+  def watch(tree)
+    watch_relationships.create(tree_id: tree.id)
+  end
+
+  # Unwatchs a tree.
+  def unwatch(tree)
+    watch_relationships.find_by(tree_id: tree.id).destroy
+  end
+
+  # Returns true if the current user is following the other user.
+  def watching?(tree)
+    watched_trees.include?(tree)
+  end
+  
 end

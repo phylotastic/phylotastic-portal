@@ -10,10 +10,12 @@
     <div class="nav-collapse collase">
       <ul class="nav navbar-nav">  
         <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Jobs", trees_path %></li>
+        <li><%= link_to "Gallery", gallery_path(current_user) %></li>
+        <li><%= link_to "Explore", explore_trees_path %></li>
         <li><%= link_to "About", static_pages_about_path %></li>
         <li><%= link_to "FAQ", static_pages_faq_path %></li>
         <li><%= link_to "Videos", static_pages_faq_path %></li>
-        <li><%= link_to "Gallery", gallery_trees_path %></li>
         <li><%= link_to "Feedback", static_pages_faq_path %></li>
       </ul>
       <ul class="nav navbar-right navbar-nav">
