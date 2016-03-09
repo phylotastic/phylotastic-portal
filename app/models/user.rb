@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def name
+    self.email.partition('@').first
+  end
+  
   # Watchs a tree.
   def watch(tree)
     watch_relationships.create(tree_id: tree.id)

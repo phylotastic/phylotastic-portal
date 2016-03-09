@@ -58,3 +58,12 @@ body {
   from { transform: scale(1) rotate(0deg);}
   to { transform: scale(1) rotate(360deg);}
 }
+
+.bg-info {
+  padding: 15px;
+  border-radius: 3px;
+}
+
+.tree-info > .text-primary {
+  margin-right: 20px;
+}

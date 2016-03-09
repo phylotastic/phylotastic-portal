@@ -42,6 +42,7 @@ path.link {
 
 .slider-nav-tree-info {
   text-align: center;
+  margin: 5px;
 }
 
 #watch-form, #publicise-tree {
@@ -55,4 +56,29 @@ path.link {
     height: 310px;
     text-align: center;
   }
+}
+
+.grid-item {
+  transition: all 1s ease 0s;
+  -moz-transition: all 1s ease 0s;
+  -webkit-transition: all 1s ease 0s;
+  -o-transition: all 1s ease 0s; 
+  .tree-description {
+    margin: 15px 5px 5px 5px;
+  }
+  &:hover {
+    transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    img {
+      border: 1px grey solid;
+      border-radius: 5px;      
+    }
+    z-index: 1;
+  }
+}
+
+.tree-info {
+  margin: 0 10px;
 }

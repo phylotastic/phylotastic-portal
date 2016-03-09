@@ -13,10 +13,21 @@
   </div>
 </div>
 
+<div class="row" id="tree-description">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="col-sm-4">
+      2. Give some description about your taxon:
+    </div>
+    <div class="col-sm-8">
+      <%= text_area 'description', nil, id: 'description-field', placeholder: "", class: "form-control" %>
+    </div>
+  </div>
+</div>
+
 <div class="row" id="taxon-approaches">
-  <div class="row">
-    <div class="col-md-4" id="instruction-taxon-2">
-      2. Then choose one of 3 approaches (note the options)
+  <div class="col-md-10 col-md-offset-1">
+    <div class="col-sm-4" id="instruction-taxon-2">
+      3. Then choose one of 3 approaches (note the options)
     </div>
     <div class="col-sm-8">
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -32,7 +43,8 @@
             <div class="panel-body">
               <%= form_for @selection_taxon, html: {class: "form-horizontal"} do |f| %>
                 <div class="">
-                  <%= f.hidden_field :name, value: "", class: "taxon-name" %>          
+                  <%= f.hidden_field :name, value: "", id: "taxon-name" %>          
+                  <%= f.hidden_field :description, value: "", id: "description" %>          
                   <div class="row">
                     <div class="col-sm-2 col-sm-offset-1">
                       Choose 
@@ -128,7 +140,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $('#taxon-name-field').keyup(function() {
-    $('.taxon-name').val($(this).val());
+    $('#taxon-name').val($(this).val());
+  })
+  
+  $('#description-field').keyup(function() {
+    $('#description').val($(this).val());
   })
 })
 </script>
