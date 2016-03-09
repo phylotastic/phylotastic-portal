@@ -20,6 +20,9 @@ class TreesController < ApplicationController
     @tree = Tree.find_by(id: params[:id])
     if @tree.nil? 
       redirect_to root_url
+    elsif @tree.status != "completed"
+      flash[:danger] = "Tree is not ready to view"
+      redirect_to trees_path
     else
       if !@tree.public
         if @tree.user != current_user
@@ -75,6 +78,19 @@ class TreesController < ApplicationController
       respond_to do |format|
         format.html { redirect_to tree_path(params[:id]) }
         format.js { render 'public.js.erb'}
+      end
+    end
+  end
+  
+  def destroy
+    tree = Tree.find(params[:id])
+    if tree.nil?
+      redirect_to root_path
+    else 
+      tree.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
       end
     end
   end

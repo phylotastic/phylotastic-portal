@@ -11,7 +11,7 @@ class SelectionTaxonsController < ApplicationController
     end
     
     case JSON.parse(response)["statuscode"]
-    when 404
+    when 404, 204
       flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:selection_taxon][:name]}\""
       redirect_to raw_extractions_new_from_taxon_path
     when 200
@@ -27,7 +27,8 @@ class SelectionTaxonsController < ApplicationController
         extraction = @selection_taxon.create_raw_extraction(species: resolved)
         tree = current_user.trees.create( bg_job: "-1", 
                                           chosen_species: chosen_species,
-                                          raw_extraction_id: extraction.id )
+                                          raw_extraction_id: extraction.id,
+                                          description: params[:selection_taxon][:description] )
                                           
         flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
         job_id = TreesWorker.perform_async(tree.id)

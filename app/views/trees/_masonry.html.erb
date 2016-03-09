@@ -1,0 +1,37 @@
+<div id="masonry-view">
+  <% trees.each do |t| %>  
+    <div class="grid-item">
+      <% if t.image.exists? %>
+        <%= link_to(image_tag(t.image.url, width: 280, height: 210), tree_path(t.id)) %>
+      <% else %>
+        <%= link_to(image_tag('/assets/' + "error.gif", width: 300, height: 225), tree_path(t.id)) %>
+      <% end %>
+        <div class="tree-info">
+          <%= render partial: "trees/description", locals: {t: t} %>
+        </div>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#masonry-view').masonry({
+    itemSelector: '.grid-item',
+    columnWidth: 310
+  });
+
+  function set_width() {   
+    var new_width = Math.floor($('body .container').width() / 310) * 310;
+    $('#masonry-view').width(new_width);
+  }
+
+  $(document).ready(function() {
+    set_width();
+ 
+    $(window).resize(function() {
+      set_width();
+    });
+  })
+});
+
+</script>
