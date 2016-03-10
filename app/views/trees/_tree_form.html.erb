@@ -32,6 +32,12 @@
           <% end %>
         </div>
       </div>
+      <p>4. Give some description about your tree</p>
+      <div class="form-group left-indent">
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
+      <%= f.hidden_field :raw_extraction_id %>          
+      
       <%= f.submit "Get tree from source", class: "btn btn-default btn-lg btn-block" %>
   </div>
   

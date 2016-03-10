@@ -2,18 +2,27 @@ class TreesController < ApplicationController
   before_action :authenticate_user!
   
   def new
-    @tree = current_user.trees.build
-    @species = ["Admiral", "Ackbar", "Padm", "Amidala", "Wedge", "Antilles", "Cad", "Bane", "BB-8", "Darth", "Bane", "Jar", "Jar", "Binks", "C-3PO", "Lando", "Calrissian", "Chewbacca", "Poe", "Dameron", "Count", "Dooku", "(Darth", "Tyranus)", "Boba", "Fett", "Jango", "Fett", "Finn", "Greedo", "General", "Grievous", "Jabba", "the", "Hutt", "Qui-Gon", "Jinn", "Maz", "Kanata", "Obi-Wan", "Kenobi", "Princess", "Leia", "Darth", "Maul", "Palpatine", "(Darth", "Sidious)", "Captain", "Phasma", "R2-D2", "Rey", "Anakin", "Skywalker", "(Darth", "Vader)", "Luke", "Skywalker", "Kylo", "Ren", "Han", "Solo", "Ahsoka", "Tano", "Grand", "Moff", "Wilhuff", "Tarkin", "Asajj", "Ventress", "Watto", "Mace", "Windu", "Yoda"]
+    ra = RawExtraction.find(params[:ra])
+    if ra.contributable.user == current_user
+      @tree = current_user.trees.build(raw_extraction_id: params[:ra])
+      @resolved_names = JSON.parse ra.species
+    end
   end
   
   def create
-    # @tree = current_user.trees.build(tree_params)
-#     if @tree.save
-#       flash[:success] = "Tree created!"
-#       redirect_to root_url
-#     else
-#       render 'static_pages/home'
-#     end
+    params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json  
+    @tree = current_user.trees.build(tree_params)
+    if @tree.raw_extraction.user != current_user
+      redirect_to root_path
+    end
+    if @tree.save
+      flash[:success] = "Tree is being constructed! We will inform you when your tree is ready"
+      job_id = TreesWorker.perform_async(@tree.id)
+      @tree.update_attributes( bg_job: job_id, status: "constructing")
+      redirect_to trees_path
+    else
+      render 'static_pages/home'
+    end
   end
   
   def show
@@ -33,8 +42,12 @@ class TreesController < ApplicationController
   end
   
   def index
-    @trees = current_user.trees
-    @processing = @trees.select { |t| t.status != "completed" }.map { |t| t.id }
+    @con_link_jobs        = current_user.con_links
+    @con_file_jobs        = current_user.con_files
+    @con_taxon_jobs       = current_user.con_taxons
+    @selection_taxon_jobs = current_user.selection_taxons
+    @subset_taxon_jobs    = current_user.subset_taxons
+    @processing = current_user.trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   
   def explore
@@ -98,7 +111,8 @@ class TreesController < ApplicationController
   private
     def tree_params
       params.require(:tree).permit(:phylo_source_id, :branch_length, 
-                                   :images_from_EOL, :chosen_species, 
-                                   :image, :public)
+                                   :images_from_EOL, :image, :public, 
+                                   :raw_extraction_id, :chosen_species,
+                                   :description)
     end
 end
