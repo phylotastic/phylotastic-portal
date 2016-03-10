@@ -1,3 +1,7 @@
 <% provide(:title, "Explore") %>
 
 <%= render partial: "trees/masonry", locals: {trees: @trees} %>
+
+<div class="custom-pagination">
+  <%= will_paginate @trees %>
+</div>
