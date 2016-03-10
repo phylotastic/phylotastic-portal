@@ -35,3 +35,11 @@ public/system/
 
 # Ignore config
 config/config.yml
+
+# Ignore solr files
+solr/data
+solr/test
+solr/development
+solr/default/data
+/log/*.log.lck
+solr/pids
