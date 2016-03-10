@@ -51,7 +51,7 @@ class TreesController < ApplicationController
   end
   
   def explore
-    @trees = Tree.where(public: true).paginate(:page => params[:page], :per_page => 9)
+    @trees = Tree.where(public: true).paginate(:page => params[:page])
   end
   
   def edit
@@ -106,6 +106,17 @@ class TreesController < ApplicationController
         format.js
       end
     end
+  end
+  
+  def search
+    @trees = Tree.search do
+      all do 
+        fulltext params[:search]
+        with(:public, true)
+        paginate :page => params[:page], :per_page => 9
+      end
+    end.results
+    render 'explore'
   end
   
   private

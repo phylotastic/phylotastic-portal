@@ -10,4 +10,11 @@ class Tree < ActiveRecord::Base
   validates :user_id, presence: true
   has_attached_file :image, styles: { medium: "400x300>", thumb: "120x90>" }, default_url: "/images/:style/missing.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+
+  self.per_page = 9
+  
+  searchable do
+    text :chosen_species, :description
+    boolean :public
+  end
 end
