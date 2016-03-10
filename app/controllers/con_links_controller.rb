@@ -14,6 +14,19 @@ class ConLinksController < ApplicationController
     end
   end
   
+  def destroy
+    cl = current_user.con_links.find(params[:id])
+    if cl.nil?
+      redirect_to root_path
+    else 
+      cl.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
+      end
+    end
+  end
+  
   private
     def con_link_params
       params.require(:con_link).permit(:uri)

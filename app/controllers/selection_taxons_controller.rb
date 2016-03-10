@@ -35,10 +35,25 @@ class SelectionTaxonsController < ApplicationController
         tree.update_attributes( bg_job: job_id, status: "constructing")
         redirect_to trees_path
       else
+        @subset_taxon = SubsetTaxon.new
+        @con_taxon = ConTaxon.new
         render 'raw_extractions/new_from_taxon'
       end
     else
       logger.info response
+    end
+  end
+  
+  def destroy
+    stx = current_user.selection_taxons.find(params[:id])
+    if stx.nil?
+      redirect_to root_path
+    else 
+      stx.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
+      end
     end
   end
   

@@ -16,7 +16,7 @@ class ConTaxonsController < ApplicationController
     end
     
     case JSON.parse(response)["statuscode"]
-    when 404
+    when 404, 204
       flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:con_taxon][:name]}\""
       redirect_to raw_extractions_new_from_taxon_path
     when 200
@@ -33,7 +33,8 @@ class ConTaxonsController < ApplicationController
         tree = current_user.trees.create( bg_job: "-1", 
                                           status: "resolved", 
                                           raw_extraction_id: extraction.id,
-                                          chosen_species: chosen_species )
+                                          chosen_species: chosen_species,
+                                          description: params[:con_taxon][:description] )
                                             
         job_id = TreesWorker.perform_async(tree.id)
         tree.update_attributes( bg_job: job_id, status: "constructing")
@@ -44,6 +45,19 @@ class ConTaxonsController < ApplicationController
       end
     else
       logger.info response
+    end
+  end
+  
+  def destroy
+    ctx = current_user.con_taxons.find(params[:id])
+    if ctx.nil?
+      redirect_to root_path
+    else 
+      ctx.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
+      end
     end
   end
   

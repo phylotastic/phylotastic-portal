@@ -1,0 +1,56 @@
+<% if j.raw_extraction.nil? %>
+  This job is in queue
+<% elsif j.raw_extraction.trees.empty? %>
+  This job has no tree
+<% else %>
+  <table class="table">
+    <thead>
+      <th>ID</th>
+      <th>Status</th> 
+      <th>Available actions</th>
+    </thead>
+    <tbody>      
+      <% j.raw_extraction.trees.each do |t| %>
+        <tr scope="row">
+          <td><%= t.id %></td>
+          <td class="tree-status">
+            <% case t.status %>
+            <% when "resolved" %>
+              Names acquired: click "Check name list" to approve list and get a tree
+            <% when "unsucessfully-resolved" %>
+              Sorry! We could not acquire a list of names!
+            <% when "unsuccessfully-constructed" %>
+              Sorry! We could not acquire a tree!
+            <% when "completed" %>
+              Tree acquired: click "View tree" to see it
+            <% end %>
+          </td>
+          <td>
+            <div class="check-status-manual-btn">
+              <% if t.status == "completed" %>
+                <%= link_to "Check status", "#", class: "check-status hide", id: t.id %>
+              <% else %>
+                <%= link_to "Check status", "#", class: "check-status", id:   t.id %>
+              <% end %>
+            </div>
+            <div class="action-prune">
+              <% if t.status == "resolved" %>
+                <%= link_to "Check name list", edit_tree_path(t.id) %>
+              <% end %>
+            </div>
+            <div class="action-view">
+              <% if t.status == "completed" %>
+                <%= link_to "View tree", tree_path(t.id) %>
+              <% else %>
+                <%= link_to "View tree", tree_path(t.id), class: "hide" %>
+              <% end %>
+            </div>
+            <div class="action-delete">
+              <%= link_to "Delete tree", tree_path(t.id), method: :delete, data: {confirm: "Are you sure?"} %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

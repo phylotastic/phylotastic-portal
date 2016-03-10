@@ -4,6 +4,9 @@ class ConFile < ActiveRecord::Base
   has_one :raw_extraction, as: :contributable, dependent: :destroy
   
   has_attached_file :document, default_url: "/images/:style/missing.png"
+  
+  default_scope -> { order(created_at: :desc) }
+  
   validates_attachment :document, content_type: { content_type: [ "application/pdf", 
                                                                   "text/plain", 
                                                                   "application/vnd.ms-excel", 

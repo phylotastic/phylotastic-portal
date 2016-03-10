@@ -1,0 +1,65 @@
+<table class="table table-striped table-bordered job-table">
+  <thead> 
+    <tr> 
+      <th>Content of job</th> 
+      <th>Trees created from content of job</th>
+      <th></th>
+    </tr> 
+  </thead>
+  <tbody>
+    <% jobs.each do |j| %>
+      <tr> 
+        <td>          
+          <% begin %>
+            <% source = j %>
+            <% case source %>
+            <% when ConLink %>
+              <%= source.uri %>
+            <% when ConFile %>
+              <%= "Names extracted from File: #{source.document.original_filename}" %>
+            <% when ConTaxon %>
+              <% case source.specific %>
+              <% when SelectionTaxon %>
+                <%= "Taxon: #{source.name}" %><br>
+                <%= "Number of species: #{source.nb_species}" %><br>
+                <%= "By: #{source.criterion}" %>
+              <% when SubsetTaxon %>
+                <%= "Taxon: #{source.name}" %><br>
+                <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
+                <%= "In country: #{source.country.name}" %>
+              <% else %>
+                <%= "Taxon: #{source.name}" %>
+              <% end %>
+            <% end %>
+          <% rescue %>
+            <%= "" %>
+          <% end %>
+        </td>
+        <td>
+          <%= render partial: "trees_of_job", locals: {j: j} %>
+        </td>
+        <td>
+          <% unless j.raw_extraction.nil? %>
+            <%= link_to "Create new tree", new_tree_path(ra: j.raw_extraction.id) %><br>
+          
+            <% case source %>
+            <% when ConLink %>
+              <%= link_to "Remove", con_link_path(source.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+            <% when ConFile %>
+              <%= link_to "Remove", con_file_path(source.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+            <% when ConTaxon %>
+              <% case source.specific %>
+              <% when SelectionTaxon %>
+                <%= link_to "Remove", selection_taxon_path(source.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% when SubsetTaxon %>
+                <%= link_to "Remove", subset_taxon_path(source.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% else %>
+                <%= link_to "Remove", con_taxon_path(source.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>         
+      </tr> 
+    <% end %>
+  </tbody>
+</table>

@@ -15,8 +15,6 @@ class TreesWorker
       logger.info "Found tree ##{tree_id}!"
       puts tree.id
     end
-
-    tree.update_attributes(status: "constructing")
     
     resolved = JSON.parse(tree.raw_extraction.species)
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }

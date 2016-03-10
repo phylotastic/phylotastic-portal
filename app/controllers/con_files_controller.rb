@@ -14,6 +14,19 @@ class ConFilesController < ApplicationController
     end
   end
   
+  def destroy
+    cf = current_user.con_files.find(params[:id])
+    if cf.nil?
+      redirect_to root_path
+    else 
+      cf.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
+      end
+    end
+  end
+  
   private
     def con_file_params
       params.fetch(:con_file, {}).permit(:document)

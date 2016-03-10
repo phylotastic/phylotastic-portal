@@ -1,85 +1,30 @@
 <% provide(:title, "Phylotastic Jobs") %>
 
-<table class="table table-striped table-hover">
-  <thead> 
-    <tr> 
-      <th>Id</th> 
-      <th>Content of tree</th> 
-      <th>Status</th> 
-      <th>Available actions</th>
-    </tr> 
-  </thead>
-  <tbody> 
-    <% @trees.each do |t| %>
-      <tr> 
-        <th scope="row"><%= t.id %></th> 
-        <td>          
-          <% begin %>
-            <% source = t.raw_extraction.contributable %>
-            <% case source %>
-            <% when ConLink %>
-              <%= "Names extracted from URI: #{source.uri}" %>
-            <% when ConFile %>
-              <%= "Names extracted from File: #{source.document.original_filename}" %>
-            <% when ConTaxon %>
-              <% case source.specific %>
-              <% when SelectionTaxon %>
-                <%= "Taxon: #{source.name}" %><br>
-                <%= "Number of species: #{source.nb_species}" %><br>
-                <%= "By: #{source.criterion}" %>
-              <% when SubsetTaxon %>
-                <%= "Taxon: #{source.name}" %><br>
-                <%= "Has genome in NCBI: #{source.has_genome_in_ncbi}" %><br>
-                <%= "In country: #{source.country.name}" %>
-              <% else %>
-                <%= "Taxon: #{source.name}" %>
-              <% end %>
-            <% end %>
-          <% rescue %>
-            <%= "" %>
-          <% end %>
-        </td>
-        <td class="tree-status">
-          <% case t.status %>
-          <% when "resolved" %>
-            Names acquired: click "Check name list" to approve list and get a tree
-          <% when "unsucessfully-resolved" %>
-            Sorry! We could not acquire a list of names!
-          <% when "unsuccessfully-constructed" %>
-            Sorry! We could not acquire a tree!
-          <% when "completed" %>
-            Tree acquired: click "View tree" to see it
-          <% end %>
-        </td>
-        <td>
-          <div class="check-status-manual-btn">
-            <% if t.status == "completed" %>
-              <%= link_to "Check status", "#", class: "check-status hide", id: t.id %>
-            <% else %>
-              <%= link_to "Check status", "#", class: "check-status", id:   t.id %>
-            <% end %>
-          </div>
-          <div class="action-prune">
-            <% if t.status == "resolved" %>
-              <%= link_to "Check name list", edit_tree_path(t.id) %>
-            <% end %>
-          </div>
-          <div class="action-view">
-            <% if t.status == "completed" %>
-              <%= link_to "View tree", tree_path(t.id) %>
-            <% else %>
-              <%= link_to "View tree", tree_path(t.id), class: "hide" %>
-            <% end %>
-          </div>
-          <div class="action-delete">
-            <%= link_to "Delete job", tree_path(t.id), method: :delete, data: {confirm: "Are you sure?"} %>
-          </div>
-        </td> 
-      </tr> 
-    <% end %>
-  </tbody>
-</table>
-         
+<% unless @con_link_jobs.empty? %>
+  <h2 class="job-heading">Trees acquired from URI</h2>
+  <%= render partial: "jobs", locals: {jobs: @con_link_jobs} %>
+<% end %>
+
+<% unless @con_file_jobs.empty? %>
+  <h2 class="job-heading">Trees acquired from file</h2>
+  <%= render partial: "jobs", locals: {jobs: @con_file_jobs} %>
+<% end %>
+
+<% unless @con_taxon_jobs.empty? %>
+  <h2 class="job-heading">Trees constructed from all sepecies of a taxon</h2>
+  <%= render partial: "jobs", locals: {jobs: @con_taxon_jobs} %>
+<% end %>
+
+<% unless @selection_taxon_jobs.empty? %>
+  <h2 class="job-heading">Trees constructed from some species of a taxon</h2>
+  <%= render partial: "jobs", locals: {jobs: @selection_taxon_jobs} %>
+<% end %>
+
+<% unless @subset_taxon_jobs.empty? %>
+  <h2 class="job-heading">Trees constructed from genome or location</h2>
+  <%= render partial: "jobs", locals: {jobs: @subset_taxon_jobs} %>
+<% end %>
+       
 <script type="text/javascript">
 $(document).ready(function() {
   var processing_trees = <%= @processing %>;

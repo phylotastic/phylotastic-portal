@@ -76,9 +76,21 @@ path.link {
       border-radius: 5px;      
     }
     z-index: 1;
+    background: white;
   }
 }
 
 .tree-info {
   margin: 0 10px;
+}
+
+.job-heading {
+  &:first-child {
+    margin-top: 20px; 
+  }
+  margin-top: 50px;
+}
+
+.job-table {
+  margin-left: 50px;
 }

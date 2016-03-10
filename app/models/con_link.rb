@@ -3,7 +3,9 @@ class ConLink < ActiveRecord::Base
 
   has_one :raw_extraction, as: :contributable, dependent: :destroy
   
+  default_scope -> { order(created_at: :desc) }
+  
   validates :user_id, presence: true
-  # TODO: format url
+
   validates :uri, :presence => true, :url => true
 end
