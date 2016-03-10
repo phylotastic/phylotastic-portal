@@ -63,8 +63,14 @@ We recommend to install Ruby on Rails using rbenv.
   `cp config/database.yml.example database.yml`
     
   * Then edit the password to indicate the password written down previously. 
+
+##### 9. Start Solr
+  * `rails generate sunspot_rails:install`
+  * `bundle exec rake sunspot:solr:start # or sunspot:solr:run to start in foreground`
   
-##### 9. To run, execute the following commands in separate terminals: 
+  * `bundle exec rake sunspot:reindex` if needed
+  
+##### 10. To run, execute the following commands in separate terminals: 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
