@@ -52,7 +52,7 @@ We recommend to install Ruby on Rails using rbenv.
 
 * Make a postgres user.  You will be prompted for a password. Write it down. 
 
-`createuser -PSDR portal-app 
+`createuser -PSDR portal-app` 
 
 * Make the db
 
@@ -60,7 +60,7 @@ We recommend to install Ruby on Rails using rbenv.
 
 * Set up the config file that the app will use 
   
-  `cp config/database.yml.example database.yml`
+  `cp config/database.yml.example config/database.yml`
     
   * Then edit the password to indicate the password written down previously. 
 
