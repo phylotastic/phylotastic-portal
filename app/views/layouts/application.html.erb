@@ -27,17 +27,13 @@
   </script>
   
   <%= render 'layouts/header' %>
-  
-  <% if notice %>
-    <p class="alert alert-success"><%= notice %></p>
-  <% end %>
-  <% if alert %>
-    <p class="alert alert-danger"><%= alert %></p>
-  <% end %>
-
   <div class="container">
     <% flash.each do |message_type, message| %>
-      <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% if message_type == "notice" %>
+        <div class="alert alert-info"><%= message %></div>
+      <% else %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
     <% end %>
     <%= yield %>
   </div>
