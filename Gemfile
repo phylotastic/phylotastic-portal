@@ -78,6 +78,9 @@ gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in developm
 # unzip files
 gem 'rubyzip', '>= 1.0.0'
 
+# read sheet
+gem 'roo', '~> 2.3.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
