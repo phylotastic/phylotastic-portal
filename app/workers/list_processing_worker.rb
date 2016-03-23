@@ -5,7 +5,7 @@ class ListProcessingWorker
   # sidekiq_options retry: false
   include Sidekiq::Status::Worker
   
-  def perform(f_path)
+  def perform(user_name, user_id, f_path)
     Zip::File.open(f_path) do |zip_file|
       # Handle entries one by one
       zip_file.each do |entry|
@@ -15,10 +15,10 @@ class ListProcessingWorker
         entry.extract(el)
 
         begin
-          UploadedList.process(File.open(el))
+          UploadedList.process(user_name, user_id, File.open(el))
         rescue Exception => e
           puts e
-          puts e.backtrace
+          # puts e.backtrace
         end
       end
 

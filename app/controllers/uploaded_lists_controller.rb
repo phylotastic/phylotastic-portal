@@ -3,7 +3,7 @@ class UploadedListsController < ApplicationController
     @uploaded_list = current_user.uploaded_list.build(uploaded_list_params)
     if @uploaded_list.save
       flash[:success] = "Processing file!"
-      job_id = ListProcessingWorker.perform_async(@uploaded_list.file.path)
+      job_id = ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.file.path)
       # current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to trees_path
     else
