@@ -39,9 +39,6 @@
               <% end %>
             </div>
             <div class="action-view">
-              <% if t.id == 3 %>
-              <% binding.pry %>
-              <% end %>
               <% if t.status == "completed" %>
                 <%= link_to "View tree", tree_path(t.id) %>
               <% else %>
