@@ -7,6 +7,7 @@ class RawExtractionsController < ApplicationController
   end
   
   def new_from_pre_built_examples
+    @uploaded_list = UploadedList.new
   end
   
   def new_from_taxon

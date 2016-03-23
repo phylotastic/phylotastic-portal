@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :uploaded_lists, only: [:create]
+
   get 'matched_names/show'
 
   get '/track' => 'trackers#track'
