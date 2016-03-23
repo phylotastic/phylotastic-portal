@@ -28,7 +28,7 @@ class TreesWorker
       constructed_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
                                               resolved.to_json,
                                               :content_type => :json, 
-                                              :accept => :json)
+                                              :accept => :json )
     rescue => e
       puts e
       logger.info "Call service error"

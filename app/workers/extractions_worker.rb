@@ -13,22 +13,12 @@ class ExtractionsWorker
     # call extracting service based on types of source
     case source_type
     when "ConLink"
-      begin
-        extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri
-      rescue => e
-        puts e.message
-        logger.info "Call service error"
-      end
+      extracted_response = Req.get(APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri)
     when "ConFile"
-      begin
-        file_url = ConFile.find_by_id(source_id).document.url
-        file_url.slice!(/[?]\d*\z/)
-        file_url = APP_CONFIG['domain'] + file_url
-        extracted_response = RestClient.get APP_CONFIG['sv_findnames']['url'] + file_url
-      rescue => e
-        puts e.message
-        logger.info "Call service error"
-      end
+      file_url = ConFile.find_by_id(source_id).document.url
+      file_url.slice!(/[?]\d*\z/)
+      file_url = APP_CONFIG['domain'] + file_url
+      extracted_response = Req.get(APP_CONFIG['sv_findnames']['url'] + file_url) 
     end
     
     # raw extraction
