@@ -23,9 +23,14 @@
     <%= form_for @uploaded_list, url: uploaded_lists_path, html: { multipart: true } do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.label :file, "Compress your list files in one ZIP file" %>
-    
         <%= f.file_field :file, class: "input-file" %>
+        <div>Note: please compress your files in one ZIP file. You can find a default template <%= link_to "here", "https://drive.google.com/file/d/0B7SKJwE3SsCsNUhYQWdEVzk2RFE/view?usp=sharing"%></div>
+        
+        <%= f.label :public do %>
+          <%= f.check_box :public, class: "input-file" %>
+          Allow others to watch this list
+        <% end %>
+        
         <%= f.submit "Submit my list", class: "btn btn-default btn-lg btn-block" %>
       </div>
     <% end %>
