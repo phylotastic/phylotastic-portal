@@ -31,7 +31,13 @@ class UploadedList < ActiveRecord::Base
         (2..spreadsheet.last_row).each do |i|
           row = Hash[[header, spreadsheet.row(i)].transpose]    
           row.each_key do |k|
-            row[k].strip!.lowercase!
+            if row[k].nil?
+              val = ""
+            else 
+              row[k].strip! 
+              val = row[k].strip
+            end
+            
             case k
             when "List Author"
               row[k].split(',').each { |w| data["list_author"] << w }
@@ -44,7 +50,7 @@ class UploadedList < ActiveRecord::Base
                 data["list_curation_date"] = row[k].to_date.strftime("%m-%d-%Y")
               end
             when "Curator"
-              data["list_curator"] = row[k].nil? ? "" : row[k]
+              data["list_curator"] = val
             when "Date published"
               if row[k].nil?
                 data["list_curation_date"] = ""
@@ -54,21 +60,21 @@ class UploadedList < ActiveRecord::Base
                 data["list_date_published"] = row[k].to_date.strftime("%m-%d-%Y")
               end
             when "Description"
-              data["list_description"] = row[k].nil? ? "" : row[k]
+              data["list_description"] = val
             when "extra info"
-              data["list_extra_info"] = row[k].nil? ? "" : row[k]
+              data["list_extra_info"] = val
             when "Focal clade"
-              data["list_focal_clade"] = row[k].nil? ? "" : row[k]
+              data["list_focal_clade"] = val
             when "Keywords"
               unless row[k].nil?
                 row[k].split(',').each { |w| data["list_keywords"] << w }
               end
             when "Source"
-              data["list_source"] = row[k].nil? ? "" : row[k]
+              data["list_source"] = val
             when "List Title"
-              data["list_title"] = row[k].nil? ? "" : row[k]
+              data["list_title"] = val
             when "Source"
-              data["list_source"] = row[k].nil? ? "" : row[k]
+              data["list_source"] = val
             end
           end
         end
@@ -79,22 +85,22 @@ class UploadedList < ActiveRecord::Base
           s_data = {}
           row = Hash[[header, spreadsheet.row(i)].transpose]
           row.each_key do |k|
-            row[k].strip!.lowercase!
+            val = row[k].nil? ? "" : row[k].strip.downcase
             case k
             when "vernacularName"
-              s_data["vernacular_name"] = row[k].nil? ? "" : row[k]
+              s_data["vernacular_name"] = val
             when "scientificName"
-              s_data["scientific_name"] = row[k].nil? ? "" : row[k]
+              s_data["scientific_name"] = val
             when "scientificNameAuthorship"
-              s_data["scientific_name_authorship"] = row[k].nil? ? "" : row[k]
+              s_data["scientific_name_authorship"] = val
             when "Phylum"
-              s_data["phylum"] = row[k].nil? ? "" : row[k]
+              s_data["phylum"] = val
             when "Family"
-              s_data["family"] = row[k].nil? ? "" : row[k]
+              s_data["family"] = val
             when "Order"
-              s_data["order"] = row[k].nil? ? "" : row[k]
+              s_data["order"] = val
             when "nomenclaturalCode"
-              s_data["nomenclature_code"] = row[k].nil? ? "" : row[k]
+              s_data["nomenclature_code"] = val
             end
           end
           data["list_species"] << s_data
