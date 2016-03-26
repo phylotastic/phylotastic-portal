@@ -47,6 +47,8 @@ class TreesController < ApplicationController
     @con_taxon_jobs       = current_user.con_taxons
     @selection_taxon_jobs = current_user.selection_taxons
     @subset_taxon_jobs    = current_user.subset_taxons
+    res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + "?user_id=" + current_user.id.to_s)
+    @prebuilt_jobs = res ? JSON.parse(res)["lists"] : []
     @processing = current_user.trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   

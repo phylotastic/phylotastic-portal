@@ -24,6 +24,11 @@
   <h2 class="job-heading">Trees constructed from genome or location</h2>
   <%= render partial: "jobs", locals: {jobs: @subset_taxon_jobs} %>
 <% end %>
+
+<% unless @prebuilt_jobs.empty? %>
+  <h2 class="job-heading">Trees from pre-built list</h2>
+  <%= render partial: "prebuilt_lists" %>
+<% end %>
        
 <script type="text/javascript">
 $(document).ready(function() {

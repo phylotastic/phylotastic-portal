@@ -4,10 +4,6 @@ class TreesWorker
   include Sidekiq::Status::Worker
   
   def perform(tree_id)
-    # snippet = Snippet.find(snippet_id)
-    # uri = URI.parse("http://pygments.appspot.com/")
-    # request = Net::HTTP.post_form(uri, lang: snippet.language, code: snippet.plain_code)
-    # snippet.update_attribute(:highlighted_code, request.body)
     tree = Tree.find_by_id(tree_id)
     if tree.nil?
       logger.info "Oops! Tree not found"
