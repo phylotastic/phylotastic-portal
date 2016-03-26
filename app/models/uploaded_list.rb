@@ -42,23 +42,11 @@ class UploadedList < ActiveRecord::Base
             when "List Author"
               row[k].split(',').each { |w| data["list_author"] << w }
             when "Curation Date"
-              if row[k].nil?
-                data["list_curation_date"] = ""
-              elsif row[k].length == 4
-                data["list_curation_date"] = row[k]
-              else
-                data["list_curation_date"] = row[k].to_date.strftime("%m-%d-%Y")
-              end
+              data["list_curation_date"] = parse_date(row[k])
             when "Curator"
               data["list_curator"] = val
             when "Date published"
-              if row[k].nil?
-                data["list_curation_date"] = ""
-              elsif row[k].length == 4
-                data["list_curation_date"] = row[k]
-              else
-                data["list_date_published"] = row[k].to_date.strftime("%m-%d-%Y")
-              end
+              data["list_date_published"] = parse_date(row[k])
             when "Description"
               data["list_description"] = val
             when "extra info"
@@ -78,7 +66,6 @@ class UploadedList < ActiveRecord::Base
             end
           end
         end
-      
       # species details
       elsif header.include?("vernacularName")
         (2..spreadsheet.last_row).each do |i|
@@ -107,7 +94,7 @@ class UploadedList < ActiveRecord::Base
         end
       end
     end
-    
+
     response = Req.post( APP_CONFIG["sv_createlist"]["url"],
                          { "user_name" => user_name, 
                            "user_id" => user_id,
@@ -118,7 +105,7 @@ class UploadedList < ActiveRecord::Base
     if !response || JSON.parse(response)["status_code"] != 200
       ul.update_attributes(status: false)
     else
-      ul.update_attributes(status: true)
+      ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
     end
   end
 
@@ -134,5 +121,17 @@ class UploadedList < ActiveRecord::Base
   
   def self.extraction_location(f_path, entry_name)
     File.dirname(f_path) + "/#{entry_name}"
+  end
+  
+  def self.parse_date(d)
+    if d.nil?
+      ""
+    elsif d.length == 4
+      "01-01-#{d}"
+    elsif d.length < 10
+      (d.to_date + 2000.years).strftime("%m-%d-%Y")
+    else
+      d.to_date.strftime("%m-%d-%Y")
+    end
   end
 end
