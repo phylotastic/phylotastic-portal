@@ -3,6 +3,7 @@ require 'roo'
 
 class UploadedList < ActiveRecord::Base
   belongs_to :user
+  has_one :raw_extraction, as: :contributable, dependent: :destroy
   
   has_attached_file :file
   validates_attachment :file, presence: true,
@@ -28,42 +29,41 @@ class UploadedList < ActiveRecord::Base
 
       # list details
       if header.include?("List Title")
-        (2..spreadsheet.last_row).each do |i|
-          row = Hash[[header, spreadsheet.row(i)].transpose]    
-          row.each_key do |k|
-            if row[k].nil?
-              val = ""
-            else 
-              row[k].strip! 
-              val = row[k].strip
+        # only read the second line
+        row = Hash[[header, spreadsheet.row(2)].transpose]    
+        row.each_key do |k|
+          if row[k].nil?
+            val = ""
+          else 
+            row[k].strip! 
+            val = row[k].strip
+          end
+          
+          case k
+          when "List Author"
+            row[k].split(',').each { |w| data["list_author"] << w }
+          when "Curation Date"
+            data["list_curation_date"] = parse_date(row[k])
+          when "Curator"
+            data["list_curator"] = val
+          when "Date published"
+            data["list_date_published"] = parse_date(row[k])
+          when "Description"
+            data["list_description"] = val
+          when "extra info"
+            data["list_extra_info"] = val
+          when "Focal clade"
+            data["list_focal_clade"] = val
+          when "Keywords"
+            unless row[k].nil?
+              row[k].split(',').each { |w| data["list_keywords"] << w }
             end
-            
-            case k
-            when "List Author"
-              row[k].split(',').each { |w| data["list_author"] << w }
-            when "Curation Date"
-              data["list_curation_date"] = parse_date(row[k])
-            when "Curator"
-              data["list_curator"] = val
-            when "Date published"
-              data["list_date_published"] = parse_date(row[k])
-            when "Description"
-              data["list_description"] = val
-            when "extra info"
-              data["list_extra_info"] = val
-            when "Focal clade"
-              data["list_focal_clade"] = val
-            when "Keywords"
-              unless row[k].nil?
-                row[k].split(',').each { |w| data["list_keywords"] << w }
-              end
-            when "Source"
-              data["list_source"] = val
-            when "List Title"
-              data["list_title"] = val
-            when "Source"
-              data["list_source"] = val
-            end
+          when "Source"
+            data["list_source"] = val
+          when "List Title"
+            data["list_title"] = val
+          when "Source"
+            data["list_source"] = val
           end
         end
       # species details
@@ -72,7 +72,7 @@ class UploadedList < ActiveRecord::Base
           s_data = {}
           row = Hash[[header, spreadsheet.row(i)].transpose]
           row.each_key do |k|
-            val = row[k].nil? ? "" : row[k].strip.downcase
+            val = row[k].nil? ? "" : row[k].strip
             case k
             when "vernacularName"
               s_data["vernacular_name"] = val
@@ -106,6 +106,11 @@ class UploadedList < ActiveRecord::Base
       ul.update_attributes(status: false)
     else
       ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
+      # create a raw extraction
+      t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
+      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found, :content_type => :json)
+      extraction = ul.create_raw_extraction(species: resolved)
     end
   end
 

@@ -58,20 +58,14 @@ class ExtractionsWorker
                             status: "extracted" )
     
     # call to resolution names service
-    begin
-      resolved_response = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
-                                           extracted_response,
-                                           :content_type => :json)
-    rescue => e
-      puts e.message
-      logger.info "Call service error"
-    end
+    resolved_response = Req.post( APP_CONFIG["sv_resolvenames"]["url"],
+                                  extracted_response,
+                                  :content_type => :json )
     
     # update state of tree
-    if resolved_response.nil?
+    if !resolved_response
       tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
     else
-      # TODO: update 'species' field with a suitable format so displaying in tree getter will be easier
       extraction.update_attributes(species: resolved_response)
       tree.update_attributes(bg_job: "-1", status: "resolved")
     end

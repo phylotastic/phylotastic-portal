@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   has_many :subset_taxons, dependent: :destroy
   has_many :watch_relationships, dependent: :destroy
   has_many :watched_trees, through: :watch_relationships, source: :tree
-  has_many :uploaded_list, dependent: :destroy
+  has_many :uploaded_lists, dependent: :destroy
          
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   

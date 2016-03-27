@@ -48,6 +48,7 @@
     <table class="table table-bordered table-hover scroll">
       <thead> 
         <tr> 
+          <th class="species-heading-row">#</th> 
           <th class="species-heading-row">Species</th> 
           <th class="species-heading-row">Kingdom</th> 
           <th class="species-cb-column species-heading-row">
@@ -57,7 +58,7 @@
         </tr> 
       </thead>
       <tbody>
-          <% species.each do |e| %>
+          <% species.each_with_index do |e, i| %>
             <% if tree.chosen_species.nil? %>
               <% cb_flag = 1 %>
             <% else %>
@@ -70,6 +71,7 @@
 
             <% if cb_flag == 1 %>
               <tr class="species-row success">
+                <td class=""><%= i + 1 %></td>
                 <td class=""><%= e %></td>
                 <td class="">TODO</td>
                 <td class="species-cb-column">                            
@@ -79,6 +81,7 @@
               </tr>
             <% else %>
               <tr class="species-row">
+                <td class=""><%= i + 1 %></td>
                 <td class=""><%= e %></td>
                 <td class="">TODO</td>
                 <td class="species-cb-column">                            
@@ -106,17 +109,18 @@
       <div class="modal-body">
         <table class="table table-hover">
           <thead> 
-            <tr> 
+            <tr>
+              <th class="">#</th>
               <th class="">Query</th> 
               <th class="">Matched name</th> 
               <th class="">Match</th> 
               <th class="">Synonyms</th>
-              <th class="">Selected</th>
             </tr> 
           </thead>
           <tbody>
-            <% resolved_names.each do |r| %>
+            <% resolved_names.each_with_index do |r, i| %>
               <tr class="species-row">
+                <td class=""><%= i + 1 %></td>
                 <td class=""><%= r["search_string"] %></td>
                 <td class=""><%= r["matched_name"] %></td>
                 <td class=""><%= r["match_type"] %></td>
@@ -124,8 +128,6 @@
                   <% r["synonyms"].each do |s| %>
                     <%= s %><br>
                   <% end %>
-                </td>
-                <td>
                 </td>
               </tr>
             <% end %>
