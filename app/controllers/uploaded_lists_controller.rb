@@ -1,9 +1,10 @@
 class UploadedListsController < ApplicationController
+  include UploadedListsHelper
   def create
-    @uploaded_list = current_user.uploaded_list.build(uploaded_list_params)
+    @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if @uploaded_list.save
-      flash[:success] = "Processing your archive file!"
-      job_id = ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.id)
+      flash[:success] = "Processing your archive file! Please wait a few second and reload browser"
+      ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.id)
       redirect_to trees_path
     else
       @uploaded_list.errors.delete(:file)
@@ -13,6 +14,9 @@ class UploadedListsController < ApplicationController
   
   def update
     @uploaded_list = current_user.uploaded_lists.find(params[:id])
+    unless params[:uploaded_list][:file].nil?
+      FileUtils.rm_rf(File.dirname(@uploaded_list.file.path))
+    end
     if @uploaded_list.update_attributes(uploaded_list_params)
       flash[:success] = "Processing your archive file!"
       job_id = ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.id)
@@ -24,12 +28,11 @@ class UploadedListsController < ApplicationController
   end
   
   def show
-    @uploaded_list = current_user.uploaded_lists.find_by_lid(params[:id])
-    @title = params[:title]
-    @res = Req.get(APP_CONFIG["sv_getspeciesinlist"]["url"] + params[:id] + "&include_all=true")
-    ra = @uploaded_list.raw_extraction
-    @tree = current_user.trees.build(raw_extraction_id: ra.id)
-    @resolved_names = JSON.parse ra.species
+    @uploaded_list = UploadedList.find_by_lid(params[:id])
+    list = get_a_list(@uploaded_list.lid)
+    @title = list["list_title"]
+    @species = list["list_species"]
+    @ra = @uploaded_list.raw_extraction
   end
   
   def destroy
