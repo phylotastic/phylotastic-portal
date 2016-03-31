@@ -82,6 +82,10 @@ class UploadedListsController < ApplicationController
       flash[:danger] = "Species are not updated"
     else
       flash[:success] = "Species are updated"
+      t = s_data["species"].map {|s| s["scientific_name"]}.join(", ")
+      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found, :content_type => :json)
+      extraction = ul.create_raw_extraction(species: resolved)
     end
     redirect_to uploaded_list_path(ul.lid)
   end

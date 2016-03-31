@@ -9,6 +9,7 @@
         <th>#</th>
         <th>Vernacular Name</th>
         <th>Scientific Name</th>
+        <th>Scientific Name Authorship</th>
         <th>Family</th>
         <th>Order</th>
         <th>Phylum</th>
@@ -21,6 +22,7 @@
           <td><%= i + 1 %></td>
           <td><%= s["vernacular_name"] %></td>
           <td><%= s["scientific_name"] %></td>
+          <td><%= s["scientific_name_authorship"] %></td>
           <td><%= s["family"] %></td>
           <td><%= s["order"] %></td>
           <td><%= s["phylum"] %></td>
@@ -31,12 +33,15 @@
   </table>
   
   <%= link_to "Build a tree", new_tree_path(ra: @ra.id), class: "btn btn-default btn-lg btn-primary" %>
-  <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target=".edit-species">Edit species list</button>
+  <% if current_user == @uploaded_list.user %>
+    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target=".edit-species">Edit species list</button>
+  <% end %>
   
 <% else %>
   <p>Please be patient, it is coffee time :p</p>
 <% end %>
 
+<% if current_user == @uploaded_list.user %>
 <div class="modal fade edit-species" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -52,6 +57,7 @@
                 <th>#</th>
                 <th>Vernacular Name</th>
                 <th>Scientific Name</th>
+                <th>Scientific Name Authorship</th>
                 <th>Family</th>
                 <th>Order</th>
                 <th>Phylum</th>
@@ -65,6 +71,7 @@
                   <td><%= i + 1 %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
@@ -76,7 +83,7 @@
                 </tr>
               <% end %>
               <tr>
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right" id="add-species"></i></td>
               </tr>
             </tbody>
@@ -90,7 +97,7 @@
     </div>
   </div>
 </div>
-
+<% end %>
 <script type="text/javascript">
 $(document).ready(function() {
   $(".remove-species").click(function() {
@@ -107,7 +114,7 @@ $(document).ready(function() {
   
   $("#add-species").click(function() {
     i = $(this).parents("table").find("tr").length - 2;
-    $(this).parents("tr").before('<tr><td>' + (i + 1) + '</td><td><input type="text" name="species[' + i + '][vernacular_name]" id="species_' + i + '_vernacular_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name]" id="species_' + i + '_scientific_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][family]" id="species_' + i + '_family" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][order]" id="species_' + i + '_order" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][phylum]" id="species_' + i + '_phylum" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][nomenclature_code]" id="species_' + i + '_nomenclature_code" value="" class="form-control"></td><td><i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i><input type="hidden" name="species[' + i + '][remove]" id="species_' + i + '_remove" value="0"></td></tr>');
+    $(this).parents("tr").before('<tr><td>' + (i + 1) + '</td><td><input type="text" name="species[' + i + '][vernacular_name]" id="species_' + i + '_vernacular_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name]" id="species_' + i + '_scientific_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name_authorship]" id="species_' + i + '_scientific_name_authorship" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][family]" id="species_' + i + '_family" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][order]" id="species_' + i + '_order" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][phylum]" id="species_' + i + '_phylum" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][nomenclature_code]" id="species_' + i + '_nomenclature_code" value="" class="form-control"></td><td><i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i><input type="hidden" name="species[' + i + '][remove]" id="species_' + i + '_remove" value="0"></td></tr>');
 
   })
 })
