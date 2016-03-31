@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   
-  resources :uploaded_lists, only: [:create, :show, :destroy, :update]
+  resources :uploaded_lists, only: [:create, :show, :destroy, :update] do
+    collection do
+    end
+  end
 
   get 'matched_names/show'
 

@@ -2,8 +2,7 @@
 
 <h2><%= @title %></h2>
 
-<% if @res %>
-  <% species = JSON.parse(@res)["species"] %>
+<% unless @species.nil? %>
   <table class="table table-striped table-bordered">
     <thead> 
       <tr> 
@@ -17,7 +16,7 @@
       </tr> 
     </thead>
     <tbody>
-      <% species.each_with_index do |s, i| %>
+      <% @species.each_with_index do |s, i| %>
         <tr>
           <td><%= i + 1 %></td>
           <td><%= s["vernacular_name"] %></td>
@@ -31,7 +30,7 @@
     </tbody>
   </table>
   
-  <%= render partial: "trees/tree_form", locals: {tree: @tree, resolved_names: @resolved_names["resolvedNames"]} %>
+  <%= link_to "Create tree from this list", new_tree_path(ra: @ra.id), class: "btn btn-default btn-lg" %>
 <% else %>
   <p>Please be patient, it is coffee time :p</p>
 <% end %>

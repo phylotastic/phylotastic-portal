@@ -1,7 +1,8 @@
 <table class="table table-striped table-bordered job-table">
   <thead> 
-    <tr> 
-      <th>Lists</th>
+    <tr>
+      <th>Uploaded File</th>
+      <th>List name</th>
       <th>Publicly Available</th>
       <th>Tree constructed from content of list</th>
       <th>Available Action</th>
@@ -12,6 +13,7 @@
       <% ul = UploadedList.find_by_lid(p["list_id"]) %>
       <% next if ul.nil? %>
       <tr>
+        <td><%= File.basename(ul.file.path) %></td>
         <td>
           <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
         </td>
@@ -28,10 +30,32 @@
       </tr>
     <% end %>
     
+    <% @prebuilt_public_lists.each do |ul| %>
+      <tr>
+        <td><%= File.basename(ul.file.path) %></td>
+        <td>
+          <% l = get_a_list(ul.lid) %>
+          <%= link_to l["list_title"], uploaded_list_path(id: l["list_id"]) %>
+        </td>
+        <td>
+          <%= ul.public %>
+        </td>
+        <td>
+          <%= render partial: "trees/trees_of_job", locals: {j: ul} %>          
+        </td>
+        <td>
+          <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
+          <%= link_to "Create new tree", uploaded_list_path(id: l["list_id"]) %>
+        </td>
+      </tr>
+    <% end %>
+    
     <% @prebuilt_jobs_failed.each do |p| %>
       <tr>
         <td>
           <%= File.basename(p.file.path) %>
+        </td>
+        <td>
         </td>
         <td>
           <%= p.public %>

@@ -11,6 +11,7 @@
     </thead>
     <tbody>      
       <% j.raw_extraction.trees.each do |t| %>
+        <% next if t.user != current_user %>
         <tr scope="row">
           <td><%= t.id %></td>
           <td class="tree-status">

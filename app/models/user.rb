@@ -14,7 +14,9 @@ class User < ActiveRecord::Base
   has_many :watch_relationships, dependent: :destroy
   has_many :watched_trees, through: :watch_relationships, source: :tree
   has_many :uploaded_lists, dependent: :destroy
-         
+  has_many :user_list_relationships, dependent: :destroy
+  has_many :prebuilt_lists, through: :user_list_relationships, source: :uploaded_list
+  
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   
   def self.from_omniauth(auth)
@@ -43,6 +45,11 @@ class User < ActiveRecord::Base
   # Returns true if the current user is following the other user.
   def watching?(tree)
     watched_trees.include?(tree)
+  end
+  
+  # create user_list_relationships
+  def subcribe(list)
+    user_list_relationships.first_or_create(uploaded_list_id: list.id) 
   end
   
 end

@@ -3,23 +3,23 @@ class TreesController < ApplicationController
   
   def new
     ra = RawExtraction.find(params[:ra])
-    if ra.contributable.user == current_user
-      @tree = current_user.trees.build(raw_extraction_id: params[:ra])
-      @resolved_names = JSON.parse ra.species
+    source = ra.contributable
+    if source.user != current_user && source.class.name == "UploadedList"
+      current_user.subcribe(source)
     end
+    @tree = current_user.trees.build(raw_extraction_id: params[:ra])
+    @resolved_names = JSON.parse ra.species
   end
   
   def create
     params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json  
     @tree = current_user.trees.build(tree_params)
-    if @tree.raw_extraction.user != current_user
-      redirect_to root_path
-    end
     if @tree.save
       flash[:success] = "Tree is being constructed! We will inform you when your tree is ready"
       job_id = TreesWorker.perform_async(@tree.id)
       @tree.update_attributes( bg_job: job_id, status: "constructing")
       redirect_to trees_path
+      return
     else
       render 'static_pages/home'
     end
@@ -50,7 +50,10 @@ class TreesController < ApplicationController
     res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.id.to_s)
     @prebuilt_jobs = res ? JSON.parse(res)["lists"] : []
     @prebuilt_jobs_failed = current_user.uploaded_lists.where(status: false)
-    @processing = current_user.trees.select { |t| t.status != "completed" }.map { |t| t.id }
+    trees = current_user.trees
+    @processing = trees.select { |t| t.status != "completed" }.map { |t| t.id }
+    @processing_lists = current_user.uploaded_lists.where(status: nil).map {|l| l.id }
+    @prebuilt_public_lists = current_user.prebuilt_lists
   end
   
   def explore

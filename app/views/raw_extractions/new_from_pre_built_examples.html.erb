@@ -1,16 +1,33 @@
 <% provide(:title, "Create trees from pre-compiled list of species") %>
 
-<h1>Chprye a pre-compiled list of species</h1>
+<h1>Choose a pre-compiled list of species</h1>
   
 <div class="row">
   <div class="col-md-6">
+    <h2>From your own list</h2>
+    <table class="table table-hover">
+      <tbody>
+        <% @my_lists.each do |p| %>
+          <% ul = UploadedList.find_by_lid(p["list_id"]) %>
+          <% next if ul.nil? %>
+          <tr>
+            <td>
+              <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
     <h2>From our database</h2>
     <table class="table table-hover">
       <tbody>
-        <% 20.times do %>
-          <tr class="">
-            <td class="">
-              <%= link_to "Mammals human bird cat dog computer bottle keyboard", "#" %>
+        <% @public_lists.each do |p| %>
+          <% ul = UploadedList.find_by_lid(p["list_id"]) %>
+          <% next if ul.nil? %>
+          <tr>
+            <td>
+              <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"]) %>
             </td>
           </tr>
         <% end %>

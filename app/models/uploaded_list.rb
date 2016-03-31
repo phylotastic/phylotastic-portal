@@ -4,6 +4,8 @@ require 'roo'
 class UploadedList < ActiveRecord::Base
   belongs_to :user
   has_one :raw_extraction, as: :contributable, dependent: :destroy
+  has_many :user_list_relationships, dependent: :destroy
+  has_many :subcribers, :through => :user_list_relationships, :source => :user
   
   has_attached_file :file
   validates_attachment :file, presence: true,
