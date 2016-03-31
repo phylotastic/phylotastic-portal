@@ -64,6 +64,28 @@ class UploadedListsController < ApplicationController
     end
   end
   
+  def update_species
+    ul = UploadedList.find(params[:id])
+    s_data = {"species" => [], "user_id" => current_user.id, "list_id" => ul.lid}
+    species = JSON.parse(params["species"].to_json)
+    species.each do |k,v|
+      next if v["remove"] == 1
+      next if (v["vernacular_name"].nil? || v["scientific_name"].nil? || v["vernacular_name"].empty? || v["scientific_name"].empty?)
+      v.delete("remove")
+      s_data["species"] << v
+    end
+    response = Req.post( APP_CONFIG["sv_replacespecies"]["url"],
+                         s_data.to_json,
+                         {:content_type => :json} )
+                         binding.pry
+    if !response || JSON.parse(response)["status_code"] != 200
+      flash[:danger] = "Species are not updated"
+    else
+      flash[:success] = "Species are updated"
+    end
+    redirect_to uploaded_list_path(ul.lid)
+  end
+  
   private
 
   def uploaded_list_params
