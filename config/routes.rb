@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   
+  get 'user_list_relationships/destroy'
+
+  resources :user_list_relationships, only: [:destroy]
+  
   resources :uploaded_lists, only: [:create, :show, :destroy, :update] do
     collection do
     end
