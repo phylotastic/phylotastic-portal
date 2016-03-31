@@ -47,9 +47,18 @@ class User < ActiveRecord::Base
     watched_trees.include?(tree)
   end
   
-  # create user_list_relationships
+  # Create user_list_relationships
   def subcribe(list)
     user_list_relationships.first_or_create(uploaded_list_id: list.id) 
   end
   
+  # Destroy user_list_relationships
+  def unsubcribe(list)
+    user_list_relationships.find_by(uploaded_list_id: list.id).destroy
+  end
+  
+  # Select all trees a user created from a public list.
+  def trees_from_public_list(list)
+    list.raw_extraction.trees.where(user_id: self.id)
+  end
 end

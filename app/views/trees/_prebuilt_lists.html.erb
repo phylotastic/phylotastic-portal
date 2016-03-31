@@ -15,7 +15,7 @@
       <tr>
         <td><%= File.basename(ul.file.path) %></td>
         <td>
-          <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
+          <%= p["list_title"] %>
         </td>
         <td>
           <%= ul.public %>
@@ -24,8 +24,8 @@
           <%= render partial: "trees/trees_of_job", locals: {j: ul} %>          
         </td>
         <td>
-          <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
-          <%= link_to "Create new tree", uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
+          <%= link_to "Create new tree", uploaded_list_path(id: p["list_id"]), class: "btn btn-primary btn-block" %>
+          <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, class: "btn btn-danger btn-block", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
         </td>
       </tr>
     <% end %>
@@ -35,7 +35,7 @@
         <td><%= File.basename(ul.file.path) %></td>
         <td>
           <% l = get_a_list(ul.lid) %>
-          <%= link_to l["list_title"], uploaded_list_path(id: l["list_id"]) %>
+          <%= l["list_title"] %>
         </td>
         <td>
           <%= ul.public %>
@@ -44,8 +44,10 @@
           <%= render partial: "trees/trees_of_job", locals: {j: ul} %>          
         </td>
         <td>
-          <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
-          <%= link_to "Create new tree", uploaded_list_path(id: l["list_id"]) %>
+          <%= link_to "Create new tree", uploaded_list_path(id: l["list_id"]), class: "btn btn-primary btn-block" %>
+          <%= form_for(current_user.user_list_relationships.find_by(uploaded_list_id: ul.id), html: { method: :delete }) do |f| %>
+            <%= f.submit "Remove", class: "btn btn-danger btn-block", style: "margin-top: 5px;", data: { confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?" } %>
+          <% end %>
         </td>
       </tr>
     <% end %>
@@ -64,8 +66,8 @@
           <p>Importing error! Please check again your file content.</p> 
         </td>
         <td>
-          <%= link_to "Remove", uploaded_list_path(p.id), method: :delete, data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
-          <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{p.id}" %>
+          <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{p.id}", class: "btn btn-primary btn-block" %>
+          <%= link_to "Remove", uploaded_list_path(p.id), method: :delete, class: "btn btn-danger btn-block", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %><br>
         </td>
       </tr>
       <div class="modal fade" id="reup-<%= p.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -90,7 +92,7 @@
               </div>
               <div class="modal-footer"> 
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
-                <%= f.submit "Submit my list", class: "btn btn-default btn-primary" %>
+                <%= f.submit "Submit my list", class: "btn btn-default btn-primary btn-block" %>
               </div>
             <% end %>
           </div>

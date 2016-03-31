@@ -141,4 +141,5 @@ class UploadedList < ActiveRecord::Base
       d.to_date.strftime("%m-%d-%Y")
     end
   end
+  
 end

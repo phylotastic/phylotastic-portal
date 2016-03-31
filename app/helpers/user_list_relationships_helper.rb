@@ -1,0 +1,2 @@
+module UserListRelationshipsHelper
+end
