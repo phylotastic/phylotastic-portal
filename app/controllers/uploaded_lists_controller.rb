@@ -77,7 +77,7 @@ class UploadedListsController < ApplicationController
     response = Req.post( APP_CONFIG["sv_replacespecies"]["url"],
                          s_data.to_json,
                          {:content_type => :json} )
-                         binding.pry
+                         
     if !response || JSON.parse(response)["status_code"] != 200
       flash[:danger] = "Species are not updated"
     else
