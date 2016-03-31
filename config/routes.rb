@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   
   resources :uploaded_lists, only: [:create, :show, :destroy, :update] do
     collection do
+      post 'update_species' => "uploaded_lists#update_species"
     end
   end
 
