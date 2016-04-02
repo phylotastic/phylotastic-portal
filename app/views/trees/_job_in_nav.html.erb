@@ -1,0 +1,6 @@
+<a href="#" class="list-group-item" id="job-in-nav-<%= job_class %>-<%= job_id %>">
+  <span class="job-title"><%= truncate(job_title, length: 40) %></span>
+  <% if no_trees != 0 %>
+    <span class="badge"><%= no_trees %></span>
+  <% end %>
+</a>

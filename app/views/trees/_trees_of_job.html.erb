@@ -1,12 +1,14 @@
 <% if j.raw_extraction.nil? %>
   This job is in queue
 <% elsif j.raw_extraction.trees.empty? %>
-  This job has no tree
+  This job has no tree. Maybe you should generate a new one.
 <% else %>
   <table class="table">
     <thead>
       <th>ID</th>
-      <th>Status</th> 
+      <th>Status</th>
+      <th>Created at</th>
+      <th>Modified at</th>
       <th>Available actions</th>
     </thead>
     <tbody>      
@@ -26,6 +28,8 @@
               Tree acquired: click "View tree" to see it
             <% end %>
           </td>
+          <td><%= j.created_at %></td>
+          <td><%= j.updated_at %></td>
           <td>
             <div class="check-status-manual-btn">
               <% if t.status == "completed" %>

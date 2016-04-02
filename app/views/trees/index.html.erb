@@ -1,34 +1,61 @@
 <% provide(:title, "Phylotastic Jobs") %>
 
-<% unless @con_link_jobs.empty? %>
-  <h2 class="job-heading">Trees acquired from URI</h2>
-  <%= render partial: "jobs", locals: {jobs: @con_link_jobs} %>
-<% end %>
+<h2>Jobs</h2>
 
-<% unless @con_file_jobs.empty? %>
-  <h2 class="job-heading">Trees acquired from file</h2>
-  <%= render partial: "jobs", locals: {jobs: @con_file_jobs} %>
-<% end %>
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <% unless @con_link_jobs.empty? %>
+        <%= render partial: "job_panel", locals: {jobs: @con_link_jobs, heading: "Acquired from URI"} %>
+      <% end %>
 
-<% unless @con_taxon_jobs.empty? %>
-  <h2 class="job-heading">Trees constructed from all sepecies of a taxon</h2>
-  <%= render partial: "jobs", locals: {jobs: @con_taxon_jobs} %>
-<% end %>
+      <% unless @con_file_jobs.empty? %>
+        <%= render partial: "job_panel", locals: {jobs: @con_file_jobs, heading: "Acquired from file"} %>
+      <% end %>
 
-<% unless @selection_taxon_jobs.empty? %>
-  <h2 class="job-heading">Trees constructed from some species of a taxon</h2>
-  <%= render partial: "jobs", locals: {jobs: @selection_taxon_jobs} %>
-<% end %>
+      <% unless @con_taxon_jobs.empty? %>
+        <%= render partial: "job_panel", locals: {jobs: @con_taxon_jobs, heading: "From all sepecies of a taxon"} %>
+      <% end %>
 
-<% unless @subset_taxon_jobs.empty? %>
-  <h2 class="job-heading">Trees constructed from genome or location</h2>
-  <%= render partial: "jobs", locals: {jobs: @subset_taxon_jobs} %>
-<% end %>
+      <% unless @selection_taxon_jobs.empty? %>
+        <%= render partial: "job_panel", locals: {jobs: @selection_taxon_jobs, heading: "From some species of a taxon"} %>
+      <% end %>
 
-<% if !@prebuilt_jobs.empty? || !@prebuilt_public_lists.empty? || !@prebuilt_jobs_failed.empty? %>
-  <h2 class="job-heading">Trees from pre-built list</h2>
-  <%= render partial: "prebuilt_lists" %>
-<% end %>
+      <% unless @subset_taxon_jobs.empty? %>
+        <%= render partial: "job_panel", locals: {jobs: @subset_taxon_jobs, heading: "From genome or location"} %>
+      <% end %>
+      
+      <% if !@prebuilt_jobs.empty? || !@prebuilt_public_lists.empty? || !@prebuilt_jobs_failed.empty? %>
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            From pre-built list
+          </h3>
+        </div>
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs} %>          
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_public_lists} %>
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs_failed} %>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="col-md-8">
+    <div>
+      <%= render partial: "job_content", locals: {jobs: @con_link_jobs} %>
+      <%= render partial: "job_content", locals: {jobs: @con_file_jobs} %>
+
+      <%= render partial: "job_content", locals: {jobs: @con_taxon_jobs} %>
+
+      <%= render partial: "job_content", locals: {jobs: @selection_taxon_jobs} %>
+
+      <%= render partial: "job_content", locals: {jobs: @subset_taxon_jobs} %>
+    
+      <%= render partial: "prebuilt_list_content", locals: {jobs: @prebuilt_jobs, type: 1} %>
+      <%= render partial: "prebuilt_list_content", locals: {jobs: @prebuilt_public_lists, type: 2} %>
+      <%= render partial: "prebuilt_list_content", locals: {jobs: @prebuilt_jobs_failed, type: 3} %>
+    </div>
+  </div>
+  
+</div>
        
 <script type="text/javascript">
 $(document).ready(function() {
@@ -125,7 +152,15 @@ $(document).ready(function() {
     }
     return msg;
   }
-});
+  
+  $("a[id*='job-in-nav-']").click(function() {
+    eles = $(this).attr("id").split("-");
+    $("div[id*='job-content']").addClass("hide");
+    $("#job-content-" + eles[3] + "-" + eles[4]).removeClass("hide");
+    
+    return false;
+  });
 
+});
 
 </script>
