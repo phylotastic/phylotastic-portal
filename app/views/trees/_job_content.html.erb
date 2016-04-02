@@ -1,0 +1,39 @@
+<% jobs.each do |j| %>
+  <div id="job-content-<%= j.class.name %>-<%= j.id %>" class="hide">
+    <table class="table">
+      <tr>
+        <th>Created at</th>
+        <td><%= j.created_at %></td>
+      </tr>
+      <tr>
+        <th>Modified at</th>
+        <td><%= j.updated_at %></td>
+      </tr>
+      <tr>
+        <th>Available Action</th>
+        <td>
+          <% unless j.raw_extraction.nil? %>
+            <%= link_to "Generate a new tree", new_tree_path(ra: j.raw_extraction.id), class: "btn btn-primary" %>
+          
+            <% case j %>
+            <% when ConLink %>
+              <%= link_to "Remove", con_link_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+            <% when ConFile %>
+              <%= link_to "Remove", con_file_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+            <% when ConTaxon %>
+              <% case j.specific %>
+              <% when SelectionTaxon %>
+                <%= link_to "Remove", selection_taxon_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% when SubsetTaxon %>
+                <%= link_to "Remove", subset_taxon_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% else %>
+                <%= link_to "Remove", con_taxon_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+    <%= render partial: "trees_of_job", locals: {j: j} %>
+  </div>
+<% end %>

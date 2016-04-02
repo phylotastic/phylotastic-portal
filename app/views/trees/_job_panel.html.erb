@@ -1,0 +1,30 @@
+<!-- Default panel contents -->
+<div class="panel-heading">
+  <h3 class="panel-title">
+    <%= heading %>
+  </h3>
+</div>
+
+<div class="list-group">
+  <% jobs.each do |source| %>         
+    <% begin %>
+      <% no_trees = source.raw_extraction.trees.count %>
+      <% case source %>
+      <% when ConLink %>
+        <%= render partial: "job_in_nav", locals: {job_title: source.uri, no_trees: no_trees, job_id: source.id, job_class: source.class.name} %>
+      <% when ConFile %>
+        <%= render partial: "job_in_nav", locals: {job_title: source.document.original_filename, no_trees: no_trees, job_id: source.id, job_class: source.class.name} %>
+      <% when ConTaxon %>
+        <% case source.specific %>
+        <% when SelectionTaxon %>
+          <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | #{source.nb_species} species | #{source.criterion}", no_trees: no_trees, job_id: source.id, job_class: source.class.name} %>
+        <% when SubsetTaxon %>
+          <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | #{source.country.name}", no_trees: no_trees, job_id: source.id, job_class: source.class.name} %>
+        <% else %>
+          <%= render partial: "job_in_nav", locals: {job_title: "#{source.name}", no_trees: no_trees, job_id: source.id, job_class: source.class.name} %>
+        <% end %>
+      <% end %>
+    <% rescue %>
+    <% end %>
+  <% end %>
+</div>
