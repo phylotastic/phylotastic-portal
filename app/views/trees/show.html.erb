@@ -152,7 +152,7 @@ $(document).ready(function(){
     
     childCount(0, root);  
 
-    newHeight = d3.max(levelWidth) * 60; // 60 pixels per line    
+    newHeight = d3.max(levelWidth) * 100; // 100 pixels per line    
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
 
@@ -178,8 +178,14 @@ $(document).ready(function(){
     var nodeEnter = node.enter().append("svg:g")
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-        .on("click", function(d) { toggle(d); update(d); });
-
+        .on("click", function(d) { toggle(d); update(d); })
+        .on("mouseover", function(d) { 
+          d3.select(this).select("image").transition().style("opacity", 1);
+        })
+        .on("mouseout", function(d) { 
+          d3.select(this).select("image").transition().style("opacity", 0);
+        });
+        
     nodeEnter.append("svg:circle")
         .attr("r", 1e-6)
         .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
@@ -195,13 +201,30 @@ $(document).ready(function(){
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")
         .style("cursor", "pointer");
-  // nodeEnter.append("image")
-  //       .attr("xlink:href", function(d) { return d.icon; })
-  //       .attr("x", "100px")
-  //       .attr("y", "-30px")
-  //       .attr("width", "60px")
-  //       .attr("height", "60px");
+        
+    nodeEnter.append("svg:image")
+        .attr("xlink:href", function(d) { return "/assets/Infobox_info_icon.png"; })
+        .attr("x", "10px")
+        .attr("y", "-7px")
+        .attr("width", "15px")
+        .attr("height", "15px")
+        .style("opacity", "0")
+        .style("cursor", "pointer")
+        .on("click", function(d) { 
+          $(this).siblings(".species-img").css("opacity", "1");
+          event.stopPropagation();
+          return false;
+        });
     
+    nodeEnter.append("svg:image")
+        .attr("xlink:href", function(d) { return "/assets/Infobox_info_icon.png"; })
+        .attr("x", "-25px")
+        .attr("y", "-60px")
+        .attr("width", "50px")
+        .attr("height", "50px")
+        .style("opacity", "0")
+        .style("cursor", "pointer")
+        .attr("class", "species-img");
     
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -347,6 +370,8 @@ $(document).ready(function(){
        processData: false,
        contentType: false,
     });
+    
+    return false;
   });
   
   function dataURLtoBlob(dataURL) {
@@ -381,7 +406,6 @@ $(document).ready(function(){
     $temp.remove();
     console.log(result);
   });
-  
   
 });
 </script>

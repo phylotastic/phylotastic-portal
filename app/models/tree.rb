@@ -17,4 +17,18 @@ class Tree < ActiveRecord::Base
     text :chosen_species, :description
     boolean :public
   end
+  
+  def semantic_status
+    case self.status
+    when "resolved"
+      return "Names acquired: click \"Check name list\" to approve list and get a tree"
+    when "unsucessfully-resolved"
+      return "Sorry! We could not acquire a list of names!"
+    when "unsuccessfully-constructed"
+      return "Sorry! We could not acquire a tree!"
+    when "completed"
+      return "Tree acquired: click \"View tree\" to see it"
+    end
+  end
+  
 end

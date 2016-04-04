@@ -17,16 +17,7 @@
         <tr scope="row">
           <td><%= t.id %></td>
           <td class="tree-status">
-            <% case t.status %>
-            <% when "resolved" %>
-              Names acquired: click "Check name list" to approve list and get a tree
-            <% when "unsucessfully-resolved" %>
-              Sorry! We could not acquire a list of names!
-            <% when "unsuccessfully-constructed" %>
-              Sorry! We could not acquire a tree!
-            <% when "completed" %>
-              Tree acquired: click "View tree" to see it
-            <% end %>
+            <%= t.semantic_status %>
           </td>
           <td><%= j.created_at %></td>
           <td><%= j.updated_at %></td>

@@ -3,14 +3,6 @@
     <table class="table">
       <tbody> 
         <tr>
-          <th>Creator</th>
-          <td><%= t.user.name %></td>
-        </tr>
-        <tr> 
-          <th>Status</th>
-          <td class="tree-status"><%= t.status %></td> 
-        </tr>
-        <tr>
           <th>Source</th>
           <td>          
             <% begin %>
@@ -38,6 +30,14 @@
               <%= "" %>
             <% end %>
           </td> 
+        </tr>
+        <tr> 
+          <th>Description</th>
+          <td><%= t.description %></td> 
+        </tr>
+        <tr>
+          <th>Creator</th>
+          <td><%= t.user.name %></td>
         </tr>
         <tr>
           <th>Created at</th>
