@@ -121,7 +121,7 @@ $(document).ready(function(){
   function update(source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
-    // compute the new height
+    // Compute the new height
     var levelWidth = [1];
     var childCount = function(level, n) {
       if(n.children && n.children.length > 0) {
@@ -140,7 +140,7 @@ $(document).ready(function(){
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
     d3.select("#graph").select("svg")
-      .attr("width", newWidth)
+      .attr("width", newWidth + 200)
       .attr("height", newHeight)
 
     // Compute the new tree layout.
