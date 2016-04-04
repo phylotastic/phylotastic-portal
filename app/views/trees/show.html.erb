@@ -96,43 +96,27 @@ $(document).ready(function(){
   var diagonal = d3.svg.diagonal()
       .projection(function(d) { return [d.y, d.x]; });
   
+  vis = d3.select("#graph").append("svg:svg")
+      .attr("width", canvasWidth)
+      .attr("height", canvasHeight)
+      .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+  
   root = newick;
   root.x0 = h/2;
   root.y0 = 0;
 
-  function toggleAll(d) {
+  function collapse(d) {
     if (d.children) {
-      d.children.forEach(toggleAll);
-      toggle(d);
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
     }
   }
 
   // Initialize the display to show a few nodes.
-  root.children.forEach(toggleAll);
+  root.children.forEach(collapse);
   update(root);
-
-  // d3.json("http://mbostock.github.io/d3/talk/20111018/flare.json", function(json) {
-  //   console.log(json);
-  //   root = json
-  //   root.x0 = h / 2;
-  //   root.y0 = 0;
-  //
-  //   function toggleAll(d) {
-  //     if (d.children) {
-  //       d.children.forEach(toggleAll);
-  //       toggle(d);
-  //     }
-  //   }
-  //
-  //   // Initialize the display to show a few nodes.
-  //   root.children.forEach(toggleAll);
-  //   toggle(root.children[1]);
-  //   toggle(root.children[1].children[2]);
-  //   toggle(root.children[9]);
-  //   toggle(root.children[9].children[0]);
-  //
-  //   update(root);
-  // });
 
   function update(source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
@@ -148,25 +132,21 @@ $(document).ready(function(){
         });
       }
     };
-    console.log(levelWidth);
     
     childCount(0, root);  
-
+    
+    // Automatically resizing depend on tree
     newHeight = d3.max(levelWidth) * 100; // 100 pixels per line    
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
+    d3.select("#graph").select("svg")
+      .attr("width", newWidth)
+      .attr("height", newHeight)
 
-    $("svg").remove();//TO REMOVE THE ALREADY SVG CONTENTS AND RELOAD ON EVERY UPDATE
-    
-    vis = d3.select("#graph").append("svg:svg")
-        .attr("width", newWidth + m[1] + m[3])
-        .attr("height", newHeight + m[0] + m[2])
-        .append("svg:g")
-        .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-    
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse();
-
+        links = tree.links(nodes);
+        
     // Normalize for fixed-depth.
     nodes.forEach(function(d) { d.y = d.depth * 180; });
 
@@ -178,7 +158,7 @@ $(document).ready(function(){
     var nodeEnter = node.enter().append("svg:g")
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-        .on("click", function(d) { toggle(d); update(d); })
+        .on("click", click)
         .on("mouseover", function(d) { 
           d3.select(this).select("image").transition().style("opacity", 1);
         })
@@ -211,20 +191,23 @@ $(document).ready(function(){
         .style("opacity", "0")
         .style("cursor", "pointer")
         .on("click", function(d) { 
-          $(this).siblings(".species-img").css("opacity", "1");
+          var current_node = $(this);
+          current_node.siblings(".species-img").toggleClass("hide");
+          toDataUrl('/assets/resolved.png', function(base64Img){
+            current_node.siblings(".species-img")[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", base64Img);  // inject data:image in DOM
+          });
           event.stopPropagation();
           return false;
         });
     
     nodeEnter.append("svg:image")
-        .attr("xlink:href", function(d) { return "/assets/Infobox_info_icon.png"; })
-        .attr("x", "-25px")
+        .attr("x", "15px")
         .attr("y", "-60px")
         .attr("width", "50px")
         .attr("height", "50px")
-        .style("opacity", "0")
         .style("cursor", "pointer")
-        .attr("class", "species-img");
+        // .attr("xlink:href", function(d) { return "/assets/Infobox_info_icon.png"; })
+        .attr("class", "species-img hide");
     
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -252,10 +235,10 @@ $(document).ready(function(){
 
     // Update the links…
     var link = vis.selectAll("path.link")
-        .data(tree.links(nodes), function(d) { return d.target.id; });
+        .data(links, function(d) { return d.target.id; });
         
     // Enter any new links at the parent's previous position.
-    link.enter().insert("svg:path", "g")
+    link.enter().insert("path", "g")
         .attr("class", "link")
         .attr("d", function(d) {
           var o = {x: source.x0, y: source.y0};
@@ -264,7 +247,7 @@ $(document).ready(function(){
         .attr("fill", "none")
         .attr("stroke", "#ccc")
         .attr("stroke-width", "1.5px")
-      .transition()
+        .transition()
         .duration(duration)
         .attr("d", diagonal);
 
@@ -288,9 +271,9 @@ $(document).ready(function(){
       d.y0 = d.y;
     });
   }
-
-  // Toggle children.
-  function toggle(d) {
+  
+  // Toggle children on click.
+  function click(d) {
     if (d.children) {
       d._children = d.children;
       d.children = null;
@@ -298,8 +281,9 @@ $(document).ready(function(){
       d.children = d._children;
       d._children = null;
     }
+    update(d);
   }
-
+  
   // save tree image to disk
   d3.select("#save-to-disk").on("click", function(){
     var html = d3.select("svg")
@@ -311,7 +295,6 @@ $(document).ready(function(){
     var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
     var img = '<img src="'+imgsrc+'">'; 
     d3.select("#svgdataurl").html(img);
-
 
     var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
     canvas.width = newWidth + 100;
@@ -350,7 +333,7 @@ $(document).ready(function(){
     canvas.width = newWidth + 100;
     canvas.height = newHeight;
     
-    var image = new Image;
+    var image = new Image();
     image.src = imgsrc;
 	  context.drawImage(image, 0, 0);
 
@@ -404,8 +387,22 @@ $(document).ready(function(){
     }
 
     $temp.remove();
-    console.log(result);
   });
+  
+  // Convert image to base64
+  function toDataUrl(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var reader  = new FileReader();
+      reader.onloadend = function () {
+          callback(reader.result);
+      }
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
+  }
   
 });
 </script>
