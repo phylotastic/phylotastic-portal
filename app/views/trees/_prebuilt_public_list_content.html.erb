@@ -1,0 +1,35 @@
+<% jobs.each do |j| %>
+  <% list = get_a_list(j.lid) %>
+  <div id="job-content-<%= ul.class.name %>-<%= ul.id %>" class="hide">
+    <table class="table">
+      <tr>
+        <th>List title</th>
+        <td><%= list["list_title"] %></td>
+      </tr>
+      <tr>
+        <th>File</th>
+        <th><%= j.file.original_filename %></th>
+      </tr>
+        <th>Created at</th>
+        <td><%= j.created_at %></td>
+      </tr>
+      <tr>
+        <th>Modified at</th>
+        <td><%= j.updated_at %></td>
+      </tr>
+      <tr>
+        <th>Available Action</th>
+        <td>
+          <%= link_to "View species of list", uploaded_list_path(id: j.lid), class: "btn btn-primary" %>
+          <%= form_for(current_user.user_list_relationships.find_by(uploaded_list_id: j.id), html: { method: :delete }) do |f| %>
+            <%= f.submit "Remove", class: "btn btn-danger", style: "margin-top: 5px;", data: { confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?" } %>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+    
+    <% if type != 3 %>
+      <%= render partial: "trees/trees_of_job", locals: {j: ul} %>
+    <% end %>
+  </div>
+<% end %>
