@@ -1,4 +1,6 @@
 class UploadedListsController < ApplicationController
+  before_action :authenticate_user!
+  
   include UploadedListsHelper
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)

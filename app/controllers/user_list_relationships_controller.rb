@@ -1,4 +1,5 @@
 class UserListRelationshipsController < ApplicationController
+  before_action :authenticate_user!
   
   def destroy
     list = UserListRelationship.find(params[:id]).uploaded_list
