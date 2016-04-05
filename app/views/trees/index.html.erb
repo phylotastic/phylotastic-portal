@@ -31,9 +31,9 @@
             From pre-built list
           </h3>
         </div>
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs} %>          
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_public_lists} %>
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs_failed} %>
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs, type: 1} %>
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_public_lists, type: 2} %>
+        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs_failed, type: 3} %>
       <% end %>
     </div>
   </div>
