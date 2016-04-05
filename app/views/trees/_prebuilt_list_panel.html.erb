@@ -4,6 +4,7 @@
     <% ul = UploadedList.find_by_lid(j["list_id"]) %>
   <% when 2, 3 %>
     <% ul = j %>
+    <% j = get_a_list(ul.lid) %>
   <% end %>
   
   <a href="#" class="list-group-item" id="job-in-nav-UploadedList-<%= ul.id %>">
