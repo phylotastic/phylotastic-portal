@@ -15,7 +15,7 @@
       <tr>
         <th>Available Action</th>
         <td>         
-          <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{ul.id}", class: "btn btn-primary" %>
+          <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{j.id}", class: "btn btn-primary" %>
           <%= link_to "Remove", uploaded_list_path(j.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
           <div class="modal fade" id="reup-<%= j.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog">
