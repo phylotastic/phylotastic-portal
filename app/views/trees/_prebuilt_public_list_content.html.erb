@@ -1,6 +1,6 @@
 <% jobs.each do |j| %>
   <% list = get_a_list(j.lid) %>
-  <div id="job-content-<%= ul.class.name %>-<%= ul.id %>" class="hide">
+  <div id="job-content-<%= j.class.name %>-<%= j.id %>" class="hide">
     <table class="table">
       <tr>
         <th>List title</th>
