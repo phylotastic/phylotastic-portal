@@ -1,5 +1,11 @@
 <% pj.each do |j| %>
-  <% ul = UploadedList.find_by_lid(j["list_id"]) %>
+  <% case type %>
+  <% when 1 %>
+    <% ul = UploadedList.find_by_lid(j["list_id"]) %>
+  <% when 2, 3 %>
+    <% ul = j %>
+  <% end %>
+  
   <a href="#" class="list-group-item" id="job-in-nav-UploadedList-<%= ul.id %>">
     <% if ul.raw_extraction.nil? %>
       <span class="job-title"><%= truncate(ul.file.original_filename, length: 40) %></span>
