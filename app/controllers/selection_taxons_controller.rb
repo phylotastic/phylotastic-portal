@@ -1,4 +1,6 @@
 class SelectionTaxonsController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     begin 
       response = RestClient.get APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:selection_taxon][:name]

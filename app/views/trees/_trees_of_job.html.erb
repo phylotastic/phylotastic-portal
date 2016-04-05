@@ -7,8 +7,9 @@
     <thead>
       <th>ID</th>
       <th>Status</th>
-      <th>Created at</th>
-      <th>Modified at</th>
+      <th>Description</th>
+      <th>Created</th>
+      <th>Last Edited</th>
       <th>Available actions</th>
     </thead>
     <tbody>      
@@ -19,8 +20,11 @@
           <td class="tree-status">
             <%= t.semantic_status %>
           </td>
-          <td><%= j.created_at %></td>
-          <td><%= j.updated_at %></td>
+          <td>
+            <%= t.description %>
+          </td>
+          <td><%= time_ago_in_words(j.created_at) %> ago</td>
+          <td><%= time_ago_in_words(j.updated_at) %> ago</td>
           <td>
             <div class="check-status-manual-btn">
               <% if t.status == "completed" %>

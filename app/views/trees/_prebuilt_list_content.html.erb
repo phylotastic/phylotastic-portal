@@ -22,11 +22,11 @@
         <td>
           <% case type %>
           <% when 1 %>
-            <%= link_to "Create new tree", uploaded_list_path(id: j["list_id"]), class: "btn btn-primary" %>
+            <%= link_to "View species of list", uploaded_list_path(id: j["list_id"]), class: "btn btn-primary" %>
             <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
             
           <% when 2 %>
-            <%= link_to "Create new tree", uploaded_list_path(id: j["list_id"]), class: "btn btn-primary" %>
+            <%= link_to "View species of list", uploaded_list_path(id: j["list_id"]), class: "btn btn-primary" %>
             <%= form_for(current_user.user_list_relationships.find_by(uploaded_list_id: ul.id), html: { method: :delete }) do |f| %>
               <%= f.submit "Remove", class: "btn btn-danger", style: "margin-top: 5px;", data: { confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?" } %>
             <% end %>

@@ -27,6 +27,7 @@ class TreesController < ApplicationController
   
   def show
     @tree = Tree.find_by(id: params[:id])
+    @resolved_names = JSON.parse(@tree.raw_extraction.species)["resolvedNames"]
     if @tree.nil? 
       redirect_to root_url
     elsif @tree.status != "completed"

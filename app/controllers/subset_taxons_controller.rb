@@ -1,4 +1,6 @@
 class SubsetTaxonsController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     begin 
       response = RestClient.get APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:subset_taxon][:name]
