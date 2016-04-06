@@ -9,7 +9,7 @@ class TrackersController < ApplicationController
       end
 
       tubesock.onmessage do |m|
-        params = JSON.parse(m)
+        params = JSON.parse(m) rescue []
         case params["type"] 
         when "tree"
           tree_id = params["id"]
@@ -61,6 +61,9 @@ class TrackersController < ApplicationController
           end
           data ||= {type: "list", status: nil, id: list_id}.to_json
           tubesock.send_data "#{data}"
+        else
+          puts "Problem with data sent to tracker"
+          tubesock.send_data "#{m}"
         end
       end
     end
