@@ -20,11 +20,19 @@ class User < ActiveRecord::Base
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.provider = auth.provider
-      user.uid = auth.uid
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
+    u = where(email: auth.info.email)
+    if u.empty?
+      where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+        user.provider = auth.provider
+        user.uid = auth.uid
+        user.email = auth.info.email
+        user.password = Devise.friendly_token[0,20]
+      end
+    else
+      # update information for existed user
+      u.provider = auth.provider
+      u.uid = auth.uid
+      u.save
     end
   end
   
