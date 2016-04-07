@@ -30,9 +30,9 @@ class User < ActiveRecord::Base
       end
     else
       # update information for existed user
-      u.provider = auth.provider
-      u.uid = auth.uid
-      u.save
+      u.first.provider = auth.provider
+      u.first.uid = auth.uid
+      u.first.save
     end
   end
   
