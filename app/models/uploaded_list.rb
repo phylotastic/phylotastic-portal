@@ -12,7 +12,7 @@ class UploadedList < ActiveRecord::Base
     content_type: { content_type: "application/zip", :message => ": Make sure to zip your files" },
     size: { in: 0..500.kilobytes, :message => "must be less than 500kB" }
     
-  def self.process(user_name, user_id, ul_id)
+  def self.process(user_name, ul_id)
     ul = UploadedList.find(ul_id)
     dir = File.dirname(ul.file.path)
     data = {}
@@ -98,8 +98,7 @@ class UploadedList < ActiveRecord::Base
     end
 
     response = Req.post( APP_CONFIG["sv_createlist"]["url"],
-                         { "user_name" => user_name, 
-                           "user_id" => user_id,
+                         { "user_id" => user_name,
                            "list" => data
                          }.to_json,
                          {:content_type => :json} )

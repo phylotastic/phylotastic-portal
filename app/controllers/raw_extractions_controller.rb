@@ -8,11 +8,11 @@ class RawExtractionsController < ApplicationController
   
   def new_from_pre_built_examples
     @uploaded_list = UploadedList.new
-    res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.id.to_s)
-    @my_lists = res ? JSON.parse(res)["lists"] : []
+    res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.email)
+    @my_lists = res ? JSON.parse(res)["lists"] : {}
     
     res = Req.get(APP_CONFIG["sv_getpubliclists"]["url"])
-    @public_lists = res ? JSON.parse(res)["public_lists"] : []
+    @public_lists = res ? JSON.parse(res)["public_lists"] : {}
   end
   
   def new_from_taxon
