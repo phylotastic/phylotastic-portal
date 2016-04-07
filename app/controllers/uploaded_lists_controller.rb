@@ -34,7 +34,14 @@ class UploadedListsController < ApplicationController
     list = get_a_list(@uploaded_list.lid)
     @title = list["list_title"]
     @species = list["list_species"]
-    @ra = @uploaded_list.raw_extraction
+    if @uploaded_list.raw_extraction.nil?
+      t = list["list_species"].map {|s| s["scientific_name"]}.join(", ")
+      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found, :content_type => :json)
+      @ra = @uploaded_list.create_raw_extraction(species: resolved)
+    else
+      @ra = @uploaded_list.raw_extraction
+    end
   end
   
   def destroy
@@ -51,7 +58,7 @@ class UploadedListsController < ApplicationController
         end
         return
       end
-      res = Req.get(APP_CONFIG["sv_deletelist"]["url"] + "?user_id=#{current_user.id}&list_id=#{ul.lid}")
+      res = Req.get(APP_CONFIG["sv_deletelist"]["url"] + "?user_id=#{current_user.email}&list_id=#{ul.lid}")
       if !res || JSON.parse(res)["status_code"] != 200
         flash[:danger] = "Can not delete list for now"
         redirect_to trees_path
@@ -68,7 +75,7 @@ class UploadedListsController < ApplicationController
   
   def update_species
     ul = UploadedList.find(params[:id])
-    s_data = {"species" => [], "user_id" => current_user.id, "list_id" => ul.lid}
+    s_data = {"species" => [], "user_id" => current_user.email, "list_id" => ul.lid}
     species = JSON.parse(params["species"].to_json)
     species.each do |k,v|
       next if v["remove"] == 1

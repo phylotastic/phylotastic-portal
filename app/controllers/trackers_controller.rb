@@ -9,7 +9,7 @@ class TrackersController < ApplicationController
       end
 
       tubesock.onmessage do |m|
-        params = JSON.parse(m) rescue []
+        params = JSON.parse(m) rescue {}
         case params["type"] 
         when "tree"
           tree_id = params["id"]

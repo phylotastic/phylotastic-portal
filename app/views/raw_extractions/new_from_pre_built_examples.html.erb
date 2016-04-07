@@ -7,14 +7,22 @@
     <h2>From your own list</h2>
     <table class="table table-hover">
       <tbody>
-        <% @my_lists.each do |p| %>
-          <% ul = UploadedList.find_by_lid(p["list_id"]) %>
-          <% next if ul.nil? %>
+        <% if @my_lists.empty? %>
           <tr>
             <td>
-              <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
+              You have not submit any list. Try create one and submit on the right form.
             </td>
           </tr>
+        <% else %>
+          <% @my_lists.each do |p| %>
+            <% ul = UploadedList.find_by_lid(p["list_id"]) %>
+            <% next if ul.nil? %>
+            <tr>
+              <td>
+                <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"], title: p["list_title"]) %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
