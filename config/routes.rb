@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       patch ':id/public' => 'trees#public', as: :public
       get 'explore'
       get 'search' => 'trees#search'
+      get 'image_getter' => 'trees#image_getter'
     end
   end
   

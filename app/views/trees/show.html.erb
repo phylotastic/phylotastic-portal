@@ -242,13 +242,11 @@ $(document).ready(function(){
           var current_node = $(this);
           current_node.siblings(".species-img").toggleClass("hide");
           if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
-            jqxhr = $.get( "<%= APP_CONFIG["sv_getimagespecies"]["url"] %>" + "Panthera%20leo", function(data) {
-              res = JSON.parse(data);
-              console.log();
-              toDataUrl(res["species"][0]["images"][0]["eolThumbnailURL"], function(base64Img){
-                current_node.siblings(".species-img")[0]
-                  .setAttributeNS("http://www.w3.org/1999/xlink", "href", base64Img);  // inject data:image in DOM
-              });
+            jqxhr = $.get( "/trees/image_getter?spe=" + d.name.replace(/_ott\d*/, '').replace(/_/g, ' '), function(data) {
+              console.log(data);
+              current_node.siblings(".species-img")[0]
+                  .setAttributeNS("http://www.w3.org/1999/xlink", "href", data["image"]);  // inject data:image in DOM
+
             })
               .done(function() {
                 // alert( "second success" );
@@ -260,7 +258,6 @@ $(document).ready(function(){
                 // alert( "finished" );
               });
               
-            
           }
           
           event.stopPropagation();

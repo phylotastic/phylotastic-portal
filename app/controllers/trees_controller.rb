@@ -126,6 +126,16 @@ class TreesController < ApplicationController
     render 'explore'
   end
   
+  def image_getter
+    data = Req.get(APP_CONFIG["sv_getimagespecies"]["url"] + params["spe"])
+    res = JSON.parse(data);
+    image_url = res["species"].first["images"].first["eolThumbnailURL"]
+    image = Base64.encode64(open(image_url, "rb").read)
+    respond_to do |format|
+      format.json { render :json => {image: "data:image/png;base64,#{image}"} }
+    end
+  end
+  
   private
     def tree_params
       params.require(:tree).permit(:phylo_source_id, :branch_length, 
