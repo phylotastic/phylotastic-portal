@@ -55,7 +55,6 @@ class TreesController < ApplicationController
     @processing = trees.select { |t| t.status != "completed" }.map { |t| t.id }
     @processing_lists = current_user.uploaded_lists.where(status: nil).map {|l| l.id }
     @prebuilt_public_lists = current_user.prebuilt_lists
-    binding.pry
   end
   
   def explore
