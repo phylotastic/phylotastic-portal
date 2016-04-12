@@ -242,8 +242,9 @@ $(document).ready(function(){
           var current_node = $(this);
           current_node.siblings(".species-img").toggleClass("hide");
           if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
+            current_node.siblings(".species-img")[0]
+                .setAttributeNS("http://www.w3.org/1999/xlink", "href", "/assets/Loading_icon.gif");
             jqxhr = $.get( "/trees/image_getter?spe=" + d.name.replace(/_ott\d*/, '').replace(/_/g, ' '), function(data) {
-              console.log(data);
               current_node.siblings(".species-img")[0]
                   .setAttributeNS("http://www.w3.org/1999/xlink", "href", data["image"]);  // inject data:image in DOM
 
