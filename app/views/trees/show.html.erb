@@ -241,9 +241,28 @@ $(document).ready(function(){
         .on("click", function(d) { 
           var current_node = $(this);
           current_node.siblings(".species-img").toggleClass("hide");
-          toDataUrl('/assets/resolved.png', function(base64Img){
-            current_node.siblings(".species-img")[0].setAttributeNS("http://www.w3.org/1999/xlink", "href", base64Img);  // inject data:image in DOM
-          });
+          if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
+            jqxhr = $.get( "<%= APP_CONFIG["sv_getimagespecies"]["url"] %>" + "Panthera%20leo", function(data) {
+              res = JSON.parse(data);
+              console.log();
+              toDataUrl(res["species"][0]["images"][0]["eolThumbnailURL"], function(base64Img){
+                current_node.siblings(".species-img")[0]
+                  .setAttributeNS("http://www.w3.org/1999/xlink", "href", base64Img);  // inject data:image in DOM
+              });
+            })
+              .done(function() {
+                // alert( "second success" );
+              })
+              .fail(function() {
+                // alert( "error" );
+              })
+              .always(function() {
+                // alert( "finished" );
+              });
+              
+            
+          }
+          
           event.stopPropagation();
           return false;
         });
@@ -254,7 +273,6 @@ $(document).ready(function(){
         .attr("width", "50px")
         .attr("height", "50px")
         .style("cursor", "pointer")
-        // .attr("xlink:href", function(d) { return "/assets/Infobox_info_icon.png"; })
         .attr("class", "species-img hide");
     
     // Transition nodes to their new position.
