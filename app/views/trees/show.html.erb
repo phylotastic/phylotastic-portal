@@ -140,9 +140,40 @@ $(document).ready(function(){
 
   var tree = d3.layout.tree()
       .size([h, w]);
-
-  var diagonal = d3.svg.diagonal()
-      .projection(function(d) { return [d.y, d.x]; });
+  
+  var rightAngleDiagonal = function() {
+    var projection = function(d) { return [d.y, d.x]; }
+    
+    var path = function(pathData) {
+      return "M" + pathData[0] + ' ' + pathData[1] + " " + pathData[2];
+    }
+    
+    function diagonal(diagonalPath, i) {
+      var source = diagonalPath.source,
+          target = diagonalPath.target,
+          midpointX = (source.x + target.x) / 2,
+          midpointY = (source.y + target.y) / 2,
+          pathData = [source, {x: target.x, y: source.y}, target];
+      pathData = pathData.map(projection);
+      return path(pathData)
+    }
+    
+    diagonal.projection = function(x) {
+      if (!arguments.length) return projection;
+      projection = x;
+      return diagonal;
+    };
+    
+    diagonal.path = function(x) {
+      if (!arguments.length) return path;
+      path = x;
+      return diagonal;
+    };
+    
+    return diagonal;
+  }
+  
+  var diagonal = rightAngleDiagonal();
   
   vis = d3.select("#graph").append("svg:svg")
       .attr("width", canvasWidth)
@@ -168,8 +199,9 @@ $(document).ready(function(){
 
   function update(source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500;
-
+    
     // Compute the new height
+    var leaves = [];
     var levelWidth = [1];
     var childCount = function(level, n) {
       if(n.children && n.children.length > 0) {
@@ -178,13 +210,30 @@ $(document).ready(function(){
         n.children.forEach(function(d) {
           childCount(level + 1, d);
         });
+      } else {
+        leaves.push(n);
       }
     };
     
     childCount(0, root);  
     
+    // Compute the height of parent from its children
+    var avarageHeight = function(node) {
+      var sum = 0;
+      if(node.children != undefined) {
+        node.children.forEach(function(d) {
+          avarageHeight(d);
+          sum += d.x;
+          console.log("sum: " + sum);
+        });
+        node.x = sum/node.children.length;
+      } else {
+        return node.x;
+      }
+    }
+    
     // Automatically resizing depend on tree
-    newHeight = d3.max(levelWidth) * 100; // 100 pixels per line    
+    newHeight = leaves.length * 80; // 100 pixels per line    
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
     d3.select("#graph").select("svg")
@@ -196,8 +245,19 @@ $(document).ready(function(){
         links = tree.links(nodes);
         
     // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 180; });
-
+    nodes.forEach(function(d) {
+      if (d.children != null) {
+        d.y = d.depth * 180;
+      } else {
+        d.y = (levelWidth.length - 1) * 180;
+      }
+    });
+    
+    leaves.forEach(function(l, i) {
+      l.x = i*80;
+    });
+    avarageHeight(root);
+    
     // Update the nodes…
     var node = vis.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -225,7 +285,7 @@ $(document).ready(function(){
         .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-        .text(function(d) { return d.name.replace(/_ott\d*/, ''); })
+        .text(function(d) { return d.name.replace(/_ott\d*/, '').replace(/_/g, " "); })
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")
         .style("cursor", "pointer");
