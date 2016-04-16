@@ -235,7 +235,7 @@ $(document).ready(function(){
     }
     
     // Automatically resizing depend on tree
-    newHeight = leaves.length * 80  + 80; // 80 pixels per line, 80 pixels margin top
+    newHeight = leaves.length * 80  + 150; // 80 pixels per line, 150 pixels margin bottom
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
     d3.select("#graph").select("svg")
@@ -333,7 +333,17 @@ $(document).ready(function(){
         .attr("width", "50px")
         .attr("height", "50px")
         .style("cursor", "pointer")
-        .attr("class", "species-img hide");
+        .attr("class", "species-img hide")
+        .on("mouseover", function(d) {
+          d3.select(this).transition()
+            .attr("width", "200px")
+            .attr("height", "200px");
+        })
+        .on("mouseout", function(d) {
+          d3.select(this).transition()
+            .attr("width", "50px")
+            .attr("height", "50px");
+        });
     
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -514,21 +524,6 @@ $(document).ready(function(){
 
     $temp.remove();
   });
-  
-  // Convert image to base64
-  function toDataUrl(url, callback){
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
-      var reader  = new FileReader();
-      reader.onloadend = function () {
-          callback(reader.result);
-      }
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.send();
-  }
   
 });
 </script>

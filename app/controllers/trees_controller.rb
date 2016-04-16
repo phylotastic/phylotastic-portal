@@ -125,7 +125,8 @@ class TreesController < ApplicationController
   def image_getter
     data = Req.get(APP_CONFIG["sv_getimagespecies"]["url"] + params["spe"])
     res = JSON.parse(data);
-    image_url = res["species"].first["images"].first["eolThumbnailURL"]
+    # image_url = res["species"].first["images"].first["eolThumbnailURL"]
+    image_url = res["species"].first["images"].first["eolMediaURL"]
     image = Base64.encode64(open(image_url, "rb").read)
     respond_to do |format|
       format.json { render :json => {image: "data:image/png;base64,#{image}"} }
