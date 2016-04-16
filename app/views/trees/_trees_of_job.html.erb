@@ -23,8 +23,8 @@
           <td>
             <%= t.description %>
           </td>
-          <td><%= time_ago_in_words(j.created_at) %> ago</td>
-          <td><%= time_ago_in_words(j.updated_at) %> ago</td>
+          <td><%= time_ago_in_words(t.created_at) %> ago</td>
+          <td><%= time_ago_in_words(t.updated_at) %> ago</td>
           <td>
             <div class="check-status-manual-btn">
               <% if t.status == "completed" %>

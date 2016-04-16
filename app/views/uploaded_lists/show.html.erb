@@ -1,8 +1,8 @@
-<% provide(:title, "Prebuilt list: " + @title) %>
+<% provide(:title, "Prebuilt list: " + @list["list_title"]) %>
 
-<h2><%= @title %></h2>
+<h2><%= @list["list_title"] %></h2>
 
-<% unless @species.nil? %>
+<% unless @list["list_species"].nil? %>
   <table class="table table-striped">
     <thead> 
       <tr> 
@@ -17,7 +17,7 @@
       </tr> 
     </thead>
     <tbody>
-      <% @species.each_with_index do |s, i| %>
+      <% @list["list_species"].each_with_index do |s, i| %>
         <tr>
           <td><%= i + 1 %></td>
           <td><%= s["vernacular_name"] %></td>
@@ -32,16 +32,16 @@
     </tbody>
   </table>
   
-  <%= link_to "Build a tree", new_tree_path(ra: @ra.id), class: "btn btn-default btn-lg btn-primary" %>
-  <% if current_user == @uploaded_list.user %>
-    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target=".edit-species">Edit species list</button>
+  <% if current_user == @owner %>
+    <%= link_to "Build a tree", new_tree_path(), class: "btn btn-default btn-lg btn-primary" %>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".edit-species">Edit species</button>
   <% end %>
-  
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".clone-list">Clone list</button>
 <% else %>
   <p>Please be patient, it is coffee time :p</p>
 <% end %>
 
-<% if current_user == @uploaded_list.user %>
+<% if current_user == @owner %>
 <div class="modal fade edit-species" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -50,7 +50,7 @@
         <h3 class="modal-title center" id="myModalLabel"></h3>
         <em>(*) Required fields</em>
       </div>
-      <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @uploaded_list.id}, method: "post") do %>
+      <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @list["list_id"]}, method: "post") do %>
         <div class="modal-body">
           <table class="table table-striped">
             <thead> 
@@ -67,7 +67,7 @@
               </tr> 
             </thead>
             <tbody>
-              <% @species.each_with_index do |s, i| %>
+              <% @list["list_species"].each_with_index do |s, i| %>
                 <tr>
                   <td><%= i + 1 %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>
@@ -85,7 +85,7 @@
               <% end %>
               <tr>
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right" id="add-species"></i></td>
+                <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
               </tr>
             </tbody>
           </table>
@@ -99,6 +99,65 @@
   </div>
 </div>
 <% end %>
+
+<div class="modal fade clone-list" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
+        <h3 class="modal-title center" id="myModalLabel"></h3>
+        <em>(*) Required fields</em>
+      </div>
+      <%= form_tag({controller: 'uploaded_lists', action: 'clone', id: @list["list_id"]}, method: "post") do %>
+        <div class="modal-body">
+          <table class="table table-striped">
+            <thead> 
+              <tr> 
+                <th>#</th>
+                <th>Vernacular Name (*)</th>
+                <th>Scientific Name (*)</th>
+                <th>Scientific Name Authorship</th>
+                <th>Family</th>
+                <th>Order</th>
+                <th>Phylum</th>
+                <th>Nomenclature Code</th>
+                <th></th>
+              </tr> 
+            </thead>
+            <tbody>
+              <% @list["list_species"].each_with_index do |s, i| %>
+                <tr>
+                  <td><%= i + 1 %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][nomenclature_code]', s["nomenclature_code"], class: "form-control" %></td>
+                  <td>
+                    <i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i>
+                    <%= hidden_field_tag 'species[' + i.to_s + '][remove]', 0 %>
+                  </td>
+                </tr>
+              <% end %>
+              <tr>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer"> 
+          <%= submit_tag "Clone", class: "btn btn-primary" %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
   $("body").on('click', '.remove-species', function(){
@@ -113,7 +172,7 @@ $(document).ready(function() {
     }
   });
   
-  $("#add-species").click(function() {
+  $(".add-species").click(function() {
     i = $(this).parents("table").find("tr").length - 2;
     $(this).parents("tr").before('<tr><td>' + (i + 1) + '</td><td><input type="text" name="species[' + i + '][vernacular_name]" id="species_' + i + '_vernacular_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name]" id="species_' + i + '_scientific_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name_authorship]" id="species_' + i + '_scientific_name_authorship" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][family]" id="species_' + i + '_family" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][order]" id="species_' + i + '_order" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][phylum]" id="species_' + i + '_phylum" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][nomenclature_code]" id="species_' + i + '_nomenclature_code" value="" class="form-control"></td><td><i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i><input type="hidden" name="species[' + i + '][remove]" id="species_' + i + '_remove" value="0"></td></tr>');
 

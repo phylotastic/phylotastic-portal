@@ -193,6 +193,8 @@ $(document).ready(function(){
     }
   }
 
+  if (root.children == undefined) return;
+    
   // Initialize the display to show a few nodes.
   root.children.forEach(collapse);
   update(root);
@@ -233,7 +235,7 @@ $(document).ready(function(){
     }
     
     // Automatically resizing depend on tree
-    newHeight = leaves.length * 80; // 100 pixels per line    
+    newHeight = leaves.length * 80  + 80; // 80 pixels per line, 80 pixels margin top
     newWidth  = levelWidth.length * 180; // 180 pixels per child level
     tree = tree.size([newHeight, newWidth]);
     d3.select("#graph").select("svg")
@@ -254,7 +256,7 @@ $(document).ready(function(){
     });
     
     leaves.forEach(function(l, i) {
-      l.x = i*80;
+      l.x = (i+1)*80;
     });
     avarageHeight(root);
     

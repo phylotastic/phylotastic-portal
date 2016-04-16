@@ -49,12 +49,8 @@ class TreesController < ApplicationController
     @selection_taxon_jobs = current_user.selection_taxons
     @subset_taxon_jobs    = current_user.subset_taxons
     res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.email)
-    @prebuilt_jobs = res ? JSON.parse(res)["lists"] : []
-    @prebuilt_jobs_failed = current_user.uploaded_lists.where(status: false)
-    trees = current_user.trees
-    @processing = trees.select { |t| t.status != "completed" }.map { |t| t.id }
-    @processing_lists = current_user.uploaded_lists.where(status: nil).map {|l| l.id }
-    @prebuilt_public_lists = current_user.prebuilt_lists
+    @prebuilt_jobs = res ? JSON.parse(res)["lists"] : {}
+    @processing = current_user.trees.select { |t| t.status != "completed" }.map { |t| t.id }
   end
   
   def explore
