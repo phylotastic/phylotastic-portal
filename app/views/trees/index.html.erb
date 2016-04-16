@@ -25,16 +25,6 @@
         <%= render partial: "job_panel", locals: {jobs: @subset_taxon_jobs, heading: "From genome or location"} %>
       <% end %>
       
-      <% if !@prebuilt_jobs.empty? || !@prebuilt_public_lists.empty? || !@prebuilt_jobs_failed.empty? %>
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            From pre-built list
-          </h3>
-        </div>
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs, type: 1} %>
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_public_lists, type: 2} %>
-        <%= render partial: "prebuilt_list_panel", locals: {pj: @prebuilt_jobs_failed, type: 3} %>
-      <% end %>
     </div>
   </div>
   
@@ -49,9 +39,6 @@
 
       <%= render partial: "job_content", locals: {jobs: @subset_taxon_jobs} %>
     
-      <%= render partial: "prebuilt_list_content", locals: {jobs: @prebuilt_jobs, type: 1} %>
-      <%= render partial: "prebuilt_public_list_content", locals: {jobs: @prebuilt_public_lists, type: 2} %>
-      <%= render partial: "prebuilt_list_failed_content", locals: {jobs: @prebuilt_jobs_failed, type: 3} %>
     </div>
   </div>
   
@@ -60,7 +47,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
   var processing_trees = <%= @processing %>;
-  var processing_lists = <%= @processing_lists %>;
+ //  var processing_lists = <%= @processing_lists %>;
   
   Notification.requestPermission();
   function spawnNotification(theBody,theIcon,theTitle) {
@@ -77,10 +64,10 @@ $(document).ready(function() {
       socket.send( JSON.stringify({"type": "tree", "id": processing_trees[i]}) );
       $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
     }
-    
-    for (i=processing_lists.length-1; i>=0; i--) {
-      socket.send( JSON.stringify({"type": "list", "id": processing_lists[i]}) );
-    }
+//
+//     for (i=processing_lists.length-1; i>=0; i--) {
+//       socket.send( JSON.stringify({"type": "list", "id": processing_lists[i]}) );
+//     }
   } 
   
   socket.onmessage = function(event) {
@@ -104,13 +91,19 @@ $(document).ready(function() {
           // Display "view tree" btn
           $("#" + data["tree_id"]).parents("td").children('.action-view').children('.hide').removeClass("hide");
         
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-success");
+        
           // Send notification
-          spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);        
+          spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);
         } else if (data["status"] == "resolved") {
           $("#" + data["tree_id"]).parents("td").children('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Check name list</a>");
         
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
+          
           // Send notification
-          spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
+          // spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
         }
       }
       else if (data["type"] == "list") {

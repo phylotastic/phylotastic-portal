@@ -64,8 +64,6 @@ class UploadedList < ActiveRecord::Base
             data["list_source"] = val
           when "List Title"
             data["list_title"] = val
-          when "Source"
-            data["list_source"] = val
           end
         end
       # species details
