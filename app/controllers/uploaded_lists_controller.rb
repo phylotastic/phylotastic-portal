@@ -122,7 +122,6 @@ class UploadedListsController < ApplicationController
       t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
       found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
       resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found,:content_type => :json)
-      binding.pry
     end
     redirect_to uploaded_list_path(JSON.parse(response)["list_id"])
   end
