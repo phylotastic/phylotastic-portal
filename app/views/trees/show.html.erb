@@ -362,13 +362,13 @@ $(document).ready(function(){
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
         .remove();
-
+    
     nodeExit.select("circle")
         .attr("r", 1e-6);
 
     nodeExit.select("text")
         .style("fill-opacity", 1e-6);
-
+    
     // Update the links…
     var link = vis.selectAll("path.link")
         .data(links, function(d) { return d.target.id; });
@@ -411,8 +411,10 @@ $(document).ready(function(){
   // Toggle children on click.
   function click(d) {
     if (d.children) {
+      // Collapse all children of nodeExit
+      d.children.forEach(collapse);
       d._children = d.children;
-      d.children = null;
+      d.children = null;      
     } else {
       d.children = d._children;
       d._children = null;
