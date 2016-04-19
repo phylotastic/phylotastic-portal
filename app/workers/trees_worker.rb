@@ -13,6 +13,8 @@ class TreesWorker
     end
     
     resolved = JSON.parse(tree.raw_extraction.species)
+    return if(resolved["resolvedNames"].length == 0)
+    
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
     resolved["resolvedNames"].each do |r|
       if !chosen_species.include? r["matched_name"]
@@ -21,10 +23,10 @@ class TreesWorker
     end
     
     begin
-      constructed_response = RestClient.post( APP_CONFIG["sv_gettree"]["url"],
-                                              resolved.to_json,
-                                              :content_type => :json, 
-                                              :accept => :json )
+      constructed_response = Req.post( APP_CONFIG["sv_gettree"]["url"],
+                                       resolved.to_json,
+                                       :content_type => :json, 
+                                       :accept => :json )
     rescue => e
       puts e
       logger.info "Call service error"
