@@ -161,6 +161,13 @@ $(document).ready(function() {
     return false;
   });
 
+  $($("div[id *= \"" + 'job-content-' + "\"]")[0]).removeClass("hide");
+  $($("a[id *= \"" + 'job-in-nav-' + "\"]")[0]).addClass("active");
+  $("a[id *= \"" + 'job-in-nav-' + "\"]").click(function() {
+    $("a[id *= \"" + 'job-in-nav-' + "\"]").removeClass("active");
+    $(this).addClass("active");
+  });
+  
 });
 
 </script>
