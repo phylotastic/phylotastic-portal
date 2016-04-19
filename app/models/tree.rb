@@ -28,6 +28,8 @@ class Tree < ActiveRecord::Base
       return "Sorry! We could not acquire a tree!"
     when "completed"
       return "Tree acquired: click \"View tree\" to see it"
+    when "no-names"
+      return "There is no species names in your provided resource"
     end
   end
   

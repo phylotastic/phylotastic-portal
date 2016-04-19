@@ -96,6 +96,8 @@ $(document).ready(function() {
         
           // Send notification
           spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);
+          
+          
         } else if (data["status"] == "resolved") {
           $("#" + data["tree_id"]).parents("td").children('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Check name list</a>");
         
@@ -104,6 +106,11 @@ $(document).ready(function() {
           
           // Send notification
           // spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
+          
+          
+        } else if (data["status"] == "no-names") {
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
         }
       }
       else if (data["type"] == "list") {

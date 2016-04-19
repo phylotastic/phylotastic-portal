@@ -48,6 +48,13 @@ class ExtractionsWorker
                               bg_job: "-1", 
                               status: "unsucessfully-extracted" )
       return
+      
+    # if there are no names in resource
+    elsif 
+      tree.update_attributes( raw_extraction_id: extraction.id, 
+                              bg_job: "-1", 
+                              status: "no-names" )
+      return
     end
     
     # save extracted_response in raw extraction
