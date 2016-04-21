@@ -31,7 +31,7 @@
     </div>
     <div class="col-sm-8">
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
+        <!-- <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -43,11 +43,11 @@
             <div class="panel-body">
               <%= form_for @selection_taxon, html: {class: "form-horizontal"} do |f| %>
                 <div class="">
-                  <%= f.hidden_field :name, value: "", class: "taxon-name" %>          
-                  <%= f.hidden_field :description, value: "", class: "description" %>     
+                  <%= f.hidden_field :name, value: "", class: "taxon-name" %>
+                  <%= f.hidden_field :description, value: "", class: "description" %>
                   <div class="row">
                     <div class="col-sm-2 col-sm-offset-1">
-                      Choose 
+                      Choose
                     </div>
                     <div class="col-sm-4">
                       <%= f.select :nb_species, [10, 20, 30], {}, { class: "form-control" } %>
@@ -58,7 +58,7 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-2 col-sm-offset-1">
-                      By 
+                      By
                     </div>
                     <div class="col-sm-6">
                       <%= f.select :criterion, ["Populatity", "Random"], {}, { class: "form-control" } %>
@@ -73,7 +73,7 @@
               <% end %>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
