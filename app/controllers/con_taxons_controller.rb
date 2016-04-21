@@ -15,7 +15,7 @@ class ConTaxonsController < ApplicationController
       return
     end
     
-    case JSON.parse(response)["statuscode"]
+    case JSON.parse(response)["status_code"]
     when 404, 204
       flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:con_taxon][:name]}\""
       redirect_to raw_extractions_new_from_taxon_path
