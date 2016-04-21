@@ -62,7 +62,6 @@ $(document).ready(function() {
   socket.onopen = function(event) {
     for (i=processing_trees.length-1; i>=0 ; i--) {
       socket.send( JSON.stringify({"type": "tree", "id": processing_trees[i]}) );
-      $("#" + i).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
     }
 //
 //     for (i=processing_lists.length-1; i>=0; i--) {
@@ -75,21 +74,13 @@ $(document).ready(function() {
     console.log(data);
     if (event.data.length) {
       if (data["type"] == "tree") {
-        // Change status of tree in view
-        $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(tree_status(data["status"]));
       
-        if (data["status"] == "completed") {        
-          // Remove the tree that "completed" in processing_trees 
-          index = processing_trees.indexOf(parseInt(data["tree_id"]));
-          if (index > -1) {
-            processing_trees.splice(index, 1);
-          }
-        
-          // Hide "check status" btn
-          $("#" + data["tree_id"]).parents("td").find('.check-status').addClass("hide");
+        if (data["status"] == "completed") {     
+          // Change status of tree in view
+          $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(tree_status(data["status"]));
         
           // Display "view tree" btn
-          $("#" + data["tree_id"]).parents("td").children('.action-view').children('.hide').removeClass("hide");
+          $("tr[id *= \"tree-" + data["tree_id"] + "\"]").find('.action-view a').removeClass("hide");
         
           $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
           $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-success");
@@ -105,13 +96,25 @@ $(document).ready(function() {
           $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
           
           // Send notification
-          // spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
+          spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
           
           
         } else if (data["status"] == "no-names") {
+          // Change status of tree in view
+          $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(tree_status(data["status"]));
           $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
           $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
+          // Send notification
+          spawnNotification("Required at least 2 scientific names to construct tree.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "No name found for tree #" + data["tree_id"]);
+        
+        
+        } else if (data["status"] == "unsuccessfully-constructed") {
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
+          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
+          // Send notification
+          spawnNotification("Check tree status for more details.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Unable construct tree #" + data["tree_id"]);
         }
+        
       }
       else if (data["type"] == "list") {
         // Send notification
@@ -126,13 +129,6 @@ $(document).ready(function() {
       }
     }
   }
-
-  $(".check-status").click(function(event) {
-    event.preventDefault();
-    params = $(this).attr('id');
-    socket.send(params);
-    $("#" + params).parents("td").siblings('.tree-status').html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
-  })
   
   function tree_status(s) {
     var msg;

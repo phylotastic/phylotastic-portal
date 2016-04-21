@@ -25,12 +25,16 @@ class Tree < ActiveRecord::Base
     when "unsucessfully-resolved"
       return "Sorry! We could not acquire a list of names!"
     when "unsuccessfully-constructed"
-      return "Sorry! We could not acquire a tree!"
+      if self.representation.nil?
+        return "Sorry! We could not acquire a tree"
+      else
+        return "Sorry! We could not acquire a tree. Reason: #{JSON.parse(self.representation)['message']}"
+      end
     when "completed"
       return "Tree acquired: click \"View tree\" to see it"
     when "no-names"
       return "There is no species names in your provided resource"
     end
   end
-  
+
 end

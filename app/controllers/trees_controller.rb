@@ -17,7 +17,9 @@ class TreesController < ApplicationController
     if @tree.save
       flash[:success] = "Tree is being constructed! We will inform you when your tree is ready"
       job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes( bg_job: job_id, status: "constructing")
+      @tree.update_attributes( bg_job: job_id, 
+                               status: "constructing",
+                               notifiable: true )
       redirect_to trees_path
       return
     else
@@ -46,11 +48,11 @@ class TreesController < ApplicationController
     @con_link_jobs        = current_user.con_links
     @con_file_jobs        = current_user.con_files
     @con_taxon_jobs       = current_user.con_taxons
-    @selection_taxon_jobs = current_user.selection_taxons
-    @subset_taxon_jobs    = current_user.subset_taxons
+    @selection_taxon_jobs = current_user.selection_taxons.reverse
+    @subset_taxon_jobs    = current_user.subset_taxons.reverse
     res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.email)
     @prebuilt_jobs = res ? JSON.parse(res)["lists"] : {}
-    @processing = current_user.trees.select { |t| t.status != "completed" }.map { |t| t.id }
+    @processing = current_user.trees.select { |t| t.notifiable }.map { |t| t.id }
   end
   
   def explore
@@ -68,7 +70,9 @@ class TreesController < ApplicationController
     if @tree.update_attributes(tree_params)
       flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
       job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes( bg_job: job_id, status: "constructing")
+      @tree.update_attributes( bg_job: job_id, 
+                               status: "constructing",
+                               notifiable: true )
       redirect_to trees_path
     else
       render 'edit'

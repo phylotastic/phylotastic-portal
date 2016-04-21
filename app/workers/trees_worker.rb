@@ -5,15 +5,17 @@ class TreesWorker
   
   def perform(tree_id)
     tree = Tree.find_by_id(tree_id)
-    if tree.nil?
-      logger.info "Oops! Tree not found"
-    else
-      logger.info "Found tree ##{tree_id}!"
-      puts tree.id
-    end
+    
+    logger.info "Found tree ##{tree_id}!"
+    puts tree.id
     
     resolved = JSON.parse(tree.raw_extraction.species)
-    return if(resolved["resolvedNames"].length == 0)
+    if(resolved["resolvedNames"].length == 0)
+      tree.update_attributes( status: "unsuccessfully-constructed", 
+                              bg_job: "-1",
+                              representation: nil )
+      return 
+    end
     
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
     resolved["resolvedNames"].each do |r|
@@ -21,6 +23,8 @@ class TreesWorker
         resolved["resolvedNames"].delete r
       end
     end
+    
+    sleep 3
     
     begin
       constructed_response = Req.post( APP_CONFIG["sv_gettree"]["url"],
@@ -33,9 +37,15 @@ class TreesWorker
     end
     
     if constructed_response.nil?
-      tree.update_attributes(status: "unsuccessfully-constructed", bg_job: "-1")
-    else
+      tree.update_attributes( status: "unsuccessfully-constructed", 
+                              bg_job: "-1",
+                              representation: nil )
+    elsif JSON.parse(constructed_response)["message"] == "Success" 
       tree.update_attributes( status: "completed", 
+                              bg_job: "-1",
+                              representation: constructed_response )
+    else
+      tree.update_attributes( status: "unsuccessfully-constructed", 
                               bg_job: "-1",
                               representation: constructed_response )
     end

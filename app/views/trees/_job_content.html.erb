@@ -13,7 +13,7 @@
         <th>Available Action</th>
         <td>
           <% unless j.raw_extraction.nil? %>
-            <%= link_to "Generate a new tree", new_tree_path(ra: j.raw_extraction.id), class: "btn btn-primary" %>
+            <%= link_to "Generate a new tree", new_tree_path(ra: j.raw_extraction.id), class: "btn btn-primary" if j.raw_extraction.build_tree? %>
           
             <% case j %>
             <% when ConLink %>
