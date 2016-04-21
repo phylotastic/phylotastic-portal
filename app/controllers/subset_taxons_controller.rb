@@ -14,7 +14,6 @@ class SubsetTaxonsController < ApplicationController
       return
     end
     
-    # TODO: statuscode or status_code?
     case JSON.parse(response)["status_code"]
     when 200
       @subset_taxon = current_user.subset_taxons.build(subset_taxon_params)

@@ -30,7 +30,7 @@ class ExtractionsWorker
       tree = Tree.find_by_bg_job(self.jid)
       raise "Cannot find tree executed by background job #{self.jid}." if tree.nil?
     rescue Exception => e  
-      puts e.message  
+      puts e.message
       puts e.backtrace.inspect
       tries -= 1
       sleep 1
