@@ -15,7 +15,7 @@
     <tbody>      
       <% j.raw_extraction.trees.each do |t| %>
         <% next if t.user != current_user %>
-        <tr scope="row">
+        <tr scope="row" id="tree-<%= t.id %>">
           <td><%= t.id %></td>
           <td class="tree-status">
             <%= t.semantic_status %>
@@ -27,11 +27,6 @@
           <td><%= time_ago_in_words(t.updated_at) %> ago</td>
           <td>
             <div class="check-status-manual-btn">
-              <% if t.status == "completed" %>
-                <%= link_to "Check status", "#", class: "check-status hide", id: t.id %>
-              <% else %>
-                <%= link_to "Check status", "#", class: "check-status", id:   t.id %>
-              <% end %>
             </div>
             <div class="action-prune">
               <% if t.status == "resolved" %>

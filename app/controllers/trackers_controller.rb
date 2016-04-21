@@ -14,6 +14,7 @@ class TrackersController < ApplicationController
         when "tree"
           tree_id = params["id"]
           tree = current_user.trees.find_by_id(tree_id.to_i)
+          tree.update_attributes(notifiable: false)
           if tree.nil?
             tubesock.send_data "#{tree_id} not found"
           end

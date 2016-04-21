@@ -116,14 +116,14 @@
                       <% end %>
                     </div>
                   </div>
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-sm-3 col-sm-offset-1">
-                      Found in 
+                      Found in
                     </div>
                     <div class="col-sm-6">
                       <%= f.select :country_id, options_from_collection_for_select(Country.all, "id", "name"), {}, { class: "form-control" } %>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col-sm-8 col-sm-offset-2">
                       <%= f.submit "Find subset of species", class: "btn btn-default btn-lg btn-block scenario-selection"%>

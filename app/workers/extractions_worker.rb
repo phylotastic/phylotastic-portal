@@ -41,7 +41,7 @@ class ExtractionsWorker
         tree = owner.trees.create(bg_job: self.jid)
       end
     end
-   
+
     # if extracting service has problems, it is time to terminate
     if extracted_response.nil?
       tree.update_attributes( raw_extraction_id: extraction.id, 
@@ -50,7 +50,7 @@ class ExtractionsWorker
       return
       
     # if there are no names in resource
-    elsif 
+    elsif JSON.parse(extracted_response)["scientificNames"].empty?
       tree.update_attributes( raw_extraction_id: extraction.id, 
                               bg_job: "-1", 
                               status: "no-names" )
