@@ -8,7 +8,12 @@ class RawExtraction < ActiveRecord::Base
   
   def build_tree?
     return false if self.species.nil?
-    extracted_names = JSON.parse(self.species)["resolvedNames"] 
+    begin
+      extracted_names = JSON.parse(self.species)["resolvedNames"] 
+    rescue Exception => e
+      binding.pry
+      extracted_names = []
+    end
     return false if extracted_names.nil?
     return false if extracted_names.count < 2
     return true
