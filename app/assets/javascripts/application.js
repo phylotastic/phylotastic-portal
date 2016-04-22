@@ -16,4 +16,5 @@
 //= require jquery_ujs
 //= require d3
 //= require jquery.slick
+//= require clipboard
 //= require_tree .
