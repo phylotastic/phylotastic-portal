@@ -29,7 +29,7 @@
   
   <% if @tree.image.exists? %>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-image">
+    <button type="button" class="btn btn-default btn-block" id="tree-image-btn" data-toggle="modal" data-target="#show-tree-image">
       <%= image_tag @tree.image.url(:thumb) %>
     </button>
   <% end %>
