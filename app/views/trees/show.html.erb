@@ -18,7 +18,7 @@
       <div id="publicise-btn">
         <%= form_for(@tree, url: public_trees_path, remote: true, html: {id: "publicise-tree"}) do |f| %>
           <div><%= hidden_field_tag "tree[public]", true %></div>
-          <%= f.submit "Publicise to Community", class: "btn btn-block btn-primary" %>
+          <%= f.submit "Publish to Community", class: "btn btn-block btn-primary" %>
         <% end %>
       </div>
     <% end %>
@@ -52,12 +52,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard">Copy</button></h4>
       </div>
       <div class="modal-body">
-        <div style="word-break: break-all;" id="tree-in-string-format"><%= JSON.parse(@tree.representation)['newick'] %></div>
+        <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= JSON.parse(@tree.representation)['newick'] %></textarea>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -507,24 +507,14 @@ $(document).ready(function(){
     return new Blob([new Uint8Array(array)], {type: 'image/png'});
   }
   
-  $("#copy-to-clipboard").mouseup(function(e){
-  	e.preventDefault();
-  });
-
-  // Copy to clipboard button
-  $("#copy-to-clipboard").click(function () {
-    var $temp = $("<input type='text' />");
-    $("body").append($temp);
-    $temp.val($("#tree-in-string-format").text()).select();
-    
-    var result = false;
-    try {
-      result = document.execCommand("copy");
-    } catch (err) {
-      console.log("Copy error: " + err);
-    }
-
-    $temp.remove();
+  var clip = new Clipboard('#copy-to-clipboard');
+  // console.log(clip);
+  clip.on('success', function(e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+    $(e.trigger).text("Copied!");
+    e.clearSelection();
   });
   
 });

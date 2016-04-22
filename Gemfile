@@ -81,6 +81,9 @@ gem 'rubyzip', '>= 1.0.0'
 # read sheet
 gem 'roo', '~> 2.3.2'
 
+# copy clipboard
+gem 'clipboard-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
