@@ -1,9 +1,11 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, 
+  # :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
+         :omniauthable, :omniauth_providers => [:google_oauth2]
+           # , :facebook]
   
   has_many :trees, dependent: :destroy
   has_many :con_files, dependent: :destroy
@@ -21,12 +23,15 @@ class User < ActiveRecord::Base
   
   def self.from_omniauth(auth)
     # where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-    where(email: auth.info.email).first_or_create do |user|
+    u = where(email: auth.info.email).first_or_create do |user|
       user.provider = auth.provider
       user.uid = auth.uid
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
     end
+    u.update_attributes( access_token: auth.credentials.token,
+                         expires_at: auth.credentials.expires_at )
+    u
   end
   
   def name
