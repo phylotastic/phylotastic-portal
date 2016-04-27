@@ -64,7 +64,6 @@ class UploadedListsController < ApplicationController
         return
       end
       res = remove_private_list(ul.lid)
-      binding.pry
       if res["status_code"] != 200
         flash[:danger] = "Can not delete list for now"
         redirect_to trees_path
