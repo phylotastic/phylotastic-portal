@@ -6,7 +6,7 @@ class ConTaxonsController < ApplicationController
 
   def create
     begin 
-      response = RestClient.get APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:con_taxon][:name]
+      response = RestClient.get APP_CONFIG['sv_species_from_taxon']['url'] + params[:con_taxon][:name]
     rescue Exception => e
       logger.info "Cannot get species from a taxon"
       puts e.message
@@ -23,7 +23,7 @@ class ConTaxonsController < ApplicationController
       @con_taxon = current_user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
         extracted_response = convert_to_extracted_response(response)
-        resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"],
+        resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                              extracted_response,
                              :content_type => :json)
 

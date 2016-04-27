@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, 
-  # :registerable,
+  :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:google_oauth2]
            # , :facebook]
@@ -30,8 +30,32 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
     end
     u.update_attributes( access_token: auth.credentials.token,
-                         expires_at: auth.credentials.expires_at )
+                         expires_at: auth.credentials.expires_at,
+                         refresh_token: auth.credentials.refresh_token )
     u
+  end
+  
+  def refresh_token_if_expired
+    if token_expired?
+      response    = RestClient.post "https://accounts.google.com/o/oauth2/token", :grant_type => 'refresh_token', :refresh_token => self.refresh_token, :client_id => APP_CONFIG['google']["id"], :client_secret => APP_CONFIG['google']["secret"] 
+      refreshhash = JSON.parse(response.body)
+
+      # token_will_change!
+      # expiresat_will_change!
+      self.access_token = refreshhash['access_token']
+      self.expires_at   = DateTime.now + refreshhash["expires_in"].to_i.seconds
+
+      self.save
+      puts 'Saved'
+    end
+  end
+
+  def token_expired?
+    expiry = Time.at(self.expires_at) 
+    return true if expiry < Time.now # expired token, so we should quickly return
+    token_expires_at = expiry
+    save if changed?
+    false # token not expired. :D
   end
   
   def name
@@ -66,5 +90,9 @@ class User < ActiveRecord::Base
   # Select all trees a user created from a public list.
   def trees_from_public_list(list)
     list.raw_extraction.trees.where(user_id: self.id)
+  end
+  
+  def owned? list_json
+    !list_json["user_id"].nil?
   end
 end

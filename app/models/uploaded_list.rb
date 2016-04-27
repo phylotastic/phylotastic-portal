@@ -8,9 +8,11 @@ class UploadedList < ActiveRecord::Base
   has_many :subcribers, :through => :user_list_relationships, :source => :user
   
   has_attached_file :file
-  validates_attachment :file, presence: true,
+  validates_attachment :file,
     content_type: { content_type: "application/zip", :message => ": Make sure to zip your files" },
     size: { in: 0..500.kilobytes, :message => "must be less than 500kB" }
+  
+  validates_attachment_presence :file, :if => :not_available_in_service?
     
   def self.process(user_name, ul_id)
     ul = UploadedList.find(ul_id)
@@ -21,6 +23,14 @@ class UploadedList < ActiveRecord::Base
     data["list_keywords"] = []
     data["list_author"] = []
     data["list_species"] = []
+    data["list_curation_date"] = nil
+    data["list_curator"] = nil
+    data["list_date_published"] = nil
+    data["list_description"] = nil
+    data["list_extra_info"] = nil
+    data["list_focal_clade"] = nil
+    data["list_source"] = nil
+    data["list_title"] = nil
     
     Dir.glob(dir + '/**/*') do |file|
       spreadsheet = self.open_spreadsheet(File.open(file))
@@ -66,10 +76,19 @@ class UploadedList < ActiveRecord::Base
             data["list_title"] = val
           end
         end
+        
       # species details
       elsif header.include?("vernacularName")
         (2..spreadsheet.last_row).each do |i|
           s_data = {}
+          s_data["vernacular_name"] = nil
+          s_data["scientific_name"] = nil
+          s_data["scientific_name_authorship"] = nil
+          s_data["phylum"] = nil
+          s_data["family"] = nil
+          s_data["order"] = nil
+          s_data["nomenclature_code"] = nil
+          
           row = Hash[[header, spreadsheet.row(i)].transpose]
           row.each_key do |k|
             val = row[k].nil? ? "" : row[k].strip
@@ -95,7 +114,7 @@ class UploadedList < ActiveRecord::Base
       end
     end
 
-    response = Req.post( APP_CONFIG["sv_createlist"]["url"],
+    response = Req.post( APP_CONFIG["sv_create_list"]["url"],
                          { "user_id" => user_name,
                            "list" => data
                          }.to_json,
@@ -107,8 +126,8 @@ class UploadedList < ActiveRecord::Base
       ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
       # create a raw extraction
       t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
-      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
-      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found, :content_type => :json)
+      found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
       extraction = ul.create_raw_extraction(species: resolved)
     end
   end
@@ -138,5 +157,10 @@ class UploadedList < ActiveRecord::Base
       d.to_date.strftime("%m-%d-%Y")
     end
   end
+  
+  private
+    def not_available_in_service?
+      !(self.status)
+    end
   
 end

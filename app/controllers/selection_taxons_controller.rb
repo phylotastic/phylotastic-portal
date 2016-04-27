@@ -3,7 +3,7 @@ class SelectionTaxonsController < ApplicationController
   
   def create
     begin 
-      response = RestClient.get APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:selection_taxon][:name]
+      response = RestClient.get APP_CONFIG['sv_species_from_taxon']['url'] + params[:selection_taxon][:name]
     rescue Exception => e
       logger.info "Cannot get species from a taxon"
       puts e.message
@@ -20,7 +20,7 @@ class SelectionTaxonsController < ApplicationController
       @selection_taxon = current_user.selection_taxons.build(selection_taxon_params)
       if @selection_taxon.save
         extracted_response = convert_to_extracted_response(response)
-        resolved = RestClient.post( APP_CONFIG["sv_resolvenames"]["url"],
+        resolved = RestClient.post( APP_CONFIG["sv_resolve_names"]["url"],
                                     extracted_response,
                                     :content_type => :json)
         chosen_species = convert_to_chosen_species_format( response, 
