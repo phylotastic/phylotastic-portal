@@ -3,9 +3,9 @@ class SubsetTaxonsController < ApplicationController
   
   def create
     if params["subset_taxon"]["has_genome_in_ncbi"] == "1"
-      response = Req.get(APP_CONFIG['sv_ncbigenome']['url'] + params[:subset_taxon][:name])
+      response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:subset_taxon][:name])
     else
-      response = Req.get(APP_CONFIG['sv_speciesfromtaxon']['url'] + params[:subset_taxon][:name])
+      response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:subset_taxon][:name])
     end
 
     if !response
@@ -19,7 +19,7 @@ class SubsetTaxonsController < ApplicationController
       @subset_taxon = current_user.subset_taxons.build(subset_taxon_params)
       if @subset_taxon.save
         extracted_response = convert_to_extracted_response(response)
-        resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"],
+        resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                              extracted_response,
                              :content_type => :json )
         extraction = @subset_taxon.create_raw_extraction(species: resolved)

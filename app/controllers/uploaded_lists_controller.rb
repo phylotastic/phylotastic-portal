@@ -5,9 +5,17 @@ class UploadedListsController < ApplicationController
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if @uploaded_list.save
-      flash[:success] = "Processing your archive file! Please wait a few second and reload browser"
-      ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.id)
-      redirect_to trees_path
+      flash[:success] = "Processing your archive file"
+      ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
+      
+      @uploaded_list = UploadedList.new
+      res = Req.get(APP_CONFIG["sv_get_private_lists"]["url"] + "?user_id=" + current_user.email + "&access_token=" + current_user.access_token)
+      @my_lists = JSON.parse(res)["lists"] rescue []
+    
+      res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
+      @public_lists = JSON.parse(res)["lists"] rescue []
+      
+      render 'raw_extractions/new_from_pre_built_examples'
     else
       @uploaded_list.errors.delete(:file)
       render 'raw_extractions/new_from_pre_built_examples'
@@ -31,16 +39,31 @@ class UploadedListsController < ApplicationController
   
   def show
     @list = get_a_list(params[:id])
-    @owner = User.find(1)
-    # @list["list_owner"]
-    # if @uploaded_list.raw_extraction.nil?
-#       t = list["list_species"].map {|s| s["scientific_name"]}.join(", ")
-#       found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
-#       resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found, :content_type => :json)
-#       @ra = @uploaded_list.create_raw_extraction(species: resolved)
-#     else
-#       @ra = @uploaded_list.raw_extraction
-#     end
+    if @list["status_code"] == 200 # if there is a list in the service
+      ul = UploadedList.find_by_lid(@list["list"]["list_id"]) # query in local database
+      if ul.nil? # if there is no list in local database
+        if @list["user_id"].nil? # check whether list is public or private
+          @uploaded_list = UploadedList.create( lid: @list["list"]["list_id"], 
+                                                public: true, 
+                                                status: true)
+        else
+          @uploaded_list = current_user.uploaded_lists.create!( lid: @list["list"]["list_id"], 
+                                                               public: false, 
+                                                               status: true)
+        end
+
+        t = @list["list"]["list_species"].map {|s| s["scientific_name"]}.join(", ")
+        found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
+        resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
+        @ra = @uploaded_list.create_raw_extraction(species: resolved)
+      else
+        @ra = ul.raw_extraction
+      end
+    else
+      flash[:danger] = "No list found"
+      redirect_to root_path
+    end
+    
   end
   
   def destroy
@@ -81,7 +104,7 @@ class UploadedListsController < ApplicationController
       v.delete("remove")
       s_data["species"] << v
     end
-    response = Req.post( APP_CONFIG["sv_replacespecies"]["url"],
+    response = Req.post( APP_CONFIG["sv_replaces_pecies"]["url"],
                          s_data.to_json,
                          {:content_type => :json} )
                          
@@ -90,18 +113,19 @@ class UploadedListsController < ApplicationController
     else
       flash[:success] = "Species are updated"
       t = s_data["species"].map {|s| s["scientific_name"]}.join(", ")
-      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
-      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found,:content_type => :json)
+      found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found,:content_type => :json)
     end
     redirect_to uploaded_list_path(params[:id])
   end
   
   def clone
-    data = get_a_list(params[:id])
+    data = get_a_list(params[:id])["list"]
     data.delete("list_id")
     data["list_species"] = []
-    data["is_list_public"] = false
-    
+    data["is_list_public"] = params["public"].nil? ? false : true
+    data["list_title"] = params["title"]
+
     species = JSON.parse(params["species"].to_json)
     species.each do |k,v|
       next if v["remove"] == 1
@@ -109,7 +133,7 @@ class UploadedListsController < ApplicationController
       v.delete("remove")
       data["list_species"] << v
     end
-    response = Req.post( APP_CONFIG["sv_createlist"]["url"],
+    response = Req.post( APP_CONFIG["sv_create_list"]["url"],
                          { "user_id" => current_user.email,
                            "list" => data
                          }.to_json,
@@ -119,11 +143,8 @@ class UploadedListsController < ApplicationController
       flash[:danger] = "Unable to create your list"
     else
       flash[:success] = "List created!"
-      t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
-      found = Req.get( APP_CONFIG["sv_findnamesintext"]["url"] + t )
-      resolved = Req.post( APP_CONFIG["sv_resolvenames"]["url"], found,:content_type => :json)
     end
-    redirect_to uploaded_list_path(JSON.parse(response)["list_id"])
+    redirect_to raw_extractions_new_from_pre_built_examples_path
   end
   
   private

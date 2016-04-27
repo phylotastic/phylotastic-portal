@@ -15,8 +15,6 @@
           </tr>
         <% else %>
           <% @my_lists.each do |p| %>
-            <% ul = UploadedList.find_by_lid(p["list_id"]) %>
-            <% next if ul.nil? %>
             <tr>
               <td>
                 <%= link_to p["list_title"], uploaded_list_path(id: p["list_id"]) %>

@@ -13,12 +13,12 @@ class ExtractionsWorker
     # call extracting service based on types of source
     case source_type
     when "ConLink"
-      extracted_response = Req.get(APP_CONFIG['sv_findnames']['url'] + ConLink.find_by_id(source_id).uri)
+      extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + ConLink.find_by_id(source_id).uri)
     when "ConFile"
       file_url = ConFile.find_by_id(source_id).document.url
       file_url.slice!(/[?]\d*\z/)
       file_url = APP_CONFIG['domain'] + file_url
-      extracted_response = Req.get(APP_CONFIG['sv_findnames']['url'] + file_url) 
+      extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url) 
     end
     
     # raw extraction
@@ -65,7 +65,7 @@ class ExtractionsWorker
                             status: "extracted" )
     
     # call to resolution names service
-    resolved_response = Req.post( APP_CONFIG["sv_resolvenames"]["url"],
+    resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted_response,
                                   :content_type => :json )
     

@@ -27,7 +27,7 @@ class TreesWorker
     sleep 3
     
     begin
-      constructed_response = Req.post( APP_CONFIG["sv_gettree"]["url"],
+      constructed_response = Req.post( APP_CONFIG["sv_get_tree"]["url"],
                                        resolved.to_json,
                                        :content_type => :json, 
                                        :accept => :json )

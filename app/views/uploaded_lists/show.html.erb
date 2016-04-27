@@ -1,8 +1,8 @@
-<% provide(:title, "Prebuilt list: " + @list["list_title"]) %>
+<% provide(:title, "Prebuilt list: " + @list["list"]["list_title"]) %>
 
-<h2><%= @list["list_title"] %></h2>
+<h2><%= @list["list"]["list_title"] %></h2>
 
-<% unless @list["list_species"].nil? %>
+<% unless @list["list"]["list_species"].nil? %>
   <table class="table table-striped">
     <thead> 
       <tr> 
@@ -17,7 +17,7 @@
       </tr> 
     </thead>
     <tbody>
-      <% @list["list_species"].each_with_index do |s, i| %>
+      <% @list["list"]["list_species"].each_with_index do |s, i| %>
         <tr>
           <td><%= i + 1 %></td>
           <td><%= s["vernacular_name"] %></td>
@@ -32,72 +32,69 @@
     </tbody>
   </table>
   
-  <% if current_user == @owner %>
-    <%= link_to "Build a tree", new_tree_path(), class: "btn btn-default btn-lg btn-primary" %>
+  <%= link_to "Build a tree", new_tree_path(ra: @ra), class: "btn btn-default btn-lg btn-primary" %>
+  <% if current_user.owned? @list %>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".edit-species">Edit species</button>
+    <div class="modal fade edit-species" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header"> 
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
+            <h3 class="modal-title center" id="myModalLabel"></h3>
+            <em>(*) Required fields</em>
+          </div>
+          <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @list["list_id"]}, method: "post") do %>
+            <div class="modal-body">
+              <table class="table table-striped">
+                <thead> 
+                  <tr> 
+                    <th>#</th>
+                    <th>Vernacular Name (*)</th>
+                    <th>Scientific Name (*)</th>
+                    <th>Scientific Name Authorship</th>
+                    <th>Family</th>
+                    <th>Order</th>
+                    <th>Phylum</th>
+                    <th>Nomenclature Code</th>
+                    <th></th>
+                  </tr> 
+                </thead>
+                <tbody>
+                  <% @list["list"]["list_species"].each_with_index do |s, i| %>
+                    <tr>
+                      <td><%= i + 1 %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][nomenclature_code]', s["nomenclature_code"], class: "form-control" %></td>
+                      <td>
+                        <i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i>
+                        <%= hidden_field_tag 'species[' + i.to_s + '][remove]', 0 %>
+                      </td>
+                    </tr>
+                  <% end %>
+                  <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer"> 
+              <%= submit_tag "Submit", class: "btn btn-primary" %>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".clone-list">Clone list</button>
 <% else %>
-  <p>Please be patient, it is coffee time :p</p>
-<% end %>
-
-<% if current_user == @owner %>
-<div class="modal fade edit-species" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header"> 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
-        <h3 class="modal-title center" id="myModalLabel"></h3>
-        <em>(*) Required fields</em>
-      </div>
-      <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @list["list_id"]}, method: "post") do %>
-        <div class="modal-body">
-          <table class="table table-striped">
-            <thead> 
-              <tr> 
-                <th>#</th>
-                <th>Vernacular Name (*)</th>
-                <th>Scientific Name (*)</th>
-                <th>Scientific Name Authorship</th>
-                <th>Family</th>
-                <th>Order</th>
-                <th>Phylum</th>
-                <th>Nomenclature Code</th>
-                <th></th>
-              </tr> 
-            </thead>
-            <tbody>
-              <% @list["list_species"].each_with_index do |s, i| %>
-                <tr>
-                  <td><%= i + 1 %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
-                  <td><%= text_field_tag 'species[' + i.to_s + '][nomenclature_code]', s["nomenclature_code"], class: "form-control" %></td>
-                  <td>
-                    <i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i>
-                    <%= hidden_field_tag 'species[' + i.to_s + '][remove]', 0 %>
-                  </td>
-                </tr>
-              <% end %>
-              <tr>
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer"> 
-          <%= submit_tag "Submit", class: "btn btn-primary" %>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+  <p>Z...z...Z...</p>
 <% end %>
 
 <div class="modal fade clone-list" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -108,8 +105,22 @@
         <h3 class="modal-title center" id="myModalLabel"></h3>
         <em>(*) Required fields</em>
       </div>
-      <%= form_tag({controller: 'uploaded_lists', action: 'clone', id: @list["list_id"]}, method: "post") do %>
+      <%= form_tag({controller: 'uploaded_lists', action: 'clone', id: @list["list"]["list_id"]}, method: "post") do %>
         <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-2 col-sm-offset-3">
+              <%= label_tag :title, "List title (*)" %>
+            </div>
+            <div class="col-sm-5">
+              <%= text_field_tag :title, nil, class: "form-control" %>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="col-sm-5 col-sm-offset-3">
+              <%= check_box_tag :public, true, false %>
+              <%= label_tag :public, "Allow other to watch this list (*)"%>
+            </div>
+          </div>
           <table class="table table-striped">
             <thead> 
               <tr> 
@@ -125,7 +136,7 @@
               </tr> 
             </thead>
             <tbody>
-              <% @list["list_species"].each_with_index do |s, i| %>
+              <% @list["list"]["list_species"].each_with_index do |s, i| %>
                 <tr>
                   <td><%= i + 1 %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></td>

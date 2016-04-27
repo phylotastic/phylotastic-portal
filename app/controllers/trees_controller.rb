@@ -4,8 +4,10 @@ class TreesController < ApplicationController
   def new
     ra = RawExtraction.find(params[:ra])
     source = ra.contributable
-    if source.user != current_user && source.class.name == "UploadedList"
-      current_user.subcribe(source)
+    if source.user != current_user && source.class.name != "UploadedList"
+      flash[:danger] = "Permission denied!"
+      redirect_to root_path
+      return
     end
     @tree = current_user.trees.build(raw_extraction_id: params[:ra])
     @resolved_names = JSON.parse ra.species
@@ -50,8 +52,8 @@ class TreesController < ApplicationController
     @con_taxon_jobs       = current_user.con_taxons
     @selection_taxon_jobs = current_user.selection_taxons.reverse
     @subset_taxon_jobs    = current_user.subset_taxons.reverse
-    res = Req.get(APP_CONFIG["sv_getuserlist"]["url"] + current_user.email)
-    @prebuilt_jobs = res ? JSON.parse(res)["lists"] : {}
+    # res = Req.get(APP_CONFIG["sv_get_list"]["url"] + "?user_id=" + current_user.email)
+    # @prebuilt_jobs = res ? JSON.parse(res)["lists"] : {}
     @processing = current_user.trees.select { |t| t.notifiable }.map { |t| t.id }
   end
   
@@ -127,7 +129,7 @@ class TreesController < ApplicationController
   end
   
   def image_getter
-    data = Req.get(APP_CONFIG["sv_getimagespecies"]["url"] + params["spe"])
+    data = Req.get(APP_CONFIG["sv_get_species_image"]["url"] + params["spe"])
     res = JSON.parse(data);
     # image_url = res["species"].first["images"].first["eolThumbnailURL"]
     image_url = res["species"].first["images"].first["eolMediaURL"]
