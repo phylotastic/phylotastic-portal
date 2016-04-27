@@ -18,12 +18,10 @@ class TreesWorker
     end
     
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
-    resolved["resolvedNames"].each do |r|
-      if !chosen_species.include? r["matched_name"]
-        resolved["resolvedNames"].delete r
-      end
+    resolved["resolvedNames"] = resolved["resolvedNames"].select do |r|
+      chosen_species.include? r["matched_name"]
     end
-    
+
     sleep 3
     
     begin
@@ -36,7 +34,7 @@ class TreesWorker
       logger.info "Call service error"
     end
     
-    if constructed_response.nil?
+    if !constructed_response
       tree.update_attributes( status: "unsuccessfully-constructed", 
                               bg_job: "-1",
                               representation: nil )

@@ -35,9 +35,25 @@
         <div class="list-group">
           <% @my_lists.each do |l| %>
             <%= link_to "a", trees_uploaded_lists_path(list_id: l["list_id"]), class: "tree_ids hide", remote: true %>
-            
             <%= link_to list_content_uploaded_lists_path(list_id: l["list_id"]), id: "job-in-nav-Hash-#{l["list_id"]}", class: "list-group-item", remote: true do %>
               <span class="job-title"><%= truncate(l["list_title"], length: 35) %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <% unless @my_subcribing_lists.empty? %>
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            From public pre-built lists
+          </h3>
+        </div>
+
+        <div class="list-group">
+          <% @my_subcribing_lists.each do |ul| %>
+            <%= link_to "a", trees_uploaded_lists_path(list_id: ul.lid), class: "tree_ids hide", remote: true %>
+            <%= link_to list_content_uploaded_lists_path(list_id: ul.lid), id: "job-in-nav-Hash-#{ul.lid}", class: "list-group-item", remote: true do %>
+              <span class="job-title"></span>
             <% end %>
           <% end %>
         </div>
@@ -58,6 +74,7 @@
           <% end %>
         </div>
       <% end %>
+      
     </div>
   </div>
   

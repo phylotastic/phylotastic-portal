@@ -1,9 +1,6 @@
 <div id="job-content-Hash-<%= list["list"]["list_id"] %>" class="">
+  <h3><%= list["list"]["list_title"] %></h3>
   <table class="table">
-    <tr>
-      <th>Title</th>
-      <td><%= list["list"]["list_title"] %></td>
-    </tr>
     <tr>
       <th>Description</th>
       <td><%= list["list"]["list_description"] %></td>
@@ -36,7 +33,9 @@
       <th>Available Action</th>
       <td>
         <%= link_to "Generate a new tree", new_tree_path(ra: uploaded_list.raw_extraction.id), class: "btn btn-primary" if uploaded_list.raw_extraction.build_tree? %>
-        <%= link_to "Remove", uploaded_list_path(uploaded_list.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+        <% if current_user.owned? list %>
+          <%= link_to "Remove", uploaded_list_path(uploaded_list.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+        <% end %>
       </td>
     </tr>
   </table>

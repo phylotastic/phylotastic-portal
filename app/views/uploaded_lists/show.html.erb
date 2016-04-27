@@ -43,7 +43,7 @@
             <h3 class="modal-title center" id="myModalLabel"></h3>
             <em>(*) Required fields</em>
           </div>
-          <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @list["list_id"]}, method: "post") do %>
+          <%= form_tag({controller: 'uploaded_lists', action: 'update_species', id: @list["list"]["list_id"]}, method: "post") do %>
             <div class="modal-body">
               <table class="table table-striped">
                 <thead> 
