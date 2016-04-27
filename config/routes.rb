@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     collection do
       post 'update_species' => "uploaded_lists#update_species"
       post 'clone' => "uploaded_lists#clone"
+      get 'list_content' => 'uploaded_lists#list_content'
+      get 'trees' => 'uploaded_lists#trees'
     end
   end
 

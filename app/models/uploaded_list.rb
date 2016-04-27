@@ -158,6 +158,30 @@ class UploadedList < ActiveRecord::Base
     end
   end
   
+  def self.find_or_create(list)
+    uploaded_list = UploadedList.find_by_lid(list["list"]["list_id"]) # query in local database
+    if uploaded_list.nil? # if there is no list in local database
+      if list["user_id"].nil? # check whether list is public or private
+        uploaded_list = UploadedList.create( lid: list["list"]["list_id"], 
+                                             public: true, 
+                                             status: true)
+      else
+        user = User.find_by_email(list["user_id"])
+        uploaded_list = user.uploaded_lists.create!( lid: list["list"]["list_id"], 
+                                                             public: false, 
+                                                             status: true)
+      end
+
+      t = list["list"]["list_species"].map {|s| s["scientific_name"]}.join(", ")
+      found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
+      resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
+      ra = uploaded_list.create_raw_extraction(species: resolved)
+    else
+      ra = uploaded_list.raw_extraction
+    end
+    return uploaded_list
+  end
+  
   private
     def not_available_in_service?
       !(self.status)

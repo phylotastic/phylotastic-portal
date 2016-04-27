@@ -1,0 +1,3 @@
+if ($("#job-content-Hash-<%= @list['list']['list_id'] %>").length == 0) {
+  $("#jobs-content-wrapper").append("<%= escape_javascript(render partial: 'my_list', locals: { list: @list, uploaded_list: @uploaded_list } ) %>"); 
+}

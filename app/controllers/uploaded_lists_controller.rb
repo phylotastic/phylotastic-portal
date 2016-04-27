@@ -29,7 +29,7 @@ class UploadedListsController < ApplicationController
     end
     if @uploaded_list.update_attributes(uploaded_list_params)
       flash[:success] = "Processing your archive file!"
-      job_id = ListProcessingWorker.perform_async(current_user.email, current_user.id, @uploaded_list.id)
+      job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
       redirect_to trees_path
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
@@ -40,25 +40,8 @@ class UploadedListsController < ApplicationController
   def show
     @list = get_a_list(params[:id])
     if @list["status_code"] == 200 # if there is a list in the service
-      ul = UploadedList.find_by_lid(@list["list"]["list_id"]) # query in local database
-      if ul.nil? # if there is no list in local database
-        if @list["user_id"].nil? # check whether list is public or private
-          @uploaded_list = UploadedList.create( lid: @list["list"]["list_id"], 
-                                                public: true, 
-                                                status: true)
-        else
-          @uploaded_list = current_user.uploaded_lists.create!( lid: @list["list"]["list_id"], 
-                                                               public: false, 
-                                                               status: true)
-        end
-
-        t = @list["list"]["list_species"].map {|s| s["scientific_name"]}.join(", ")
-        found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
-        resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
-        @ra = @uploaded_list.create_raw_extraction(species: resolved)
-      else
-        @ra = ul.raw_extraction
-      end
+      @uploaded_list = UploadedList.find_or_create(@list)
+      @ra = @uploaded_list.raw_extraction
     else
       flash[:danger] = "No list found"
       redirect_to root_path
@@ -67,7 +50,7 @@ class UploadedListsController < ApplicationController
   end
   
   def destroy
-    ul = current_user.uploaded_lists.find_by_lid(params[:id])
+    ul = current_user.uploaded_lists.find(params[:id])
     if ul.nil?
       redirect_to root_path
     else 
@@ -80,8 +63,9 @@ class UploadedListsController < ApplicationController
         end
         return
       end
-      res = Req.get(APP_CONFIG["sv_deletelist"]["url"] + "?user_id=#{current_user.email}&list_id=#{ul.lid}")
-      if !res || JSON.parse(res)["status_code"] != 200
+      res = remove_private_list(ul.lid)
+      binding.pry
+      if res["status_code"] != 200
         flash[:danger] = "Can not delete list for now"
         redirect_to trees_path
       else
@@ -145,6 +129,23 @@ class UploadedListsController < ApplicationController
       flash[:success] = "List created!"
     end
     redirect_to raw_extractions_new_from_pre_built_examples_path
+  end
+  
+  def list_content
+    @list = get_a_list(params[:list_id])
+    @uploaded_list = UploadedList.find_or_create(@list)
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def trees
+    @list = get_a_list(params["list_id"])
+    uploaded_list = UploadedList.find_or_create(@list)
+    @tree_ids = uploaded_list.raw_extraction.trees.map {|t| t.id }
+    respond_to do |format|
+      format.js
+    end
   end
   
   private

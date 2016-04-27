@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :watched_trees, through: :watch_relationships, source: :tree
   has_many :uploaded_lists, dependent: :destroy
   has_many :user_list_relationships, dependent: :destroy
-  has_many :prebuilt_lists, through: :user_list_relationships, source: :uploaded_list
+  has_many :subcribing_lists, through: :user_list_relationships, source: :uploaded_list
   
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   
@@ -95,4 +95,13 @@ class User < ActiveRecord::Base
   def owned? list_json
     !list_json["user_id"].nil?
   end
+  
+  def failed_lists
+    uploaded_lists.where(status: false)
+  end
+  
+  def processing_trees
+    trees.select { |t| t.notifiable }.map { |t| t.id }
+  end
+
 end
