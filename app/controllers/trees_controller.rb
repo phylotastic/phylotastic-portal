@@ -13,12 +13,13 @@ class TreesController < ApplicationController
         return
       end
     else
+      list = get_a_list(source.lid)
       if source.public
-        if source.user != current_user 
+        unless current_user.owned?(list)
           current_user.subcribe(source)
         end
       else
-        if source.user != current_user 
+        unless current_user.owned?(list)
           flash[:danger] = "Permission denied!"
           redirect_to root_path
           return

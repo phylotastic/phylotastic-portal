@@ -80,7 +80,11 @@ class UploadedListsController < ApplicationController
   end
   
   def update_species
-    s_data = {"species" => [], "user_id" => current_user.email, "list_id" => params[:id]}
+    current_user.refresh_token_if_expired
+    s_data = { "species" => [], 
+               "user_id" => current_user.email, 
+               "list_id" => params[:id],
+               "access_token" => current_user.access_token }
     species = JSON.parse(params["species"].to_json)
     species.each do |k,v|
       next if v["remove"] == 1
@@ -88,7 +92,7 @@ class UploadedListsController < ApplicationController
       v.delete("remove")
       s_data["species"] << v
     end
-    response = Req.post( APP_CONFIG["sv_replaces_pecies"]["url"],
+    response = Req.post( APP_CONFIG["sv_replace_species"]["url"],
                          s_data.to_json,
                          {:content_type => :json} )
                          
@@ -124,9 +128,9 @@ class UploadedListsController < ApplicationController
                          {:content_type => :json} )
 
     if !response || JSON.parse(response)["status_code"] != 200
-      flash[:danger] = "Unable to create your list"
+      flash[:danger] = "Unable to clone"
     else
-      flash[:success] = "List created!"
+      flash[:success] = "List cloned!"
     end
     redirect_to raw_extractions_new_from_pre_built_examples_path
   end
@@ -142,7 +146,11 @@ class UploadedListsController < ApplicationController
   def trees
     @list = get_a_list(params["list_id"])
     uploaded_list = UploadedList.find_or_create(@list)
-    @tree_ids = uploaded_list.raw_extraction.trees.map {|t| t.id }
+    if current_user.owned? @list
+      @tree_ids = uploaded_list.raw_extraction.trees.map {|t| t.id }
+    else
+      @tree_ids = uploaded_list.raw_extraction.trees.select {|t| t.user == current_user}.map {|t| t.id }
+    end
     respond_to do |format|
       format.js
     end
