@@ -1,0 +1,8 @@
+var s = "";
+<% @tree_ids.each do |t| %>
+  s = s + "for-tree-<%= t %> ";
+<% end %>
+$("#job-in-nav-Hash-<%= @list['list']['list_id'] %>").append("<span class=\"hide\"><span class=\"glyphicon glyphicon-bell\" id=\"" + s + "\" aria-hidden=\"true\"></span></span>");
+<% if @tree_ids.length != 0 %>
+  $("#job-in-nav-Hash-<%= @list['list']['list_id'] %>").append("<span class=\"badge\"><%= @tree_ids.length %></span>");
+<% end %>

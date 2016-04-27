@@ -25,11 +25,44 @@
         <%= render partial: "job_panel", locals: {jobs: @subset_taxon_jobs, heading: "From genome or location"} %>
       <% end %>
       
+      <% unless @my_lists.empty? %>
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            From my own pre-built list
+          </h3>
+        </div>
+        
+        <div class="list-group">
+          <% @my_lists.each do |l| %>
+            <%= link_to "a", trees_uploaded_lists_path(list_id: l["list_id"]), class: "tree_ids hide", remote: true %>
+            
+            <%= link_to list_content_uploaded_lists_path(list_id: l["list_id"]), id: "job-in-nav-Hash-#{l["list_id"]}", class: "list-group-item", remote: true do %>
+              <span class="job-title"><%= truncate(l["list_title"], length: 35) %></span>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <% unless @my_failed_lists.empty? %>
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Failed to process lists
+          </h3>
+        </div>
+
+        <div class="list-group">
+          <% @my_failed_lists.each do |ul| %>
+            <a href="#" class="list-group-item list-group-item-danger" id="job-in-nav-<%= ul.class.name %>-<%= ul.id %>">
+              <span class="job-title"><%= truncate(ul.file.original_filename, length: 35) %></span>
+            </a>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
   
   <div class="col-md-8">
-    <div>
+    <div id="jobs-content-wrapper">
       <%= render partial: "job_content", locals: {jobs: @con_link_jobs} %>
       <%= render partial: "job_content", locals: {jobs: @con_file_jobs} %>
 
@@ -38,7 +71,60 @@
       <%= render partial: "job_content", locals: {jobs: @selection_taxon_jobs} %>
 
       <%= render partial: "job_content", locals: {jobs: @subset_taxon_jobs} %>
-    
+      
+      <% @my_failed_lists.each do |ul| %>
+        <div id="job-content-<%= ul.class.name %>-<%= ul.id %>" class="hide">
+          <table class="table">
+            <tr>
+              <th>File</th>
+              <td><%= ul.file.original_filename %></td>
+            </tr>
+            <tr>
+              <th>Created at</th>
+              <td><%= ul.created_at %></td>
+            </tr>
+            <tr>
+              <th>Modified at</th>
+              <td><%= ul.updated_at %></td>
+            </tr>
+            <tr>
+              <th>Available Action</th>
+              <td>
+                <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{ul.id}", class: "btn btn-primary" %>
+                <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
+                <div class="modal fade" id="reup-<%= ul.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header"> 
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
+                        <h3 class="modal-title center" id="myModalLabel">Re-upload</h3>
+                      </div>
+                      <%= form_for ul, url: uploaded_list_path(ul.id), method: :patch, html: { multipart: true } do |f| %>
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <%= f.file_field :file, class: "input-file" %>
+                            <div>Note: please compress your files in one ZIP file. You can find a default template <%= link_to "here", "https://drive.google.com/file/d/0B7SKJwE3SsCsNUhYQWdEVzk2RFE/view?usp=sharing"%></div>
+
+                            <%= f.label :public do %>
+                              <%= f.check_box :public, class: "input-file" %>
+                              Allow others to watch this list
+                            <% end %>
+
+                          </div>
+                        </div>
+                        <div class="modal-footer"> 
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+                          <%= f.submit "Submit my list", class: "btn btn-default btn-primary" %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      <% end %>
     </div>
   </div>
   
@@ -154,7 +240,9 @@ $(document).ready(function() {
     $("div[id*='job-content']").addClass("hide");
     $("#job-content-" + eles[3] + "-" + eles[4]).removeClass("hide");
     
-    return false;
+    if (eles[3] != "Hash") {      
+      return false;
+    }
   });
 
   $($("div[id *= \"" + 'job-content-' + "\"]")[0]).removeClass("hide");
@@ -163,6 +251,8 @@ $(document).ready(function() {
     $("a[id *= \"" + 'job-in-nav-' + "\"]").removeClass("active");
     $(this).addClass("active");
   });
+  
+  $('.tree_ids').click();
   
 });
 

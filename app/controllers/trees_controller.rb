@@ -1,14 +1,31 @@
 class TreesController < ApplicationController
   before_action :authenticate_user!
   
+  include UploadedListsHelper
+  
   def new
     ra = RawExtraction.find(params[:ra])
     source = ra.contributable
-    if source.user != current_user && source.class.name != "UploadedList"
-      flash[:danger] = "Permission denied!"
-      redirect_to root_path
-      return
+    if source.class.name != "UploadedList"
+      if source.user != current_user 
+        flash[:danger] = "Permission denied!"
+        redirect_to root_path
+        return
+      end
+    else
+      if source.public
+        if source.user != current_user 
+          current_user.subcribe(source)
+        end
+      else
+        if source.user != current_user 
+          flash[:danger] = "Permission denied!"
+          redirect_to root_path
+          return
+        end
+      end
     end
+
     @tree = current_user.trees.build(raw_extraction_id: params[:ra])
     @resolved_names = JSON.parse ra.species
   end
@@ -52,9 +69,12 @@ class TreesController < ApplicationController
     @con_taxon_jobs       = current_user.con_taxons
     @selection_taxon_jobs = current_user.selection_taxons.reverse
     @subset_taxon_jobs    = current_user.subset_taxons.reverse
-    # res = Req.get(APP_CONFIG["sv_get_list"]["url"] + "?user_id=" + current_user.email)
-    # @prebuilt_jobs = res ? JSON.parse(res)["lists"] : {}
-    @processing = current_user.trees.select { |t| t.notifiable }.map { |t| t.id }
+
+    @my_lists = get_private_lists["lists"] rescue []
+    @my_failed_lists = current_user.failed_lists
+    @my_subcribing_lists = current_user.subcribing_lists
+
+    @processing = current_user.processing_trees
   end
   
   def explore
