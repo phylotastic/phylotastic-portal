@@ -131,6 +131,7 @@ class UploadedListsController < ApplicationController
       flash[:danger] = "Unable to clone"
     else
       flash[:success] = "List cloned!"
+      CloningRelationship.create(parent: params[:id], child: JSON.parse(response)["list_id"])
     end
     redirect_to raw_extractions_new_from_pre_built_examples_path
   end
