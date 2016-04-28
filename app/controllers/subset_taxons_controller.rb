@@ -4,6 +4,7 @@ class SubsetTaxonsController < ApplicationController
   def create
     if params["subset_taxon"]["has_genome_in_ncbi"] == "1"
       response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:subset_taxon][:name])
+      # TODO: elsif !params["subset_taxon"]["has_genome_in_ncbi"].nil?
     else
       response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:subset_taxon][:name])
     end
