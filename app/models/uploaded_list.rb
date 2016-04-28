@@ -162,14 +162,21 @@ class UploadedList < ActiveRecord::Base
     uploaded_list = UploadedList.find_by_lid(list["list"]["list_id"]) # query in local database
     if uploaded_list.nil? # if there is no list in local database
       if list["list"]["is_list_public"] # check whether list is public or private
-        uploaded_list = UploadedList.create( lid: list["list"]["list_id"], 
-                                             public: true, 
-                                             status: true)
+        if list["user_id"].nil?
+          uploaded_list = UploadedList.create( lid: list["list"]["list_id"], 
+                                               public: true, 
+                                               status: true)
+        else 
+          user = User.find_by_email(list["user_id"])
+          uploaded_list = user.uploaded_list.create( lid: list["list"]["list_id"], 
+                                                     public: true, 
+                                                     status: true)
+        end
       else
         user = User.find_by_email(list["user_id"])
         uploaded_list = user.uploaded_lists.create!( lid: list["list"]["list_id"], 
-                                                             public: false, 
-                                                             status: true)
+                                                     public: false, 
+                                                     status: true)
       end
 
       t = list["list"]["list_species"].map {|s| s["scientific_name"]}.join(", ")
