@@ -161,7 +161,7 @@ class UploadedList < ActiveRecord::Base
   def self.find_or_create(list)
     uploaded_list = UploadedList.find_by_lid(list["list"]["list_id"]) # query in local database
     if uploaded_list.nil? # if there is no list in local database
-      if list["user_id"].nil? # check whether list is public or private
+      if list["list"]["is_list_public"] # check whether list is public or private
         uploaded_list = UploadedList.create( lid: list["list"]["list_id"], 
                                              public: true, 
                                              status: true)
