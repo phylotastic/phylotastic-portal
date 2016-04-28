@@ -19,7 +19,11 @@
         <% when SelectionTaxon %>
           <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | #{source.nb_species} species | #{source.criterion}", tree_ids: tree_ids, job_id: source.id, job_class: source.class.name} %>
         <% when SubsetTaxon %>
-          <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | #{source.country.name}", tree_ids: tree_ids, job_id: source.id, job_class: source.class.name} %>
+          <% if !source.country.nil? %>
+            <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | #{source.country.name}", tree_ids: tree_ids, job_id: source.id, job_class: source.class.name} %>
+          <% elsif source.has_genome_in_ncbi %>
+            <%= render partial: "job_in_nav", locals: {job_title: "#{source.name} | Genome in NCBI", tree_ids: tree_ids, job_id: source.id, job_class: source.class.name} %>
+          <% end %>
         <% else %>
           <%= render partial: "job_in_nav", locals: {job_title: "#{source.name}", tree_ids: tree_ids, job_id: source.id, job_class: source.class.name} %>
         <% end %>

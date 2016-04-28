@@ -10,10 +10,10 @@ class SubsetTaxonsController < ApplicationController
 
     if !response
       flash[:danger] = "Sorry! Service is unavailable. We will fix it soon."
-      redirect_to home_path
+      redirect_to root_path
       return
     end
-    
+
     case JSON.parse(response)["status_code"]
     when 200
       @subset_taxon = current_user.subset_taxons.build(subset_taxon_params)
@@ -42,6 +42,6 @@ class SubsetTaxonsController < ApplicationController
   
   private
     def subset_taxon_params
-      params.require(:subset_taxon).permit(:name, :country_id)
+      params.require(:subset_taxon).permit(:name, :country_id, :has_genome_in_ncbi)
     end
 end
