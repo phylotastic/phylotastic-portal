@@ -11,7 +11,7 @@ class ConTaxonsController < ApplicationController
       logger.info "Cannot get species from a taxon"
       puts e.message
       flash[:danger] = "Sorry! Service is unavailable. We will fix it soon."
-      redirect_to home_path
+      redirect_to root_path
       return
     end
     
