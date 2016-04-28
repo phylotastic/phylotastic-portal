@@ -97,7 +97,7 @@ class User < ActiveRecord::Base
   end
   
   def failed_lists
-    uploaded_lists.where(status: false)
+    uploaded_lists.select {|u| u.status == false || u.status.nil? }
   end
   
   def processing_trees

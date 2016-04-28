@@ -20,7 +20,7 @@ class ListProcessingWorker
         UploadedList.process(user_name, ul_id)
       rescue Exception => e
         puts e
-        # puts e.backtrace
+        puts e.backtrace
       end
       
       # Find specific entry
