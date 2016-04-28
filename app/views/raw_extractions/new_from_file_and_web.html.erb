@@ -19,7 +19,7 @@
     <%= form_for @con_file do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.label :document, "Choose a file (pdf, text, doc, docs, xls or xlsx)" %>
+        <%= f.label :document, "Choose a file (.pdf, .txt, .doc, .docs, .xls or .xlsx)" %>
         <%= f.file_field :document, class: "input-file" %>
       </div>
       <%= f.submit "Extract names from file", class: "btn btn-default btn-lg btn-block" %>
