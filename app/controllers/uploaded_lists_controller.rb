@@ -43,7 +43,7 @@ class UploadedListsController < ApplicationController
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction
     else
-      flash[:danger] = "No list found"
+      flash[:danger] = @list["message"]
       redirect_to root_path
     end
     
