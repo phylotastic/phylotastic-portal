@@ -107,4 +107,8 @@ end
 group :production do
   gem 'pg',             '0.17.1'
   gem 'rails_12factor', '0.0.2'
+  gem 'capistrano', '~> 3.1.0', require: false
+  gem 'capistrano-bundler', '1.1.1', require: false
+  gem 'capistrano-rails', '1.1.0', require: false
+  gem 'capistrano3-puma', require: false
 end
