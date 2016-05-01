@@ -15,7 +15,6 @@
 /log/*
 !/log/.keep
 /tmp
-Gemfile.lock
 dump.rdb
 public/system/con_files/
 
@@ -44,3 +43,9 @@ solr/development
 solr/default/data
 /log/*.log.lck
 solr/pids
+
+# Ansible
+group_vars/
+production
+staging
+site.yml
