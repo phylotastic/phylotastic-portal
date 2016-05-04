@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get 'explore'
       get 'search' => 'trees#search'
       get 'image_getter' => 'trees#image_getter'
+      post 'generate_image' => 'trees#generate_image', format: :svg 
     end
   end
   
