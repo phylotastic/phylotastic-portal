@@ -25,6 +25,10 @@
     <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
   <% end %>
   
+  
+  <%= form_tag "/trees/generate_image.svg", method: :post, id: "save-to-disk-form" do %>
+    <input type="hidden" name="image" value="" />
+  <% end %>
   <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk" %>
   
   <% if @tree.image.exists? %>
@@ -39,6 +43,7 @@
   <div id="tree-in-newick"></div>
   <div id='graph'></div>
   <div id='svgdataurl' class="hidden"></div>
+  <div id='pngdataurl' class="hidden"></div>
   <canvas class="hidden"></canvas>
   <div class="row">
     <div class="pull-right">Last edited: <%= time_ago_in_words(@tree.updated_at) %> by <%= link_to @tree.user.name, '#' %></div>
@@ -424,35 +429,18 @@ $(document).ready(function(){
   
   // save tree image to disk
   d3.select("#save-to-disk").on("click", function(){
-    var html = d3.select("svg")
+    html = d3.select("svg")
           .attr("version", 1.1)
           .attr("xmlns", "http://www.w3.org/2000/svg")
+          .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
           .node().parentNode.innerHTML;
-
-    // console.log(html);
-    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-    var img = '<img src="'+imgsrc+'">'; 
-    d3.select("#svgdataurl").html(img);
-
-    var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
-    canvas.width = newWidth + 100;
-    canvas.height = newHeight;
     
-    var image = new Image;
-    image.src = imgsrc;
-    image.onload = function() {
-  	  context.drawImage(image, 0, 0);
-
-      var canvasdata = canvas.toDataURL("image/png");
-      var pngimg = '<img src="'+canvasdata+'">';
-              d3.select("#pngdataurl").html(pngimg);
-
-      var a = document.createElement("a");
-      a.download = "sample.png";
-      a.href = canvasdata;
-      a.click();
-    };
-
+    html = html.replace(/NS\d+:href/g, 'xlink:href')
+          
+    $('#save-to-disk-form').children('input[name="image"]').val(html);
+    $('#save-to-disk-form').submit();
+    
+    return false;
   });
   
   // Save tree image to server
@@ -516,13 +504,6 @@ $(document).ready(function(){
     $(e.trigger).text("Copied!");
     e.clearSelection();
   });
-  
-  // Disable save to disk button when using Safari
-  var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && !navigator.userAgent.match('CriOS');
-  if (isSafari) {
-    $('#save-to-disk').addClass("disabled");
-    $('#save-to-disk').text("Not available in Safari");
-  }
   
 });
 </script>

@@ -1,11 +1,7 @@
-application_master = '128.123.63.10'
 
-role :app, application_master
-role :web, application_master
-role :db,  application_master
-
+set :stage, :staging
 set :rails_env, 'staging'
-set :host, 'phylo.cs.nmsu.edu'
+server '128.123.63.10', user: 'van', roles: %w{web app db}, primary: true
 set :keep_releases, 2
 
 # Simple Role Syntax

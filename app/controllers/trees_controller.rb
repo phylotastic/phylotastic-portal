@@ -115,6 +115,14 @@ class TreesController < ApplicationController
     end
   end
   
+  def generate_image
+    respond_to do |format|
+      format.svg {
+        send_data(params["image"], disposition: 'attachment')
+      }
+    end
+  end
+  
   def public
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
