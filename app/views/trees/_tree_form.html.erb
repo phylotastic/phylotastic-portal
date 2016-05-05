@@ -15,7 +15,7 @@
           <%= select "tree", "phylo_source_id", options_for_select(phylo_sources_for_select, tree.phylo_source.id), {}, { class: "form-control" } %>
         <% end %>
       </div>
-      <p>3. Any extras:</p>
+      <!-- <p>3. Any extras:</p>
       <div class="form-group left-indent">
         <div class="checkbox">
           <%= f.label :branch_length do %>
@@ -23,16 +23,16 @@
             Add branch lengths
           <% end %>
         </div>
-      </div>
-      <div class="form-group left-indent">
+      </div> -->
+      <!-- <div class="form-group left-indent">
         <div class="checkbox">
           <%= f.label :images_from_EOL do %>
             <%= f.check_box :images_from_EOL %>
             Get images from EOL
           <% end %>
         </div>
-      </div>
-      <p>4. Give some description about your tree</p>
+      </div> -->
+      <p>3. Give some description about your tree</p>
       <div class="form-group left-indent">
         <%= f.text_area :description, class: "form-control" %>
       </div>
