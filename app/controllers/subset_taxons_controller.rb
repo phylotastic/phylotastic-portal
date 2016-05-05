@@ -41,6 +41,19 @@ class SubsetTaxonsController < ApplicationController
     end
   end
   
+  def destroy
+    sx = current_user.subset_taxons.find(params[:id])
+    if sx.nil?
+      redirect_to root_path
+    else 
+      sx.destroy
+      respond_to do |format|
+        format.html { redirect_to trees_path }
+        format.js
+      end
+    end
+  end
+  
   private
     def subset_taxon_params
       params.require(:subset_taxon).permit(:name, :country_id, :has_genome_in_ncbi)
