@@ -18,9 +18,9 @@
 
 ## a note about common names 
 
-Search on "<common name> taxonomy" sometimes yields uniprot hits. 
+Search on "common_name taxonomy" sometimes yields uniprot hits. 
 
-Search on "<common name> nomenclature" usually reveals binomial in top few hits, unless it is not a species or genus, but something like "beetle" or "fly". 
+Search on "common_name nomenclature" usually reveals binomial in top few hits, unless it is not a species or genus, but something like "beetle" or "fly". 
 
 
 ## Lists 
