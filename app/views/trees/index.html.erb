@@ -1,8 +1,8 @@
 <% provide(:title, "Phylotastic Jobs") %>
 
-<h2>Jobs</h2>
+<h2>Phylotastic Jobs</h2>
 
-<%= if @con_link_jobs.empty? && 
+<% if( @con_link_jobs.empty? && 
        @con_link_jobs.empty? &&
        @con_file_jobs.empty? &&
        @con_taxon_jobs.empty? &&
@@ -10,7 +10,7 @@
        @subset_taxon_jobs.empty? &&
        @my_lists.empty? &&
        @my_failed_lists.empty? &&
-       @my_subcribing_lists.empty? do %>
+       @my_subcribing_lists.empty? ) do %>
   You have no jobs.
 <% end %>
 
