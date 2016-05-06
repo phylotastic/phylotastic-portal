@@ -2,6 +2,18 @@
 
 <h2>Jobs</h2>
 
+<%= if @con_link_jobs.empty? && 
+       @con_link_jobs.empty? &&
+       @con_file_jobs.empty? &&
+       @con_taxon_jobs.empty? &&
+       @selection_taxon_jobs.empty? &&
+       @subset_taxon_jobs.empty? &&
+       @my_lists.empty? &&
+       @my_failed_lists.empty? &&
+       @my_subcribing_lists.empty? %>
+  You have no jobs.
+<% end %>
+
 <div class="row">
   <div class="col-md-4">
     <div class="panel panel-default">
