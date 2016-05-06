@@ -55,11 +55,21 @@ class UploadedList < ActiveRecord::Base
           when "List Author"
             row[k].split(',').each { |w| data["list_author"] << w }
           when "Curation Date"
-            data["list_curation_date"] = parse_date(row[k])
+            if parse_date(row[k])
+              data["list_curation_date"] = parse_date(row[k])
+            else
+              ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              return
+            end
           when "Curator"
             data["list_curator"] = val
           when "Date published"
-            data["list_date_published"] = parse_date(row[k])
+            if parse_date(row[k])
+              data["list_date_published"] = parse_date(row[k])
+            else
+              ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              return
+            end
           when "Description"
             data["list_description"] = val
           when "extra info"
@@ -124,7 +134,7 @@ class UploadedList < ActiveRecord::Base
                          {:content_type => :json} )
 
     if !response || JSON.parse(response)["status_code"] != 200
-      ul.update_attributes(status: false)
+      ul.update_attributes(status: false, reason: JSON.parse(response)["message"])
     else
       ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
       # create a raw extraction
@@ -152,12 +162,15 @@ class UploadedList < ActiveRecord::Base
   def self.parse_date(d)
     if d.nil?
       ""
-    elsif d.length == 4
-      "#{d}-01-01"
-    elsif d.length < 10
-      (d.to_date + 2000.years).strftime("%m-%d-%Y")
+    elsif d == "NA"
+      "NA"
     else
-      d.to_date.strftime("%m-%d-%Y")
+      begin
+        date = Date.parse(d).to_s
+      rescue ArgumentError
+        logger.info "#{d} can not be parsed"
+        false
+      end
     end
   end
   
