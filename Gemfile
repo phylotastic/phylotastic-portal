@@ -24,6 +24,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Authentication
 gem 'devise'
 gem 'omniauth'
+gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
@@ -107,8 +108,8 @@ end
 group :production do
   gem 'pg',             '0.17.1'
   gem 'rails_12factor', '0.0.2'
-  gem 'capistrano', '~> 3.1.0', require: false
-  gem 'capistrano-bundler', '1.1.1', require: false
-  gem 'capistrano-rails', '1.1.0', require: false
-  gem 'capistrano3-puma', require: false
+  # gem 'capistrano', '~> 3.1.0', require: false
+#   gem 'capistrano-bundler', '1.1.1', require: false
+#   gem 'capistrano-rails', '1.1.0', require: false
+#   gem 'capistrano3-puma', require: false
 end
