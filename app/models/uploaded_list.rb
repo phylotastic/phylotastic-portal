@@ -87,6 +87,7 @@ class UploadedList < ActiveRecord::Base
           s_data["phylum"] = nil
           s_data["family"] = nil
           s_data["order"] = nil
+          s_data["class"] = nil
           s_data["nomenclature_code"] = nil
           
           row = Hash[[header, spreadsheet.row(i)].transpose]
@@ -103,6 +104,8 @@ class UploadedList < ActiveRecord::Base
               s_data["phylum"] = val
             when "Family"
               s_data["family"] = val
+            when "Class"
+              s_data["class"] = val
             when "Order"
               s_data["order"] = val
             when "nomenclaturalCode"
@@ -150,7 +153,7 @@ class UploadedList < ActiveRecord::Base
     if d.nil?
       ""
     elsif d.length == 4
-      "01-01-#{d}"
+      "#{d}-01-01"
     elsif d.length < 10
       (d.to_date + 2000.years).strftime("%m-%d-%Y")
     else

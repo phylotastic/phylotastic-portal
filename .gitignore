@@ -17,6 +17,7 @@
 /tmp
 dump.rdb
 public/system/con_files/
+Gemfile.lock
 
 # Ignore Spring files.
 /spring/*.pid
