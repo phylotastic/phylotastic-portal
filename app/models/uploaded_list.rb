@@ -37,7 +37,13 @@ class UploadedList < ActiveRecord::Base
       if spreadsheet.nil?
         next
       end
-      header = spreadsheet.row(1)
+
+      begin
+        header = spreadsheet.row(1)
+      rescue ArgumentError => e
+        ul.update_attributes(status: false, reason: e.message)
+        return
+      end
 
       # list details
       if header.include?("List Title")
