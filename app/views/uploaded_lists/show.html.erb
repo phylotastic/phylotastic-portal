@@ -35,7 +35,12 @@
   </table>
   
   <%= link_to "Build a tree", new_tree_path(ra: @ra), class: "btn btn-default btn-lg btn-primary" %>
+  
   <% if current_user.owned? @list %>
+    <!-- <% unless @list["list"]["is_list_public"] %>
+      <%= link_to "Publish", publish_uploaded_lists_path(id: @list["list"]["list_id"]), class: "btn btn-default btn-primary", data: { confirm: "Once a lish is published, it will not reverted to private. Are you sure?" } %>
+    <% end %> -->
+    
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".edit-species">Edit species</button>
     <div class="modal fade edit-species" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
       <div class="modal-dialog modal-lg">

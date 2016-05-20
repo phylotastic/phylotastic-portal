@@ -79,7 +79,9 @@ class User < ActiveRecord::Base
   
   # Create user_list_relationships
   def subcribe(list)
-    user_list_relationships.first_or_create(uploaded_list_id: list.id) 
+    if user_list_relationships.where(uploaded_list_id: list.id).empty?
+      user_list_relationships.create(uploaded_list_id: list.id)
+    end
   end
   
   # Destroy user_list_relationships

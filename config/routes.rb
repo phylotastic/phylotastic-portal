@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post 'clone' => "uploaded_lists#clone"
       get 'list_content' => 'uploaded_lists#list_content'
       get 'trees' => 'uploaded_lists#trees'
+      get 'publish' => 'uploaded_lists#publish'
     end
   end
 

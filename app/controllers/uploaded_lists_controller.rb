@@ -156,6 +156,14 @@ class UploadedListsController < ApplicationController
     end
   end
   
+  def publish
+    @uploaded_list = current_user.uploaded_lists.find(params[:id])
+    if @uploaded_list.update_attributes(public: true)
+      flash[:success] = "List published!"
+      redirect_to uploaded_lists_path(params[:id])
+    end
+  end
+  
   private
 
   def uploaded_list_params
