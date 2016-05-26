@@ -15,7 +15,8 @@ class SubsetTaxonsController < ApplicationController
       return
     end
 
-    case JSON.parse(response)["status_code"]
+    code = JSON.parse(response)["status_code"] rescue 0
+    case code
     when 200
       @subset_taxon = current_user.subset_taxons.build(subset_taxon_params)
       if @subset_taxon.save

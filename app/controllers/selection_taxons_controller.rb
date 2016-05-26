@@ -12,7 +12,8 @@ class SelectionTaxonsController < ApplicationController
       return
     end
     
-    case JSON.parse(response)["status_code"]
+    code = JSON.parse(response)["status_code"] rescue 0
+    case code
     when 404, 204
       flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:selection_taxon][:name]}\""
       redirect_to raw_extractions_new_from_taxon_path
