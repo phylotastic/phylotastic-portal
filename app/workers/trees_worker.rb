@@ -9,7 +9,7 @@ class TreesWorker
     logger.info "Found tree ##{tree_id}!"
     puts tree.id
     
-    resolved = JSON.parse(tree.raw_extraction.species)
+    resolved = JSON.parse(tree.raw_extraction.species) rescue []
     if(resolved["resolvedNames"].length == 0)
       tree.update_attributes( status: "unsuccessfully-constructed", 
                               bg_job: "-1",

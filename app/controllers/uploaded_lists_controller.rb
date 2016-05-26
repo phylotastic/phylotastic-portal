@@ -84,7 +84,7 @@ class UploadedListsController < ApplicationController
                "user_id" => current_user.email, 
                "list_id" => params[:id],
                "access_token" => current_user.access_token }
-    species = JSON.parse(params["species"].to_json)
+    species = JSON.parse(params["species"].to_json) rescue []
     species.each do |k,v|
       next if v["remove"] == 1
       next if (v["vernacular_name"].nil? || v["scientific_name"].nil? || v["vernacular_name"].empty? || v["scientific_name"].empty?)

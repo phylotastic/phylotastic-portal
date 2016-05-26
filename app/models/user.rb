@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   def refresh_token_if_expired
     if token_expired?
       response    = RestClient.post "https://accounts.google.com/o/oauth2/token", :grant_type => 'refresh_token', :refresh_token => self.refresh_token, :client_id => APP_CONFIG['google']["id"], :client_secret => APP_CONFIG['google']["secret"] 
-      refreshhash = JSON.parse(response.body)
+      refreshhash = JSON.parse(response.body) rescue []
 
       # token_will_change!
       # expiresat_will_change!

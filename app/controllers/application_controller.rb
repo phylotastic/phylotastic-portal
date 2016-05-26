@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
   
   def convert_to_resolved_format(response_species)
     faker = {resolvedNames: []}
-    JSON.parse(response_species)["species"].each do |n| 
+    sp = JSON.parse(response_species)["species"] rescue []
+    sp.each do |n| 
       faker[:resolvedNames] << { match_type: "Exact", 
                                  resolver_name: "OT", 
                                  matched_name: n, 
@@ -17,7 +18,7 @@ class ApplicationController < ActionController::Base
 
   def convert_to_chosen_species_format(response_species, nb_species, criterion)
     faker = {}
-    species = JSON.parse(response_species)["species"]
+    species = JSON.parse(response_species)["species"] rescue []
     case criterion
     when "Populatity"
       if nb_species < species.count
@@ -40,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
   
   def convert_to_extracted_response(response_species)
-    species = JSON.parse(response_species)["species"]
+    species = JSON.parse(response_species)["species"] rescue []
     faker = {scientificNames: []}
     faker[:scientificNames].concat species
     return faker.to_json

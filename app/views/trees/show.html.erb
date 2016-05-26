@@ -123,7 +123,9 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer"> 
+      <div class="modal-footer">
+        <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: @tree.raw_extraction.id), class: "btn-primary btn btn-default" %> 
+        
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
       </div>
     </div>

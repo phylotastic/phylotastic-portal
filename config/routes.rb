@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       get 'search' => 'trees#search'
       get 'image_getter' => 'trees#image_getter'
       post 'generate_image' => 'trees#generate_image', format: :svg 
+      get 'taxon_matching_report' => 'trees#taxon_matching_report'
     end
   end
   

@@ -4,8 +4,8 @@ class TreesController < ApplicationController
   include UploadedListsHelper
   
   def new
-    ra = RawExtraction.find(params[:ra])
-    source = ra.contributable
+    @ra = RawExtraction.find(params[:ra])
+    source = @ra.contributable
     if source.class.name != "UploadedList"
       if source.user != current_user 
         flash[:danger] = "Permission denied!"
@@ -28,7 +28,7 @@ class TreesController < ApplicationController
     end
 
     @tree = current_user.trees.build(raw_extraction_id: params[:ra])
-    @resolved_names = JSON.parse ra.species
+    @resolved_names = JSON.parse @ra.species rescue []
   end
   
   def create
@@ -49,7 +49,7 @@ class TreesController < ApplicationController
   
   def show
     @tree = Tree.find_by(id: params[:id])
-    @resolved_names = JSON.parse(@tree.raw_extraction.species)["resolvedNames"]
+    @resolved_names = JSON.parse(@tree.raw_extraction.species)["resolvedNames"] rescue []
     if @tree.nil? 
       redirect_to root_url
     elsif @tree.status != "completed"
@@ -84,7 +84,8 @@ class TreesController < ApplicationController
   
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
-    @resolved_names = JSON.parse @tree.raw_extraction.species
+    @ra = @tree.raw_extraction
+    @resolved_names = JSON.parse @ra.species rescue []
   end
   
   def update
@@ -159,12 +160,24 @@ class TreesController < ApplicationController
   
   def image_getter
     data = Req.get(APP_CONFIG["sv_get_species_image"]["url"] + params["spe"])
-    res = JSON.parse(data);
+    res = JSON.parse(data) rescue []
     # image_url = res["species"].first["images"].first["eolThumbnailURL"]
     image_url = res["species"].first["images"].first["eolMediaURL"]
     image = Base64.encode64(open(image_url, "rb").read)
     respond_to do |format|
       format.json { render :json => {image: "data:image/png;base64,#{image}"} }
+    end
+  end
+  
+  def taxon_matching_report
+    ra = RawExtraction.find(params[:ra])
+    @resolved_names = JSON.parse(ra.species)["resolvedNames"] rescue []
+    respond_to do |format|
+          format.html
+          format.pdf do
+            render :pdf => "taxon_matching_report",
+                   :template => "trees/taxon_matching_report.pdf.erb"
+          end
     end
   end
   
