@@ -6,20 +6,22 @@
     <%= wicked_pdf_javascript_include_tag "number_pages" %>
   </head>
   <style>
-  div#header {
-    
-  }
-  
-  table {
-    width: 100%;
-  }
-  table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-  th, td {
-    padding: 5px;
-  }
+    table {
+      width: 100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+    }
+    thead {
+          display: table-header-group;
+    }
+    tr {
+        page-break-inside: avoid;
+    }
   </style>
   <body onload='number_pages'>
     <div id="header"  style="text-align: center;">
