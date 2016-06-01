@@ -86,7 +86,7 @@ gem 'roo', '~> 2.3.2'
 gem 'clipboard-rails'
 
 # html to pdf
-gem 'wkhtmltopdf-binary', '~> 0.12.2.1'
+gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
 gem 'wicked_pdf'
 
 group :development, :test do
