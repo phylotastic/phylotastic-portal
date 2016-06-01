@@ -175,8 +175,8 @@ class TreesController < ApplicationController
     respond_to do |format|
           format.html
           format.pdf do
-            render :pdf => "taxon_matching_report",
-                   :template => "trees/taxon_matching_report.pdf.erb"
+            render pdf: "taxon_matching_report",
+                   template: "trees/taxon_matching_report.pdf.erb"
           end
     end
   end
