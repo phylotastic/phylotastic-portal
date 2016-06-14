@@ -1,6 +1,17 @@
 class ConLinksController < ApplicationController
   before_action :authenticate_user!
   
+  def show
+    @l = ConLink.find(params[:id])
+    @ra = @l.raw_extraction
+    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+    @resolved_names = [] if !@resolved_names
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def create
     @con_link = current_user.con_links.build(con_link_params)
     if @con_link.save

@@ -1,6 +1,17 @@
 class ConFilesController < ApplicationController
   before_action :authenticate_user!
   
+  def show
+    @f = ConFile.find(params[:id])
+    @ra = @f.raw_extraction
+    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+    @resolved_names = [] if !@resolved_names
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def create
     @con_file = current_user.con_files.build(con_file_params)
     if @con_file.save

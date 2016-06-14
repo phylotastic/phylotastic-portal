@@ -1,0 +1,54 @@
+<div>My Lists</div>
+
+<div class="table-wrapper">
+  <div class="table-scroll">  
+    <table class="table table-bordered">
+      <tbody>
+        <% my_lists.each do |l| %>
+          <tr>
+            <td><%= link_to l["list_title"], uploaded_list_path(l["list_id"]), remote: true %></td>
+          </tr>
+        <% end %>
+        
+        <% my_failed_lists.each do |l| %>
+          <tr class="danger">
+            <td><%= link_to l.name, "#", remote: true %></td>
+          </tr>
+        <% end %>
+        
+        <% my_subcribing_lists.each do |l| %>
+          <tr class="info">
+            <td><%= link_to l.name, uploaded_list_path(l.lid), remote: true %></td>
+          </tr>
+        <% end %>
+        
+        <% cfiles.each do |l| %>
+          <tr>
+            <td><%= link_to l.name, con_file_path(l), remote: true %></td>
+          </tr>
+        <% end %>
+        
+        <% clinks.each do |l| %>
+          <tr>
+            <td><%= link_to l.name, con_link_path(l), remote: true %></td>
+          </tr>
+        <% end %>
+        <% ctaxons.each do |l| %>
+          <tr>
+            <td><%= link_to l.name, con_taxon_path(l), remote: true %></td>
+          </tr>
+        <% end %>
+        <% subset_taxons.each do |l| %>
+          <tr>
+            <td><%= link_to l.name, subset_taxon_path(l), remote: true %></td>
+          </tr>
+        <% end %>
+        <% selection_taxons.each do |l| %>
+          <tr>
+            <td><%= link_to l.name, selection_taxon_path(l), remote: true %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

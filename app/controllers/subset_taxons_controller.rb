@@ -1,6 +1,17 @@
 class SubsetTaxonsController < ApplicationController
   before_action :authenticate_user!
   
+  def show
+    @t = SubsetTaxon.find(params[:id])
+    @ra = @t.raw_extraction
+    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+    @resolved_names = [] if !@resolved_names
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def create
     if params["subset_taxon"]["has_genome_in_ncbi"] == "1"
       response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:subset_taxon][:name])

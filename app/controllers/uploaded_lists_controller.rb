@@ -42,6 +42,12 @@ class UploadedListsController < ApplicationController
     if @list["status_code"] == 200 # if there is a list in the service
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction
+      @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+      @resolved_names = [] if !@resolved_names
+      respond_to do |format|
+        format.html
+        format.js
+      end
     else
       flash[:danger] = @list["message"]
       redirect_to root_path

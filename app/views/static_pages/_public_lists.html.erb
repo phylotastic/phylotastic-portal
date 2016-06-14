@@ -1,0 +1,15 @@
+<div>Public Lists</div>
+
+<div class="table-wrapper">
+  <div class="table-scroll">  
+    <table class="table table-bordered">
+      <tbody>
+        <% public_lists.each do |l| %></td>
+          <tr>
+            <td><%= l["list_title"] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

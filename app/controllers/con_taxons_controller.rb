@@ -1,6 +1,17 @@
 class ConTaxonsController < ApplicationController
   before_action :authenticate_user!
   
+  def show
+    @t = ConTaxon.find(params[:id])
+    @ra = @t.raw_extraction
+    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+    @resolved_names = [] if !@resolved_names
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  
   def new
   end
 

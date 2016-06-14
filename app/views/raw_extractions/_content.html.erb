@@ -1,0 +1,100 @@
+<% species = resolved_names.map { |n| n["matched_name"] } %>
+
+<% if species.empty? %>
+  <div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
+      <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="content">
+        <p class="chosing-species">No species</p>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="metadata"></div>
+    </div>
+  </div>
+<% else %>
+  <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal" } do |f| %>
+    <%= f.hidden_field :raw_extraction_id %>
+    <div class="center">
+      <%= f.submit "Get tree", class: "btn btn-default btn-lg", style: "margin-bottom: 10px;" %>
+    </div>
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
+        <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="content">
+          <table class="table table-bordered table-hover chosing-species">
+            <thead> 
+              <tr> 
+                <th class="species-heading-row">#</th> 
+                <th class="species-heading-row">Species</th> 
+                <th class="species-heading-row">Kingdom</th> 
+                <th class="species-cb-column species-heading-row">
+                  Select/Deselect all<br>
+                  <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+                </th> 
+              </tr> 
+            </thead>
+            <tbody>
+                <% species.each_with_index do |e, i| %>
+                  <tr class="species-row success">
+                    <td class=""><%= i + 1 %></td>
+                    <td class=""><%= e %></td>
+                    <td class="">TODO</td>
+                    <td class="species-cb-column">           
+                      <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
+                      <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
+                    </td>
+                  </tr>
+                <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="metadata"></div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".species-cb").click(function() {
+    event.stopPropagation();
+    if($(this).is(':checked')) {
+      $(this).siblings("input[type='checkbox']").attr('checked', false);
+      $(this).parents(".species-row").addClass("success");
+    } else {          
+      $(this).siblings("input[type='checkbox']").attr('checked', true);
+      $(this).parents(".species-row").removeClass("success");
+    }
+  });
+  
+  $(".species-row").click(function(event) {
+    $(this).find('.species-cb').click();
+  });
+  
+  $("#species-toggle-all-cb").click(function() {
+    if($(this).is(':checked')) {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( !$($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    } else {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( $($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    }
+  })
+  
+})
+</script>

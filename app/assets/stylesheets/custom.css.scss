@@ -3,10 +3,7 @@
 @import "bootstrap";
 
 .scenario-selection {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 5px;
 }
 
 .center {
@@ -70,4 +67,25 @@ body {
 
 .custom-pagination {
   text-align: center;
+}
+
+.table-wrapper {
+  position:relative;
+}
+.table-scroll {
+  height:200px;
+  overflow-y:scroll;  
+  margin-top:10px;
+}
+.table-wrapper table {
+  width:100%;
+
+}
+.table-wrapper table thead th .text {
+  position:absolute;   
+  top:-20px;
+  z-index:2;
+  height:20px;
+  width:35%;
+  border:1px solid red;
 }
