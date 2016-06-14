@@ -1,20 +1,3 @@
 <% provide(:title, "Home") %>
 
-<h1>To get a tree, start by choosing a set of species by one  of these 3 methods</h1>
-
-<div class="row">
-  <div class="col-md-4">
-    <%= link_to "Pre-built examples", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-lg btn-block scenario-selection" %>
-    <p>Choose from pre-composed lists, e.g., crop species, pets, mammalian orders</p>
-  </div>
-  
-  <div class="col-md-4">
-    <%= link_to "Choose from a Specified Taxon", raw_extractions_new_from_taxon_path, class: "btn btn-default btn-lg btn-block scenario-selection" %>
-    <p>Name a taxon (e.g., Primates), then choose all or some members</p>
-  </div>
-  
-  <div class="col-md-4">
-    <%= link_to "Extract from file or online source", raw_extractions_new_from_file_and_web_path, class: "btn btn-default btn-lg btn-block scenario-selection" %>
-    <p>Get names from a web site or a file</p>
-  </div>
-</div>
+Introduction to Phylotastic

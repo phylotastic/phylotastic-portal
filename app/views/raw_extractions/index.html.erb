@@ -1,0 +1,27 @@
+<% provide(:title, "Home") %>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-selection">
+      <%= render partial: "my_lists", locals: { my_lists: @my_lists,
+                                           cfiles: @cfiles,
+                                           clinks: @clinks,
+                                           ctaxons: @ctaxons,
+                                           subset_taxons: @subset_taxons,
+                                           selection_taxons: @selection_taxons,
+                                           my_failed_lists: @my_failed_lists,
+                                           my_subcribing_lists: @my_subcribing_lists }%>
+
+    </div>
+    <div class="list-selection">
+      <%= render partial: "public_lists", locals: { public_lists: @public_lists } %>
+    </div>
+  </div>
+  
+  <div class="col-md-7" id="ra-content">
+  </div>
+  
+  <div class="col-md-2">
+    <%= render partial: "creation_nav", locals: { public_lists: @public_lists } %>  
+  </div>
+</div>
