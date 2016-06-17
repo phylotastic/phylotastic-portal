@@ -50,3 +50,4 @@ group_vars/
 production
 staging
 site.yml
+.DS_Store
