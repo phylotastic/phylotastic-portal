@@ -1,4 +1,5 @@
 $('#ra-content').html("<%= escape_javascript(render partial: 'raw_extractions/content', 
                                                     locals: { resolved_names: @resolved_names, 
-                                                              name: @l.name, 
-                                                              ra: @ra} ) %>");
+                                                              unresolved:     [],
+                                                              name:           @l.name, 
+                                                              ra:             @ra} ) %>");

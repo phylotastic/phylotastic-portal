@@ -25,3 +25,14 @@
     <%= render partial: "creation_nav", locals: { public_lists: @public_lists } %>  
   </div>
 </div>
+
+
+<script>
+$(document).ready(function() {
+  $(".list-group-item").click(function() {
+    $(".list-group-item").removeClass("active");
+    $(this).addClass("active");
+    $('#ra-content').html("<div class='center'><img src='/assets/Loading_icon.gif'></div>");
+  })
+})
+</script>

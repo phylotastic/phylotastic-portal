@@ -1,292 +1,33 @@
-<% provide(:title, "Phylotastic Jobs") %>
-
-<h2>Phylotastic Jobs</h2>
-
-<% if( @con_link_jobs.empty? && 
-       @con_link_jobs.empty? &&
-       @con_file_jobs.empty? &&
-       @con_taxon_jobs.empty? &&
-       @selection_taxon_jobs.empty? &&
-       @subset_taxon_jobs.empty? &&
-       @my_lists.empty? &&
-       @my_failed_lists.empty? &&
-       @my_subcribing_lists.empty? ) %>
-  <p class="bg-info">You have no jobs.</p>
-<% end %>
+<% provide(:title, "Tree Viewer") %>
 
 <div class="row">
-  <div class="col-md-4">
-    <div class="panel panel-default">
-      <% unless @con_link_jobs.empty? %>
-        <%= render partial: "job_panel", locals: {jobs: @con_link_jobs, heading: "Acquired from URI"} %>
-      <% end %>
-
-      <% unless @con_file_jobs.empty? %>
-        <%= render partial: "job_panel", locals: {jobs: @con_file_jobs, heading: "Acquired from file"} %>
-      <% end %>
-
-      <% unless @con_taxon_jobs.empty? %>
-        <%= render partial: "job_panel", locals: {jobs: @con_taxon_jobs, heading: "From all sepecies of a taxon"} %>
-      <% end %>
-
-      <% unless @selection_taxon_jobs.empty? %>
-        <%= render partial: "job_panel", locals: {jobs: @selection_taxon_jobs, heading: "From some species of a taxon"} %>
-      <% end %>
-
-      <% unless @subset_taxon_jobs.empty? %>
-        <%= render partial: "job_panel", locals: {jobs: @subset_taxon_jobs, heading: "From genome or location"} %>
-      <% end %>
-      
-      <% unless @my_lists.empty? %>
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            From my own pre-built list
-          </h3>
-        </div>
-        
-        <div class="list-group">
-          <% @my_lists.each do |l| %>
-            <%= link_to "a", trees_uploaded_lists_path(list_id: l["list_id"]), class: "tree_ids hide", remote: true %>
-            <%= link_to list_content_uploaded_lists_path(list_id: l["list_id"]), id: "job-in-nav-Hash-#{l["list_id"]}", class: "list-group-item", remote: true do %>
-              <span class="job-title"><%= truncate(l["list_title"], length: 35) %></span>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      
-      <% unless @my_subcribing_lists.empty? %>
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            From public pre-built lists
-          </h3>
-        </div>
-
-        <div class="list-group">
-          <% @my_subcribing_lists.each do |ul| %>
-            <%= link_to "a", trees_uploaded_lists_path(list_id: ul.lid), class: "tree_ids hide", remote: true %>
-            <%= link_to list_content_uploaded_lists_path(list_id: ul.lid), id: "job-in-nav-Hash-#{ul.lid}", class: "list-group-item", remote: true do %>
-              <span class="job-title"></span>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      
-      <% unless @my_failed_lists.empty? %>
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            Failed to process lists
-          </h3>
-        </div>
-
-        <div class="list-group">
-          <% @my_failed_lists.each do |ul| %>
-            <a href="#" class="list-group-item list-group-item-danger" id="job-in-nav-<%= ul.class.name %>-<%= ul.id %>">
-              <span class="job-title"><%= truncate(ul.file.original_filename, length: 35) %></span>
-            </a>
-          <% end %>
-        </div>
-      <% end %>
-      
+  <div class="col-md-3">
+    <div class="list-selection">
+      <h4>My Lists</h4>
+      <%= render partial: "nav_trees", locals: { trees: @my_trees }%>
+    </div>
+    <hr>
+    <div class="list-selection">
+      <h4>Public Lists</h4>
+      <%= render partial: "nav_trees", locals: { trees: @public_trees } %>
     </div>
   </div>
   
-  <div class="col-md-8">
-    <div id="jobs-content-wrapper">
-      <%= render partial: "job_content", locals: {jobs: @con_link_jobs} %>
-      <%= render partial: "job_content", locals: {jobs: @con_file_jobs} %>
-
-      <%= render partial: "job_content", locals: {jobs: @con_taxon_jobs} %>
-
-      <%= render partial: "job_content", locals: {jobs: @selection_taxon_jobs} %>
-
-      <%= render partial: "job_content", locals: {jobs: @subset_taxon_jobs} %>
-      
-      <% @my_failed_lists.each do |ul| %>
-        <div id="job-content-<%= ul.class.name %>-<%= ul.id %>" class="hide">
-          <table class="table">
-            <tr>
-              <th>File</th>
-              <td><%= ul.file.original_filename %></td>
-            </tr>
-            <tr>
-              <th>Failed because</th>
-              <td><%= ul.reason %></td>
-            </tr>
-            <tr>
-              <th>Created at</th>
-              <td><%= ul.created_at %></td>
-            </tr>
-            <tr>
-              <th>Modified at</th>
-              <td><%= ul.updated_at %></td>
-            </tr>
-            <tr>
-              <th>Available Action</th>
-              <td>
-                <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{ul.id}", class: "btn btn-primary" %>
-                <%= link_to "Remove", uploaded_list_path(ul.id), method: :delete, class: "btn btn-danger", data: {confirm: "Removing a job will also delete all trees belonging to that job. Are you sure?"} %>
-                <div class="modal fade" id="reup-<%= ul.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header"> 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
-                        <h3 class="modal-title center" id="myModalLabel">Re-upload</h3>
-                      </div>
-                      <%= form_for ul, url: uploaded_list_path(ul.id), method: :patch, html: { multipart: true } do |f| %>
-                        <div class="modal-body">
-                          <div class="form-group">
-                            <%= f.file_field :file, class: "input-file" %>
-                            <div>Note: please compress your files in one ZIP file. You can find a default template <%= link_to "here", "https://drive.google.com/file/d/0B7SKJwE3SsCsNUhYQWdEVzk2RFE/view?usp=sharing"%></div>
-
-                            <%= f.label :public do %>
-                              <%= f.check_box :public, class: "input-file" %>
-                              Allow others to watch this list
-                            <% end %>
-
-                          </div>
-                        </div>
-                        <div class="modal-footer"> 
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
-                          <%= f.submit "Submit my list", class: "btn btn-default btn-primary" %>
-                        </div>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      <% end %>
+  <div class="col-md-9">
+    <div class="row" id="tree-content">
     </div>
   </div>
-  
 </div>
-       
-<script type="text/javascript">
+
+<script>
 $(document).ready(function() {
-  var processing_trees = <%= @processing %>;
- //  var processing_lists = <%= @processing_lists %>;
-  
-  Notification.requestPermission();
-  function spawnNotification(theBody,theIcon,theTitle) {
-    var options = {
-        body: theBody,
-        icon: theIcon
-    }
-    var n = new Notification(theTitle,options);
-  }
-  socket = new WebSocket("ws://" + window.location.host + "/track")
-
-  socket.onopen = function(event) {
-    for (i=processing_trees.length-1; i>=0 ; i--) {
-      socket.send( JSON.stringify({"type": "tree", "id": processing_trees[i]}) );
-    }
-//
-//     for (i=processing_lists.length-1; i>=0; i--) {
-//       socket.send( JSON.stringify({"type": "list", "id": processing_lists[i]}) );
-//     }
-  } 
-  
-  socket.onmessage = function(event) {
-    data = JSON.parse(event.data);
-    console.log(data);
-    if (event.data.length) {
-      if (data["type"] == "tree") {
-      
-        if (data["status"] == "completed") {     
-          // Change status of tree in view
-          $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(tree_status(data["status"]));
-        
-          // Display "view tree" btn
-          $("tr[id *= \"tree-" + data["tree_id"] + "\"]").find('.action-view a').removeClass("hide");
-        
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-success");
-        
-          // Send notification
-          spawnNotification("Your tree is ready to view", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Tree #" + data["tree_id"] + " is " + data["status"]);
-          
-          
-        } else if (data["status"] == "resolved") {
-          $("#" + data["tree_id"]).parents("td").children('.action-prune').html("<a href='/trees/" + data["tree_id"] + "/edit'>Check name list</a>");
-        
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
-          
-          // Send notification
-          spawnNotification("To proceed, choose 'Check name list' in the Jobs table.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Names have been acquired for job #" + data["tree_id"]);
-          
-          
-        } else if (data["status"] == "no-names") {
-          // Change status of tree in view
-          $("#" + data["tree_id"]).parents("td").siblings('.tree-status').html(tree_status(data["status"]));
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
-          // Send notification
-          spawnNotification("Required at least 2 scientific names to construct tree.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "No name found for tree #" + data["tree_id"]);
-        
-        
-        } else if (data["status"] == "unsuccessfully-constructed") {
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parent().removeClass("hide");
-          $("span[id ~= \"" + 'for-tree-' + data['tree_id'] + "\"]").parents(".list-group-item").addClass("list-group-item-danger");
-          // Send notification
-          spawnNotification("Check tree status for more details.", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Unable construct tree #" + data["tree_id"]);
-        }
-        
-      }
-      else if (data["type"] == "list") {
-        // Send notification
-        console.log(data);
-        if (data["status"] == null) {
-          spawnNotification("", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Your list can not be imported");            
-        } else if (data["status"] == true) {
-          spawnNotification("Please reload your browser", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Your file is proceed"); 
-        } else if (data["status"] == false) {
-          spawnNotification("Please reload your browser to re-upload", "http://www.cs.nmsu.edu/phylotastic/images/logo_huge.png", "Your list can not be imported"); 
-        }
-      }
-    }
-  }
-  
-  function tree_status(s) {
-    var msg;
-    switch(s) {
-      case "resolved":
-        msg = "Names acquired: click \"verify names\" to approve list and get a tree";
-        break;
-      case "unsucessfully-resolved":
-        msg = "Sorry! We could not acquire a list of names!";
-        break;
-      case "unsuccessfully-constructed":
-        msg = "Sorry! We could not acquire a tree!";
-        break;
-      case "completed":
-        msg = "Tree acquired: click \"View tree\" to see it";
-        break;
-    }
-    return msg;
-  }
-  
-  $("a[id*='job-in-nav-']").click(function() {
-    eles = $(this).attr("id").split("-");
-    $("div[id*='job-content']").addClass("hide");
-    $("#job-content-" + eles[3] + "-" + eles[4]).removeClass("hide");
-    
-    if (eles[3] != "Hash") {      
-      return false;
-    }
-  });
-
-  $($("div[id *= \"" + 'job-content-' + "\"]")[0]).removeClass("hide");
-  $($("a[id *= \"" + 'job-in-nav-' + "\"]")[0]).addClass("active");
-  $("a[id *= \"" + 'job-in-nav-' + "\"]").click(function() {
-    $("a[id *= \"" + 'job-in-nav-' + "\"]").removeClass("active");
+  $(".list-group-item").click(function() {
+    $(".list-group-item").removeClass("active");
     $(this).addClass("active");
-  });
-  
-  $('.tree_ids').click();
-  
-});
-
+    $('#ra-content').html("<div class='center'><img src='/assets/Loading_icon.gif'></div>");
+  })
+})
 </script>
+
+
+

@@ -3,9 +3,12 @@ class RawExtractionsController < ApplicationController
   
   include UploadedListsHelper
   
-  def new_from_file_and_web
-    @con_link = ConLink.new
+  def new_from_file
     @con_file = ConFile.new
+  end
+  
+  def new_from_web
+    @con_link = ConLink.new
   end
   
   def new_from_pre_built_examples
@@ -28,7 +31,7 @@ class RawExtractionsController < ApplicationController
   def index
     @my_failed_lists  = current_user.failed_lists
     @my_failed_lists = [] if @my_failed_lists.nil?
-    
+
     @my_subcribing_lists = current_user.subcribing_lists
     @my_subcribing_lists = [] if @my_subcribing_lists.nil?
     

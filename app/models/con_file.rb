@@ -7,6 +7,7 @@ class ConFile < ActiveRecord::Base
   
   default_scope -> { order(created_at: :desc) }
   
+  validates :name, presence: true
   validates_attachment :document, content_type: { content_type: [ "application/pdf", 
                                                                   "text/plain", 
                                                                   "application/vnd.ms-excel", 
