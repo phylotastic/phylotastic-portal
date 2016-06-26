@@ -52,36 +52,42 @@ class TreesController < ApplicationController
     @resolved_names = JSON.parse(@tree.raw_extraction.species)["resolvedNames"] rescue []
     if @tree.nil? 
       redirect_to root_url
+      return
     elsif @tree.status != "completed"
       flash[:danger] = "Tree is not ready to view"
       redirect_to trees_path
+      return
     else
       if !@tree.public
         if @tree.user != current_user
           redirect_to root_url
+          return
         end
       end
+    end
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
   
   def index
-    @con_link_jobs        = current_user.con_links
-    @con_file_jobs        = current_user.con_files
-    @con_taxon_jobs       = current_user.con_taxons
-    @selection_taxon_jobs = current_user.selection_taxons.reverse
-    @subset_taxon_jobs    = current_user.subset_taxons.reverse
-
-    @my_lists = get_private_lists["lists"] rescue []
-    @my_failed_lists = current_user.failed_lists
-    @my_subcribing_lists = current_user.subcribing_lists
-
-    @processing = current_user.processing_trees
+    # @con_link_jobs        = current_user.con_links
+#     @con_file_jobs        = current_user.con_files
+#     @con_taxon_jobs       = current_user.con_taxons
+#     @selection_taxon_jobs = current_user.selection_taxons.reverse
+#     @subset_taxon_jobs    = current_user.subset_taxons.reverse
+#
+#     @my_lists = get_private_lists["lists"] rescue []
+#     @my_failed_lists = current_user.failed_lists
+#     @my_subcribing_lists = current_user.subcribing_lists
+#
+#     @processing = current_user.processing_trees
+    trees = current_user.trees
+    @my_trees = trees.select {|t| !t.public }
+    @public_trees = trees.select {|t| t.public }
   end
-  
-  def explore
-    @trees = Tree.where(public: true).paginate(:page => params[:page])
-  end
-  
+    
   def edit
     @tree = current_user.trees.find_by_id(params[:id])
     @ra = @tree.raw_extraction

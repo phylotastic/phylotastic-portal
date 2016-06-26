@@ -91,3 +91,23 @@ path.link {
 .job-table {
   margin-left: 50px;
 }
+
+#ra-content {
+  #graph {
+    overflow: scroll;
+  }
+}
+
+#tree-actions {
+  #save-to-disk {
+    margin-top: 7px;
+  }  
+}
+
+#carousel {
+  height: 600px;
+}
+
+#carousel .cloud9-item, #buttons button {
+  cursor: pointer;
+}

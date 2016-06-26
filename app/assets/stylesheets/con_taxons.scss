@@ -2,9 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#taxon-approaches, #tree-description {
-  margin-top: 40px;
-  #instruction-taxon-2 {
-    margin-bottom: 20px;
+.taxon-field {
+  margin-bottom: 30px;
+  .taxon-opts {
+    margin-bottom: 10px;
   }
 }

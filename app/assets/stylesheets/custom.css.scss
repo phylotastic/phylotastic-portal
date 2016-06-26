@@ -89,3 +89,9 @@ body {
   width:35%;
   border:1px solid red;
 }
+
+.navbar-nav {
+  li.active {    
+    border-bottom: 5px grey solid;
+  }
+}

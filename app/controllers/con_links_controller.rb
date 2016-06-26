@@ -20,8 +20,7 @@ class ConLinksController < ApplicationController
       current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to trees_path
     else
-      @con_file = ConFile.new
-      render 'raw_extractions/new_from_file_and_web'
+      render 'raw_extractions/new_from_web'
     end
   end
   
@@ -40,7 +39,7 @@ class ConLinksController < ApplicationController
   
   private
     def con_link_params
-      params.require(:con_link).permit(:uri)
+      params.require(:con_link).permit(:uri, :name, :description)
     end
     
 end

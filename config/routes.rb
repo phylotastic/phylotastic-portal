@@ -7,10 +7,12 @@ Rails.application.routes.draw do
   resources :uploaded_lists, only: [:create, :show, :destroy, :update] do
     collection do
       post 'update_species' => "uploaded_lists#update_species"
+      post 'update_a_species' => "uploaded_lists#update_a_species"
       post 'clone' => "uploaded_lists#clone"
       get 'list_content' => 'uploaded_lists#list_content'
       get 'trees' => 'uploaded_lists#trees'
       get 'publish' => 'uploaded_lists#publish'
+      get 'failed' => 'uploaded_lists#failed'
     end
   end
 
@@ -28,7 +30,8 @@ Rails.application.routes.draw do
   resources :con_files
   resources :con_links
   
-  get 'raw_extractions/new_from_file_and_web'
+  get 'raw_extractions/new_from_file'
+  get 'raw_extractions/new_from_web'
   get 'raw_extractions/new_from_pre_built_examples'
   get 'raw_extractions/new_from_taxon'
   get 'raw_extractions/index'
@@ -37,7 +40,6 @@ Rails.application.routes.draw do
     collection do
       patch ':id/update_image' => 'trees#update_image', as: :update_image
       patch ':id/public' => 'trees#public', as: :public
-      get 'explore'
       get 'search' => 'trees#search'
       get 'image_getter' => 'trees#image_getter'
       post 'generate_image' => 'trees#generate_image', format: :svg 
@@ -51,9 +53,10 @@ Rails.application.routes.draw do
   
   resources :watch_relationships, only: [:create, :destroy]
   
-  root 'static_pages#home'
+  root 'raw_extractions#index'
   get 'static_pages/about'
   get 'static_pages/faq'
+  get 'static_pages/videos'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

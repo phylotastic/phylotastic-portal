@@ -61,6 +61,7 @@
                     <th>Scientific Name Authorship</th>
                     <th>Family</th>
                     <th>Order</th>
+                    <th>Class</th>
                     <th>Phylum</th>
                     <th>Nomenclature Code</th>
                     <th></th>
@@ -75,6 +76,7 @@
                       <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
                       <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
                       <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
+                      <td><%= text_field_tag 'species[' + i.to_s + '][class]', s["class"], class: "form-control" %></td>
                       <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
                       <td><%= text_field_tag 'species[' + i.to_s + '][nomenclature_code]', s["nomenclature_code"], class: "form-control" %></td>
                       <td>
@@ -84,7 +86,7 @@
                     </tr>
                   <% end %>
                   <tr>
-                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td colspan="9"></td>
                     <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
                   </tr>
                 </tbody>
@@ -151,6 +153,7 @@
                   <td><%= text_field_tag 'species[' + i.to_s + '][scientific_name_authorship]', s["scientific_name_authorship"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][family]', s["family"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][order]', s["order"], class: "form-control" %></td>
+                  <td><%= text_field_tag 'species[' + i.to_s + '][class]', s["class"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][phylum]', s["phylum"], class: "form-control" %></td>
                   <td><%= text_field_tag 'species[' + i.to_s + '][nomenclature_code]', s["nomenclature_code"], class: "form-control" %></td>
                   <td>
@@ -160,7 +163,7 @@
                 </tr>
               <% end %>
               <tr>
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td colspan="9"></td>
                 <td><i class="glyphicon glyphicon-plus btn btn-primary pull-right add-species"></i></td>
               </tr>
             </tbody>
@@ -192,7 +195,7 @@ $(document).ready(function() {
   
   $(".add-species").click(function() {
     i = $(this).parents("table").find("tr").length - 2;
-    $(this).parents("tr").before('<tr><td>' + (i + 1) + '</td><td><input type="text" name="species[' + i + '][vernacular_name]" id="species_' + i + '_vernacular_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name]" id="species_' + i + '_scientific_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name_authorship]" id="species_' + i + '_scientific_name_authorship" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][family]" id="species_' + i + '_family" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][order]" id="species_' + i + '_order" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][phylum]" id="species_' + i + '_phylum" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][nomenclature_code]" id="species_' + i + '_nomenclature_code" value="" class="form-control"></td><td><i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i><input type="hidden" name="species[' + i + '][remove]" id="species_' + i + '_remove" value="0"></td></tr>');
+    $(this).parents("tr").before('<tr><td>' + (i + 1) + '</td><td><input type="text" name="species[' + i + '][vernacular_name]" id="species_' + i + '_vernacular_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name]" id="species_' + i + '_scientific_name" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][scientific_name_authorship]" id="species_' + i + '_scientific_name_authorship" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][family]" id="species_' + i + '_family" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][order]" id="species_' + i + '_order" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][class]" id="species_' + i + '_class" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][phylum]" id="species_' + i + '_phylum" value="" class="form-control"></td><td><input type="text" name="species[' + i + '][nomenclature_code]" id="species_' + i + '_nomenclature_code" value="" class="form-control"></td><td><i class="glyphicon glyphicon-remove btn btn-danger remove-species"></i><input type="hidden" name="species[' + i + '][remove]" id="species_' + i + '_remove" value="0"></td></tr>');
 
   })
 })

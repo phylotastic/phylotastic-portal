@@ -89,6 +89,8 @@ gem 'clipboard-rails'
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
 gem 'wicked_pdf'
 
+gem 'jquery-ui-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

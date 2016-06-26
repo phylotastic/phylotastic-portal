@@ -63,6 +63,36 @@
   <% end %>
 <% end %>
 
+<% unless unresolved.empty? %>
+  <hr>
+  <h4>Unresolved species</h4>
+  <div class="">
+    <div> 
+      <div class="row"> 
+        <div class="col-sm-4">Vernacular Name (*)</div>
+        <div class="col-sm-5">Scientific Name (*)</div>
+        <div class="col-sm-2"></div>
+      </div> 
+    </div>
+    <div>
+      <% @list["list"]["list_species"].each_with_index do |s, i| %>
+        <% if unresolved.include? s["scientific_name"] %>
+          <div class="row danger">
+            <%= form_tag({controller: 'uploaded_lists', action: 'update_a_species', id: @list["list"]["list_id"]}, method: "post", remote: true, class: "fix-names") do %>
+              <div class="col-sm-4"><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></div>
+              <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
+              <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
+              <div class="col-sm-2">
+                <%= submit_tag "Change", class: "btn btn-default"%>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </table>
+<% end %>
+
 <script type="text/javascript">
 $(document).ready(function(){
   $(".species-cb").click(function() {

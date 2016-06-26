@@ -2,11 +2,49 @@
 <div class="center">Choose from source</div>
 
 <div class="row">
-  <%= link_to "Upload my list", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-block scenario-selection" %>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-default btn-block scenario-selection" data-toggle="modal" data-target="#uploadList">
+    Upload my list
+  </button>
 
-  <%= link_to "Extract from doc", raw_extractions_new_from_file_and_web_path, class: "btn btn-default btn-block scenario-selection" %>
+  <!-- Modal -->
+  <div class="modal fade" id="uploadList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body">
+          <div style="display: inline-block;">
+            <div class="row col-sm-9 col-sm-offset-1">
+              <div class="col-sm-5">
+                <%= link_to "Upload my list", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-block scenario-selection" %>
+              </div>
+              <div class="col-sm-7">
+                I have a text file with one name per line
+              </div>
+            </div>
+            <div class="row col-sm-9 col-sm-offset-1" style="margin-top: 40px;">
+              <div class="col-sm-5">
+                <%= link_to "Upload my list", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-block scenario-selection" %>
+              </div>
+              <div class="col-sm-7">
+                I have a Darwin Core Archive(.zip)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <%= link_to "Extract from doc", raw_extractions_new_from_file_path, class: "btn btn-default btn-block scenario-selection" %>
 
-  <%= link_to "Extract from web", raw_extractions_new_from_file_and_web_path, class: "btn btn-default btn-block scenario-selection" %>
+  <%= link_to "Extract from web", raw_extractions_new_from_web_path, class: "btn btn-default btn-block scenario-selection" %>
 
   <%= link_to "Choose taxon", raw_extractions_new_from_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
 </div>

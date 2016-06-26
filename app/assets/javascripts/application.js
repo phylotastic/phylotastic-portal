@@ -14,6 +14,7 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require jquery_ujs
+//= require jquery-ui
 //= require d3
 //= require jquery.slick
 //= require clipboard

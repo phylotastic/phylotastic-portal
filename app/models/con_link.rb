@@ -5,7 +5,7 @@ class ConLink < ActiveRecord::Base
   
   default_scope -> { order(created_at: :desc) }
   
+  validates :name, presence: true
   validates :user_id, presence: true
-
   validates :uri, :presence => true, :url => true
 end

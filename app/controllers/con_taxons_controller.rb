@@ -16,8 +16,15 @@ class ConTaxonsController < ApplicationController
   end
 
   def create
+    if params["has_genome_in_ncbi"] == true
+      response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:subset_taxon][:name])
+      # TODO: elsif !params["subset_taxon"]["has_genome_in_ncbi"].nil?
+    else
+      response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:subset_taxon][:name])
+    end
+
     begin 
-      response = RestClient.get APP_CONFIG['sv_species_from_taxon']['url'] + params[:con_taxon][:name]
+      response = Req.get APP_CONFIG['sv_species_from_taxon']['url'] + params[:con_taxon][:name]
     rescue Exception => e
       logger.info "Cannot get species from a taxon"
       puts e.message

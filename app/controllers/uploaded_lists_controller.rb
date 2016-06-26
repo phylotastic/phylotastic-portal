@@ -2,10 +2,11 @@ class UploadedListsController < ApplicationController
   before_action :authenticate_user!
   
   include UploadedListsHelper
+  
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if @uploaded_list.save
-      flash[:success] = "Processing your archive file"
+      flash[:success] = "File uploaded! Processing your archive file"
       ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
       
       @uploaded_list = UploadedList.new
@@ -14,8 +15,7 @@ class UploadedListsController < ApplicationController
     
       res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
       @public_lists = JSON.parse(res)["lists"] rescue []
-      
-      render 'raw_extractions/new_from_pre_built_examples'
+      redirect_to root_path
     else
       @uploaded_list.errors.delete(:file)
       render 'raw_extractions/new_from_pre_built_examples'
@@ -44,6 +44,19 @@ class UploadedListsController < ApplicationController
       @ra = @uploaded_list.raw_extraction
       @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
       @resolved_names = [] if !@resolved_names
+      
+      names = @list["list"]["list_species"].map {|s| s["scientific_name"] }
+      @unresolved = []
+      names.each do |n|
+        flag = false
+        @resolved_names.each do |r|
+          if r["matched_name"] == n
+            flag = true 
+            break
+          end
+        end
+        @unresolved << n if !flag
+      end
       respond_to do |format|
         format.html
         format.js
@@ -100,9 +113,9 @@ class UploadedListsController < ApplicationController
     response = Req.post( APP_CONFIG["sv_replace_species"]["url"],
                          s_data.to_json,
                          {:content_type => :json} )
-                         
+
     if !response || JSON.parse(response)["status_code"] != 200
-      flash[:danger] = "Species are not updated"
+      flash[:danger] = "Species are not updated " + JSON.parse(response)["message"]
     else
       flash[:success] = "Species are updated"
       t = s_data["species"].map {|s| s["scientific_name"]}.join(", ")
@@ -110,6 +123,66 @@ class UploadedListsController < ApplicationController
       resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found,:content_type => :json)
     end
     redirect_to uploaded_list_path(params[:id])
+  end
+  
+  def update_a_species
+    current_user.refresh_token_if_expired
+    s_data = { "species" => [], 
+               "user_id" => current_user.email, 
+               "list_id" => params[:id],
+               "access_token" => current_user.access_token }
+    @list = get_a_list(params[:id])
+    species = @list["list"]["list_species"]
+    subject = JSON.parse(params["species"].to_json).values.first
+    species.each do |s|
+      if s["scientific_name"] == subject["old"]
+        s["scientific_name"] = subject["scientific_name"]
+      end
+    end
+    s_data["species"] = species
+
+    response = Req.post( APP_CONFIG["sv_replace_species"]["url"],
+                         s_data.to_json,
+                         {:content_type => :json} )
+
+    if !response || JSON.parse(response)["status_code"] != 200
+      @mess = "Species are not updated " + JSON.parse(response)["message"]
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      names = s_data["species"].map {|s| s["scientific_name"]}
+      found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + names.join(", ") )
+      resolved_req = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found,:content_type => :json)
+
+      @ra = UploadedList.find_by_lid(params[:id]).raw_extraction
+      @ra.update_attributes(species: resolved_req)
+      @resolved_names = JSON.parse(resolved_req)["resolvedNames"] rescue []
+      @resolved_names = [] if !resolved_req
+      
+      @unresolved = []
+      names.each do |n|
+        flag = false
+        @resolved_names.each do |r|
+          if r["matched_name"] == n
+            flag = true 
+            break
+          end
+        end
+        @unresolved << n if !flag
+      end
+      
+      if @unresolved.include? subject["scientific_name"]
+        @mess = "#{subject["scientific_name"]} is unresolvable"
+      else
+        @mess = "#{subject["scientific_name"]} is updated in resolved table"
+      end
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
   end
   
   def clone
@@ -170,9 +243,16 @@ class UploadedListsController < ApplicationController
     end
   end
   
+  def failed
+    @uploaded_list = current_user.uploaded_lists.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   private
 
   def uploaded_list_params
-    params.require(:uploaded_list).permit(:file, :public)
+    params.require(:uploaded_list).permit(:file, :public, :name, :description)
   end
 end
