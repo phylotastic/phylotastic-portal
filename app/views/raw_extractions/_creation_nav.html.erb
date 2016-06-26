@@ -19,7 +19,7 @@
           <div style="display: inline-block;">
             <div class="row col-sm-9 col-sm-offset-1">
               <div class="col-sm-5">
-                <%= link_to "Upload my list", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-block scenario-selection" %>
+                <%= link_to "Upload my list", onpl_uploaded_lists_path, class: "btn btn-default btn-block scenario-selection" %>
               </div>
               <div class="col-sm-7">
                 I have a text file with one name per line
@@ -27,7 +27,7 @@
             </div>
             <div class="row col-sm-9 col-sm-offset-1" style="margin-top: 40px;">
               <div class="col-sm-5">
-                <%= link_to "Upload my list", raw_extractions_new_from_pre_built_examples_path, class: "btn btn-default btn-block scenario-selection" %>
+                <%= link_to "Upload my list", dca_uploaded_lists_path, class: "btn btn-default btn-block scenario-selection" %>
               </div>
               <div class="col-sm-7">
                 I have a Darwin Core Archive(.zip)
@@ -42,9 +42,9 @@
     </div>
   </div>
   
-  <%= link_to "Extract from doc", raw_extractions_new_from_file_path, class: "btn btn-default btn-block scenario-selection" %>
+  <%= link_to "Extract from doc", new_con_file_path, class: "btn btn-default btn-block scenario-selection" %>
 
-  <%= link_to "Extract from web", raw_extractions_new_from_web_path, class: "btn btn-default btn-block scenario-selection" %>
+  <%= link_to "Extract from web", new_con_link_path, class: "btn btn-default btn-block scenario-selection" %>
 
-  <%= link_to "Choose taxon", raw_extractions_new_from_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
+  <%= link_to "Choose taxon", new_con_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
 </div>

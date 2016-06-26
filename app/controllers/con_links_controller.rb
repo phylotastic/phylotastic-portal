@@ -1,6 +1,10 @@
 class ConLinksController < ApplicationController
   before_action :authenticate_user!
   
+  def new
+    @con_link = ConLink.new
+  end
+  
   def show
     @l = ConLink.find(params[:id])
     @ra = @l.raw_extraction

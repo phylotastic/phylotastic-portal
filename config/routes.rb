@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  root 'raw_extractions#index'
+
   get 'user_list_relationships/destroy'
 
   resources :user_list_relationships, only: [:destroy]
@@ -13,6 +15,8 @@ Rails.application.routes.draw do
       get 'trees' => 'uploaded_lists#trees'
       get 'publish' => 'uploaded_lists#publish'
       get 'failed' => 'uploaded_lists#failed'
+      get 'onpl' => 'uploaded_lists#new_from_onpl'
+      get 'dca' => 'uploaded_lists#new_from_dca'
     end
   end
 
@@ -25,17 +29,11 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
   
   resources :con_taxons
-  resources :selection_taxons
-  resources :subset_taxons
   resources :con_files
   resources :con_links
-  
-  get 'raw_extractions/new_from_file'
-  get 'raw_extractions/new_from_web'
-  get 'raw_extractions/new_from_pre_built_examples'
-  get 'raw_extractions/new_from_taxon'
-  get 'raw_extractions/index'
-
+  resources :subset_taxon
+  resources :selection_taxon
+ 
   resources :trees do
     collection do
       patch ':id/update_image' => 'trees#update_image', as: :update_image
@@ -53,7 +51,6 @@ Rails.application.routes.draw do
   
   resources :watch_relationships, only: [:create, :destroy]
   
-  root 'raw_extractions#index'
   get 'static_pages/about'
   get 'static_pages/faq'
   get 'static_pages/videos'

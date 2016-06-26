@@ -1,6 +1,10 @@
 class ConFilesController < ApplicationController
   before_action :authenticate_user!
   
+  def new
+    @con_file = ConFile.new
+  end
+  
   def show
     @f = ConFile.find(params[:id])
     @ra = @f.raw_extraction

@@ -13,6 +13,7 @@ class ConTaxonsController < ApplicationController
   end
   
   def new
+    @con_taxon = ConTaxon.new
   end
 
   def create
