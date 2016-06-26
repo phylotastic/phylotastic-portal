@@ -2,6 +2,14 @@ class UploadedListsController < ApplicationController
   before_action :authenticate_user!
   
   include UploadedListsHelper
+
+  def new_from_dca
+    @uploaded_list = UploadedList.new
+  end
+  
+  def new_from_onpl
+    @uploaded_list = UploadedList.new
+  end
   
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
