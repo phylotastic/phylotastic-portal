@@ -11,13 +11,13 @@
       <ul class="nav navbar-nav">
         <li class="<%= 'active' if(params[:controller] == 'raw_extractions') %>"><%= link_to "Home", root_path %></li>
         <% unless current_user.nil? %>
-          <li class="<%= 'active' if(params[:controller] == 'trees') %>"><%= link_to "Tree viewer", trees_path %></li>
+          <li class="<%= 'active' if(params[:controller] == 'trees' && params[:action] == "index") %>"><%= link_to "Tree viewer", trees_path %></li>
         <% end %>
         <li class="<%= 'active' if(params[:controller] == 'static_pages' && params[:action] == "about") %>"><%= link_to "About", static_pages_about_path %></li>
         <li class="<%= 'active' if(params[:controller] == 'static_pages' && params[:action] == "faq") %>"><%= link_to "FAQ", static_pages_faq_path %></li>
         <li class="<%= 'active' if(params[:controller] == 'static_pages' && params[:action] == "videos") %>"><%= link_to "Videos", static_pages_videos_path %></li>
         <% unless current_user.nil? %>
-          <li class="<%= 'active' if(params[:controller] == 'watch_relationships' && params[:action] == "gallery") %>"><%= link_to "Gallery", gallery_path(current_user) %></li>
+          <li class="<%= 'active' if((params[:controller] == 'watch_relationships' && params[:action] == "gallery") || (params[:controller] == "trees" && params[:action] == "public_gallery")) %>"><%= link_to "Gallery", gallery_path(current_user) %></li>
         <% end %>
         <li><%= link_to "Feedback", static_pages_faq_path %></li>
       </ul>

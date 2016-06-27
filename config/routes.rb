@@ -2,8 +2,6 @@ Rails.application.routes.draw do
   
   root 'raw_extractions#index'
 
-  get 'user_list_relationships/destroy'
-
   resources :user_list_relationships, only: [:destroy]
   
   resources :uploaded_lists, only: [:create, :show, :destroy, :update, :new] do
@@ -42,7 +40,7 @@ Rails.application.routes.draw do
     collection do
       patch ':id/update_image' => 'trees#update_image', as: :update_image
       patch ':id/public' => 'trees#public', as: :public
-      get 'search' => 'trees#search'
+      get 'public_gallery' => 'trees#public_gallery', as: :public_gallery
       get 'image_getter' => 'trees#image_getter'
       post 'generate_image' => 'trees#generate_image', format: :svg 
       get 'taxon_matching_report' => 'trees#taxon_matching_report'

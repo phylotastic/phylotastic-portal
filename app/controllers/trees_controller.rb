@@ -153,7 +153,7 @@ class TreesController < ApplicationController
     end
   end
   
-  def search
+  def public_gallery
     @trees = Tree.search do
       all do 
         fulltext params[:search]
@@ -161,7 +161,6 @@ class TreesController < ApplicationController
         paginate :page => params[:page], :per_page => 9
       end
     end.results
-    render 'explore'
   end
   
   def image_getter
