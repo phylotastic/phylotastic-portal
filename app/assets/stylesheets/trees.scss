@@ -106,6 +106,12 @@ path.link {
 
 #carousel {
   height: 600px;
+  .cloud9-item {
+    height: 500px;
+    img {
+      height: 350px;
+    }
+  }
 }
 
 #carousel .cloud9-item, #buttons button {

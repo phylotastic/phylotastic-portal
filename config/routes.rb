@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :user_list_relationships, only: [:destroy]
   
-  resources :uploaded_lists, only: [:create, :show, :destroy, :update] do
+  resources :uploaded_lists, only: [:create, :show, :destroy, :update, :new] do
     collection do
       post 'update_species' => "uploaded_lists#update_species"
       post 'update_a_species' => "uploaded_lists#update_a_species"
@@ -15,8 +15,6 @@ Rails.application.routes.draw do
       get 'trees' => 'uploaded_lists#trees'
       get 'publish' => 'uploaded_lists#publish'
       get 'failed' => 'uploaded_lists#failed'
-      get 'onpl' => 'uploaded_lists#new_from_onpl'
-      get 'dca' => 'uploaded_lists#new_from_dca'
     end
   end
 
@@ -29,7 +27,13 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
   
   resources :con_taxons
-  resources :con_files
+  
+  resources :con_files do
+    collection do
+      get 'onpl' => 'con_files#onpl'
+    end
+  end
+  
   resources :con_links
   resources :subset_taxon
   resources :selection_taxon
@@ -42,6 +46,8 @@ Rails.application.routes.draw do
       get 'image_getter' => 'trees#image_getter'
       post 'generate_image' => 'trees#generate_image', format: :svg 
       get 'taxon_matching_report' => 'trees#taxon_matching_report'
+      post 'update_description' => 'trees#update_description'
+      get 'download_image' => 'trees#download_image'  
     end
   end
   

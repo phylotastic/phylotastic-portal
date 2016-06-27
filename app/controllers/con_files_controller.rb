@@ -4,7 +4,11 @@ class ConFilesController < ApplicationController
   def new
     @con_file = ConFile.new
   end
-  
+
+  def onpl
+    @con_file = ConFile.new
+  end
+    
   def show
     @f = ConFile.find(params[:id])
     @ra = @f.raw_extraction
@@ -22,7 +26,7 @@ class ConFilesController < ApplicationController
       flash[:success] = "Processing file!"
       job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
       current_user.trees.create(bg_job: job_id, status: "extracting")
-      redirect_to trees_path
+      redirect_to root_path
     else
       render 'raw_extractions/new_from_file'
     end

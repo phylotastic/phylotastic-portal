@@ -3,11 +3,7 @@ class UploadedListsController < ApplicationController
   
   include UploadedListsHelper
 
-  def new_from_dca
-    @uploaded_list = UploadedList.new
-  end
-  
-  def new_from_onpl
+  def new
     @uploaded_list = UploadedList.new
   end
   
@@ -16,13 +12,6 @@ class UploadedListsController < ApplicationController
     if @uploaded_list.save
       flash[:success] = "File uploaded! Processing your archive file"
       ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      
-      @uploaded_list = UploadedList.new
-      res = Req.get(APP_CONFIG["sv_get_private_lists"]["url"] + "?user_id=" + current_user.email + "&access_token=" + current_user.access_token)
-      @my_lists = JSON.parse(res)["lists"] rescue []
-    
-      res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
-      @public_lists = JSON.parse(res)["lists"] rescue []
       redirect_to root_path
     else
       @uploaded_list.errors.delete(:file)

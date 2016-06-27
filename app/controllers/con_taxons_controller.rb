@@ -58,8 +58,8 @@ class ConTaxonsController < ApplicationController
                                             
         job_id = TreesWorker.perform_async(tree.id)
         tree.update_attributes( bg_job: job_id, status: "constructing")
-        flash[:success] = "Tree ##{tree.id} is under constructed. We will notify you when it is ready"
-        redirect_to trees_path
+        flash[:success] = "Tree ##{tree.id} is under constructed."
+        redirect_to root_path
       else
         render 'raw_extractions/new_from_taxon'
       end

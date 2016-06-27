@@ -3,12 +3,22 @@
 <div class="table-wrapper">
   <div class="table-scroll">  
     <div class="list-group">
-      <% my_lists.each do |l| %>  
-        <%= link_to l["list_title"], uploaded_list_path(l["list_id"]), remote: true, class:"list-group-item" %>
+      <% my_lists.each do |l| %>
+        <% if l["list_title"].nil? %>
+          <% list_name = UploadedList.find_by_lid(l["list_id"]).name %>
+        <% else %>
+          <% list_name = l["list_title"] %>
+        <% end %>
+        <%= link_to list_name, uploaded_list_path(l["list_id"]), remote: true, class:"list-group-item" %>
       <% end %>
   
       <% my_failed_lists.each do |l| %>
-        <%= link_to l.name, failed_uploaded_lists_path(id: l.id), remote: true, class:"list-group-item list-group-item-danger" %>
+        <% if l.name.nil? %>
+          <% text = l.file.original_filename %>
+        <% else %>
+          <% text = l.name %>
+        <% end %>
+        <%= link_to text, failed_uploaded_lists_path(id: l.id), remote: true, class:"list-group-item list-group-item-danger" %>
       <% end %>
       
       <% my_subcribing_lists.each do |l| %>

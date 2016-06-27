@@ -18,18 +18,18 @@
         <div class="modal-body">
           <div style="display: inline-block;">
             <div class="row col-sm-9 col-sm-offset-1">
-              <div class="col-sm-5">
-                <%= link_to "Upload my list", onpl_uploaded_lists_path, class: "btn btn-default btn-block scenario-selection" %>
+              <div class="col-sm-4">
+                <%= link_to "Go", onpl_con_files_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
               </div>
-              <div class="col-sm-7">
+              <div class="col-sm-8">
                 I have a text file with one name per line
               </div>
             </div>
             <div class="row col-sm-9 col-sm-offset-1" style="margin-top: 40px;">
-              <div class="col-sm-5">
-                <%= link_to "Upload my list", dca_uploaded_lists_path, class: "btn btn-default btn-block scenario-selection" %>
+              <div class="col-sm-4">
+                <%= link_to "Go", new_uploaded_list_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
               </div>
-              <div class="col-sm-7">
+              <div class="col-sm-8">
                 I have a Darwin Core Archive(.zip)
               </div>
             </div>

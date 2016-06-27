@@ -1,0 +1,12 @@
+<% provide(:title, "Upload Darwin Core Archive file") %>
+
+<div class="col-md-8 col-md-offset-2">
+  <h2>Choose DCA file (.zip, click <%= link_to "here", "https://drive.google.com/file/d/0B7SKJwE3SsCsNUhYQWdEVzk2RFE/view?usp=sharing"%> for sample)</h2>
+  <%= form_for @uploaded_list, url: uploaded_lists_path, html: { multipart: true } do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+    <div class="form-group", style="margin-bottom: 30px; margin-top: 30px;">
+      <%= f.file_field :file, class: "input-file" %>
+    </div>  
+    <%= f.submit "Upload", class: "btn btn-primary btn-lg" %>
+  <% end %>
+</div>
