@@ -17,28 +17,58 @@ class ConTaxonsController < ApplicationController
   end
 
   def create
-    if params["has_genome_in_ncbi"] == true
-      response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:subset_taxon][:name])
-      # TODO: elsif !params["subset_taxon"]["has_genome_in_ncbi"].nil?
-    else
-      response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:subset_taxon][:name])
-    end
+    location = params["location"]
+    ncbi = params["has_genome_in_ncbi"]
+    nb_species = params["check_nb_species"]
 
-    begin 
-      response = Req.get APP_CONFIG['sv_species_from_taxon']['url'] + params[:con_taxon][:name]
-    rescue Exception => e
-      logger.info "Cannot get species from a taxon"
-      puts e.message
-      flash[:danger] = "Sorry! Service is unavailable. We will fix it soon."
-      redirect_to root_path
-      return
+    if (location && ncbi)
+      res_loc = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + params[:taxon] + "&country=" + Country.find(params[:country_id]).name)
+      res_ncbi = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:taxon])
+      
+      if !res_loc
+        flash[:danger] = "Problem with location services"
+        redirect_to new_con_taxon_path
+        return
+      elsif !res_ncbi
+        flash[:danger] = "Problem when calling to NCBI"
+        redirect_to new_con_taxon_path
+        return
+      end
+      
+      new_res = JSON.parse(res_loc)
+      loc_species = new_res["species"]
+      mapping = []
+      JSON.parse(res_ncbi)["species"].each do |n|
+        if loc_species.include? n
+          mapping < n
+        end
+      end
+      
+      new_res["species"] = mapping
+      response = new_res.to_json
+      binding.pry
+    elsif location
+      response = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + params[:taxon] + "&country=" + Country.find(params[:country_id]).name)
+    elsif ncbi
+      response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:taxon])
+    else
+      response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:taxon])
+    end
+    
+    if nb_species
+      if JSON.parse(response)["species"].count >= params["nb_species"].to_i
+        species = JSON.parse(response)["species"].take(params["nb_species"].to_i)
+        new_res = JSON.parse(response)
+        new_res["species"] = species
+        response = new_res.to_json
+      end  
     end
     
     code = JSON.parse(response)["status_code"] rescue 0
     case code
     when 404, 204
-      flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:con_taxon][:name]}\""
-      redirect_to raw_extractions_new_from_taxon_path
+      flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:taxon]}\""
+      redirect_to new_con_taxon_path
     when 200
       @con_taxon = current_user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
@@ -47,18 +77,7 @@ class ConTaxonsController < ApplicationController
                              extracted_response,
                              :content_type => :json)
 
-        chosen_species = convert_to_chosen_species_format(response, 0, "All")
         extraction = @con_taxon.create_raw_extraction(species: resolved)
-        
-        tree = current_user.trees.create( bg_job: "-1", 
-                                          status: "resolved", 
-                                          raw_extraction_id: extraction.id,
-                                          chosen_species: chosen_species,
-                                          description: params[:con_taxon][:description] )
-                                            
-        job_id = TreesWorker.perform_async(tree.id)
-        tree.update_attributes( bg_job: job_id, status: "constructing")
-        flash[:success] = "Tree ##{tree.id} is under constructed."
         redirect_to root_path
       else
         render 'raw_extractions/new_from_taxon'
@@ -83,7 +102,8 @@ class ConTaxonsController < ApplicationController
   
   private
     def con_taxon_params
-      params.require(:con_taxon).permit(:name)
+      params.permit(:name, :taxon, :description,  :country_id, 
+                    :has_genome_in_ncbi, :nb_species)
     end
     
 end

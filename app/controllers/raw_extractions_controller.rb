@@ -16,8 +16,6 @@ class RawExtractionsController < ApplicationController
     @cfiles           = current_user.con_files
     @clinks           = current_user.con_links
     @ctaxons          = current_user.con_taxons
-    @subset_taxons    = current_user.subset_taxons
-    @selection_taxons = current_user.selection_taxons
     
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []

@@ -7,8 +7,8 @@
       <h2>Choose from a taxon</h2>
       
       <div class="taxon-field" style="width: 50%">
-        <%= label_tag "taxon_name", "(*) Taxon name"%>
-        <%= text_field_tag 'taxon_name', nil, class: "form-control" %>
+        <%= label_tag "taxon", "(*) Taxon name"%>
+        <%= text_field_tag 'taxon', nil, class: "form-control" %>
       </div>
   
       <div class="taxon-field" style="width: 50%">
@@ -25,7 +25,7 @@
         Subset by
         <div class="row taxon-opts">
           <div class="col-sm-1">
-            <%= check_box_tag :location %>
+            <%= check_box_tag :location, true, false %>
           </div>
           <div class="col-sm-2">
             Location 

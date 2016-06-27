@@ -2,7 +2,7 @@
 
 <div style="">
   <% if @trees.empty? %>
-    <p class="bg-info">You have no trees in gallery. Maybe you should take a look at some examples in here <%= link_to "in here", explore_trees_path %> first.</p>
+    <p class="bg-info">No tree found</p>
   <% else %>
     <div id="carousel">
       <% @trees.each do |t| %>

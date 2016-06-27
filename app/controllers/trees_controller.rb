@@ -53,6 +53,12 @@ class TreesController < ApplicationController
     if @tree.nil? 
       redirect_to root_url
       return
+    elsif @tree.status == "unsuccessfully-constructed"
+      respond_to do |format|
+        format.html
+        format.js { render 'show_fail' }
+      end
+      return
     elsif @tree.status != "completed"
       flash[:danger] = "Tree is not ready to view"
       redirect_to trees_path
@@ -60,7 +66,7 @@ class TreesController < ApplicationController
     else
       if !@tree.public
         if @tree.user != current_user
-          redirect_to root_url
+          redirect_to root_path
           return
         end
       end

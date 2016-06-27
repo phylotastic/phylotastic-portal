@@ -37,13 +37,6 @@
         <%= link_to l.name, con_taxon_path(l), remote: true, class:"list-group-item" %>
       <% end %>
       
-      <% subset_taxons.each do |l| %>
-        <%= link_to l.name, subset_taxon_path(l), remote: true, class:"list-group-item" %>
-      <% end %>
-      
-      <% selection_taxons.each do |l| %>
-        <%= link_to l.name, selection_taxon_path(l), remote: true, class:"list-group-item" %>
-      <% end %>
     </div>
   </div>
 </div>
