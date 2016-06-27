@@ -68,7 +68,11 @@ class ExtractionsWorker
     resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted_response,
                                   :content_type => :json )
+<<<<<<< HEAD
                                   binding.pry
+=======
+    
+>>>>>>> e80966c1d8c14701ba99f499672fd8d7d83757e8
     # update state of tree
     if !resolved_response
       tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
