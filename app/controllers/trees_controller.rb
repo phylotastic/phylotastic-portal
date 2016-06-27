@@ -179,11 +179,33 @@ class TreesController < ApplicationController
     ra = RawExtraction.find(params[:ra])
     @resolved_names = JSON.parse(ra.species)["resolvedNames"] rescue []
     respond_to do |format|
-          format.html
-          format.pdf do
-            render pdf: "taxon_matching_report",
-                   template: "trees/taxon_matching_report.pdf.erb"
-          end
+      format.html
+      format.pdf do
+        render pdf: "taxon_matching_report",
+               template: "trees/taxon_matching_report.pdf.erb"
+      end
+    end
+  end
+  
+  def update_description
+    @tree = current_user.trees.find_by_id(params[:id])
+    if @tree.nil?
+      redirect_to root_path
+    else
+      @tree.update_attributes(description: params[:description])
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
+  end
+  
+  def download_image
+    tree = current_user.trees.find_by_id(params[:id])
+    if tree.nil?
+      redirect_to root_path
+    else
+      send_file tree.image.path
     end
   end
   

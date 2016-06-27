@@ -22,7 +22,7 @@ class ConLinksController < ApplicationController
       flash[:success] = "Processing URL!"
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", current_user.id)
       current_user.trees.create(bg_job: job_id, status: "extracting")
-      redirect_to trees_path
+      redirect_to root_path
     else
       render 'raw_extractions/new_from_web'
     end

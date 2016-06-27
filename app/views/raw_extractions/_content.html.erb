@@ -19,12 +19,13 @@
   <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal" } do |f| %>
     <%= f.hidden_field :raw_extraction_id %>
     <div class="center">
-      <%= f.submit "Get tree", class: "btn btn-default btn-lg", style: "margin-bottom: 10px;" %>
+      <%= f.submit "Get tree", class: "btn btn-default btn-lg btn-primary", style: "margin-bottom: 10px;" %>
     </div>
     <div>
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
+        <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name  %></a></li>
+        <li role="presentation"><a href="#taxon-matching-report" aria-controls="taxon-matching-report" role="tab" data-toggle="tab">Taxon Matching Report</a></li>
         <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
       </ul>
       <!-- Tab panes -->
@@ -57,6 +58,38 @@
             </tbody>
           </table>
         </div>
+        
+        <div role="tabpanel" class="tab-pane" id="taxon-matching-report">
+          <table class="table table-hover">
+            <thead> 
+              <tr>
+                <th class="">#</th>
+                <th class="">Query</th> 
+                <th class="">Matched name</th> 
+                <th class="">Match</th> 
+                <th class="">Synonyms</th>
+              </tr> 
+            </thead>
+            <tbody>
+              <% resolved_names.each_with_index do |r, i| %>
+                <tr class="species-row">
+                  <td class=""><%= i + 1 %></td>
+                  <td class=""><%= r["search_string"] %></td>
+                  <td class=""><%= r["matched_name"] %></td>
+                  <td class=""><%= r["match_type"] %></td>
+                  <td class="">
+                    <% r["synonyms"].each do |s| %>
+                      <%= s %><br>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table> 
+          <p><em>The list of query species was validated with &lt;TNRS&gt; prior to querying for a tree. This table shows how the query strings were mapped to validated taxon names</em></p>
+          <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default" %> 
+        </div>
+        
         <div role="tabpanel" class="tab-pane" id="metadata"></div>
       </div>
     </div>
