@@ -55,6 +55,12 @@ class ConTaxonsController < ApplicationController
       response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:taxon])
     end
     
+    if !response
+      flash[:danger] = "Problem with services"
+      redirect_to new_con_taxon_path
+      return
+    end
+      
     if nb_species
       if JSON.parse(response)["species"].count >= params["nb_species"].to_i
         species = JSON.parse(response)["species"].take(params["nb_species"].to_i)
@@ -90,7 +96,7 @@ class ConTaxonsController < ApplicationController
   def destroy
     ctx = current_user.con_taxons.find(params[:id])
     if ctx.nil?
-      redirect_to root_path
+      redirect_to root_path≥÷
     else 
       ctx.destroy
       respond_to do |format|
