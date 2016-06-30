@@ -40,13 +40,12 @@ class ConTaxonsController < ApplicationController
       mapping = []
       JSON.parse(res_ncbi)["species"].each do |n|
         if loc_species.include? n
-          mapping < n
+          mapping << n
         end
       end
       
       new_res["species"] = mapping
       response = new_res.to_json
-      binding.pry
     elsif location
       response = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + params[:taxon] + "&country=" + Country.find(params[:country_id]).name)
     elsif ncbi

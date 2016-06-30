@@ -2,14 +2,10 @@
 
 <div class="table-wrapper">
   <div class="table-scroll">  
-    <table class="table table-bordered">
-      <tbody>
-        <% public_lists.each do |l| %></td>
-          <tr>
-            <td><%= l["list_title"] %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="list-group">
+      <% public_lists.each do |l| %>
+        <%= link_to l["list_title"], show_public_uploaded_lists_path(id: l["list_id"]), remote: true, class:"list-group-item" %>      
+      <% end %>
+    </div>
   </div>
 </div>

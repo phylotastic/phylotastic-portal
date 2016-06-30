@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'trees' => 'uploaded_lists#trees'
       get 'publish' => 'uploaded_lists#publish'
       get 'failed' => 'uploaded_lists#failed'
+      get 'show_public' => 'uploaded_lists#show_public'
     end
   end
 

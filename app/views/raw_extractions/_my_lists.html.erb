@@ -5,7 +5,11 @@
     <div class="list-group">
       <% my_lists.each do |l| %>
         <% if l["list_title"].nil? %>
-          <% list_name = UploadedList.find_by_lid(l["list_id"]).name %>
+          <% if UploadedList.find_by_lid(l["list_id"]).nil? %>
+            <% list_name = "loading ..." %>
+          <% else %>
+            <% list_name = UploadedList.find_by_lid(l["list_id"]).name %>
+          <% end %>
         <% else %>
           <% list_name = l["list_title"] %>
         <% end %>

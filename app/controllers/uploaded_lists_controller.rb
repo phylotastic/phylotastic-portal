@@ -62,7 +62,22 @@ class UploadedListsController < ApplicationController
       flash[:danger] = @list["message"]
       redirect_to root_path
     end
-    
+  end
+  
+  def show_public
+    @list = get_a_list(params[:id])
+    if @list["list"]["is_list_public"]
+      @uploaded_list = UploadedList.find_or_create(@list)
+      @ra = @uploaded_list.raw_extraction
+      @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
+      @resolved_names = [] if !@resolved_names
+      
+      respond_to do |format|
+        format.js
+      end
+    else
+      redirect_to root_path
+    end
   end
   
   def destroy
