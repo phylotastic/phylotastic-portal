@@ -131,7 +131,7 @@ $(document).ready(function(){
   
   $(".fix-names").find("input[type='submit']").click(function() {
     $(this).parents(".fix-names").submit();
-    $(this).replaceWith("<img class='center' width=60 src='/assets/Loading_icon.gif'>");
+    $(this).replaceWith("<img class='center' width=60 src='<%= asset_path("loading-icon.gif") %>''>");
   })
 })
 </script>
