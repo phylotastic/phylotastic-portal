@@ -30,7 +30,7 @@ $(document).ready(function() {
   $(".list-group-item").click(function() {
     $(".list-group-item").removeClass("active");
     $(this).addClass("active");
-    $('#ra-content').html("<div class='center'><img src='<%= asset_path("loading-icon.gif") %>'></div>");
+    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
   })
 })
 </script>
