@@ -1,4 +1,4 @@
-<div class="col-md-10">
+<div id="tree-wrapper">
   <div>
     <div id="tree-in-newick"></div>
     <div id='graph'></div>
@@ -30,7 +30,7 @@
   </div>
 </div>
 
-<div class="col-md-2" id="tree-actions">
+<div class="pull-right" id="tree-actions" style="width: 200px;">
   <div class="row">
     <h4 class="center">Tree actions</h4>
 
@@ -250,7 +250,10 @@ $(document).ready(function(){
     d3.select("#graph").select("svg")
       .attr("width", newWidth + 200)
       .attr("height", newHeight)
-
+    
+    $("#tree-content")
+      .css("width", parseInt(d3.select("#graph").select("svg").attr("width")) + 200);
+    
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse();
         links = tree.links(nodes);

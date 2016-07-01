@@ -117,3 +117,15 @@ path.link {
 #carousel .cloud9-item, #buttons button {
   cursor: pointer;
 }
+
+#tree-content {
+  display: inline-block;
+  #tree-wrapper {
+    display: inline-block; 
+    float:left;
+  }
+  #tree-actions {
+    width: 200px;
+    float: right;
+  }
+}
