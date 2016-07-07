@@ -33,8 +33,6 @@
 * ability to associate information with branch 
    * show label "7 events" on branch leading to Cervidae  
    * can be static or dynamic (float-over)
-* export annotated tree in portable tree format (e.g., NeXML, NHX, PhyloXML)
-   * ???
 * export vector graphics image
    * use capacity_test.nwk, see capacity_test.svg .    
 * collapse clades
@@ -43,6 +41,8 @@
    * use viz_sample7.nwk, swap Cervidae and Bovidae
 
 ## Priority level 3 features 
+* export annotated tree in portable tree format (e.g., NeXML, NHX, PhyloXML)
+   * (needs community standard)
 * some way to view larger trees (dynamic expansion, fish-eye, fractal, etc)
 * ability to serve as arbitrary controller
 * ability to combine phylogeny with geographic locations on a map
