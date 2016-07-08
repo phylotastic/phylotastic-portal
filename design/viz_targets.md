@@ -46,9 +46,3 @@
 * some way to view larger trees (dynamic expansion, fish-eye, fractal, etc)
 * ability to serve as arbitrary controller
 * ability to combine phylogeny with geographic locations on a map
-
-
-## needed 
-
-* ladderize tree
- 
