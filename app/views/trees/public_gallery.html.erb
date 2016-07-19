@@ -38,7 +38,7 @@
               <ul class="dropdown-menu action-nav">
                 <li><a href="#">Comment on tree</a></li>
                 <li><a href="#" id="download-image">Save image to disk</a></li>
-                <li><a href="#">Share on social media</a></li>
+                <li><a href="#" id="share">Share on social media</a></li>
               </ul>
             </li>
           </ul>
@@ -77,6 +77,27 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" tabindex="-1" role="dialog" id="share-tree">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Share</h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <%= link_to "Save image", nil, id: "down-image-link" %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<%= render partial: "watch_relationships/gallery_details", locals: {trees: @trees} %>
+
 <script type="text/javascript">
 $(document).ready(function(){
   $("#carousel").Cloud9Carousel( {
@@ -96,6 +117,13 @@ $(document).ready(function(){
     obj = $("#carousel").data("carousel").nearestItem();
     $('#down-image-link').attr("href", "<%= download_image_trees_path %>" + "?id=" + obj.element.id.match(/\d+/g)[0]);
     return false;
-  })
+  });
+  
+  $('#share').click(function() {
+    $('#share-tree').modal();
+    obj = $("#carousel").data("carousel").nearestItem();
+    $('#down-image-link').attr("href", "<%= download_image_trees_path %>" + "?id=" + obj.element.id.match(/\d+/g)[0]);
+    return false;
+  });
 });
 </script>

@@ -19,6 +19,13 @@ class WatchRelationshipsController < ApplicationController
     end
   end
   
+  def add_public_gallery
+    @tree = Tree.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   def gallery
     @trees = current_user.watched_trees
   end

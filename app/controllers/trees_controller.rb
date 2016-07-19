@@ -140,7 +140,7 @@ class TreesController < ApplicationController
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
       respond_to do |format|
-        format.html { redirect_to tree_path(params[:id]) }
+        format.html { redirect_to public_gallery_trees_path }
         format.js { render 'public.js.erb'}
       end
     end

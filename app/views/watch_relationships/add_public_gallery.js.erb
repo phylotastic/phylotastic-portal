@@ -1,0 +1,10 @@
+<% if @tree.user == current_user %>
+  <% if !@tree.public && @tree.status == "completed" %>
+    $('#publish-tree-wrapper').html("<%= escape_javascript(render('watch_relationships/add_public_gallery')) %>");
+  <% else %>
+    $('#publish-tree-wrapper').text("Tree is unable to add to public gallery");    
+  <% end %>
+<% else %>
+  $('#publish-tree-wrapper').html("Permission denied!");
+<% end %>
+$('#publish-tree').modal();

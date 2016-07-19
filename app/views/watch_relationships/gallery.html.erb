@@ -29,7 +29,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu action-nav">
                   <li><a href="#" id="add-caption">Add caption to tree</a></li>
-                  <li><a href="#">Add to Public Gallery</a></li>
+                  <li><%= link_to "Add to Public Gallery", nil, id: "publish", remote: true %></li>
                   <li><a href="#" id="download-image">Save image to disk</a></li>
                   <li><a href="#">Share on social media</a></li>
                 </ul>
@@ -90,6 +90,26 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" tabindex="-1" role="dialog" id="publish-tree">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add tree to public gallery</h4>
+      </div>
+      <div class="modal-body">
+        <div id="publish-tree-wrapper">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<%= render partial: "watch_relationships/gallery_details", locals: {trees: @trees} %>
+
 <script type="text/javascript">
 $(document).ready(function(){
   $("#carousel").Cloud9Carousel( {
@@ -116,6 +136,13 @@ $(document).ready(function(){
     obj = $("#carousel").data("carousel").nearestItem();
     $('#down-image-link').attr("href", "<%= download_image_trees_path %>" + "?id=" + obj.element.id.match(/\d+/g)[0]);
     return false;
-  })
+  });
+  
+  $('#publish').click(function() {
+    obj = $("#carousel").data("carousel").nearestItem();
+    $(this).attr("href", "<%= pub_gal_path %>" + "?id=" + obj.element.id.match(/\d+/g)[0]);
+    $(this).click();
+    return false;
+  });
 });
 </script>

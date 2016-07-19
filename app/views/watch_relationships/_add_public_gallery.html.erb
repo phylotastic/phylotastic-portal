@@ -1,0 +1,6 @@
+<div id="publicise-btn">
+  <%= form_for(@tree, url: public_trees_path(@tree), html: {id: "publicise-tree"}) do |f| %>
+    <div><%= hidden_field_tag "tree[public]", true %></div>
+    <%= f.submit "Add tree to Public Gallery", class: "btn btn-block btn-primary" %>
+  <% end %>
+</div>

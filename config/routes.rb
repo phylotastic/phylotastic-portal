@@ -55,6 +55,7 @@ Rails.application.routes.draw do
   get 'user/:id/gallery', to: "watch_relationships#gallery", as: :gallery
   
   resources :watch_relationships, only: [:create, :destroy]
+  get '/add_public_gallery' => 'watch_relationships#add_public_gallery', as: :pub_gal
   
   get 'static_pages/about'
   get 'static_pages/faq'
