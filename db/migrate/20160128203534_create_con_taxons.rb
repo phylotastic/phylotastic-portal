@@ -10,6 +10,8 @@ class CreateConTaxons < ActiveRecord::Migration
       t.references :user, index: true, foreign_key: true
             
       t.timestamps null: false
-    end    
+    end
+    add_index :con_taxons, :name
+    add_index :con_taxons, :description
   end
 end

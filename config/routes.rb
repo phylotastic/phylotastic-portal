@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  
   root 'raw_extractions#index'
 
   resources :user_list_relationships, only: [:destroy]
@@ -26,16 +25,9 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
   
   resources :con_taxons
-  
-  resources :con_files do
-    collection do
-      get 'onpl' => 'con_files#onpl'
-    end
-  end
-  
+  resources :con_files  
   resources :con_links
-  resources :subset_taxon
-  resources :selection_taxon
+  resources :onpl_files
  
   resources :trees do
     collection do

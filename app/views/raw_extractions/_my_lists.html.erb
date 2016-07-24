@@ -33,6 +33,10 @@
         <%= link_to l.name, con_file_path(l), remote: true, class:"list-group-item" %>
       <% end %>
       
+      <% ofiles.each do |l| %>
+        <%= link_to l.name, onpl_file_path(l), remote: true, class:"list-group-item" %>
+      <% end %>
+      
       <% clinks.each do |l| %>
         <%= link_to l.name, con_link_path(l), remote: true, class:"list-group-item" %>
       <% end %>

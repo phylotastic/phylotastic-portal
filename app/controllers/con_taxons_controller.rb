@@ -89,6 +89,8 @@ class ConTaxonsController < ApplicationController
       end
     else
       logger.info response
+      flash[:error] = "Can not process!"
+      redirect_to new_con_taxon_path
     end
   end
   

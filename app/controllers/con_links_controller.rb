@@ -24,7 +24,8 @@ class ConLinksController < ApplicationController
       current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to root_path
     else
-      render 'raw_extractions/new_from_web'
+      flash[:error] = "Can not process link!"
+      redirect_to new_con_link_path
     end
   end
   

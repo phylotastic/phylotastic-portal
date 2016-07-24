@@ -15,7 +15,8 @@ class UploadedListsController < ApplicationController
       redirect_to root_path
     else
       @uploaded_list.errors.delete(:file)
-      render 'raw_extractions/new_from_pre_built_examples'
+      flash[:error] = "Can not process list!"
+      redirect_to root_path
     end
   end
   

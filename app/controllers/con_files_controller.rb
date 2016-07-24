@@ -4,10 +4,6 @@ class ConFilesController < ApplicationController
   def new
     @con_file = ConFile.new
   end
-
-  def onpl
-    @con_file = ConFile.new
-  end
     
   def show
     @f = ConFile.find(params[:id])
@@ -28,7 +24,8 @@ class ConFilesController < ApplicationController
       current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to root_path
     else
-      render 'raw_extractions/new_from_file'
+      flash[:error] = "Can not process file!"
+      redirect_to new_con_file_path
     end
   end
   

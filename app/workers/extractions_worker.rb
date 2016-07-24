@@ -19,10 +19,14 @@ class ExtractionsWorker
       file_url.slice!(/[?]\d*\z/)
       file_url = APP_CONFIG['domain'] + file_url
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url) 
+    when "OnplFile"
+      extracted_response = {"scientificNames": {}}
+      extracted_response["scientificNames"] = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
+      extracted_response = extracted_response.to_json
     end
     
     # raw extraction
-    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(species: extracted_response)
+    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(extracted_names: extracted_response)
 
     # retrieve tree corresponding to the above raw extraction
     tries = 3
@@ -57,9 +61,6 @@ class ExtractionsWorker
       return
     end
     
-    # save extracted_response in raw extraction
-    extraction.update_attributes(species: extracted_response)
-
     # update status "extracted" to tree
     tree.update_attributes( raw_extraction_id: extraction.id, 
                             status: "extracted" )
