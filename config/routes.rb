@@ -27,7 +27,11 @@ Rails.application.routes.draw do
   resources :con_taxons
   resources :con_files  
   resources :con_links
-  resources :onpl_files
+  resources :onpl_files do
+    collection do
+      post 'update_a_species' => "onpl_files#update_a_species"
+    end
+  end
  
   resources :trees do
     collection do

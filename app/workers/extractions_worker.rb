@@ -20,7 +20,7 @@ class ExtractionsWorker
       file_url = APP_CONFIG['domain'] + file_url
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url) 
     when "OnplFile"
-      extracted_response = {"scientificNames": {}}
+      extracted_response = {}
       extracted_response["scientificNames"] = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
       extracted_response = extracted_response.to_json
     end
