@@ -1,1 +1,1 @@
-(((Rangifer_tarandus, Cervus_elaphus)Cervidae, (Bos_taurus, Ovis_orientalis)Bovidae), (Suricata_suricatta, (Cistophora_cristata,Mephitis_mephitis))Carnivora);
+(((Rangifer_tarandus:1, Cervus_elaphus:1)Cervidae:1, (Bos_taurus:1, Ovis_orientalis:1)Bovidae:1):1, (Suricata_suricatta:2, (Cystophora_cristata:1,Mephitis_mephitis:1):1)Carnivora:1);
