@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
+
   root 'raw_extractions#index'
 
   resources :user_list_relationships, only: [:destroy]
@@ -45,9 +47,7 @@ Rails.application.routes.draw do
       get 'download_image' => 'trees#download_image'  
     end
   end
-  
-  devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
-  
+    
   get 'user/:id/gallery', to: "watch_relationships#gallery", as: :gallery
   
   resources :watch_relationships, only: [:create, :destroy]
