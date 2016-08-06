@@ -4,7 +4,7 @@
       <% trees.each do |t| %>
         <% case t.status %>
         <% when "completed" %>
-          <%= link_to t.id, tree_path(t.id), remote: true, class:"list-group-item" %>
+          <%= link_to t.name, tree_path(t.id), remote: true, class:"list-group-item" %>
         <% when "constructing" %>
           <%= link_to((t.id.to_s + " - constructing..."), tree_path(t.id), remote: true, class:"list-group-item list-group-item-info") %>
         <% when "unsuccessfully-constructed" %>

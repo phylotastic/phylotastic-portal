@@ -19,7 +19,29 @@
   <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal" } do |f| %>
     <%= f.hidden_field :raw_extraction_id %>
     <div class="center">
-      <%= f.submit "Get tree", class: "btn btn-default btn-lg btn-primary", style: "margin-bottom: 10px;" %>
+	  <!-- Button trigger modal -->
+	  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#get-tree-modal-<%= ra.id %>" style="margin-bottom: 20px;">
+	    Get tree
+	  </button>
+
+	  <!-- Modal -->
+	  <div class="modal fade" id="get-tree-modal-<%= ra.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	          <h4 class="modal-title" id="myModalLabel">Enter name for tree</h4>
+	        </div>
+	        <div class="modal-body">
+	          <%= f.text_field :name, class: "form-control" %>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	          <%= f.submit "Get tree", class: "btn btn-primary btn-lg", style: "margin-bottom: 10px;" %>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
     </div>
     <div>
       <!-- Nav tabs -->
