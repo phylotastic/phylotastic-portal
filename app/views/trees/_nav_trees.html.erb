@@ -4,11 +4,11 @@
       <% trees.each do |t| %>
         <% case t.status %>
         <% when "completed" %>
-          <%= link_to t.name, tree_path(t.id), remote: true, class:"list-group-item" %>
+          <%= link_to t.name, tree_path(t.id), remote: true, class:"list-group-item", id: "nav-tree-#{t.id}" %>
         <% when "constructing" %>
-          <%= link_to((t.id.to_s + " - constructing..."), tree_path(t.id), remote: true, class:"list-group-item list-group-item-info") %>
+          <%= link_to((t.name.to_s + " - constructing..."), tree_path(t.id), remote: true, class:"list-group-item list-group-item-info", id: "nav-tree-#{t.id}") %>
         <% when "unsuccessfully-constructed" %>
-          <%= link_to((t.id.to_s + " - failed"), tree_path(t.id), remote: true, class:"list-group-item list-group-item-danger") %>  
+          <%= link_to((t.name.to_s + " - failed"), tree_path(t.id), remote: true, class:"list-group-item list-group-item-danger", id: "nav-tree-#{t.id}") %>  
         <% end %>
       <% end %>
     </div>

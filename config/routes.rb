@@ -37,7 +37,6 @@ Rails.application.routes.draw do
  
   resources :trees do
     collection do
-      patch ':id/update_image' => 'trees#update_image', as: :update_image
       patch ':id/public' => 'trees#public', as: :public
       get 'public_gallery' => 'trees#public_gallery', as: :public_gallery
       get 'image_getter' => 'trees#image_getter'

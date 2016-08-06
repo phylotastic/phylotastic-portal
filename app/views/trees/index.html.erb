@@ -4,7 +4,9 @@
   <div class="col-md-3">
     <div class="list-selection">
       <h4>My Trees</h4>
-      <%= render partial: "nav_trees", locals: { trees: @my_trees }%>
+	  <div class="list-names-my-trees">
+		  <%= render partial: "nav_trees", locals: { trees: @my_trees }%>
+	  </div>
     </div>
     <hr>
     <div class="list-selection">

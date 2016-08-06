@@ -115,15 +115,15 @@ class TreesController < ApplicationController
     end
   end
   
-  def update_image
+  def update
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
       respond_to do |format|
         format.html { redirect_to tree_path(params[:id]) }
-        format.js { render 'update_image.js.erb'}
+        format.js { render 'update.js.erb'}
       end
     else
-      flash[:danger] = "Cannot save tree image"
+      flash[:danger] = "Cannot save tree info"
       redirect_to tree_path(params[:id])
     end
   end

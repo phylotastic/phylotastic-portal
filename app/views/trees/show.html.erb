@@ -476,7 +476,7 @@ $(document).ready(function(){
     fd.append("tree[image]", file);
     // And send it
     $.ajax({
-       url: "/trees/<%= @tree.id %>/update_image.js",
+       url: "/trees/<%= @tree.id %>/update.js",
        type: "PATCH",
        data: fd,
        processData: false,

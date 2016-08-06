@@ -30,9 +30,9 @@
   </div>
 </div>
 
-<div class="pull-right" id="tree-actions" style="width: 200px;">
+<div class="pull-right" style="width: 200px;">
   <div class="row">
-    <h4 class="center">Tree actions</h4>
+    <h4 class="center" id="tree-actions">Tree actions</h4>
 
     <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target=".taxon-matching-report-modal">Taxon matching report</button>
   
@@ -59,8 +59,30 @@
     <%= form_tag "/trees/generate_image.svg", method: :post, id: "save-to-disk-form" do %>
       <input type="hidden" name="image" value="" />
     <% end %>
-    <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk" %>
-  </div>
+    <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %>
+	
+	  <!-- Button trigger modal -->
+	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#">Edit tree name</a>
+	  <!-- Modal -->
+	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+	      <div class="modal-content">
+          <%= form_for tree, remote: true do |f| %>
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
+	          </div>
+	          <div class="modal-body">
+	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
+	          </div>
+	          <div class="modal-footer">
+	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+	          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>  
 
   <hr>
   <div class="row">
@@ -482,7 +504,7 @@ $(document).ready(function(){
     fd.append("tree[image]", file);
     // And send it
     $.ajax({
-       url: "/trees/<%= @tree.id %>/update_image.js",
+       url: "/trees/<%= @tree.id %>/update.js",
        type: "PATCH",
        data: fd,
        processData: false,
