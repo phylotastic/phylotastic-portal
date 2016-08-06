@@ -138,7 +138,7 @@
 $(document).ready(function(){
 
   var newick = Newick.parse("<%= JSON.parse(tree.representation)['newick'] %>")
-  
+  	
   var canvasWidth = 800, canvasHeight = 600;
   var newWidth = 0, newHeight = 0;
   var m = [10, 100, 10, 100],
@@ -300,7 +300,6 @@ $(document).ready(function(){
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
         .text(function(d) { 
-			console.log(d.name);
 			return d.name.replace(/_ott\d*/, '').replace(/_/g, " "); })
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")

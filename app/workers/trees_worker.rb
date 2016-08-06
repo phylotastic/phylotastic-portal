@@ -39,6 +39,7 @@ class TreesWorker
                               bg_job: "-1",
                               representation: nil )
     elsif JSON.parse(constructed_response)["message"] == "Success" 
+      constructed_response = constructed_response.gsub('\'', '')
       tree.update_attributes( status: "completed", 
                               bg_job: "-1",
                               representation: constructed_response )
