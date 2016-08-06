@@ -65,7 +65,8 @@
 
 <% unless unresolved.empty? %>
   <hr>
-  <h4>Unresolved species</h4>
+  <h4>Unmatched names</h4>
+  <p>Edit name as desired, then click the 'Search' button to look for matches</p>
   <div class="">
     <div> 
       <div class="row"> 
@@ -83,7 +84,7 @@
               <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
               <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
               <div class="col-sm-2">
-                <%= submit_tag "Change", class: "btn btn-default"%>
+                <%= submit_tag "Search", class: "btn btn-default"%>
               </div>
             <% end %>
           </div>
