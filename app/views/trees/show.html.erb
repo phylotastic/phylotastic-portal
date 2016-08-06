@@ -233,7 +233,7 @@ $(document).ready(function(){
         node.children.forEach(function(d) {
           avarageHeight(d);
           sum += d.x;
-          console.log("sum: " + sum);
+          // console.log("sum: " + sum);
         });
         node.x = sum/node.children.length;
       } else {
@@ -295,7 +295,6 @@ $(document).ready(function(){
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
         .text(function(d) { 
-			console.log(d.name);
 			return d.name.replace(/_ott\d*/, '').replace(/_/g, " ").replace(/['"]+/g, ''); })
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")
