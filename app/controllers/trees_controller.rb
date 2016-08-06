@@ -32,12 +32,12 @@ class TreesController < ApplicationController
   end
   
   def create
-    params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json  
+    params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json
     @tree = current_user.trees.build(tree_params)
     if @tree.save
       flash[:success] = "Tree is being constructed! We will inform you when your tree is ready"
       job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes( bg_job: job_id, 
+      @tree.update_attributes( bg_job: job_id,
                                status: "constructing",
                                notifiable: true )
       redirect_to trees_path
@@ -219,6 +219,6 @@ class TreesController < ApplicationController
       params.require(:tree).permit(:phylo_source_id, :branch_length, 
                                    :images_from_EOL, :image, :public, 
                                    :raw_extraction_id, :chosen_species,
-                                   :description)
+                                   :description, :name)
     end
 end

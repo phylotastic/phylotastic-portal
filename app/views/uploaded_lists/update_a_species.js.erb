@@ -1,5 +1,5 @@
 alert("<%= @mess %>");
-$('#ra-content').html("<%= escape_javascript(render partial: 'raw_extractions/content', 
+$('#ra-content').html("<%= escape_javascript(render partial: 'uploaded_lists/content', 
                                                     locals: { resolved_names: @resolved_names,
                                                               unresolved:     @unresolved,
                                                               name:           @list['list']['list_title'], 

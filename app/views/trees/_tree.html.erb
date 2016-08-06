@@ -137,7 +137,7 @@
  
 $(document).ready(function(){
 
-  var newick = Newick.parse("<%= JSON.parse(tree.representation)['newick'] %>")
+  var newick = Newick.parse("<%= JSON.parse(tree.representation)['newick'] %>");
   	
   var canvasWidth = 800, canvasHeight = 600;
   var newWidth = 0, newHeight = 0;
