@@ -294,7 +294,7 @@ $(document).ready(function(){
         .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-        .text(function(d) { return d.name.replace(/_ott\d*/, '').replace(/_/g, " "); })
+        .text(function(d) { return d.name.replace(/_ott\d*/, '').replace(/_/g, " ").replace(/['"]+/g, ''); })
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")
         .style("cursor", "pointer");
@@ -313,7 +313,7 @@ $(document).ready(function(){
           if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
             current_node.siblings(".species-img")[0]
                 .setAttributeNS("http://www.w3.org/1999/xlink", "href", "/assets/Loading_icon.gif");
-            jqxhr = $.get( "/trees/image_getter?spe=" + d.name.replace(/_ott\d*/, '').replace(/_/g, ' '), function(data) {
+            jqxhr = $.get( "/trees/image_getter?spe=" + d.name.replace(/_ott\d*/, '').replace(/_/g, ' ').replace(/['"]+/g, ''), function(data) {
               current_node.siblings(".species-img")[0]
                   .setAttributeNS("http://www.w3.org/1999/xlink", "href", data["image"]);  // inject data:image in DOM
 
