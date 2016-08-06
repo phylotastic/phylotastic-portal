@@ -85,6 +85,7 @@
           var x = tokens[i-1];
           if (x == ')' || x == '(' || x == ',') {
             tree.name = token.replace(/[\'\"]+/g, '');
+			console.log(tree.name)
           } else if (x == ':') {
             tree.length = parseFloat(token);
           }
