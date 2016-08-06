@@ -35,6 +35,19 @@ class UploadedListsController < ApplicationController
     end
   end
   
+  def update_name
+    @tree = current_user.trees.find_by_id(params[:id])
+    if @tree.update_attributes(tree_params)
+      respond_to do |format|
+        format.html { redirect_to tree_path(params[:id]) }
+        format.js { render 'update.js.erb'}
+      end
+    else
+      flash[:danger] = "Cannot save tree info"
+      redirect_to tree_path(params[:id])
+    end
+  end
+  
   def show
     @list = get_a_list(params[:id])
     if @list["status_code"] == 200 # if there is a list in the service
