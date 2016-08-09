@@ -54,7 +54,7 @@ gem 'rest-client'
 gem 'active_record-acts_as'
 
 # Tree representation
-gem "d3-rails"
+gem "d3-rails", "3.5.16"
 
 # Carousel
 gem 'jquery-slick-rails'
