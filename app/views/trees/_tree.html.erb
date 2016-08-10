@@ -1,3 +1,4 @@
+<% tree_newick = JSON.parse(tree.representation)['newick'].gsub(/_ott\d*/, '').gsub(/_/, ' ') %>
 <div id="tree-wrapper">
   <div>
     <div id="tree-in-newick"></div>
@@ -19,7 +20,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
-          <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= JSON.parse(tree.representation)['newick'] %></textarea>
+          <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
@@ -62,7 +63,7 @@
     <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %>
 	
 	  <!-- Button trigger modal -->
-	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#">Edit tree name</a>
+	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
 	  <!-- Modal -->
 	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	    <div class="modal-dialog" role="document">
@@ -82,6 +83,10 @@
         </div>
       </div>
     </div>
+    
+    <%= form_for(tree, html: { method: :delete }) do |f| %>
+      <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+    <% end %>
   </div>  
 
   <hr>
@@ -159,7 +164,7 @@
  
 $(document).ready(function(){
 
-  var newick = Newick.parse("<%= JSON.parse(tree.representation)['newick'] %>");
+  var newick = Newick.parse("<%= tree_newick %>");
   	
   var canvasWidth = 800, canvasHeight = 600;
   var newWidth = 0, newHeight = 0;
@@ -321,8 +326,7 @@ $(document).ready(function(){
         .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
         .attr("dy", ".35em")
         .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-        .text(function(d) { 
-			return d.name.replace(/_ott\d*/, '').replace(/_/g, " "); })
+        .text(function(d) { return d.name; })
         .style("fill-opacity", 1e-6)
         .style("font-size", "11px")
         .style("cursor", "pointer");
@@ -341,7 +345,7 @@ $(document).ready(function(){
           if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
             current_node.siblings(".species-img")[0]
                 .setAttributeNS("http://www.w3.org/1999/xlink", "href", "/assets/Loading_icon.gif");
-            jqxhr = $.get( "/trees/image_getter?spe=" + d.name.replace(/_ott\d*/, '').replace(/_/g, ' '), function(data) {
+            jqxhr = $.get( "/trees/image_getter?spe=" + d.name, function(data) {
               current_node.siblings(".species-img")[0]
                   .setAttributeNS("http://www.w3.org/1999/xlink", "href", data["image"]);  // inject data:image in DOM
 
