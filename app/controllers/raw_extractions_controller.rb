@@ -19,6 +19,5 @@ class RawExtractionsController < ApplicationController
 
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
-    binding.pry
   end
 end
