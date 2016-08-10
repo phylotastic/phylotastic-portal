@@ -34,7 +34,6 @@ class OnplFilesController < ApplicationController
     if @onpl_file.save
       flash[:success] = "Processing file!"
       job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", current_user.id)
-      current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to root_path
     else
       flash[:error] = "Can not process file!"
@@ -96,6 +95,16 @@ class OnplFilesController < ApplicationController
   end
   
   def destroy
+    of = current_user.onpl_files.find(params[:id])
+    if of.nil?
+      redirect_to root_path
+    else 
+      of.destroy
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.js
+      end
+    end
   end
   
   private

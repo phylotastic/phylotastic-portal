@@ -28,10 +28,10 @@ class UploadedListsController < ApplicationController
     if @uploaded_list.update_attributes(uploaded_list_params)
       flash[:success] = "Processing your archive file!"
       job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      redirect_to trees_path
+      redirect_to root_path
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
-      redirect_to trees_path    
+      redirect_to root_path    
     end
   end
   
@@ -116,7 +116,7 @@ class UploadedListsController < ApplicationController
         ul.destroy
         flash[:info] = "Deleted list"
         respond_to do |format|
-          format.html { redirect_to trees_path }
+          format.html { redirect_to root_path }
           format.js
         end
       end

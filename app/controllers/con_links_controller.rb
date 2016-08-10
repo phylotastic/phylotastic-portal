@@ -21,7 +21,6 @@ class ConLinksController < ApplicationController
     if @con_link.save
       flash[:success] = "Processing URL!"
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", current_user.id)
-      current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to root_path
     else
       flash[:error] = "Can not process link!"
@@ -36,7 +35,7 @@ class ConLinksController < ApplicationController
     else 
       cl.destroy
       respond_to do |format|
-        format.html { redirect_to trees_path }
+        format.html { redirect_to root_path }
         format.js
       end
     end

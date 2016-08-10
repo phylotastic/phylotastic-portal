@@ -12,7 +12,11 @@
       <div role="tabpanel" class="tab-pane active" id="content">
         <p class="chosing-species">No species</p>
       </div>
-      <div role="tabpanel" class="tab-pane" id="metadata"></div>
+      <div role="tabpanel" class="tab-pane" id="metadata">
+        <div>
+          <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+        </div>
+      </div>
     </div>
   </div>
 <% else %>
@@ -112,7 +116,11 @@
           <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default" %> 
         </div>
         
-        <div role="tabpanel" class="tab-pane" id="metadata"></div>
+        <div role="tabpanel" class="tab-pane" id="metadata">
+          <div>
+            <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+          </div>
+        </div>
       </div>
     </div>
   <% end %>

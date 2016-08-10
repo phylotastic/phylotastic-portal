@@ -21,7 +21,6 @@ class ConFilesController < ApplicationController
     if @con_file.save
       flash[:success] = "Processing file!"
       job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
-      current_user.trees.create(bg_job: job_id, status: "extracting")
       redirect_to root_path
     else
       flash[:error] = "Can not process file!"
@@ -36,7 +35,7 @@ class ConFilesController < ApplicationController
     else 
       cf.destroy
       respond_to do |format|
-        format.html { redirect_to trees_path }
+        format.html { redirect_to root_path }
         format.js
       end
     end

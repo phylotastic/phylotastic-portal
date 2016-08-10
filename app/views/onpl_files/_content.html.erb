@@ -12,7 +12,11 @@
       <div role="tabpanel" class="tab-pane active" id="content">
         <p class="chosing-species">No species</p>
       </div>
-      <div role="tabpanel" class="tab-pane" id="metadata"></div>
+      <div role="tabpanel" class="tab-pane" id="metadata">
+        <div>
+          <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+        </div>
+      </div>
     </div>
   </div>
 <% else %>
@@ -78,37 +82,42 @@
                 <% end %>
             </tbody>
           </table>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="metadata"></div>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-
-<% unless unresolved.empty? %>
-  <hr>
-  <h4>Unmatched names</h4>
-  <div class="">
-    <div> 
-      <div class="row"> 
-        <strong class="col-sm-5">Edit name as desired, then click the 'Search' button to look for matches</strong>
-        <div class="col-sm-2"></div>
-      </div> 
-    </div>
-    <div>
-      <% unresolved.each_with_index do |s, i| %>
-        <div class="row form-group">
-          <%= form_tag({controller: 'onpl_files', action: 'update_a_species', id: ra.contributable.id}, method: "post", remote: true, class: "fix-names") do %>
-            <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s, class: "form-control" %></div>
-            <%= hidden_field_tag 'species[' + i.to_s + '][old]', s %>
-            <div class="col-sm-2">
-              <%= submit_tag "Search", class: "btn btn-default"%>
+          
+          <% unless unresolved.empty? %>
+            <hr>
+            <h4>Unmatched names</h4>
+            <div class="">
+              <div> 
+                <div class="row"> 
+                  <strong class="col-sm-5">Edit name as desired, then click the 'Search' button to look for matches</strong>
+                  <div class="col-sm-2"></div>
+                </div> 
+              </div>
+              <div>
+                <% unresolved.each_with_index do |s, i| %>
+                  <div class="row form-group">
+                    <%= form_tag({controller: 'onpl_files', action: 'update_a_species', id: ra.contributable.id}, method: "post", remote: true, class: "fix-names") do %>
+                      <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s, class: "form-control" %></div>
+                      <%= hidden_field_tag 'species[' + i.to_s + '][old]', s %>
+                      <div class="col-sm-2">
+                        <%= submit_tag "Search", class: "btn btn-default"%>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
             </div>
           <% end %>
         </div>
-      <% end %>
+        
+        <div role="tabpanel" class="tab-pane" id="metadata">
+          <div>
+            <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">

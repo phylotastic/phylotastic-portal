@@ -97,11 +97,11 @@ class ConTaxonsController < ApplicationController
   def destroy
     ctx = current_user.con_taxons.find(params[:id])
     if ctx.nil?
-      redirect_to root_path≥÷
+      redirect_to root_path
     else 
       ctx.destroy
       respond_to do |format|
-        format.html { redirect_to trees_path }
+        format.html { redirect_to root_path }
         format.js
       end
     end

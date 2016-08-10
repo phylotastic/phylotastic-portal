@@ -12,7 +12,11 @@
       <div role="tabpanel" class="tab-pane active" id="content">
         <p class="chosing-species">No species</p>
       </div>
-      <div role="tabpanel" class="tab-pane" id="metadata"></div>
+      <div role="tabpanel" class="tab-pane" id="metadata">
+        <div>
+          <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+        </div>
+      </div>
     </div>
   </div>
 <% else %>
@@ -79,42 +83,47 @@
                 <% end %>
             </tbody>
           </table>
+          
+          <% unless unresolved.empty? %>
+            <hr>
+            <h4>Unmatched names</h4>
+            <strong>Edit name as desired, then click the 'Search' button to look for matches</strong>
+            <div class="">
+              <div> 
+                <div class="row"> 
+                  <div class="col-sm-4">Vernacular Name (*)</div>
+                  <div class="col-sm-5">Scientific Name (*)</div>
+                  <div class="col-sm-2"></div>
+                </div> 
+              </div>
+              <div>
+                <% @list["list"]["list_species"].each_with_index do |s, i| %>
+                  <% if unresolved.include? s["scientific_name"] %>
+                    <div class="row danger">
+                      <%= form_tag({controller: 'uploaded_lists', action: 'update_a_species', id: @list["list"]["list_id"]}, method: "post", remote: true, class: "fix-names") do %>
+                        <div class="col-sm-4"><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></div>
+                        <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
+                        <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
+                        <div class="col-sm-2">
+                          <%= submit_tag "Search", class: "btn btn-default"%>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
-        <div role="tabpanel" class="tab-pane" id="metadata"></div>
+        
+        <div role="tabpanel" class="tab-pane" id="metadata">
+          <div>
+            <%= link_to("Delete list", ra.contributable, class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } ) %>
+          </div>
+        </div>
       </div>
     </div>
   <% end %>
-<% end %>
-
-<% unless unresolved.empty? %>
-  <hr>
-  <h4>Unmatched names</h4>
-  <strong>Edit name as desired, then click the 'Search' button to look for matches</strong>
-  <div class="">
-    <div> 
-      <div class="row"> 
-        <div class="col-sm-4">Vernacular Name (*)</div>
-        <div class="col-sm-5">Scientific Name (*)</div>
-        <div class="col-sm-2"></div>
-      </div> 
-    </div>
-    <div>
-      <% @list["list"]["list_species"].each_with_index do |s, i| %>
-        <% if unresolved.include? s["scientific_name"] %>
-          <div class="row danger">
-            <%= form_tag({controller: 'uploaded_lists', action: 'update_a_species', id: @list["list"]["list_id"]}, method: "post", remote: true, class: "fix-names") do %>
-              <div class="col-sm-4"><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></div>
-              <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
-              <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
-              <div class="col-sm-2">
-                <%= submit_tag "Search", class: "btn btn-default"%>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
 <% end %>
 
 <script type="text/javascript">

@@ -29,53 +29,53 @@ class ExtractionsWorker
     extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(extracted_names: extracted_response)
 
     # retrieve tree corresponding to the above raw extraction
-    tries = 3
-    begin
-      tree = Tree.find_by_bg_job(self.jid)
-      raise "Cannot find tree executed by background job #{self.jid}." if tree.nil?
-    rescue Exception => e  
-      puts e.message
-      puts e.backtrace.inspect
-      tries -= 1
-      sleep 1
-      if tries > 0
-        retry
-      else
-        logger.info "Oh Noes!"
-        tree = owner.trees.create(bg_job: self.jid)
-      end
-    end
-
-    # if extracting service has problems, it is time to terminate
-    if extracted_response.nil?
-      tree.update_attributes( raw_extraction_id: extraction.id, 
-                              bg_job: "-1", 
-                              status: "unsucessfully-extracted" )
-      return
-      
-    # if there are no names in resource
-    elsif JSON.parse(extracted_response)["scientificNames"].empty?
-      tree.update_attributes( raw_extraction_id: extraction.id, 
-                              bg_job: "-1", 
-                              status: "no-names" )
-      return
-    end
-    
-    # update status "extracted" to tree
-    tree.update_attributes( raw_extraction_id: extraction.id, 
-                            status: "extracted" )
-    
-    # call to resolution names service
-    resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
+    # tries = 3
+#     begin
+#       tree = Tree.find_by_bg_job(self.jid)
+#       raise "Cannot find tree executed by background job #{self.jid}." if tree.nil?
+#     rescue Exception => e
+#       puts e.message
+#       puts e.backtrace.inspect
+#       tries -= 1
+#       sleep 1
+#       if tries > 0
+#         retry
+#       else
+#         logger.info "Oh Noes!"
+#         tree = owner.trees.create(bg_job: self.jid)
+#       end
+#     end
+#
+#     # if extracting service has problems, it is time to terminate
+#     if extracted_response.nil?
+#       tree.update_attributes( raw_extraction_id: extraction.id,
+#                               bg_job: "-1",
+#                               status: "unsucessfully-extracted" )
+#       return
+#
+#     # if there are no names in resource
+#     elsif JSON.parse(extracted_response)["scientificNames"].empty?
+#       tree.update_attributes( raw_extraction_id: extraction.id,
+#                               bg_job: "-1",
+#                               status: "no-names" )
+#       return
+#     end
+#
+#     # update status "extracted" to tree
+#     tree.update_attributes( raw_extraction_id: extraction.id,
+#                             status: "extracted" )
+#
+#     # call to resolution names service
+      resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted_response,
                                   :content_type => :json )
-
-    # update state of tree
-    if !resolved_response
-      tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
-    else
+#
+#     # update state of tree
+#     if !resolved_response
+#       tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
+#     else
       extraction.update_attributes(species: resolved_response)
-      tree.update_attributes(bg_job: "-1", status: "resolved")
-    end
+#       tree.update_attributes(bg_job: "-1", status: "resolved")
+#     end
   end
 end
