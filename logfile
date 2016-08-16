@@ -1,0 +1,6 @@
+LOG:  database system was shut down at 2016-08-16 11:11:59 MDT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  database "phylotastic-portal" already exists
+STATEMENT:  CREATE DATABASE "phylotastic-portal" ENCODING = 'unicode'

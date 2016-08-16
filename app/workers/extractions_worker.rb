@@ -15,10 +15,11 @@ class ExtractionsWorker
     when "ConLink"
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + ConLink.find_by_id(source_id).uri)
     when "ConFile"
-      file_url = ConFile.find_by_id(source_id).document.url
+      file = ConFile.find_by_id(source_id)
+      file_url = file.document.url
       file_url.slice!(/[?]\d*\z/)
       file_url = APP_CONFIG['domain'] + file_url
-      extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url) 
+      extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url + "&engine=" + file.method.to_s) 
     when "OnplFile"
       extracted_response = {}
       extracted_response["scientificNames"] = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
