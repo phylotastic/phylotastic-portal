@@ -3,6 +3,12 @@ Rails.application.routes.draw do
 
   root 'raw_extractions#index'
 
+  resources :raw_extractions, only: [:index] do 
+    member do
+      post "download_selected_species"
+    end
+  end
+  
   resources :user_list_relationships, only: [:destroy]
   
   resources :uploaded_lists, only: [:create, :show, :destroy, :update, :new] do

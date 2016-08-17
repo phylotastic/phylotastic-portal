@@ -1,4 +1,5 @@
 class RawExtractionsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: :download_selected_species
   before_action :authenticate_user!
   
   include UploadedListsHelper
@@ -20,4 +21,12 @@ class RawExtractionsController < ApplicationController
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
   end
+  
+  def download_selected_species
+    send_data params["species"].gsub(",", "\n"),
+        :filename => "species.txt",
+        :type => "text/plain",
+        disposition: 'attachment'
+  end
+  
 end
