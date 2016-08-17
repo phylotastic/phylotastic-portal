@@ -49,7 +49,7 @@ class UploadedListsController < ApplicationController
       response = Req.post( APP_CONFIG["sv_update_metadata_list"]["url"],
                          data.to_json,
                          {:content_type => :json} )
-    binding.pry
+
       if !response || JSON.parse(response)["status_code"] != 200
         flash[:danger] = "Failed to update list name"
         redirect_to root_path
