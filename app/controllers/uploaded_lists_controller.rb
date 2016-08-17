@@ -45,7 +45,6 @@ class UploadedListsController < ApplicationController
     data["list"] = {}
     data["list"]["list_title"] = params["uploaded_list"]["name"]
     data["list"]["is_list_public"] = params["uploaded_list"]["public"]
-    
     if !@uploaded_list.nil?
       response = Req.post( APP_CONFIG["sv_update_metadata_list"]["url"],
                          data.to_json,

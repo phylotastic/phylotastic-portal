@@ -35,8 +35,6 @@
   <div class="row">
     <h4 class="center" id="tree-actions">Tree actions</h4>
 
-    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target=".taxon-matching-report-modal">Taxon matching report</button>
-  
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-format">
       Newick
@@ -110,51 +108,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade taxon-matching-report-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header"> 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
-        <h3 class="modal-title center" id="myModalLabel">Taxon Matching Report</h3>
-        <em>The list of query species was validated with &lt;TNRS&gt; prior to querying for a tree. This table shows how the query strings were mapped to validated taxon names. Names not listed in this table are not recognizable by taxon finder.</em>
-      </div>
-      <div class="modal-body">        
-        <table class="table table-hover">
-          <thead> 
-            <tr>
-              <th class="">#</th>
-              <th class="">Query</th> 
-              <th class="">Matched name</th> 
-              <th class="">Match</th> 
-              <th class="">Synonyms</th>
-            </tr> 
-          </thead>
-          <tbody>
-            <% resolved_names.each_with_index do |r, i| %>
-              <tr class="species-row">
-                <td class=""><%= i + 1 %></td>
-                <td class=""><%= r["search_string"] %></td>
-                <td class=""><%= r["matched_name"] %></td>
-                <td class=""><%= r["match_type"] %></td>
-                <td class="">
-                  <% r["synonyms"].each do |s| %>
-                    <%= s %><br>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: tree.raw_extraction.id), class: "btn-primary btn btn-default" %> 
-        
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
       </div>
     </div>
   </div>

@@ -5,7 +5,7 @@
     <%= form_for @con_file, html: { id: "mydropzone" } do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.label :document, "(*) Choose a document or drop your file to box" %>
+        <%= f.label :document, "(*) Choose a document or drop your file into box" %>
         <%= f.file_field :document, class: "input-file dropzone", style: "margin-bottom: 30px;width: 50%" %>
       
         <%= f.label :name, "(*) Enter a name for this list" %>
