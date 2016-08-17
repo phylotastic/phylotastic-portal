@@ -35,16 +35,32 @@ class UploadedListsController < ApplicationController
     end
   end
   
-  def update_name
-    @tree = current_user.trees.find_by_id(params[:id])
-    if @tree.update_attributes(tree_params)
-      respond_to do |format|
-        format.html { redirect_to tree_path(params[:id]) }
-        format.js { render 'update.js.erb'}
+  def update_metadata
+    @uploaded_list = current_user.uploaded_lists.find_by_lid(params[:id])
+    data = {}
+    data["user_id"] = current_user.email
+    current_user.refresh_token_if_expired
+    data["access_token"] = current_user.access_token
+    data["list_id"] = @uploaded_list.lid
+    data["list"] = {}
+    data["list"]["list_title"] = params["uploaded_list"]["name"]
+    data["list"]["is_list_public"] = params["uploaded_list"]["public"]
+    
+    if !@uploaded_list.nil?
+      response = Req.post( APP_CONFIG["sv_update_metadata_list"]["url"],
+                         data.to_json,
+                         {:content_type => :json} )
+    binding.pry
+      if !response || JSON.parse(response)["status_code"] != 200
+        flash[:danger] = "Failed to update list name"
+        redirect_to root_path
+      else
+        flash[:success] = "List name updated"
+        redirect_to root_path
       end
     else
-      flash[:danger] = "Cannot save tree info"
-      redirect_to tree_path(params[:id])
+      flash[:danger] = "Permission denied!"
+      redirect_to root_path
     end
   end
   

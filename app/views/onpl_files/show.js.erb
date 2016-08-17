@@ -1,4 +1,4 @@
-$('#delete-list').html("<%= escape_javascript(render partial: 'raw_extractions/delete_list', locals: {ra: @ra} ) %>");
+$('#nav-list').html("<%= escape_javascript(render partial: 'raw_extractions/nav_list', locals: {ra: @ra} ) %>");
 $('#ra-content').html("<%= escape_javascript(render partial: 'content', 
                                                     locals: { resolved_names: @resolved_names, 
                                                               unresolved:     @unresolved,

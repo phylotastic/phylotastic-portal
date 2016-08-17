@@ -94,6 +94,17 @@ class ConTaxonsController < ApplicationController
     end
   end
   
+  def update
+    @con_taxon = current_user.con_taxons.find_by_id(params[:id])
+    if @con_taxon.update_attributes(name: params["con_taxon"]["name"])
+      flash[:success] = "List name updated"
+      redirect_to root_path
+    else
+      flash[:danger] = "Failed to update list name"
+      redirect_to root_path
+    end
+  end
+  
   def destroy
     ctx = current_user.con_taxons.find(params[:id])
     if ctx.nil?

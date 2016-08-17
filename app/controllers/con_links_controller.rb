@@ -28,6 +28,17 @@ class ConLinksController < ApplicationController
     end
   end
   
+  def update
+    @con_link = current_user.con_links.find_by_id(params[:id])
+    if @con_link.update_attributes(con_link_params)
+      flash[:success] = "List name updated"
+      redirect_to root_path
+    else
+      flash[:danger] = "Failed to update list name"
+      redirect_to root_path
+    end
+  end
+  
   def destroy
     cl = current_user.con_links.find(params[:id])
     if cl.nil?

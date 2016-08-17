@@ -28,6 +28,17 @@ class ConFilesController < ApplicationController
     end
   end
   
+  def update
+    @con_file = current_user.con_files.find_by_id(params[:id])
+    if @con_file.update_attributes(con_file_params)
+      flash[:success] = "List name updated"
+      redirect_to root_path
+    else
+      flash[:danger] = "Failed to update list name"
+      redirect_to root_path
+    end
+  end
+  
   def destroy
     cf = current_user.con_files.find(params[:id])
     if cf.nil?
