@@ -116,7 +116,16 @@
         </div>
         
         <div role="tabpanel" class="tab-pane" id="metadata">
-          <div>
+          <div class="metadata-wrapper">
+            <% source = ra.contributable %>
+            <div class="row">
+              <div class="col-sm-3">Origin source</div>
+              <div class="col-sm-9"><%= source.meta_origin %></div>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">Created at</div>
+              <div class="col-sm-9"><%= source.created_at %></div>
+            </div>
           </div>
         </div>
       </div>

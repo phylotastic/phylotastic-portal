@@ -8,4 +8,9 @@ class ConTaxon < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :name, presence: true
+  
+  def meta_origin
+    taxon
+  end
+  
 end

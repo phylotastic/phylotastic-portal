@@ -15,4 +15,8 @@ class ConFile < ActiveRecord::Base
                                                                   "application/msword",
                                                                   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ] }
   validates_attachment_presence :document
+  
+  def meta_origin
+    document.original_filename
+  end
 end

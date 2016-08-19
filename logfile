@@ -4,3 +4,11 @@ LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
 ERROR:  database "phylotastic-portal" already exists
 STATEMENT:  CREATE DATABASE "phylotastic-portal" ENCODING = 'unicode'
+LOG:  autovacuum launcher shutting down
+LOG:  received smart shutdown request
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2016-08-18 13:52:29 MDT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started

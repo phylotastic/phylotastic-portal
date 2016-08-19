@@ -8,4 +8,9 @@ class ConLink < ActiveRecord::Base
   validates :name, presence: true
   validates :user_id, presence: true
   validates :uri, :presence => true, :url => true
+  
+  def meta_origin
+    uri
+  end
+  
 end
