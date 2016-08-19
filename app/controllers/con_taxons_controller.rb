@@ -48,10 +48,14 @@ class ConTaxonsController < ApplicationController
       response = new_res.to_json
     elsif location
       response = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + params[:taxon] + "&country=" + Country.find(params[:country_id]).name)
+      params.delete :has_genome_in_ncbi
     elsif ncbi
       response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:taxon])
+      params.delete :country_id
     else
       response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + params[:taxon])
+      params.delete :country_id
+      params.delete :has_genome_in_ncbi
     end
     
     if !response
@@ -66,7 +70,11 @@ class ConTaxonsController < ApplicationController
         new_res = JSON.parse(response)
         new_res["species"] = species
         response = new_res.to_json
-      end  
+      else
+        params["nb_species"] = JSON.parse(response)["species"].count
+      end
+    else
+      params.delete :nb_species
     end
     
     code = JSON.parse(response)["status_code"] rescue 0
@@ -89,7 +97,7 @@ class ConTaxonsController < ApplicationController
       end
     else
       logger.info response
-      flash[:error] = "Can not process!"
+      flash[:danger] = "Can not process!"
       redirect_to new_con_taxon_path
     end
   end

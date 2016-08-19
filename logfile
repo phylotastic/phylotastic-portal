@@ -12,3 +12,5 @@ LOG:  database system was shut down at 2016-08-18 13:52:29 MDT
 LOG:  MultiXact member wraparound protections are now enabled
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
+ERROR:  column countries.con_taxon_id does not exist at character 46
+STATEMENT:  SELECT  "countries".* FROM "countries" WHERE "countries"."con_taxon_id" = $1 LIMIT 1

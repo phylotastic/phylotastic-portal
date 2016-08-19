@@ -126,6 +126,29 @@
               <div class="col-sm-3">Created at</div>
               <div class="col-sm-9"><%= source.created_at %></div>
             </div>
+            <% if source.class.name == "ConTaxon" %>
+              <div class="row">
+                <div class="col-sm-3">Number of species</div>
+                <div class="col-sm-9">
+                  <% if source.nb_species.nil? %>
+                    All
+                  <% else %>
+                    <% source.nb_species %>
+                  <% end %>
+                </div>
+              </div>
+              <% if source.has_genome_in_ncbi %>
+                <div class="row">
+                  <div class="col-sm-3">Has genome in NCBI</div>
+                </div>
+              <% end %>
+              <% if !source.country.nil? %>
+                <div class="row">
+                  <div class="col-sm-3">Country</div>
+                  <div class="col-sm-9"><%= source.country.name %></div>
+                </div>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </div>
