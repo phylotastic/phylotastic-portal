@@ -67,6 +67,7 @@ class UploadedListsController < ApplicationController
     @list = get_a_list(params[:id])
     if @list["status_code"] == 200 # if there is a list in the service
       @uploaded_list = UploadedList.find_or_create(@list)
+      @uploaded_list.update_attributes(name: @list["list"]["list_title"])
       @ra = @uploaded_list.raw_extraction
       @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
       @resolved_names = [] if !@resolved_names
