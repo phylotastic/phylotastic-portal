@@ -1,0 +1,498 @@
+<% tree_newick = JSON.parse(tree.representation)['newick'].gsub(/_ott\d*/, '').gsub(/_/, ' ') %>
+<div id="tree-wrapper">
+  <div>
+    <div id="tree-in-newick"></div>
+    <div id='graph'></div>
+    <div id='svgdataurl' class="hidden"></div>
+    <div id='pngdataurl' class="hidden"></div>
+    <canvas class="hidden"></canvas>
+    <div class="row">
+      <div class="pull-left" style="margin-left: 50px;">Last edited: <%= time_ago_in_words(tree.updated_at) %> by <%= link_to tree.user.name, '#' %></div>
+    </div>
+    <div class="fb-like" data-href="<%= request.original_url %>" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pull-right" style="width: 200px;">
+  <div class="row">
+    <h4 class="center" id="tree-actions">Tree actions</h4>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-format">
+      Newick
+    </button>
+  
+    <!-- Add to gallery btn -->
+    <%= render 'watch_relationships/watch_form' unless current_user.nil? %>
+  
+    <% if tree.user == current_user %>
+      <% if !tree.public && tree.status == "completed" %>
+        <div id="publicise-btn">
+          <%= form_for(tree, url: public_trees_path, remote: true, html: {id: "publicise-tree"}) do |f| %>
+            <div><%= hidden_field_tag "tree[public]", true %></div>
+            <%= f.submit "Publish to Community", class: "btn btn-block btn-primary" %>
+          <% end %>
+        </div>
+      <% end %>
+      <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
+    <% end %>
+  
+    <%= form_tag "/trees/generate_image.svg", method: :post, id: "save-to-disk-form" do %>
+      <input type="hidden" name="image" value="" />
+    <% end %>
+    <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %>
+	
+	  <!-- Button trigger modal -->
+	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
+	  <!-- Modal -->
+	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	    <div class="modal-dialog" role="document">
+	      <div class="modal-content">
+          <%= form_for tree, remote: true do |f| %>
+	          <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
+	          </div>
+	          <div class="modal-body">
+	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
+	          </div>
+	          <div class="modal-footer">
+	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+	          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <%= form_for(tree, html: { method: :delete }) do |f| %>
+      <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+    <% end %>
+  </div>  
+
+  <hr>
+  <div class="row">
+    <h4 class="center">View actions</h4>
+  </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body center">
+        <%= image_tag tree.image.url, width: "100%" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+ 
+$(document).ready(function(){
+
+  var newick = Newick.parse("<%= tree_newick %>");
+  	
+  var canvasWidth = 800, canvasHeight = 600;
+  var newWidth = 0, newHeight = 0;
+  var m = [10, 100, 10, 100],
+      w = canvasWidth - m[1] - m[3],
+      h = canvasHeight - m[0] - m[2],
+      i = 0,
+      root;
+
+  var tree = d3.layout.tree()
+      .size([h, w]);
+  
+  var rightAngleDiagonal = function() {
+    var projection = function(d) { return [d.y, d.x]; }
+    
+    var path = function(pathData) {
+      return "M" + pathData[0] + ' ' + pathData[1] + " " + pathData[2];
+    }
+    
+    function diagonal(diagonalPath, i) {
+      var source = diagonalPath.source,
+          target = diagonalPath.target,
+          midpointX = (source.x + target.x) / 2,
+          midpointY = (source.y + target.y) / 2,
+          pathData = [source, {x: target.x, y: source.y}, target];
+      pathData = pathData.map(projection);
+      return path(pathData)
+    }
+    
+    diagonal.projection = function(x) {
+      if (!arguments.length) return projection;
+      projection = x;
+      return diagonal;
+    };
+    
+    diagonal.path = function(x) {
+      if (!arguments.length) return path;
+      path = x;
+      return diagonal;
+    };
+    
+    return diagonal;
+  }
+  
+  var diagonal = rightAngleDiagonal();
+  
+  vis = d3.select("#graph").append("svg:svg")
+      .attr("width", canvasWidth)
+      .attr("height", canvasHeight)
+      .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+  
+  root = newick;
+  root.x0 = h/2;
+  root.y0 = 0;
+
+  function collapse(d) {
+    if (d.children) {
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
+    }
+  }
+
+  if (root.children == undefined) return;
+    
+  // Initialize the display to show a few nodes.
+  root.children.forEach(collapse);
+  update(root);
+
+  function update(source) {
+    var duration = d3.event && d3.event.altKey ? 5000 : 500;
+    
+    // Compute the new height
+    var leaves = [];
+    var levelWidth = [1];
+    var childCount = function(level, n) {
+      if(n.children && n.children.length > 0) {
+        if(levelWidth.length <= level + 1) levelWidth.push(0);      
+        levelWidth[level+1] += n.children.length;
+        n.children.forEach(function(d) {
+          childCount(level + 1, d);
+        });
+      } else {
+        leaves.push(n);
+      }
+    };
+    
+    childCount(0, root);  
+    
+    // Compute the height of parent from its children
+    var avarageHeight = function(node) {
+      var sum = 0;
+      if(node.children != undefined) {
+        node.children.forEach(function(d) {
+          avarageHeight(d);
+          sum += d.x;
+          // console.log("sum: " + sum);
+        });
+        node.x = sum/node.children.length;
+      } else {
+        return node.x;
+      }
+    }
+    
+    // Automatically resizing depend on tree
+    newHeight = leaves.length * 80  + 150; // 80 pixels per line, 150 pixels margin bottom
+    newWidth  = levelWidth.length * 180; // 180 pixels per child level
+    tree = tree.size([newHeight, newWidth]);
+    d3.select("#graph").select("svg")
+      .attr("width", newWidth + 200)
+      .attr("height", newHeight)
+    
+    $("#tree-content")
+      .css("width", parseInt(d3.select("#graph").select("svg").attr("width")) + 200);
+    
+    // Compute the new tree layout.
+    var nodes = tree.nodes(root).reverse();
+        links = tree.links(nodes);
+        
+    // Normalize for fixed-depth.
+    nodes.forEach(function(d) {
+      if (d.children != null) {
+        d.y = d.depth * 180;
+      } else {
+        d.y = (levelWidth.length - 1) * 180;
+      }
+    });
+    
+    leaves.forEach(function(l, i) {
+      l.x = (i+1)*80;
+    });
+    avarageHeight(root);
+    
+    // Update the nodes…
+    var node = vis.selectAll("g.node")
+        .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+    // Enter any new nodes at the parent's previous position.
+    var nodeEnter = node.enter().append("svg:g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+        .on("click", click)
+        .on("mouseover", function(d) { 
+          d3.select(this).select("image").transition().style("opacity", 1);
+        })
+        .on("mouseout", function(d) { 
+          d3.select(this).select("image").transition().style("opacity", 0);
+        });
+        
+    nodeEnter.append("svg:circle")
+        .attr("r", 1e-6)
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+        .style("stroke", "steelblue")
+        .style("fill", "#fff")
+        .style("stroke-width", "1.5px");
+        
+    nodeEnter.append("svg:text")
+        .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+        .text(function(d) { return d.name; })
+        .style("fill-opacity", 1e-6)
+        .style("font-size", "11px")
+        .style("cursor", "pointer");
+        
+    nodeEnter.append("svg:image")
+        .attr("xlink:href", function(d) { return "<%= image_path("info_icon.png") %>"; })
+        .attr("x", "10px")
+        .attr("y", "-7px")
+        .attr("width", "15px")
+        .attr("height", "15px")
+        .style("opacity", "0")
+        .style("cursor", "pointer")
+        .on("click", function(d) { 
+          var current_node = $(this);
+          current_node.siblings(".species-img").toggleClass("hide");
+          if (current_node.siblings(".species-img")[0].getAttributeNS("http://www.w3.org/1999/xlink", "href") == null) {
+            current_node.siblings(".species-img")[0]
+                .setAttributeNS("http://www.w3.org/1999/xlink", "href", "/assets/Loading_icon.gif");
+            jqxhr = $.get( "/trees/image_getter?spe=" + d.name, function(data) {
+              current_node.siblings(".species-img")[0]
+                  .setAttributeNS("http://www.w3.org/1999/xlink", "href", data["image"]);  // inject data:image in DOM
+
+            })
+              .done(function() {
+                // alert( "second success" );
+              })
+              .fail(function() {
+                // alert( "error" );
+              })
+              .always(function() {
+                // alert( "finished" );
+              });
+              
+          }
+          
+          event.stopPropagation();
+          return false;
+        });
+    
+    nodeEnter.append("svg:image")
+        .attr("x", "5px")
+        .attr("y", "-60px")
+        .attr("width", "50px")
+        .attr("height", "50px")
+        .style("cursor", "pointer")
+        .attr("class", "species-img hide")
+        .on("mouseover", function(d) {
+          d3.select(this).transition()
+            .attr("width", "200px")
+            .attr("height", "200px");
+        })
+        .on("mouseout", function(d) {
+          d3.select(this).transition()
+            .attr("width", "50px")
+            .attr("height", "50px");
+        });
+    
+    // Transition nodes to their new position.
+    var nodeUpdate = node.transition()
+        .duration(duration)
+        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+
+    nodeUpdate.select("circle")
+        .attr("r", 4.5)
+        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+    nodeUpdate.select("text")
+        .style("fill-opacity", 1);
+
+    // Transition exiting nodes to the parent's new position.
+    var nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+        .remove();
+    
+    nodeExit.select("circle")
+        .attr("r", 1e-6);
+
+    nodeExit.select("text")
+        .style("fill-opacity", 1e-6);
+    
+    // Update the links…
+    var link = vis.selectAll("path.link")
+        .data(links, function(d) { return d.target.id; });
+        
+    // Enter any new links at the parent's previous position.
+    link.enter().insert("path", "g")
+        .attr("class", "link")
+        .attr("d", function(d) {
+          var o = {x: source.x0, y: source.y0};
+          return diagonal({source: o, target: o});
+        })
+        .attr("fill", "none")
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", "1.5px")
+        .transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition links to their new position.
+    link.transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition exiting nodes to the parent's new position.
+    link.exit().transition()
+        .duration(duration)
+        .attr("d", function(d) {
+          var o = {x: source.x, y: source.y};
+          return diagonal({source: o, target: o});
+        })
+        .remove();
+
+    // Stash the old positions for transition.
+    nodes.forEach(function(d) {
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
+  }
+  
+  // Toggle children on click.
+  function click(d) {
+    if (d.children) {
+      // Collapse all children of nodeExit
+      d.children.forEach(collapse);
+      d._children = d.children;
+      d.children = null;      
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    update(d);
+  }
+
+
+  // save tree image to disk
+  d3.select("#save-to-disk").on("click", function(){
+    html = d3.select("svg")
+          .attr("version", 1.1)
+          .attr("xmlns", "http://www.w3.org/2000/svg")
+          .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+          .node().parentNode.innerHTML;
+
+    html = html.replace(/NS\d+:href/g, 'xlink:href')
+      
+    $('#save-to-disk-form').children('input[name="image"]').val(html);
+    $('#save-to-disk-form').submit();
+
+    return false;
+  });
+
+  // Save tree image to server
+  $("#save-to-server").click(function() {
+    $(this).html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span>");
+    var html = d3.select("svg")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML;
+
+    // console.log(html);
+    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+    var img = '<img src="'+imgsrc+'">'; 
+    d3.select("#svgdataurl").html(img);  
+    var canvas = document.querySelector("canvas"), context = canvas.getContext("2d");
+    canvas.width = newWidth + 100;
+    canvas.height = newHeight;
+
+    var image = new Image();
+    image.src = imgsrc;
+    context.drawImage(image, 0, 0);
+
+    var canvasdata = canvas.toDataURL("image/png"); 
+
+    // Get our file
+    var file= dataURLtoBlob(canvasdata);
+    // Create new form data
+    var fd = new FormData();
+    // Append our Canvas image file to the form data
+    fd.append("tree[image]", file);
+    // And send it
+    $.ajax({
+       url: "/trees/<%= @tree.id %>/update.js",
+       type: "PATCH",
+       data: fd,
+       processData: false,
+       contentType: false,
+    });
+
+    return false;
+  });
+
+  function dataURLtoBlob(dataURL) {
+    // Decode the dataURL    
+    var binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    // Return our Blob object
+    return new Blob([new Uint8Array(array)], {type: 'image/png'});
+  }
+
+  var clip = new Clipboard('#copy-to-clipboard');
+  // console.log(clip);
+  clip.on('success', function(e) {
+    // console.info('Action:', e.action);
+    // console.info('Text:', e.text);
+    // console.info('Trigger:', e.trigger);
+    $(e.trigger).text("Copied!");
+    e.clearSelection();
+  });
+
+});
+</script>
+  

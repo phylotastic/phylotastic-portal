@@ -207,6 +207,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
 	•	bundle exec rake sunspot:reindex if needed
 If you can’t run reindex, delete all /solr folder and stop all solr progresses. Restart again.
 
+If you still get into trouble (likely you are trying to deploy the portal, change path in config/sunspot.yml to /solr/default)
+
 ##### 17. To run, execute the following commands in separate terminals:
 	•	rails server -b 0.0.0.0
 	•	redis-server

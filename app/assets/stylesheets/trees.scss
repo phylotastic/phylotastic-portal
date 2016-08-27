@@ -118,14 +118,7 @@ path.link {
   cursor: pointer;
 }
 
-#tree-content {
-  display: inline-block;
-  #tree-wrapper {
-    display: inline-block; 
-    float:left;
-  }
-  #tree-actions {
-    width: 200px;
-    float: right;
-  }
+.tree-wrapper {
+  margin-top: 20px;
+  margin-bottom: 30px;
 }

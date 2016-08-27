@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
 
-  def home    
+  def getting_started
   end
   
   def about
