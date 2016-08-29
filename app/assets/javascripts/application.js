@@ -18,5 +18,4 @@
 //= require d3
 //= require jquery.slick
 //= require clipboard
-//= require dropzone
 //= require_tree .

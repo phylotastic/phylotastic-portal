@@ -14,3 +14,7 @@ LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
 ERROR:  column countries.con_taxon_id does not exist at character 46
 STATEMENT:  SELECT  "countries".* FROM "countries" WHERE "countries"."con_taxon_id" = $1 LIMIT 1
+LOG:  received smart shutdown request
+LOG:  autovacuum launcher shutting down
+LOG:  shutting down
+LOG:  database system is shut down

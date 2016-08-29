@@ -6,7 +6,14 @@
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
         <%= f.label :document, "(*) Choose a document " %>
-        <%= f.file_field :document, class: "input-file", style: "margin-bottom: 30px;" %>
+        <div class="form-group" id="drop-zone">
+          Drop files here...
+          <div id="clickHere">
+              or click here..
+              <%= f.file_field :document, class: "input-file" %>
+          </div>
+        </div>
+        <div id="chosen_file"></div>
       
         <%= f.label :name, "(*) Enter a name for this list" %>
         <%= f.text_field :name, class: "form-control", style: "width: 50%;margin-bottom: 20px;" %>
@@ -18,3 +25,8 @@
     <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(drag_and_drop());
+
+</script>

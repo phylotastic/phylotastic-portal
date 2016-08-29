@@ -5,9 +5,21 @@
   <%= form_for @uploaded_list, url: uploaded_lists_path, html: { multipart: true } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
     <p>You can drag and drop your file into this box</p>
-    <div class="form-group", style="margin-bottom: 30px; margin-top: 30px;">
-      <%= f.file_field :file, class: "input-file dropzone" %>
-    </div>  
+    <div class="form-group" id="drop-zone">
+      Drop files here...
+      <div id="clickHere">
+        or click here..
+        <%= f.file_field :file, class: "input-file" %>
+      </div>
+    </div>
+    <div id="chosen_file"></div>
+    
     <%= f.submit "Upload", class: "btn btn-primary btn-lg" %>
   <% end %>
 </div>
+
+
+<script type="text/javascript">
+$(document).ready(drag_and_drop());
+
+</script>

@@ -2,11 +2,18 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <h2>Extract names from my document (.pdf, .txt, .doc, .docs, .xls or .xlsx)</h2>
-    <%= form_for @con_file, html: { id: "mydropzone" } do |f| %>
+    <%= form_for @con_file do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
         <%= f.label :document, "(*) Choose a document or drop your file into box" %>
-        <%= f.file_field :document, class: "input-file dropzone", style: "margin-bottom: 30px;width: 50%" %>
+        <div id="drop-zone">
+          Drop files here...
+          <div id="clickHere">
+            or click here..
+            <%= f.file_field :document, class: "input-file" %>
+          </div>
+        </div>
+        <div id="chosen_file"></div>
       
         <%= f.label :name, "(*) Enter a name for this list" %>
         <%= f.text_field :name, class: "form-control", style: "width: 50%;margin-bottom: 20px;" %>
@@ -23,8 +30,6 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
-  
-	
-});
+$(document).ready(drag_and_drop());
+
 </script>

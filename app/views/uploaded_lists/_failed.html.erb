@@ -12,7 +12,15 @@
       <%= form_for @uploaded_list, method: :patch, html: { multipart: true } do |f| %>
         <div class="modal-body">
           <div class="form-group">
-            <%= f.file_field :file, class: "input-file" %>
+            <div id="drop-zone">
+              Drop files here...
+              <div id="clickHere">
+                or click here..
+                <%= f.file_field :file, class: "input-file" %>
+              </div>
+            </div>
+            <div id="chosen_file"></div>
+            
             <div>Note: please compress your files in one ZIP file. You can find a default template <%= link_to "here", "https://drive.google.com/file/d/0B7SKJwE3SsCsNUhYQWdEVzk2RFE/view?usp=sharing"%></div>
 
             <%= f.label :public do %>
@@ -30,3 +38,7 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+$(document).ready(drag_and_drop());
+
+</script>
