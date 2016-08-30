@@ -39,7 +39,9 @@
         </table>
       </div>
       <div class="modal-footer">
-        <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default" %> 
+        <%= link_to "Export as CSV", taxon_matching_report_trees_path(format: :csv, ra: ra.id), class: "btn-primary btn btn-default", target: '_blank' %> 
+        
+        <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default", target: '_blank' %> 
         
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
       </div>

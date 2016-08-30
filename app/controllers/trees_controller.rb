@@ -1,3 +1,5 @@
+require 'csv'
+
 class TreesController < ApplicationController
   before_action :authenticate_user!
   
@@ -174,6 +176,10 @@ class TreesController < ApplicationController
         render pdf: "taxon_matching_report",
                template: "trees/taxon_matching_report.pdf.erb"
       end
+     format.csv do
+       render csv: "taxon_matching_report",
+              template: "trees/taxon_matching_report.csv.erb"
+     end
     end
   end
   
