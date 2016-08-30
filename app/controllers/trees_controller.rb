@@ -102,21 +102,6 @@ class TreesController < ApplicationController
   
   def update
     @tree = current_user.trees.find_by_id(params[:id])
-    params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json  
-    if @tree.update_attributes(tree_params)
-      flash[:success] = "Tree ##{params[:id]} is under constructed. We will notify you when it is ready"
-      job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes( bg_job: job_id, 
-                               status: "constructing",
-                               notifiable: true )
-      redirect_to trees_path
-    else
-      render 'edit'
-    end
-  end
-  
-  def update
-    @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
       respond_to do |format|
         format.html { redirect_to tree_path(params[:id]) }
@@ -189,6 +174,15 @@ class TreesController < ApplicationController
         render pdf: "taxon_matching_report",
                template: "trees/taxon_matching_report.pdf.erb"
       end
+    end
+  end
+  
+  def newick
+    @tree = Tree.find(params[:id])
+    if @tree.nil?
+      redirect_to root_path
+    else 
+      send_data @tree.representation, :filename => @tree.name + "_newick.txt"
     end
   end
   

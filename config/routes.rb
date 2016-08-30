@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       get 'image_getter' => 'trees#image_getter'
       post 'generate_image' => 'trees#generate_image', format: :svg 
       get 'taxon_matching_report' => 'trees#taxon_matching_report'
+      get 'newick' => 'trees#newick'
       post 'update_description' => 'trees#update_description'
       get 'download_image' => 'trees#download_image'  
     end

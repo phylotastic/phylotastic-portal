@@ -64,6 +64,7 @@
           <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
         </div>
         <div class="modal-footer">
+          <%= link_to "Export as TXT", newick_trees_path(format: :txt, id: tree.id), class: "btn-primary btn btn-default" %> 
           <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
