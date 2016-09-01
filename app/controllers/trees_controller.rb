@@ -4,6 +4,7 @@ class TreesController < ApplicationController
   before_action :authenticate_user!
   
   include UploadedListsHelper
+  include TreesHelper
   
   def new
     @ra = RawExtraction.find(params[:ra])
@@ -188,7 +189,7 @@ class TreesController < ApplicationController
     if @tree.nil?
       redirect_to root_path
     else 
-      send_data JSON.parse(@tree.representation)["newick"], :filename => @tree.name + "_newick.txt"
+      send_data sanitize_newick(@tree), :filename => @tree.name + "_newick.txt"
     end
   end
   
