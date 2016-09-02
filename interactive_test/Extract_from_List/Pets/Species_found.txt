@@ -1,0 +1,23 @@
+Iguana iguana
+Serinus canaria
+Nymphicus hollandicus
+Betta splendens
+Pantherophis guttatus
+Grammostola rosea
+Mustela putorius furo
+Python regius
+Terrapene carolina carolina
+Melopsittacus undulatus
+Felis catus
+Coenobita clypeatus
+Oryctolagus cuniculus
+Carassius auratus
+Canis lupus familiaris
+Trachemys scripta elegans
+Phodopus campbelli
+Eublepharis macularius
+Agapornis fischeri
+Cricetus cricetus
+Cavia porcellus
+Brachypelma smithi
+Chinchilla chinchilla
