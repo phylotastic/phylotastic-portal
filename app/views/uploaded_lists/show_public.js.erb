@@ -1,3 +1,6 @@
+$('#nav-list').html("<%= escape_javascript(render partial: 'raw_extractions/nav_list_publish', 
+                                                  locals: { ra: @ra,
+                                                            resolved_names: @resolved_names } ) %>");
 $('#ra-content').html("<%= escape_javascript(render partial: 'content', 
                                                     locals: { resolved_names: @resolved_names,
                                                               unresolved:     [],

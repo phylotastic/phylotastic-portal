@@ -49,69 +49,6 @@
   </div>
 </div>
 
-<!-- Button trigger modal -->
-<a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-contributable-name-modal-<%= ra.id %>" href="#" style="margin-bottom: 7px;">Edit list</a>
-<!-- Modal -->
-<div class="modal fade" id="edit-contributable-name-modal-<%= ra.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <% if ra.contributable.class.name != "UploadedList" %>
-        <%= form_for ra.contributable do |f| %>
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Enter a new name for this list</h4>
-          </div>
-          <div class="modal-body">
-              <%= f.text_field :name, value: ra.contributable.name, class: "form-control" %>
-          </div>
-          <div class="modal-footer">
-            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
-          </div>
-        <% end %>
-      <% else %>
-        <%= form_for ra.contributable, url: update_metadata_uploaded_lists_path(id: ra.contributable.lid), method: :post do |f| %>
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Edit list</h4>
-          </div>
-          <div class="modal-body">
-            <% list = get_a_list(ra.contributable.lid) %>
-            <div class="row">
-              <%= f.label :name, class: "col-sm-3" %>
-              <div class="col-sm-9">
-                <%= f.text_field :name, value: list["list"]["list_title"], class: "form-control" %>
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <%= f.label :public, class: "col-sm-3" %>
-              <% if list["list"]["is_list_public"] %>
-                <div class="col-sm-3">
-                  True: <%= radio_button_tag("public", "true", checked: true) %>
-                </div>
-                <div class="col-sm-3">
-                  False: <%= radio_button_tag("public", "false") %>
-                </div>
-              <% else %>
-                <div class="col-sm-3">
-                  True: <%= radio_button_tag("public", "true") %>
-                </div>
-                <div class="col-sm-3">
-                  False: <%= radio_button_tag("public", "false", checked: true) %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
-
-<%= link_to('Delete list', ra.contributable, class: 'btn btn-danger btn-block', method: :delete, data: { confirm: "Are you sure to delete list #{ra.contributable.name}?" } ) %>
 
 <script type="text/javascript">
 $("#download-selected-species").click(function() {
@@ -124,7 +61,7 @@ $("#download-selected-species").click(function() {
     }
   }
   
-  submit("<%= download_selected_species_raw_extraction_path %>", 'POST', data);
+  submit("<%= download_selected_species_raw_extraction_path(id: 0) %>", 'POST', data);
   return false;
 });
 
