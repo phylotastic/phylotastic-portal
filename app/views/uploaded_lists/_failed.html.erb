@@ -2,6 +2,8 @@
 
 <%= link_to "Re-upload", "#", "data-toggle": "modal", "data-target": "#reup-#{@uploaded_list.id}", class: "btn btn-primary" %>
 
+<%= link_to "Delete", @uploaded_list, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+
 <div class="modal fade" id="reup-<%= @uploaded_list.id %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog">
     <div class="modal-content">

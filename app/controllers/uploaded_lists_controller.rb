@@ -119,7 +119,7 @@ class UploadedListsController < ApplicationController
         ul.destroy
         flash[:info] = "Deleted list"
         respond_to do |format|
-          format.html { redirect_to trees_path }
+          format.html { redirect_to root_path }
           format.js
         end
         return
@@ -295,6 +295,6 @@ class UploadedListsController < ApplicationController
   private
 
   def uploaded_list_params
-    params.require(:uploaded_list).permit(:file, :public, :name, :description)
+    params.fetch(:uploaded_list, {}).permit(:file, :public, :name, :description)
   end
 end
