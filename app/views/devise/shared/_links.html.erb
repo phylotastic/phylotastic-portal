@@ -21,7 +21,9 @@
 <%- if devise_mapping.omniauthable? %>
   <%- resource_class.omniauth_providers.each do |provider| %>
     <%= link_to omniauth_authorize_path(resource_name, provider), class: "btn btn_primary" do %>
-      <%= image_tag("sign-in-google-button.png", width: '200') %>
+      <div class="btn btn-danger">
+        <i class="fa fa-google fa-2x" aria-hidden="true"></i><span class="sign-in-label">Sign in using Google</span>
+      </div>
       <!-- <div class="<%= provider.to_s %>-logo login-logo"></div> -->
     <% end %>
   <% end -%>
