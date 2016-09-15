@@ -1,4 +1,5 @@
 <% species = resolved_names.map { |n| n["matched_name"] } %>
+<% species = species.sort %>
 
 <% if species.empty? %>
   <div>
