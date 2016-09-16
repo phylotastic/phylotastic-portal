@@ -1,0 +1,27 @@
+<h3>Constructing tree...</h3>
+<div id="myProgress" class="progress">
+  <div id="myBar" class="progress-bar" role="progressbar">
+    <div id="label">0%</div>
+  </div>
+</div>
+        
+<script type="text/javascript">
+  function move(pct) {
+    var elem = document.getElementById("myBar"); 
+    elem.style.width = pct + '%'; 
+    document.getElementById("label").innerHTML = pct * 1 + '%';
+  }
+
+  socket = new WebSocket("ws://" + window.location.host + "/trees/checking_status?id=" + "<%= @tree.id %>");
+
+  socket.onmessage = function(event) {
+    if(event.data.length) {
+      d = JSON.parse(event.data)
+      console.log(d);
+      move(d["pct"]);
+      if(d["status"] == "complete") {        
+        window.location.href = "<%= trees_path(ins: @tree.id) %>";
+      }
+    }
+  }
+</script>

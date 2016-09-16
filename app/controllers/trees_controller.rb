@@ -5,6 +5,7 @@ class TreesController < ApplicationController
   
   include UploadedListsHelper
   include TreesHelper
+  include Tubesock::Hijack
   
   def new
     @ra = RawExtraction.find(params[:ra])
@@ -34,16 +35,16 @@ class TreesController < ApplicationController
     @resolved_names = JSON.parse @ra.species rescue []
   end
   
-  def create
+  def create    
     params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json
     @tree = current_user.trees.build(tree_params)
     if @tree.save
-      flash[:success] = "Tree is being constructed! We will inform you when your tree is ready"
       job_id = TreesWorker.perform_async(@tree.id)
       @tree.update_attributes( bg_job: job_id,
                                status: "constructing",
                                notifiable: true )
-      redirect_to trees_path
+
+      render status_trees_path
       return
     else
       render 'static_pages/home'
@@ -92,6 +93,7 @@ class TreesController < ApplicationController
 #     @my_subcribing_lists = current_user.subcribing_lists
 #
 #     @processing = current_user.processing_trees
+    @inspect = params[:ins]
     trees = current_user.trees
     @my_trees = trees.select {|t| !t.public }
     @public_trees = trees.select {|t| t.public }
@@ -113,6 +115,43 @@ class TreesController < ApplicationController
     else
       flash[:danger] = "Cannot save tree info"
       redirect_to tree_path(params[:id])
+    end
+  end
+  
+  def status
+  end
+  
+  def checking_status
+    @tree = current_user.trees.find_by_id(params[:id])
+    job_id = @tree.bg_job
+    hijack do |tubesock|
+      while Sidekiq::Status::queued? job_id
+        sleep 1
+        data = {status: "queue", pct: 0}.to_json
+        tubesock.send_data data
+      end
+      while Sidekiq::Status::working? job_id
+        sleep 1        
+        pct = Sidekiq::Status::pct_complete job_id
+        data = {status: "working", pct: pct}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::complete? job_id
+        data = {status: "complete", pct: 100}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::failed? job_id
+        data = {status: "failed", pct: 0}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::interrupted? job_id
+        pct = Sidekiq::Status::pct_complete job_id
+        data = {status: "interrupted", pct: pct}.to_json
+        tubesock.send_data data
+      end
     end
   end
   

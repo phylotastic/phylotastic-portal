@@ -5,10 +5,8 @@
         <% case t.status %>
         <% when "completed" %>
           <%= link_to t.name, tree_path(t.id), remote: true, class:"list-group-item", id: "nav-tree-#{t.id}" %>
-        <% when "constructing" %>
-          <%= link_to((t.name.to_s + " - constructing..."), tree_path(t.id), remote: true, class:"list-group-item list-group-item-info", id: "nav-tree-#{t.id}") %>
         <% when "unsuccessfully-constructed" %>
-          <%= link_to((t.name.to_s + " - failed"), tree_path(t.id), remote: true, class:"list-group-item list-group-item-danger", id: "nav-tree-#{t.id}") %>  
+          <%= link_to((t.name.to_s), tree_path(t.id), remote: true, class:"list-group-item list-group-item-danger", id: "nav-tree-#{t.id}") %>  
         <% when nil %>
           <!--Solr is denied to create tree but sidekiq still queued the tree -->
         <% end %>
@@ -16,3 +14,8 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+$("#nav-tree-" + "<%= @inspect %>").click();
+$("#nav-tree-" + "<%= @inspect %>").addClass("active");
+</script>

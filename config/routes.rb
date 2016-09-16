@@ -51,7 +51,9 @@ Rails.application.routes.draw do
       get 'taxon_matching_report' => 'trees#taxon_matching_report'
       get 'newick' => 'trees#newick'
       post 'update_description' => 'trees#update_description'
-      get 'download_image' => 'trees#download_image'  
+      get 'download_image' => 'trees#download_image'
+      get 'status' => 'trees#status', as: :status
+      get 'checking_status' => 'trees#checking_status'
     end
   end
     
