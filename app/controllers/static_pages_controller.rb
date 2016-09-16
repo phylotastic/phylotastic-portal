@@ -11,4 +11,7 @@ class StaticPagesController < ApplicationController
   
   def videos
   end
+  
+  def feedback
+  end
 end

@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   get 'static_pages/faq'
   get 'static_pages/videos'
   get 'static_pages/getting_started'
+  get 'static_pages/feedback'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

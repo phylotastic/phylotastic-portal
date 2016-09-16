@@ -22,6 +22,9 @@
       if(d["status"] == "complete") {        
         window.location.href = "<%= trees_path(ins: @tree.id) %>";
       }
+      if(d["status"] == "failed") {
+        window.location.href = "<%= trees_path(ins: @tree.id) %>";
+      }
     }
   }
 </script>
