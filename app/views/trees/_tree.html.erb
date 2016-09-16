@@ -3,8 +3,6 @@
   <div class="col-md-10">
     <div id="tree-in-newick"></div>
     
-    
-    
     <div id='popup'></div>
     <h3>Tree Actions</h3>
     <div class="row tree-wrapper">
@@ -61,12 +59,31 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
-          <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
+          <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" disabled class="form-control"><%= tree_newick %></textarea>
         </div>
         <div class="modal-footer">
-          <%= link_to "Export as TXT", newick_trees_path(format: :txt, id: tree.id), class: "btn-primary btn btn-default" %> 
-          <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <div class="btn-group" role="group" aria-label="...">
+            <div class="btn-wrapper">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            <div class="btn-wrapper">
+              <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
+            </div>
+            <div class="dropdown btn-wrapper">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-export-newick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Export as TXT
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdown-export-newick">
+                <li>
+                  <%= link_to "WITH ottid", newick_trees_path(format: :txt, id: tree.id, ott: true) %> 
+                </li>
+                <li>
+                  <%= link_to "WITHOUT ottid", newick_trees_path(format: :txt, id: tree.id, ott: false) %>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

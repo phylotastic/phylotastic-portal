@@ -228,7 +228,11 @@ class TreesController < ApplicationController
     if @tree.nil?
       redirect_to root_path
     else 
-      send_data sanitize_newick(@tree), :filename => @tree.name + "_newick.txt"
+      if params[:ott] == "true"
+        send_data JSON.parse(@tree.representation)['newick'], :filename => @tree.name + "_newick.txt"
+      else
+        send_data sanitize_newick(@tree), :filename => @tree.name + "_newick.txt"
+      end
     end
   end
   

@@ -1,8 +1,6 @@
 <% case @tree.status %>
 <% when "completed" %>
   $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name.to_s %>");
-<% when "constructing" %>
-
 <% when "unsuccessfully-constructed" %>
   $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name.to_s + ' - failed' %>");
 <% end %>

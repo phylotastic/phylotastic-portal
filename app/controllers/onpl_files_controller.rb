@@ -1,4 +1,6 @@
 class OnplFilesController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @onpl_file = OnplFile.new
   end

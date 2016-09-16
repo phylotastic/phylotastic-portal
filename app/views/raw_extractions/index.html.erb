@@ -2,16 +2,19 @@
 
 <div class="row">
   <div class="col-md-3">
-    <div class="list-selection">
-      <%= render partial: "my_lists", locals: { my_lists: @my_lists,
-                                           cfiles: @cfiles,
-                                           ofiles: @ofiles,
-                                           clinks: @clinks,
-                                           ctaxons: @ctaxons,
-                                           my_failed_lists: @my_failed_lists,
-                                           my_subcribing_lists: @my_subcribing_lists }%>
+    <% if user_signed_in? %>
+      <div class="list-selection">
+        <%= render partial: "my_lists", locals: { my_lists: @my_lists,
+                                             cfiles: @cfiles,
+                                             ofiles: @ofiles,
+                                             clinks: @clinks,
+                                             ctaxons: @ctaxons,
+                                             my_failed_lists: @my_failed_lists,
+                                             my_subcribing_lists: @my_subcribing_lists }%>
 
-    </div>
+      </div>
+    <% end %>
+    
     <div class="list-selection">
       <%= render partial: "public_lists", locals: { public_lists: @public_lists } %>
     </div>
