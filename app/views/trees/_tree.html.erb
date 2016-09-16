@@ -76,10 +76,10 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdown-export-newick">
                 <li>
-                  <%= link_to "WITH ottid", newick_trees_path(format: :txt, id: tree.id, ott: true) %> 
+                  <%= link_to "WITH ottids", newick_trees_path(format: :txt, id: tree.id, ott: true) %> 
                 </li>
                 <li>
-                  <%= link_to "WITHOUT ottid", newick_trees_path(format: :txt, id: tree.id, ott: false) %>
+                  <%= link_to "WITHOUT ottids", newick_trees_path(format: :txt, id: tree.id, ott: false) %>
                 </li>
               </ul>
             </div>

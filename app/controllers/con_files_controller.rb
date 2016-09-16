@@ -19,6 +19,7 @@ class ConFilesController < ApplicationController
   def create
     @con_file = current_user.con_files.build(con_file_params)
     if @con_file.save
+    binding.pry
       flash[:success] = "Processing file!"
       job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
       redirect_to root_path

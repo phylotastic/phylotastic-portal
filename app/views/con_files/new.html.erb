@@ -22,7 +22,7 @@
         <%= f.text_area :description, class: "form-control", style: "width: 50%;margin-bottom: 20px;" %>
       
         <%= f.label :method, "Method" %>
-        <%= select "con_file", "method", options_for_select({"NetiNeti": 2, "TaxonFinder":1}), {}, { class: "form-control", style: "width: 200px;margin-bottom: 20px;" } %>
+        <%= select "con_file", "method", options_for_select({"NetiNeti & TaxonFinder": 0, "NetiNeti": 2, "TaxonFinder": 1}), {}, { class: "form-control", style: "width: 200px;margin-bottom: 20px;" } %>
       </div>  
       <%= f.submit "Get list", class: "btn btn-default btn-lg btn-primary" %>
     <% end %>
