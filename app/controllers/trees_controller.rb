@@ -1,7 +1,7 @@
 require 'csv'
 
 class TreesController < ApplicationController
-  before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: :taxon_matching_report
   
   include UploadedListsHelper
   include TreesHelper
