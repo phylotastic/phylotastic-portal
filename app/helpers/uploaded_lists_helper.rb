@@ -1,5 +1,10 @@
 module UploadedListsHelper
   
+  def get_a_public_list(list_id)
+    res = Req.get(APP_CONFIG["sv_get_a_list"]["url"] + "?verbose=true" + "&list_id=" + list_id.to_s)
+    return JSON.parse(res)
+  end
+  
   def get_a_list(list_id)
     # public_lists = UploadedList.find_by_public(true)
     current_user.refresh_token_if_expired

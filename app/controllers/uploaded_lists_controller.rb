@@ -1,5 +1,5 @@
 class UploadedListsController < ApplicationController
-  before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: :show_public
   
   include UploadedListsHelper
 
@@ -95,7 +95,7 @@ class UploadedListsController < ApplicationController
   end
   
   def show_public
-    @list = get_a_list(params[:id])
+    @list = get_a_public_list(params[:id])
     if @list["list"]["is_list_public"]
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction
