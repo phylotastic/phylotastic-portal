@@ -22,7 +22,14 @@ class ExtractionsWorker
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url + "&engine=" + file.method.to_s) 
     when "OnplFile"
       extracted_response = {}
-      extracted_response["scientificNames"] = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
+      extracted = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
+      extracted_response["scientificNames"] = extracted.map do |n|
+        n.to_s.encode('UTF-8', {
+          :invalid => :replace,
+          :undef   => :replace,
+          :replace => '?'
+        })
+      end
       extracted_response = extracted_response.to_json
     end
     

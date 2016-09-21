@@ -1,6 +1,5 @@
 class RawExtractionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :download_selected_species
-  skip_before_action :authenticate_user!, only: :index
   
   include UploadedListsHelper
   
