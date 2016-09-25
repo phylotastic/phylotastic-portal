@@ -62,7 +62,6 @@
               <tr> 
                 <th class="species-heading-row">#</th> 
                 <th class="species-heading-row">Species</th> 
-                <th class="species-heading-row">Kingdom</th> 
                 <th class="species-cb-column species-heading-row">
                   Select/Deselect all<br>
                   <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
@@ -74,7 +73,6 @@
                 <tr class="species-row success">
                   <td class=""><%= i + 1 %></td>
                   <td class=""><%= e %></td>
-                  <td class="">TODO</td>
                   <td class="species-cb-column">           
                     <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
                     <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
