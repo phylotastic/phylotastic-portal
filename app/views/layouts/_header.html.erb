@@ -1,14 +1,17 @@
-<div class="center">
-  <%= image_tag "phylo-toolbox-logo-huge.png", alt: "Home" %>
-</div>
 
-<nav class="navbar navbar-static">
+<nav class="navbar navbar-static navbar-default">
   <div class="container">
+    
     <a class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
       <span class="glyphicon glyphicon-chevron-down"></span>
     </a>
     <div class="nav-collapse collase">
       <ul class="nav navbar-nav">
+        <li>
+          <%= link_to root_path, class: "navbar-brand" do %> 
+            <%= image_tag("phylo-toolbox-logo-huge.png", alt: "Home", width: "120") %>
+          <% end %> 
+        </li>
         <li class="<%= 'active' if(params[:controller] == 'raw_extractions') %>"><%= link_to "Home", root_path %></li>
         <% unless current_user.nil? %>
           <li class="<%= 'active' if(params[:controller] == 'trees' && params[:action] == "index") %>"><%= link_to "Tree viewer", trees_path %></li>
