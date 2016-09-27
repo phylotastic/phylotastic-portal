@@ -3,15 +3,52 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <h1>About</h1>
-    <p>
-       The Phylotastic project is a NSF funded project to make the tree of life convenient and accessible to a large public. The NSF grant number is 1458572 "Collaborative Research: ABI Development: An open infrastructure to disseminate phylogenetic knowledge"
-    </p>
-    <p>
-      There have been many efforts to construct the Tree of Life, but these data are scattered and many times not easily traceable.  We see our project (webservices) as the unique location for knowledge on the Tree of Life (ToL), and the place where the public can go to retrieve based on all our knowledge on the ToL
-    </p>
-    <p>
-      The lead PI of the project is Dr. Arlin Stoltzfus (<a href="mailto:arlin@umd.edu">arlin@umd.edu</a>) and 2 Co-PIs, Dr. Enrico Pontelli (<a href="epontell@sc.nmsu.edu">epontell@sc.nmsu.edu</a>) and Dr. Brian O'Meara (<a href="bomeara@utk.edu">bomeara@utk.edu</a>)
-    </p>
+    <h2>What we do</h2>
+       Until recently, expert knowledge on phylogenetic relationships-- the Tree of Life-- was scattered in thousands of inaccessible publications.  Then the <a href="http://opentree.org">OpenTree project</a> processed thousands of publications to generate a "synthetic tree" covering millions of species, a resource with enormous potential both for educational purposes and to guide research.  
+       <p>Yet, there is still a very large accessibility gap, making it unlikely that this  trove of knowlewdge will flow into the hands of scientists, educators, and the public.  </p>
+       <p>The Phylotastic project aims to lower the barriers to accessing the tree of life: we want to make getting a species tree just as easy-- and as fast-- as getting online driving directions.  We solve problems involved in using scientific names, extracting relationships, integrating time-scales, and finding images and other resources about species. </p>
+     <h2>How it works</h2>
+     For users, the part of the phylotastic system that you see is something like the <a href="http://phylo.cs.nmsu.edu:3000/">web portal</a> or the mobile app.  However, these are just 2 of many possible <b>front-ends</b> or "clients" using an underlying toolbox of <b>phylotastic web services</b>, each with a defined role providing data or operations.  For instance, we have a server that maintains species lists both for the portal and for our mobile app.  Many of our services rely on key information resources such as: 
+      <ul>
+      <li>OpenTree, TreeBASE - phylogenetic relationships 
+      <li>Encyclopedia of Life - images, information for mash-ups
+      <li>Global Names Recognition and Discovery - finding name-like strings and validating them against taxonomic databases
+      <li>iNaturalist - occurrence records matching a species with a location      	
+      <li>DateLife - chronograms (trees with dates based on the fossil record)
+      </ul>
+   We aim to grow this toolbox into a sustainable community resource that is open to anyone and that evolves to integrate new resources and operations.  
+     <p>
+     Each web service plays a
+     <h2>How to get involved</h2>
+  	The Phylotastic project is in many ways an <b>open</b> project.  We maintain a <a href="https://gitter.im/phylotastic/phylotastic">public channel</a> for project information. Our source code is all available on <a fhref="https://github.com/phylotastic">github</a>.  We welcome feedback and are open to new opportunities to collaborate (use the Feedback form).  
+  
+     <h2>Who we are</h2>
+      The Phylotastic project is an NSF-funded research project ("Collaborative Research: ABI Development: An open infrastructure to disseminate phylogenetic knowledge", NSF 1458572) with 3 centers and 4 work sites. 
+      <!-- 
+      <ul>
+      <li>IBBR (University of Maryland) (NSF 1458572). 
+      <li>New Mexico State University (NSF )
+      <li>University of Tennessee, Knoxville (NSF )
+      <li>University of Illinois, Urbana-Champaign
+      </ul>
+      -->
+      Current project staff include
+     <ul>
+      <li>Dail Laughinghouse (Post-Doc, UMD) - requirements, design, testing, outreach
+      <li>Brian O'Meara (co-PI, UTK) - DateLife
+      <li>Dmitry Mozzherin (de facto co-PI, UIUC) - name recognition and discovery
+      <li>Van Nguyen (Grad, NMSU) - web portal
+      <li>Thanh Nguyen (Grad, NMSU) - mobile app, web services, semantic integration
+      <li>Enrico Pontelli (co-PI, NMSU) - design, semantic integration
+      <li>Abu Saleh (Grad, NMSU) - web services design and implementation
+      <li>Arlin Stoltzfus (PI, UMD) - project management, design, testing
+      </ul>
+      We have benefitted from feedback from a number of consultants and collaborators, including Yan Wong, James Rosindell, Karen Cranston (OpenTree), Jonathan Rees (OpenTree), Jaime Huerta-Cepas (ETE), Brian Sidlauskas, Ramona Walls, Cyndy Parr and Katja Schulz.  
+      
+<img src="../../../design/images/group_photo.png" style="border:1px solid black;max-width:80%;" alt="Phylotastic project staff, Dripping Springs, NM, September 24, 2016 (Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, Van)">
+
+<p>Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, and Van at the first phylotastic face-to-face project meeting (Dripping Springs, NM, September 24, 2016).  
+ </p>
   </div>
 </div>
 
