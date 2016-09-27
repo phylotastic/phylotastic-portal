@@ -96,7 +96,7 @@ class TreesController < ApplicationController
 #     @processing = current_user.processing_trees
     @inspect = params[:ins]
     trees = current_user.trees
-    @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name}
+    @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name }
     @public_trees = trees.select {|t| t.public }.sort_by! {|t| t.name}
   end
     
