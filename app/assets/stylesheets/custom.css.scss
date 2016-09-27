@@ -70,17 +70,14 @@ body {
   text-align: center;
 }
 
-.table-wrapper {
-  position:relative;
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
 }
-.table-scroll {
-  height:200px;
-  overflow-y:scroll;  
-  margin-top:10px;
-}
-.table-wrapper table {
-  width:100%;
-
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 .table-wrapper table thead th .text {
   position:absolute;   
@@ -197,4 +194,9 @@ body {
   top: 0; 
   position: fixed;
   width: 20%;
+}
+
+.fix-heading {
+  font-size: 140%;
+  margin-bottom: 10px;
 }
