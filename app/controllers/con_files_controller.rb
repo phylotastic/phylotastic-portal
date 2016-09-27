@@ -8,6 +8,12 @@ class ConFilesController < ApplicationController
   def show
     @f = ConFile.find(params[:id])
     @ra = @f.raw_extraction
+    if @ra.nil?
+      respond_to do |format|
+        format.js
+      end
+      return
+    end
     @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
     @resolved_names = [] if !@resolved_names
     respond_to do |format|
