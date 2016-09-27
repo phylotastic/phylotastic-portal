@@ -1,48 +1,26 @@
-<div>My Lists</div>
+<% lists = my_lists << my_failed_lists << cfiles << ofiles << clinks << ctaxons  %>
+<% lists.flatten!.sort_by!{|m| m[:name] } %>
+
+<div class="fix-heading">My Lists</div>
 
 <div class="table-wrapper">
   <div class="table-scroll">  
     <div class="list-group">
-      <% my_lists.each do |l| %>
-        <% if l["list_title"].nil? %>
-          <% if UploadedList.find_by_lid(l["list_id"]).nil? %>
-            <% list_name = "loading ..." %>
-          <% else %>
-            <% list_name = UploadedList.find_by_lid(l["list_id"]).name %>
-          <% end %>
-        <% else %>
-          <% list_name = l["list_title"] %>
+      <% lists.each do |l| %>
+        <% case l[:class] %>
+        <% when "UploadedList" %>
+          <%= link_to l[:name], uploaded_list_path(l[:id]), remote: true, class:"list-group-item" %>
+        <% when "OnplFile" %>
+          <%= link_to l[:name], onpl_file_path(l[:id]), remote: true, class:"list-group-item" %>
+        <% when "ConFile" %>
+          <%= link_to l[:name], con_file_path(l[:id]), remote: true, class:"list-group-item" %>
+        <% when "ConLink" %>
+          <%= link_to l[:name], con_link_path(l[:id]), remote: true, class:"list-group-item" %>
+        <% when "ConTaxon" %>
+          <%= link_to l[:name], con_taxon_path(l[:id]), remote: true, class:"list-group-item" %>
+        <% when "FailedList" %>
+          <%= link_to l[:name], failed_uploaded_lists_path(id: l[:id]), remote: true, class:"list-group-item list-group-item-danger" %>
         <% end %>
-        <%= link_to list_name, uploaded_list_path(l["list_id"]), remote: true, class:"list-group-item" %>
-      <% end %>
-  
-      <% my_failed_lists.each do |l| %>
-        <% if l.name.nil? %>
-          <% text = l.file.original_filename %>
-        <% else %>
-          <% text = l.name %>
-        <% end %>
-        <%= link_to text, failed_uploaded_lists_path(id: l.id), remote: true, class:"list-group-item list-group-item-danger" %>
-      <% end %>
-      
-      <% my_subcribing_lists.each do |l| %>
-        <%= link_to l.name, uploaded_list_path(l.lid), remote: true, class:"list-group-item list-group-item-info" %>
-      <% end %>
-      
-      <% cfiles.each do |l| %>
-        <%= link_to l.name, con_file_path(l), remote: true, class:"list-group-item" %>
-      <% end %>
-      
-      <% ofiles.each do |l| %>
-        <%= link_to l.name, onpl_file_path(l), remote: true, class:"list-group-item" %>
-      <% end %>
-      
-      <% clinks.each do |l| %>
-        <%= link_to l.name, con_link_path(l), remote: true, class:"list-group-item" %>
-      <% end %>
-      
-      <% ctaxons.each do |l| %>
-        <%= link_to l.name, con_taxon_path(l), remote: true, class:"list-group-item" %>
       <% end %>
       
     </div>
