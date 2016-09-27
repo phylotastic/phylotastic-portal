@@ -63,9 +63,7 @@ Rails.application.routes.draw do
   get '/add_public_gallery' => 'watch_relationships#add_public_gallery', as: :pub_gal
   
   get 'static_pages/about'
-  get 'static_pages/faq'
-  get 'static_pages/videos'
-  get 'static_pages/getting_started'
+  get 'static_pages/help'
   get 'static_pages/feedback'
   
   # The priority is based upon order of creation: first created -> highest priority.

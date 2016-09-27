@@ -192,3 +192,9 @@ body {
     line-height: 30px; /* Set the line-height to the same as the height of the progress bar container, to center it vertically */
     color: white;
 }
+
+.navbar-fixed {
+  top: 0; 
+  position: fixed;
+  width: 20%;
+}
