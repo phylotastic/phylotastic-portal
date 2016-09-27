@@ -36,6 +36,7 @@ class RawExtractionsController < ApplicationController
     end
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
+    @public_lists.sort_by! {|m| m["list_title"]}
   end
   
   def download_selected_species

@@ -4,7 +4,7 @@
   <div class="table-scroll">  
     <div class="list-group">
       <% public_lists.each do |l| %>
-        <%= link_to l["list_title"], show_public_uploaded_lists_path(id: l["list_id"]), remote: true, class:"list-group-item" %>      
+        <%= link_to truncate(l["list_title"]), show_public_uploaded_lists_path(id: l["list_id"]), remote: true, class:"list-group-item" %>      
       <% end %>
     </div>
   </div>
