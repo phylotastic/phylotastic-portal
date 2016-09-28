@@ -58,7 +58,6 @@ class RawExtractionsController < ApplicationController
     
     job_id = params[:jid]
     hijack do |tubesock|
-      binding.pry
       while Sidekiq::Status::queued? job_id
         sleep 1
         data = {status: "queue", pct: 0}.to_json
