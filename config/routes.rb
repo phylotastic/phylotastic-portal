@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     member do
       post "download_selected_species"
     end
+    collection do
+      get 'checking_status' => 'raw_extractions#checking_status'
+    end
   end
   
   resources :user_list_relationships, only: [:destroy]

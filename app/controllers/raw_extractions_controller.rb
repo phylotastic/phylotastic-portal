@@ -2,6 +2,7 @@ class RawExtractionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :download_selected_species
   
   include UploadedListsHelper
+  include Tubesock::Hijack
   
   def index
     if user_signed_in?
@@ -37,6 +38,54 @@ class RawExtractionsController < ApplicationController
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
     @public_lists.sort_by! {|m| m["list_title"].downcase }
+  end
+  
+  def checking_status
+    case params[:type]
+    when "cl"
+      source = ConLink.find(params[:id])
+    when "cf"
+      source = ConFile.find(params[:id])
+    when "ct"
+      source = ConTaxon.find(params[:id])
+    when "of"
+      source = OnplFile.find(params[:id])
+    when "ul"
+      source = UploadedFile.find_by_lid(params[:id])
+    when "fl"
+      source = UploadedFile.find(params[:id])
+    end
+    
+    job_id = params[:jid]
+    hijack do |tubesock|
+      while Sidekiq::Status::queued? job_id
+        sleep 1
+        data = {status: "queue", pct: 0}.to_json
+        tubesock.send_data data
+      end
+      while Sidekiq::Status::working? job_id
+        sleep 1        
+        pct = Sidekiq::Status::pct_complete job_id
+        data = {status: "working", pct: pct}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::complete? job_id
+        data = {status: "complete", pct: 100}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::failed? job_id
+        data = {status: "failed", pct: 0}.to_json
+        tubesock.send_data data
+      end
+    
+      if Sidekiq::Status::interrupted? job_id
+        pct = Sidekiq::Status::pct_complete job_id
+        data = {status: "interrupted", pct: pct}.to_json
+        tubesock.send_data data
+      end
+    end
   end
   
   def download_selected_species

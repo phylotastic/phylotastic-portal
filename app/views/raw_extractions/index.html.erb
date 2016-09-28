@@ -55,12 +55,26 @@ $(document).ready(function() {
     $(this).addClass("active");
     $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
   })
+    $(".table-scroll" ).scrollTop( 300 );
   
-  if("<%= params[:type] %>" != "") {    
-    // var timer = setInterval(function(){
-//       $("#<%= params[:type] %>-<%= params[:id] %>").click();
-//       console.log("aaa");
-//     }, 2000);
+  if("<%= params[:type] %>" != "") {
+    $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
+    
+    socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:id]%>" + "&type=" + "<%= params[:type] %>" + "&jid=" + "<%=params[:jid] %>");
+
+    socket.onmessage = function(event) {
+      if(event.data.length) {
+        d = JSON.parse(event.data)
+        console.log(d);
+        if(d["status"] == "complete") {        
+          $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
+        }
+        if(d["status"] == "failed") {
+          $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
+        }
+      }
+    }
   }
+  
 })
 </script>
