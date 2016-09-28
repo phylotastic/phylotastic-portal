@@ -11,7 +11,7 @@ class UploadedListsController < ApplicationController
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if @uploaded_list.save
-      ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
+      job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
       redirect_to root_path(type: "ul", id: @uploaded_list.id, jid: job_id)
     else
       @uploaded_list.errors.delete(:file)
