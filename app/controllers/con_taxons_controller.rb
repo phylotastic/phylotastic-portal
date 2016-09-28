@@ -91,7 +91,7 @@ class ConTaxonsController < ApplicationController
                              :content_type => :json)
 
         extraction = @con_taxon.create_raw_extraction(species: resolved)
-        redirect_to root_path
+        redirect_to root_path(type: "ct", id: @con_taxon.id)
       else
         render 'raw_extractions/new_from_taxon'
       end
