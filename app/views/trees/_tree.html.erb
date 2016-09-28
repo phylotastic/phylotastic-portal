@@ -205,13 +205,15 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-  get_tree_image("<%= tree_newick %>", "#img1");
+  topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
+  leftOffset = $("#img1").offset().left;
+  console.log(topOffset, leftOffset);
+  get_tree_image("<%= tree_newick %>", "#img1", topOffset, leftOffset);
   <% if current_user.sign_in_count == 0 %>
     $('#tree-hint').modal();
   <% end %>
     
-    console.log($("#img1").offset());
-  $("#topOffset").val($("#img1").offset().top - $($(".container")[1]).offset().top - 50);
-  $("#leftOffset").val($("#img1").offset().left);
+  $("#topOffset").val(topOffset);
+  $("#leftOffset").val(leftOffset);
 })
 </script>
