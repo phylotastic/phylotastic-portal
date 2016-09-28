@@ -14,7 +14,7 @@
         </li>
         <li class="<%= 'active' if(params[:controller] == 'raw_extractions') %>"><%= link_to "Home", root_path %></li>
         <% unless current_user.nil? %>
-          <li class="<%= 'active' if(params[:controller] == 'trees' && params[:action] == "index") %>"><%= link_to "Tree viewer", trees_path %></li>
+          <li class="<%= 'active' if(params[:controller] == 'trees' && params[:action] == "index") %>"><%= link_to "Trees", trees_path %></li>
         <% end %>
         
         <li class="<%= 'active' if(params[:controller] == 'static_pages' && params[:action] == "help") %>"><%= link_to "Help", static_pages_help_path %></li>
