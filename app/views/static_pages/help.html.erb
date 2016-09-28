@@ -19,17 +19,16 @@
       
       <h1 id="userguide">User guide</h1>
 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      
+      <div class="panel-group" id="accordion">
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#quickstart">
                 Quick Start
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="quickstart" class="panel-collapse collapse in">
             <div class="panel-body">
               <p>Everything is done from the List view (<b>Home</b>) or the Tree view (<b>Trees</b>). The basic workflow is to create a list of scientific names (species or higher taxa), click on <b>Get tree</b>, then view the tree.  If you only know common names instead of scientific names (e.g., "raven" instead of "Corvus corax"), check the FAQ item <a href="#commonnames">How do I find scientific names?</a>. </p>
               
@@ -49,14 +48,14 @@
         </div>
   
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#managinglists">
                 Managing lists (Home)
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="managinglists" class="panel-collapse collapse in">
             <div class="panel-body">
 
               <p>The list view (<b>Home</b>) shows available lists (left), a list viewer (center), and a menu for making new lists (right). Click a list to view its contents in the list viewer.  Now you can 
@@ -67,19 +66,19 @@
               <li>delete or rename the list
               </ul>
               </p>
-                          </div>
+            </div>
           </div>
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#managetrees">
                 Managing and viewing trees (Trees)
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="managetrees" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>To view a tree, from <b>Trees</b> view, select a tree name from <b>My Trees</b> or <b>Public Trees</b>.  We sometimes don't get the size of the tree right: you may need to use your browser's zoom feature. </p>
             
@@ -98,14 +97,14 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#uplist">
                 Uploading a list you have created
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="uplist" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>From <b>Home</b>, choose <b>Upload my list</b> from the menu at right.  You can upload your own custom list of taxa as either a text (.txt) file with one name per line, or as a Darwin Core Archive (DwC-A) file.  The DwC-A format allows you to maintain metadata such as a description and author with your list of names (click <%= link_to "here", "/template.zip"%> for a template you can modify). </p>
 
@@ -115,14 +114,14 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#createlistfromfile">
                 Creating a list by scraping names from a file
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="createlistfromfile" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>From <b>Home</b>, choose <b>Extract from doc</b> from the menu at right, then select a file (.pdf, .txt, .doc, .docx, .xls, .xlsx) that includes scientific names (it can also include other text).  The file will be processed in 3 steps: 
         	<ol>
@@ -137,14 +136,14 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#createlistfromweb">
                 Creating a list by scraping names from a web page
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="createlistfromweb" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>From <b>Home</b>, choose <b>Extract from web</b> from the menu at right, then enter a URL.  The resource will be processed in 3 steps: 
         	<ol>
@@ -158,14 +157,14 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDir" aria-expanded="true" aria-controls="collapseDir">
+              <a role="button" data-toggle="collapse" href="#createlistfromtaxon">
                 Creating a list by sampling from a taxon
               </a>
             </h4>
           </div>
-          <div id="collapseDir" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div id="createlistfromtaxon" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>From <b>Home</b>, choose <b>Choose taxon</b> from the menu at right, then enter a scientific name for a higher taxon such as a genus or family ("Canidae", "Felidae", "Passerina"). If desired, choose one of the options to get a subset of that taxon
         	<ul>
@@ -187,14 +186,14 @@
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#treeSave" aria-expanded="false" aria-controls="treeSave">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeSave" aria-expanded="false" aria-controls="treeSave">
                 I added images and markup to my tree, but now they are gone.  What happened?
               </a>
             </h4>
           </div>
-          <div id="treeSave" class="panel-collapse collapse" role="tabpanel" aria-labelledby="treeSave">
+          <div id="treeSave" class="panel-collapse collapse">
             <div class="panel-body">
             <p>Your modifications (e.g., highlights, thumbnail images) were lost when you navigated away from the tree.  We're sorry about that.  Until this is fixed, be sure to save your modified tree view as an image file before navigating away.  </p>
             </div>
@@ -202,14 +201,14 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#noTree" aria-expanded="false" aria-controls="noTree">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#noTree" aria-expanded="false" aria-controls="noTree">
                 I did not get a tree.  What happened?
               </a>
             </h4>
           </div>
-          <div id="noTree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="noTree">
+          <div id="noTree" class="panel-collapse collapse">
             <div class="panel-body">
             <p>The two most common reasons are 
             <ul>
@@ -222,17 +221,17 @@
         </div>
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingOne">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#speciesLost" aria-expanded="false" aria-controls="speciesLost">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#speciesLost" aria-expanded="false" aria-controls="speciesLost">
                 My species isn't found.  Why?  What do I do?
               </a>
             </h4>
           </div>
-          <div id="speciesLost" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="speciesLost">
+          <div id="speciesLost" class="panel-collapse collapse">
             <div class="panel-body">
             <p><b>If you uploaded your own list</b> (text or DwC-A), unrecognized names appear below the list viewer: you can edit the name and click <b>Search</b> to try again.  Most failures are due to spelling errors, but sometimes the name just isn't in our sources (to find out if a name is in OpenTree, use the search box in the upper right of <a href="https://tree.opentreeoflife.org/opentree/argus">this page</a>). </p>
-            
+      
             <p><b>If you attempted to scrape names from a file or web page</b>, then your list will be missing both (1) names that were not recognized by GNRD, and (2) names that were recognized by GNRD but did not match any its taxonomies.  You can try to debug this problem by going directly to <a href="http://gnrd.globalnames.org/">Global Names Recognition and Discovery</a>, but the practical work-around is to download the extracted list, add the missing names, and upload it again (see <a href="#editList">"How can I add, remove or change a species in my list?"</a>).  </p>
 
                 </li>
@@ -243,66 +242,66 @@
 
 
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#listProblems" aria-expanded="false" aria-controls="listProblems">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#listProblems" aria-expanded="false" aria-controls="listProblems">
              I can't make the list I was trying to make. What happened? Can you help me?
              </a>
             </h4>
           </div>
-          <div id="listProblems" class="panel-collapse collapse" role="tabpanel" aria-labelledby="listProblems">
+          <div id="listProblems" class="panel-collapse collapse">
             <div class="panel-body">
             <p>If you start the "Choose taxon" workflow with a taxon that is too large, the job may terminate before a list is returned (see the user guide above).  The same thing will happen if you submit a resource for name-scraping that is enormous.  The solution is to scale down your ambitions.  </p>
-            
+      
             <p>If the issue is not size, it is probably something to do with format, language, or encoding.  If you are trying to use a DwC-A input, compare the format carefully to the template provided.  See this <%= link_to "stackoverflow thread", "http://stackoverflow.com/questions/3001177/how-do-i-grep-for-all-non-ascii-characters-in-unix", target: "_blank" %> for ways to find non-standard characters.  If you can't fix the original resource (e.g., a web page you don't own), make a copy and fix it. </p>
-            
+      
             <p>If you still can't make a list, contact us using the <a href="http://bit.ly/phylofeedback">feedback form</a> and be sure to include your email address. 
             </p>
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#treeView" aria-expanded="false" aria-controls="treeView">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeView" aria-expanded="false" aria-controls="treeView">
              How do I add labels to the tree, or change branches?  How can I customize the tree view?  
               </a>
             </h4>
           </div>
-          <div id="treeView" class="panel-collapse collapse" role="tabpanel" aria-labelledby="treeView">
+          <div id="treeView" class="panel-collapse collapse">
             <div class="panel-body">
-              
+        
                <p>Currently the tree viewer supports only minimal editing and customization, and the <b>Export</b> function only includes the tree topology and names-- not images, link-outs, or high-lighting.  In the future, we will provide a way to export Phylotastic trees with images and link-outs, so that they can be modified using other tree-viewers-- but first we have to convince other developers to agree with us on annotation standards.  </p>
 
             </div>
           </div>
         </div>
-                
+          
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#treeSources" aria-expanded="false" aria-controls="treeSources">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeSources" aria-expanded="false" aria-controls="treeSources">
                 How is the tree made?  Where does it come from? 
               </a>
             </h4>
           </div>
-          <div id="treeSources" class="panel-collapse collapse" role="tabpanel" aria-labelledby="treeSources">
+          <div id="treeSources" class="panel-collapse collapse">
             <div class="panel-body">
             Phylotastic trees are retrieved from existing sources that store trees or merge them into supertrees. Currently all Phylotastic trees are based on the supertree developed by the OpenTree project (their "synthetic tree").  For more information on the synthetic tree, visit <a href="http://opentree.org">OpenTree</a> or read <a href="http://www.pnas.org/content/112/41/12764">Hinchliff et al. (2015)</a>.  
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#editList" aria-expanded="false" aria-controls="editList">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#editList" aria-expanded="false" aria-controls="editList">
                 How can I add, remove or change a species in my list?
               </a>
             </h4>
           </div>
-          <div id="editList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="editList">
+          <div id="editList" class="panel-collapse collapse">
             <div class="panel-body">
               <p>List editing is not fully implemented.  The work-around is: 
               <ul>
@@ -314,31 +313,31 @@
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#thumbnails" aria-expanded="false" aria-controls="thumbnails">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#thumbnails" aria-expanded="false" aria-controls="thumbnails">
                 Where do you get the images?
               </a>
             </h4>
           </div>
-          <div id="thumbnails" class="panel-collapse collapse" role="tabpanel" aria-labelledby="thumbnails">
+          <div id="thumbnails" class="panel-collapse collapse">
             <div class="panel-body">
               Our image service harvests thumbnails from the <a href="http://eol.org">Encyclopedia of Life</a> (EOL) project.  Full-size images can be found by clicking on a node and following the "EOL" link.  Note that the authors of images frequently retain rights to their use (the use of thumbnails is allowed under the Fair Use doctrine). 
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 id="commonnames" class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#commonNames" aria-expanded="false" aria-controls="commonNames">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#commonNames" aria-expanded="false" aria-controls="commonNames">
                 Can I use common names?  How do I find scientific names? 
               </a>
             </h4>
           </div>
-          <div id="commonNames" class="panel-collapse collapse" role="tabpanel" aria-labelledby="commonNames">
+          <div id="commonNames" class="panel-collapse collapse">
             <div class="panel-body">
             <p>In the future, we will provide some support for common names like "raven" (Corvus corax) or "Minke whale" (Balaenoptera acutorostrata).  At present, you need to supply scientific names.  They are not hard to find-- you can search Wikipedia or NCBI taxonomy, or just use Google (for best results, combine the name with "species" or "taxonomy"), e.g.,
               <ul>
@@ -350,49 +349,49 @@
               </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#polytomies" aria-expanded="false" aria-controls="polytomies">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#polytomies" aria-expanded="false" aria-controls="polytomies">
                 I got a tree, but it isn't well resolved.  Why are there so many polytomies? What can I do? 
               </a>
             </h4>
           </div>
-          <div id="polytomies" class="panel-collapse collapse" role="tabpanel" aria-labelledby="polytomies">
+          <div id="polytomies" class="panel-collapse collapse">
             <div class="panel-body">
             <p>Our ability to deliver trees instantly depends on resources that provide pre-computed trees.  Currently, OpenTree is the only resource we are using.  Large parts of OpenTree's synthetic tree are based on taxonomy alone: this is why there are so many polytomies.  If you know of published phylogenies that would cover some of these gaps, and you want to help, see <a href="#betterPlace">"How can I make the world a better place?"</a>.</p>
-            
+      
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingThree">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#betterPlace" aria-expanded="false" aria-controls="betterPlace">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#betterPlace" aria-expanded="false" aria-controls="betterPlace">
                 How can I make the (phyloinformatics) world a better place? 
               </a>
             </h4>
           </div>
-          <div id="betterPlace" class="panel-collapse collapse" role="tabpanel" aria-labelledby="betterPlace">
+          <div id="betterPlace" class="panel-collapse collapse">
             <div class="panel-body">
             <p>Our ability to deliver results quickly and conveniently depends on the availability of other resources that have programmable interfaces and provide good-quality data.  Click on "About" (above) to see a list of these resources. </p>
-            
+      
             <p>By making it incredibly easy to find results, the Phylotastic project <b>exposes both the strengths and weaknesses of these resources</b>.  If the results obtained here are misleading or incomplete, this means that the underlying resources can be improved.  For instance, if you find a part of the tree that is unresolved, and you are aware of published trees that provide more information, you can help out by notifying OpenTree or, better, <a href="https://tree.opentreeoflife.org/curator">becoming a curator yourself</a> and adding the tree to OpenTree's database, so that it will be included automatically the next time a supertree is computed.</p> 
             </div>
           </div>
         </div>
-        
+  
         <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingTwo">
+          <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#publicList" aria-expanded="false" aria-controls="publicList">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#publicList" aria-expanded="false" aria-controls="publicList">
                 How do I make my list public?
                 </a>
             </h4>
           </div>
-          <div id="publicList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div id="publicList" class="panel-collapse collapse">
             <div class="panel-body">
              <p>Currently, the only way to make a list public is to use the DwC-A format.  This is because we want public lists to be documented with author, description, source, and so on.  </p>
             </div>
