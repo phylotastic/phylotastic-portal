@@ -51,9 +51,9 @@ class RawExtractionsController < ApplicationController
     when "of"
       source = OnplFile.find(params[:id])
     when "ul"
-      source = UploadedFile.find_by_lid(params[:id])
+      source = UploadedList.find_by_lid(params[:id])
     when "fl"
-      source = UploadedFile.find(params[:id])
+      source = UploadedList.find(params[:id])
     end
     
     job_id = params[:jid]
