@@ -56,7 +56,7 @@ $(document).ready(function() {
     $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
     $('#nav-list').html("");
   })
-    $(".table-scroll" ).scrollTop( 300 );
+    // $(".table-scroll" ).scrollTop( 300 );
   
   if("<%= params[:type] %>" != "") {
     $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
