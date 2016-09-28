@@ -11,9 +11,8 @@ class UploadedListsController < ApplicationController
   def create
     @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if @uploaded_list.save
-      flash[:success] = "File uploaded! Processing your archive file"
       ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      redirect_to root_path
+      redirect_to root_path(type: "ul", id: @uploaded_list.id, jid: job_id)
     else
       @uploaded_list.errors.delete(:file)
       flash[:error] = "Can not process list!"
