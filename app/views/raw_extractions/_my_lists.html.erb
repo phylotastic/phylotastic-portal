@@ -9,17 +9,17 @@
       <% lists.each do |l| %>
         <% case l[:class] %>
         <% when "UploadedList" %>
-          <%= link_to truncate(l[:name]), uploaded_list_path(l[:id]), remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l[:name]), uploaded_list_path(l[:id]), remote: true, class:"list-group-item", id: "ul-#{l[:id]}" %>
         <% when "OnplFile" %>
-          <%= link_to truncate(l[:name]), onpl_file_path(l[:id]), remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l[:name]), onpl_file_path(l[:id]), remote: true, class:"list-group-item", id: "of-#{l[:id]}" %>
         <% when "ConFile" %>
-          <%= link_to truncate(l[:name]), con_file_path(l[:id]), remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l[:name]), con_file_path(l[:id]), remote: true, class:"list-group-item", id: "cf-#{l[:id]}" %>
         <% when "ConLink" %>
-          <%= link_to truncate(l[:name]), con_link_path(l[:id]), remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l[:name]), con_link_path(l[:id]), remote: true, class:"list-group-item", id: "cl-#{l[:id]}" %>
         <% when "ConTaxon" %>
-          <%= link_to truncate(l[:name]), con_taxon_path(l[:id]), remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l[:name]), con_taxon_path(l[:id]), remote: true, class:"list-group-item", id: "ct-#{l[:id]}" %>
         <% when "FailedList" %>
-          <%= link_to truncate(l[:name]), failed_uploaded_lists_path(id: l[:id]), remote: true, class:"list-group-item list-group-item-danger" %>
+          <%= link_to truncate(l[:name]), failed_uploaded_lists_path(id: l[:id]), remote: true, class:"list-group-item list-group-item-danger", id: "fl-#{l[:id]}" %>
         <% end %>
       <% end %>
       

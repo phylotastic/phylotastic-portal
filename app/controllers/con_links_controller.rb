@@ -19,9 +19,8 @@ class ConLinksController < ApplicationController
   def create
     @con_link = current_user.con_links.build(con_link_params)
     if @con_link.save
-      flash[:success] = "Processing URL!"
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", current_user.id)
-      redirect_to root_path
+      redirect_to root_path(type: "cl", id: @con_link.id)
     else
       flash[:error] = "Can not process link!"
       redirect_to new_con_link_path
