@@ -29,7 +29,7 @@ class ConFilesController < ApplicationController
       redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id)
     else
       flash[:error] = "Can not process file!"
-      redirect_to new_con_file_path
+      redirect_to root_path
     end
   end
   
