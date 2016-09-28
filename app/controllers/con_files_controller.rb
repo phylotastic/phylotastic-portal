@@ -26,7 +26,7 @@ class ConFilesController < ApplicationController
     @con_file = current_user.con_files.build(con_file_params)
     if @con_file.save
       job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
-      redirect_to root_path(type: "cf", id: @con_fink.id, jid: job_id)
+      redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id)
     else
       flash[:error] = "Can not process file!"
       redirect_to new_con_file_path
