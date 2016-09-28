@@ -68,7 +68,7 @@ $(document).ready(function() {
         if(event.data.length) {
           d = JSON.parse(event.data)
           console.log(d);
-          if(d["status"] == "complete") {        
+          if(d["status"] == "complete") {
             $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
           }
           if(d["status"] == "failed") {

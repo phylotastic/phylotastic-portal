@@ -52,8 +52,6 @@ class RawExtractionsController < ApplicationController
       source = OnplFile.find(params[:id])
     when "ul"
       source = UploadedList.find(params[:id])
-    when "fl"
-      source = UploadedList.find(params[:id])
     end
     
     job_id = params[:jid]
@@ -71,7 +69,14 @@ class RawExtractionsController < ApplicationController
       end
     
       if Sidekiq::Status::complete? job_id
-        data = {status: "complete", pct: 100}.to_json
+        if params[:type] == "ul"
+          source = UploadedList.find(params[:id])
+          if source.status
+            data = {status: "complete", pct: 100, type: "ul", id: source.lid}.to_json
+          else
+            data = {status: "complete", pct: 100, type: "fl", id: source.id}.to_json
+          end
+        end
         tubesock.send_data data
       end
     

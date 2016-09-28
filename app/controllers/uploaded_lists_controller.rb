@@ -1,3 +1,5 @@
+require 'zip'
+
 class UploadedListsController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: :show_public
@@ -9,11 +11,17 @@ class UploadedListsController < ApplicationController
   end
   
   def create
-    @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
-    if @uploaded_list.save
-      job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      redirect_to root_path(type: "ul", id: @uploaded_list.id, jid: job_id)
-    else
+    uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
+    if uploaded_list.save
+      list_processor(current_user.email, uploaded_list.id)
+      @uploaded_list = UploadedList.find(uploaded_list.id)
+      if @uploaded_list.status
+        redirect_to root_path(type: "ul", id: @uploaded_list.lid)
+        return
+      else
+        redirect_to root_path(type: "fl", id: @uploaded_list.id)
+        return
+      end
       @uploaded_list.errors.delete(:file)
       flash[:error] = "Can not process list!"
       redirect_to root_path
@@ -21,13 +29,20 @@ class UploadedListsController < ApplicationController
   end
   
   def update
-    @uploaded_list = current_user.uploaded_lists.find(params[:id])
+    uploaded_list = current_user.uploaded_lists.find(params[:id])
     unless params[:uploaded_list][:file].nil?
-      FileUtils.rm_rf(File.dirname(@uploaded_list.file.path))
+      FileUtils.rm_rf(File.dirname(uploaded_list.file.path))
     end
-    if @uploaded_list.update_attributes(uploaded_list_params)
-      job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      redirect_to root_path(type: "ul", id: @uploaded_list.id, jid: job_id)
+    if uploaded_list.update_attributes(uploaded_list_params)
+      list_processor(current_user.email, uploaded_list.id)
+      @uploaded_list = UploadedList.find(uploaded_list.id)
+      if @uploaded_list.status
+        redirect_to root_path(type: "ul", id: @uploaded_list.lid)
+        return
+      else
+        redirect_to root_path(type: "fl", id: @uploaded_list.id)
+        return
+      end
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
       redirect_to root_path    
@@ -295,5 +310,29 @@ class UploadedListsController < ApplicationController
 
   def uploaded_list_params
     params.fetch(:uploaded_list, {}).permit(:file, :public, :name, :description)
+  end
+  
+  def list_processor(user_name, ul_id)
+    f_path = UploadedList.find(ul_id).file.path
+    Zip::File.open(f_path) do |zip_file|
+      # Handle entries one by one
+      zip_file.each do |entry|
+        # Extract to file/directory/symlink
+        puts "Extracting #{entry.name}"
+        el = UploadedList.extraction_location(f_path, entry.name)
+        entry.extract(el)
+      end
+
+      begin
+        UploadedList.process(user_name, ul_id)
+      rescue Exception => e
+        puts e
+        puts e.backtrace
+      end
+      
+      # Find specific entry
+      # entry = zip_file.glob('*.csv').first
+      # puts entry.get_input_stream.read
+    end
   end
 end
