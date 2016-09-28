@@ -27,9 +27,8 @@ class UploadedListsController < ApplicationController
       FileUtils.rm_rf(File.dirname(@uploaded_list.file.path))
     end
     if @uploaded_list.update_attributes(uploaded_list_params)
-      flash[:success] = "Processing your archive file!"
       job_id = ListProcessingWorker.perform_async(current_user.email, @uploaded_list.id)
-      redirect_to root_path
+      redirect_to root_path(type: "ul", id: @uploaded_list.id, jid: job_id)
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
       redirect_to root_path    

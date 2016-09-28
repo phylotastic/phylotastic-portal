@@ -40,9 +40,8 @@ class OnplFilesController < ApplicationController
   def create
     @onpl_file = current_user.onpl_files.build(onpl_file_params)
     if @onpl_file.save
-      flash[:success] = "Processing file!"
       job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", current_user.id)
-      redirect_to root_path
+      redirect_to root_path(type: "of", id: @onpl_file.id, jid: job_id)
     else
       flash[:error] = "Can not process file!"
       redirect_to new_onpl_file_path

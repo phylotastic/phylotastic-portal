@@ -4,7 +4,6 @@
     <div id="tree-in-newick"></div>
     
     <div id='popup'></div>
-    <h4>Tree Actions</h4>
     <div class="row tree-wrapper">
       <div class="col-md-6">
         <div class="row">
@@ -23,11 +22,25 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-4">Ladderize Tree:</div>
-          <div class="col-md-8">
+          <div class="col-md-6">Ladderize Tree:</div>
+          <div class="col-md-6">
             <input type="checkbox" id="ladderize">
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">Show branch length: </div>
+          <div class="col-md-6">
+            <input type="checkbox" id="branch">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">Show internal nodes: </div> 
+          <div class="col-md-6">
+            <input type="checkbox" id="internal">
+          </div>
+        </div>
+        <input type="hidden" id="topOffset" value="">
+        <input type="hidden" id="leftOffset" value="">
         <input type="submit" value="Apply" onclick="run_tree_action();">
       </div>
       
@@ -196,5 +209,9 @@ $(document).ready(function() {
   <% if current_user.sign_in_count == 0 %>
     $('#tree-hint').modal();
   <% end %>
+    
+    console.log($("#img1").offset());
+  $("#topOffset").val($("#img1").offset().top - $($(".container")[1]).offset().top - 50);
+  $("#leftOffset").val($("#img1").offset().left);
 })
 </script>
