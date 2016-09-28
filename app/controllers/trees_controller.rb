@@ -97,7 +97,7 @@ class TreesController < ApplicationController
     @inspect = params[:ins]
     trees = current_user.trees
     @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
-    @public_trees = trees.select {|t| t.public }.sort_by! {|t| t.name.downcase }
+    @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
   def edit
