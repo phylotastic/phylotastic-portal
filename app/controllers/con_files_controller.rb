@@ -1,12 +1,13 @@
 class ConFilesController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:new, :create]
   
   def new
     @con_file = ConFile.new
   end
     
   def show
-    @f = ConFile.find(params[:id])
+    @f = current_user.con_files.find(params[:id])
     @ra = @f.raw_extraction
     if @ra.nil?
       respond_to do |format|
@@ -23,9 +24,14 @@ class ConFilesController < ApplicationController
   end
   
   def create
-    @con_file = current_user.con_files.build(con_file_params)
+    if user_signed_in?
+      user = current_user
+    else
+      user = User.anonymous      
+    end
+    @con_file = user.con_files.build(con_file_params)
     if @con_file.save
-      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", current_user.id)
+      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id)
       redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id)
     else
       flash[:error] = "Can not process file!"

@@ -76,6 +76,8 @@ class RawExtractionsController < ApplicationController
           else
             data = {status: "complete", pct: 100, type: "fl", id: source.id}.to_json
           end
+        else
+          data = {status: "complete", pct: 100, type: params[:type], id: source.id}.to_json
         end
         tubesock.send_data data
       end

@@ -1,12 +1,18 @@
 class ConLinksController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:new, :create, :show]
   
   def new
     @con_link = ConLink.new
   end
   
   def show
-    @l = ConLink.find(params[:id])
+    if user_signed_in?
+      user = current_user
+    else
+      user = User.anonymous      
+    end
+    @l = user.con_links.find(params[:id])
     @ra = @l.raw_extraction
     @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
     @resolved_names = [] if !@resolved_names
@@ -17,9 +23,14 @@ class ConLinksController < ApplicationController
   end
   
   def create
-    @con_link = current_user.con_links.build(con_link_params)
+    if user_signed_in?
+      user = current_user
+    else
+      user = User.anonymous      
+    end
+    @con_link = user.con_links.build(con_link_params)
     if @con_link.save
-      job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", current_user.id)
+      job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id)
       redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id)
     else
       flash[:error] = "Can not process link!"

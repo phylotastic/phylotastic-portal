@@ -69,7 +69,17 @@ $(document).ready(function() {
           d = JSON.parse(event.data)
           console.log(d);
           if(d["status"] == "complete") {
-            $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
+            <% if user_signed_in? %>
+              $("#<%= params[:type] %>-<%= params[:id] %>").click();   
+            <% else %>
+              <% case params[:type] %>
+              <% when "cl" %>
+              $(document).append('<%= link_to "a", con_link_path(params[:id]), remote: true, class:"hide", id: "cl-#{params[:id]}" %>');
+                $("#cl-<%= params[:id] %>").click();
+                
+              <% when "cf" %>
+              <% end %>
+            <% end %>
           }
           if(d["status"] == "failed") {
             $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
