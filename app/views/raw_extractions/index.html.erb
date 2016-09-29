@@ -59,7 +59,9 @@ $(document).ready(function() {
     // $(".table-scroll" ).scrollTop( 300 );
   
   if("<%= params[:type] %>" != "") {
-    // $("#<%= params[:type] %>-<%= params[:id] %>").click();
+    if("<%= params[:type] %>" == "ct") {
+      $("#<%= params[:type] %>-<%= params[:id] %>").click();
+    }
     
     if("<%= params[:jid] %>" != "") {
       socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:id]%>" + "&type=" + "<%= params[:type] %>" + "&jid=" + "<%=params[:jid] %>");
