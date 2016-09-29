@@ -59,11 +59,15 @@ $(document).ready(function() {
     // $(".table-scroll" ).scrollTop( 300 );
   
   if("<%= params[:type] %>" != "") {
-    if("<%= params[:type] %>" == "ct") {
+    if("<%= params[:jid] %>" == "") {
       $("#<%= params[:type] %>-<%= params[:id] %>").click();
-    }
-    
-    if("<%= params[:jid] %>" != "") {
+      <% if !user_signed_in? %>
+        <% if params[:type] == "ct" %>
+          $("#ra-content").append('<%= link_to "a", con_taxon_path(params[:id]), remote: true, class:"hide", id: "ct-#{params[:id]}" %>');
+          $("#ct-<%= params[:id] %>").click();
+        <% end %>      
+      <% end %>
+    } else {
       socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:id]%>" + "&type=" + "<%= params[:type] %>" + "&jid=" + "<%=params[:jid] %>");
 
       socket.onmessage = function(event) {
@@ -79,8 +83,8 @@ $(document).ready(function() {
                 $("#ra-content").append('<%= link_to "a", con_link_path(params[:id]), remote: true, class:"hide", id: "cl-#{params[:id]}" %>');
                 $("#cl-<%= params[:id] %>").click();
               <% when "cf" %>
-                  $("#ra-content").append('<%= link_to "a", con_file_path(params[:id]), remote: true, class:"hide", id: "cf-#{params[:id]}" %>');
-                  $("#cf-<%= params[:id] %>").click();
+                $("#ra-content").append('<%= link_to "a", con_file_path(params[:id]), remote: true, class:"hide", id: "cf-#{params[:id]}" %>');
+                $("#cf-<%= params[:id] %>").click();
               <% end %>
             <% end %>
           }

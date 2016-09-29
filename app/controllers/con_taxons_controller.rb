@@ -1,5 +1,6 @@
 class ConTaxonsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:new, :create, :show]
   
   def show
     @t = ConTaxon.find(params[:id])
@@ -83,7 +84,12 @@ class ConTaxonsController < ApplicationController
       flash[:danger] = "#{JSON.parse(response)['message']} for \"#{params[:taxon]}\""
       redirect_to new_con_taxon_path
     when 200
-      @con_taxon = current_user.con_taxons.build(con_taxon_params)
+      if user_signed_in?
+        user = current_user
+      else
+        user = User.anonymous      
+      end
+      @con_taxon = user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
         extracted_response = convert_to_extracted_response(response)
         resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
