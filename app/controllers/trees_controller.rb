@@ -100,9 +100,21 @@ class TreesController < ApplicationController
 #     @processing = current_user.processing_trees
     @inspect = params[:ins]
     if user_signed_in?
+      if current_user.sign_in_count == 1
+        if cookies[:view_hint].nil?
+          cookies[:view_hint] = "true"
+        end
+        if cookies[:view_hint] == "false"
+          cookies[:view_hint] = "true"
+          current_user.update_attributes(sign_in_count: 2)
+        end
+      end
       trees = current_user.trees
       @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
     else
+      if cookies[:view_hint].nil?
+        cookies[:view_hint] = "true"
+      end
       @my_trees = []
     end
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }

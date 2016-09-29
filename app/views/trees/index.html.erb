@@ -3,44 +3,46 @@
 <% provide(:title, "Tree Viewer") %>
 
 <div class="row">
-  <div class="col-md-4">
-    <div class="list-selection">
-      <div class="row">
-        <div class="col-md-4">
-          <h4 class="fix-heading">My Trees</h4>
-        </div>
-        <div class="col-md-6">
-    	    <div class="my-trees">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Select a tree
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu tree-menu">
-                <div class="table-wrapper">
-                  <div class="table-scroll">  
-                    <div class="nav nav-stacked">
-                    <% @my_trees.each do |t| %>
-                      <% name = t.name.to_s == '' ? "*no name*" : t.name %>
-                      <% case t.status %>
-                      <% when "completed" %>
-                        <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
-                      <% when "unsuccessfully-constructed" %>
-                        <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
-                      <% when nil %>
-                        <!--Solr is denied to create tree but sidekiq still queued the tree -->
-                      <% end %>
-                    <% end %>
-                  </div>
-                  </div>
-                </div>
-              </ul>
-            </div>
+  <% if user_signed_in? %>
+    <div class="col-md-4">
+      <div class="list-selection">
+        <div class="row">
+          <div class="col-md-4">
+            <h4 class="fix-heading">My Trees</h4>
           </div>
-  	    </div>
+          <div class="col-md-6">
+      	    <div class="my-trees">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Select a tree
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu tree-menu">
+                  <div class="table-wrapper">
+                    <div class="table-scroll">  
+                      <div class="nav nav-stacked">
+                      <% @my_trees.each do |t| %>
+                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                        <% case t.status %>
+                        <% when "completed" %>
+                          <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                        <% when "unsuccessfully-constructed" %>
+                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                        <% when nil %>
+                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                        <% end %>
+                      <% end %>
+                    </div>
+                    </div>
+                  </div>
+                </ul>
+              </div>
+            </div>
+    	    </div>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
   <div class="col-md-4">
     <div class="list-selection">
       <div class="row">

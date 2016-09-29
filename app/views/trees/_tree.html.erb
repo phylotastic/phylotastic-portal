@@ -183,30 +183,26 @@
   </div>
 </div>
 
-<% if user_signed_in? %>
-  <% if current_user.sign_in_count == 0 %>
-    <div class="modal fade" id="tree-hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            Click on a name or a node to see viewer options. More info is available in the "Tree Viewer" section of Help.
-            Next time you sign in, this message will not be displayed again.
-          </div>
-          <div class="modal-footer">
-            <div class="btn-group" role="group" aria-label="...">
-              <div class="btn-wrapper">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Got it</button>
-              </div>
-            </div>
+<div class="modal fade" id="tree-hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        Click on a name or a node to see viewer options. More info is available in the "Tree Viewer" section of Help.
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group" role="group" aria-label="...">
+          <div class="btn-wrapper">
+            <button type="button" class="btn btn-default btn-primary" data-dismiss="modal" id="gotit">Got it</button>
           </div>
         </div>
       </div>
     </div>
-  <% end %>
-<% end %>
+  </div>
+</div>
+
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -214,12 +210,17 @@ $(document).ready(function() {
   leftOffset = $("#img1").offset().left;
   console.log(topOffset, leftOffset);
   get_tree_image("<%= tree_newick %>", "#img1", topOffset, leftOffset);
-  <% if user_signed_in? %>
-    <% if current_user.sign_in_count == 0 %>
-      $('#tree-hint').modal();
-    <% end %>
-  <% end %>
   $("#topOffset").val(topOffset);
   $("#leftOffset").val(leftOffset);
+  
+  console.log(typeof($.cookie("view_hint")));
+  console.log($.cookie("view_hint") == "true");
+  
+  if($.cookie("view_hint") == "true") {        
+    $('#tree-hint').modal();
+  }
+  $("#gotit").click(function() {
+    $.cookie("view_hint", "false");
+  });
 })
 </script>
