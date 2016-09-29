@@ -24,9 +24,9 @@
                       <% name = t.name.to_s == '' ? "*no name*" : t.name %>
                       <% case t.status %>
                       <% when "completed" %>
-                        <li><%= link_to t.name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                        <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
                       <% when "unsuccessfully-constructed" %>
-                        <li><%= link_to((t.name.to_s), tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                        <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
                       <% when nil %>
                         <!--Solr is denied to create tree but sidekiq still queued the tree -->
                       <% end %>
