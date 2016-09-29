@@ -2,7 +2,7 @@ require 'csv'
 
 class TreesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: :show_public
+  skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :checking_status, :show, :newick]
   
   include UploadedListsHelper
   include TreesHelper
@@ -38,7 +38,11 @@ class TreesController < ApplicationController
   
   def create    
     params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json
-    @tree = current_user.trees.build(tree_params)
+    if user_signed_in?
+      @tree = current_user.trees.build(tree_params)
+    else
+      @tree = User.anonymous.trees.build(tree_params.merge(:public => true))
+    end  
     if @tree.save
       job_id = TreesWorker.perform_async(@tree.id)
       @tree.update_attributes( bg_job: job_id,
@@ -48,7 +52,7 @@ class TreesController < ApplicationController
       render status_trees_path
       return
     else
-      render 'static_pages/home'
+      render root_path
     end
   end
   
@@ -95,8 +99,12 @@ class TreesController < ApplicationController
 #
 #     @processing = current_user.processing_trees
     @inspect = params[:ins]
-    trees = current_user.trees
-    @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
+    if user_signed_in?
+      trees = current_user.trees
+      @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
+    else
+      @my_trees = []
+    end
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
@@ -123,7 +131,11 @@ class TreesController < ApplicationController
   end
   
   def checking_status
-    @tree = current_user.trees.find_by_id(params[:id])
+    if user_signed_in?
+      @tree = current_user.trees.find_by_id(params[:id])
+    else
+      @tree = User.anonymous.trees.find_by_id(params[:id])
+    end
     job_id = @tree.bg_job
     hijack do |tubesock|
       while Sidekiq::Status::queued? job_id

@@ -24,13 +24,9 @@
     <%= f.hidden_field :raw_extraction_id %>
     <div class="center">
   	  <!-- Button trigger modal -->
-  	  <% if user_signed_in? %>
         <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#get-tree-modal-<%= ra.id %>" style="margin-bottom: 20px;">
   	      Get tree
   	    </button>
-      <% else %>
-        <%= f.submit "Get tree", class: "btn btn-primary btn-lg", style: "margin-bottom: 20px;" %>
-      <% end %>
 
   	  <!-- Modal -->
   	  <div class="modal fade" id="get-tree-modal-<%= ra.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

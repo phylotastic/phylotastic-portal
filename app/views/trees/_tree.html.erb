@@ -130,31 +130,34 @@
         <input type="hidden" name="image" value="" />
       <% end %>
       <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %> -->
-	
-  	  <!-- Button trigger modal -->
-  	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
-  	  <!-- Modal -->
-  	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  	    <div class="modal-dialog" role="document">
-  	      <div class="modal-content">
-            <%= form_for tree, remote: true do |f| %>
-  	          <div class="modal-header">
-  	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
-  	          </div>
-  	          <div class="modal-body">
-  	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
-  	          </div>
-  	          <div class="modal-footer">
-  	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
-  	          </div>
-            <% end %>
+	     
+      <% if user_signed_in? %>
+    	  <!-- Button trigger modal -->
+    	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
+    	  <!-- Modal -->
+    	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    	    <div class="modal-dialog" role="document">
+    	      <div class="modal-content">
+              <%= form_for tree, remote: true do |f| %>
+    	          <div class="modal-header">
+    	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
+    	          </div>
+    	          <div class="modal-body">
+    	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
+    	          </div>
+    	          <div class="modal-footer">
+    	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+    	          </div>
+              <% end %>
+            </div>
           </div>
         </div>
-      </div>
     
-      <%= form_for(tree, html: { method: :delete }) do |f| %>
-        <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+        <%= form_for(tree, html: { method: :delete }) do |f| %>
+          <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+        <% end %>
+        
       <% end %>
     </div>  
 
@@ -180,27 +183,29 @@
   </div>
 </div>
 
-<% if current_user.sign_in_count == 0 %>
-  <div class="modal fade" id="tree-hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          Click on a name or a node to see viewer options. More info is available in the "Tree Viewer" section of Help.
-          Next time you sign in, this message will not be displayed again.
-        </div>
-        <div class="modal-footer">
-          <div class="btn-group" role="group" aria-label="...">
-            <div class="btn-wrapper">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Got it</button>
+<% if user_signed_in? %>
+  <% if current_user.sign_in_count == 0 %>
+    <div class="modal fade" id="tree-hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            Click on a name or a node to see viewer options. More info is available in the "Tree Viewer" section of Help.
+            Next time you sign in, this message will not be displayed again.
+          </div>
+          <div class="modal-footer">
+            <div class="btn-group" role="group" aria-label="...">
+              <div class="btn-wrapper">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Got it</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">
@@ -209,10 +214,11 @@ $(document).ready(function() {
   leftOffset = $("#img1").offset().left;
   console.log(topOffset, leftOffset);
   get_tree_image("<%= tree_newick %>", "#img1", topOffset, leftOffset);
-  <% if current_user.sign_in_count == 0 %>
-    $('#tree-hint').modal();
+  <% if user_signed_in? %>
+    <% if current_user.sign_in_count == 0 %>
+      $('#tree-hint').modal();
+    <% end %>
   <% end %>
-    
   $("#topOffset").val(topOffset);
   $("#leftOffset").val(leftOffset);
 })

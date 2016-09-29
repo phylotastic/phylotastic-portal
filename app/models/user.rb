@@ -63,6 +63,10 @@ class User < ActiveRecord::Base
     self.email.partition('@').first
   end
   
+  def self.anonymous
+    User.find_by_email("anonymous@phylo.com")
+  end
+  
   # Watchs a tree.
   def watch(tree)
     watch_relationships.create(tree_id: tree.id)
