@@ -42,7 +42,7 @@ class TreesController < ApplicationController
       @tree = current_user.trees.build(tree_params)
     else
       @tree = User.anonymous.trees.build(tree_params.merge(:public => true))
-    end  
+    end
     if @tree.save
       job_id = TreesWorker.perform_async(@tree.id)
       @tree.update_attributes( bg_job: job_id,
