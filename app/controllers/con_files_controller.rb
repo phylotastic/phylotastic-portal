@@ -1,13 +1,18 @@
 class ConFilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_user!, only: [:new, :create, :show]
   
   def new
     @con_file = ConFile.new
   end
     
   def show
-    @f = current_user.con_files.find(params[:id])
+    if user_signed_in?
+      user = current_user
+    else
+      user = User.anonymous      
+    end
+    @f = user.con_files.find(params[:id])
     @ra = @f.raw_extraction
     if @ra.nil?
       respond_to do |format|

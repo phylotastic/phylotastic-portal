@@ -74,10 +74,11 @@ $(document).ready(function() {
             <% else %>
               <% case params[:type] %>
               <% when "cl" %>
-              $(document).append('<%= link_to "a", con_link_path(params[:id]), remote: true, class:"hide", id: "cl-#{params[:id]}" %>');
+                $("#ra-content").append('<%= link_to "a", con_link_path(params[:id]), remote: true, class:"hide", id: "cl-#{params[:id]}" %>');
                 $("#cl-<%= params[:id] %>").click();
-                
               <% when "cf" %>
+                  $("#ra-content").append('<%= link_to "a", con_file_path(params[:id]), remote: true, class:"hide", id: "cf-#{params[:id]}" %>');
+                  $("#cf-<%= params[:id] %>").click();
               <% end %>
             <% end %>
           }
