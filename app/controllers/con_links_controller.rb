@@ -54,7 +54,7 @@ class ConLinksController < ApplicationController
     if cl.nil?
       redirect_to root_path
     else 
-      flash[:info] = "#{cl.name is deleted}"
+      flash[:info] = "#{cl.name} is deleted"
       cl.destroy
       respond_to do |format|
         format.html { redirect_to root_path }

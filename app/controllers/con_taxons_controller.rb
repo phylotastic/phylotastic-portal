@@ -124,7 +124,7 @@ class ConTaxonsController < ApplicationController
     if ctx.nil?
       redirect_to root_path
     else 
-      flash[:info] = "#{ctx.name is deleted}"
+      flash[:info] = "#{ctx.name} is deleted"
       ctx.destroy
       respond_to do |format|
         format.html { redirect_to root_path }

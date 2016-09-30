@@ -117,7 +117,7 @@ class OnplFilesController < ApplicationController
     if of.nil?
       redirect_to root_path
     else
-      flash[:info] = "#{of.name is deleted}"
+      flash[:info] = "#{of.name} is deleted"
       of.destroy
       respond_to do |format|
         format.html { redirect_to root_path }
