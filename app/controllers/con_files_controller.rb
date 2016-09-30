@@ -60,6 +60,7 @@ class ConFilesController < ApplicationController
     if cf.nil?
       redirect_to root_path
     else 
+      flash.now[:info] = "#{cf.name is deleted}"
       cf.destroy
       respond_to do |format|
         format.html { redirect_to root_path }

@@ -116,7 +116,8 @@ class OnplFilesController < ApplicationController
     of = current_user.onpl_files.find(params[:id])
     if of.nil?
       redirect_to root_path
-    else 
+    else
+      flash[:info] = "#{of.name is deleted}"
       of.destroy
       respond_to do |format|
         format.html { redirect_to root_path }
