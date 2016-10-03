@@ -110,6 +110,7 @@ class UploadedListsController < ApplicationController
   
   def show_public
     @list = get_a_public_list(params[:id])
+    
     if @list["list"]["is_list_public"]
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction

@@ -209,7 +209,7 @@ $(document).ready(function() {
   topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
   leftOffset = $("#img1").offset().left;
   console.log(topOffset, leftOffset);
-  get_tree_image("<%= tree_newick %>", "#img1", topOffset, leftOffset);
+  get_tree_image("<%= @id %>" , "<%= tree_newick %>", "#img1", topOffset, leftOffset);
   $("#topOffset").val(topOffset);
   $("#leftOffset").val(leftOffset);
   
