@@ -20,7 +20,7 @@ October 7, 4:05 to 4:40 pm.  User is a grad student with a biochemistry backgrou
 * (0:25) "whats the DwC-A?" 
    * lesson: don't put the most arcane, confusing thing first 
    * put "if you don't have any lists . . " at the top.  
-   * make "web site" the first item in the list, then doc, then taxon, the upload
+   * make "web site" the first item in the list, then doc, then taxon, then upload
 * (1:22) user clicks “export list”; no feedback; user clicks again (1:30); no feedback; user is confused, asks, clicks again; no feedback
    * this feature apparently is unavailable - why not?
    * there is no feedback when action fails: provide feedback
@@ -29,7 +29,7 @@ October 7, 4:05 to 4:40 pm.  User is a grad student with a biochemistry backgrou
    * add info link to EOL.  
 * (2:07) user does not realize immediately where is the Get Tree button.  Explains that it is not in either the left or right menu area. 
 * (2:40) tree fails.  no feedback.  user is confused.  
-* (3:24) user tries and fails to select node labels button 3 times
+* (3:24) user tries and fails to select node labels button 3 times before succeeding on the 4th try
    * button is too small: make button larger
 * (3:30) notice how user responds to lack of feedback about tree-view failure
 * (4:10) observer interrupts, explains failure of tree viewer 
