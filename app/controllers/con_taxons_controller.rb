@@ -91,6 +91,7 @@ class ConTaxonsController < ApplicationController
       end
       @con_taxon = user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
+        flash[:success] = "Processing!"
         extracted_response = convert_to_extracted_response(response)
         resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                              extracted_response,
