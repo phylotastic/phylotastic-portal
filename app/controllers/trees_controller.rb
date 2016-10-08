@@ -2,7 +2,7 @@ require 'csv'
 
 class TreesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :checking_status, :show, :newick]
+  skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :checking_status, :show, :newick, :taxon_matching_report]
   
   include UploadedListsHelper
   include TreesHelper
