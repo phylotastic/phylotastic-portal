@@ -6,6 +6,11 @@ Sidekiq.configure_client do |config|
     # accepts :expiration (optional)
     chain.add Sidekiq::Status::ClientMiddleware, expiration: 30.minutes # default
   end
+  if Rails.env == "production"
+    config.redis = { url: 'redis://localhost:6379/0', namespace: "sidekiq_app_name_#{Rails.env}" }
+  elsif Rails.env == "development"
+    config.redis = { url: 'redis://localhost:6379/1', namespace: "sidekiq_app_name_#{Rails.env}" }
+  end
 end
 
 Sidekiq.configure_server do |config|
@@ -16,5 +21,10 @@ Sidekiq.configure_server do |config|
   config.client_middleware do |chain|
     # accepts :expiration (optional)
     chain.add Sidekiq::Status::ClientMiddleware, expiration: 30.minutes # default
+  end
+  if Rails.env == "production"
+    config.redis = { url: 'redis://localhost:6379/0', namespace: "sidekiq_app_name_#{Rails.env}" }
+  elsif Rails.env == "development"
+    config.redis = { url: 'redis://localhost:6379/1', namespace: "sidekiq_app_name_#{Rails.env}" }
   end
 end
