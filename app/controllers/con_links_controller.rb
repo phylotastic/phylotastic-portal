@@ -30,7 +30,7 @@ class ConLinksController < ApplicationController
     end
     @con_link = user.con_links.build(con_link_params)
     if @con_link.save
-      flash[:success] = "Processing!"
+      flash[:success] = "Processing! Please wait a couple of seconds"
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id)
       redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id)
     else

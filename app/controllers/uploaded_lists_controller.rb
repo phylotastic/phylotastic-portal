@@ -13,7 +13,7 @@ class UploadedListsController < ApplicationController
   def create
     uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
     if uploaded_list.save
-      flash[:success] = "Processing!"
+      flash[:success] = "Processing! Please wait a couple of seconds"
       list_processor(current_user.email, uploaded_list.id)
       @uploaded_list = UploadedList.find(uploaded_list.id)
       if @uploaded_list.status

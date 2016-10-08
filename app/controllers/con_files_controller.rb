@@ -36,7 +36,7 @@ class ConFilesController < ApplicationController
     end
     @con_file = user.con_files.build(con_file_params)
     if @con_file.save
-      flash[:success] = "Processing!"
+      flash[:success] = "Processing! Please wait a couple of seconds"
       job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id)
       redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id)
     else
