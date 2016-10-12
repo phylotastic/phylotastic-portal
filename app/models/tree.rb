@@ -8,7 +8,7 @@ class Tree < ActiveRecord::Base
   default_scope -> { order(created_at: :desc) }
   
   validates :user_id, presence: true
-  has_attached_file :image, styles: { large: "800x600>", medium: "400x300>", thumb: "120x90>" }, default_url: ActionController::Base.helpers.asset_path('missing.png')
+  has_attached_file :image, styles: { large: "800x600>", medium: "400x300>", thumb: "120x90>" }, default_url: "/missing_avatar.png".
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
   self.per_page = 9
