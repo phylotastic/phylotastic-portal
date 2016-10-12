@@ -215,7 +215,7 @@ $(document).ready(function() {
     $("#leftOffset").val(leftOffset);
   }
   catch(err) {
-    alert(err.message);
+    alert("Tree viewer encounter an error: " + err.message + ". We are sorry about that. Please try again later.");
   }
   
   // console.log(typeof($.cookie("view_hint")));
