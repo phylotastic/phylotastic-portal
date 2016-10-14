@@ -9,7 +9,7 @@ teachable moments.
 October 7, 4:05 to 4:40 pm.  User is a grad student with a biochemistry background.  The test took about 35 minutes total including instructions, 20 minutes of observation, explanations, and a brief post-test discussion.  Errors in the portal service prevented this from being a complete test. Recorded video was discarded after analysis.  
 
 ### Issues and comments from post-test discussion 
-* welcome message
+* welcome message (#201)
    * don't put DwC-A first 
    * put "if you don't have any lists . . " at the top.  
    * make "web site" the first item in the list, then doc, then taxon, then upload
@@ -21,10 +21,10 @@ October 7, 4:05 to 4:40 pm.  User is a grad student with a biochemistry backgrou
    * click "Select/Deselect all" to deselect all
    * click "Select/Deselect all" to select all
    * try "Download .." --> FAILS
-* export list as text enhancements: 
+* export list as text enhancements (#202)
    * prompt for file-name
    * compose default filename from list name. e.g., "word1_word2_phylotastic_list.txt")
-* list view enhancement
+* list view enhancement 203
    * scientific name is unfamiliar, unrevealing
    * float-over name to show common name, thumbnail? 
    * show common name, thumbnail in list itself; mouse over thumbnail to expand
@@ -74,27 +74,34 @@ October 7, 4:05 to 4:40 pm.  User is a grad student with a biochemistry backgrou
    * make tree branches extend out to names
    * short branches are too short-- find a way to make them longer 
 * changes to leaf-node actions
+   * fonts
+      * enlarge by 2 points
+      * title in bold, others not in bold
    * title: "Medicago sativa" actions (use leaf name)
    * item 1 (EOL link): "Read info page"
    * items 2 to 4 should be toggles 
-   * item 2 (picture): "Add (remove) photo"
+   * item 2: "Add (remove) photo"
    * item 3: "Add (remove) box"
-   * item 4: "Thicker (thinner) branch"
+   * item 4: "Thick (thin) branch"
 * changes to internal node actions
+   * fonts
+      * enlarge by 2 points
+      * title in bold, others not in bold
    * title: 
       * named: Node "Node name" actions 
       * un-named: Node actions
    * item 1: "Collapse subtree"
    * item 2: "Rotate subtree"
    * item 3: "Add (remove) box"
-   * item 4: "Thicker (thinner) branches"
+   * item 4: "Thick (thin) branches"
 * ETE node actions feedback. 
-   * mouse-down on node to get menu
-   * implicated node is enlarged *very slightly*.  this is too subtle.  
+   * issue
+      * mouse-down on node to get menu
+      * implicated node is enlarged *very slightly*.  this is too subtle.  
    * easy fix: enlarge it more 
-   * harder fix: 
+   * harder fix: make a reference triangle with one vertex on the node, and the other vertices at the top corners of the pop-up menu. 
 
-* tree render enhancement: custom line color
+* tree render enhancement: add "Color branches" with pop-up to choose color
 
    * 
 
