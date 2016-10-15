@@ -20,6 +20,8 @@
     </div>
   </div>
 <% else %>
+
+  <div class="fix-heading">List viewer</div>
   <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form" } do |f| %>
     <%= f.hidden_field :raw_extraction_id %>
     
