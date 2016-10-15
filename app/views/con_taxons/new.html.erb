@@ -7,12 +7,16 @@
       <h2>Choose from a taxon</h2>
       
       <div class="taxon-field" style="width: 50%">
-        <%= label_tag "taxon", "(*) Taxon name"%>
-        <%= text_field_tag 'taxon', nil, class: "form-control" %>
+        <%= label_tag "taxon" do %>
+          <span class="red">*</span> Taxon name (mouse-over for important instructions)
+        <% end %>
+        <%= text_field_tag 'taxon', nil, class: "form-control", placeholder: "Canidae, Felidae, Balaenoptera" %>
       </div>
   
       <div class="taxon-field" style="width: 50%">
-        <%= label_tag "name", "(*) Enter a name for this list"%>
+        <%= label_tag "name" do %>
+          <span class="red">*</span> Enter a name for this list
+        <% end %>
         <%= text_field_tag 'name', nil, class: "form-control" %>
       </div>
         
@@ -22,13 +26,13 @@
       </div>  
       
       <div class="taxon-field">
-        Subset by
+        <label>Subset (choose one)</label>
         <div class="row taxon-opts">
           <div class="col-sm-1">
             <%= check_box_tag :location, true, false %>
           </div>
-          <div class="col-sm-2">
-            Location 
+          <div class="col-sm-3">
+            by country 
           </div>
           <div class="col-sm-4">
             <%= select_tag :country_id, options_from_collection_for_select(Country.all, "id", "name"), { class: "form-control" } %>
@@ -39,7 +43,7 @@
           <div class="col-sm-1">
             <%= check_box_tag :has_genome_in_ncbi, true, false %>
           </div>
-          <%= label_tag :has_genome_in_ncbi, "Has genome sequence in NCBI", class: "col-sm-4" %>
+          <div class="col-sm-4">by known genomes</div>
         </div>
         
         <div class="row taxon-opts">
@@ -47,7 +51,7 @@
             <%= check_box_tag :check_nb_species, true %>
           </div>
           <div class="col-sm-3">
-            Random subset of
+            At random
           </div> 
           <div class="col-sm-4">
             <%= select_tag :nb_species, options_for_select([10, 20, 30]), { class: "form-control" } %>
