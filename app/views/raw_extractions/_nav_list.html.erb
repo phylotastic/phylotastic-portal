@@ -124,7 +124,8 @@ $("#download-selected-species").click(function() {
   data = {};
   data["species"] = []
   for (var i=0; i<input_checked.length; i++) {
-    if ($(input_checked[i]).val() == "1") {
+    if ($(input_checked[i]).val() == "1" && 
+        $(input_checked[i]).attr("id") != "species-toggle-all-cb" ) {
       data["species"].push($(input_checked[i]).attr('name').match(/\[(.*?)\]/g)[1].replace('[', '').replace(']', ''));
     }
   }
