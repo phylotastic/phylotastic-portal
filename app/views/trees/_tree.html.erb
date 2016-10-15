@@ -203,6 +203,26 @@
   </div>
 </div>
 
+<div class="modal fade" id="tree-rendering-failed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        Sorry! We got a tree (click "Export") but there was an error trying to view it. Try another tree, and use "Feedback" to report any errors.
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group" role="group" aria-label="...">
+          <div class="btn-wrapper">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <%= link_to "Feedback", static_pages_feedback_path, class: "btn btn-default btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -215,7 +235,7 @@ $(document).ready(function() {
     $("#leftOffset").val(leftOffset);
   }
   catch(err) {
-    alert("Tree viewer encountered an error: " + err.message + ". We are sorry about that. Please try again later.");
+    $('#tree-rendering-failed').modal();
   }
   
   // console.log(typeof($.cookie("view_hint")));
