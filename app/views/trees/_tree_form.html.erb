@@ -1,131 +1,29 @@
-<% species = resolved_names.map { |n| n["matched_name"] } %>
-<% chosen_species = JSON.parse tree.chosen_species.gsub('=>', ':') unless tree.chosen_species.nil? %>
+<%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form" } do |f| %>
+  <%= f.hidden_field :raw_extraction_id %>
+  <%= f.hidden_field :name, id: "hidden_tree_name" %>
 
-<div class="row">
-  <%= form_for tree, html: { class: "form-horizontal" } do |f| %>
-  <div class="col-md-4">
-    <h2>Choose settings below to get a tree for your list of species</h2>
-      <%= render 'shared/error_messages', object: f.object %>
-      <p>1. Prune your list as desired using the table at right</p>
-      <p>2. Choose source of trees</p>
-      <div class="form-group left-indent">
-        <% if tree.phylo_source.nil? %>
-          <%= select "tree", "phylo_source_id", options_for_select(phylo_sources_for_select), {}, { class: "form-control" } %>
-        <% else %>
-          <%= select "tree", "phylo_source_id", options_for_select(phylo_sources_for_select, tree.phylo_source.id), {}, { class: "form-control" } %>
+  <table class="table table-bordered table-hover chosing-species">
+    <thead> 
+      <tr> 
+        <th class="species-heading-row">#</th> 
+        <th class="species-heading-row">Species</th> 
+        <th class="species-cb-column species-heading-row">
+          Select/Deselect all<br>
+          <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+        </th> 
+      </tr> 
+    </thead>
+    <tbody>
+        <% species.each_with_index do |e, i| %>
+          <tr class="species-row success">
+            <td class=""><%= i + 1 %></td>
+            <td class=""><%= e %></td>
+            <td class="species-cb-column">           
+              <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
+              <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
+            </td>
+          </tr>
         <% end %>
-      </div>
-      <!-- <p>3. Any extras:</p>
-      <div class="form-group left-indent">
-        <div class="checkbox">
-          <%= f.label :branch_length do %>
-            <%= f.check_box :branch_length %>
-            Add branch lengths
-          <% end %>
-        </div>
-      </div> -->
-      <!-- <div class="form-group left-indent">
-        <div class="checkbox">
-          <%= f.label :images_from_EOL do %>
-            <%= f.check_box :images_from_EOL %>
-            Get images from EOL
-          <% end %>
-        </div>
-      </div> -->
-      <p>3. Give some description about your tree</p>
-      <div class="form-group left-indent">
-        <%= f.text_area :description, class: "form-control" %>
-      </div>
-      <%= f.hidden_field :raw_extraction_id %>          
-      
-      <%= f.submit "Get tree from source", class: "btn btn-default btn-lg btn-block" %>
-  </div>
-  
-  <div class="col-md-offset-1 col-md-7">
-    <%= render partial: 'trees/taxon_matching_report', locals: {resolved_names: resolved_names, ra: ra} %>
-    <table class="table table-bordered table-hover scroll">
-      <thead> 
-        <tr> 
-          <th class="species-heading-row">#</th> 
-          <th class="species-heading-row">Species</th> 
-          <th class="species-cb-column species-heading-row">
-            Select/Deselect all<br>
-            <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
-          </th> 
-        </tr> 
-      </thead>
-      <tbody>
-          <% species.each_with_index do |e, i| %>
-            <% if tree.chosen_species.nil? %>
-              <% cb_flag = 1 %>
-            <% else %>
-              <% if chosen_species[e] == "1" %>
-                <% cb_flag = 1 %>
-              <% else %>
-                <% cb_flag = 0 %>
-              <% end %>
-            <% end %>
-
-            <% if cb_flag == 1 %>
-              <tr class="species-row success">
-                <td class=""><%= i + 1 %></td>
-                <td class=""><%= e %></td>
-                <td class="species-cb-column">                            
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
-                </td>
-              </tr>
-            <% else %>
-              <tr class="species-row">
-                <td class=""><%= i + 1 %></td>
-                <td class=""><%= e %></td>
-                <td class="">TODO</td>
-                <td class="species-cb-column">                            
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 1, false, class: "species-cb") %>
-                  <%= check_box_tag("tree[chosen_species][#{e}]", 0, true, class: "hidden") %>
-                </td>
-              </tr>
-            <% end %>
-          <% end %>
-        
-      </tbody>
-    </table>
-  </div>
-  <% end %>
-</div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-  $(".species-cb").click(function() {
-    event.stopPropagation();
-    if($(this).is(':checked')) {
-      $(this).siblings("input[type='checkbox']").attr('checked', false);
-      $(this).parents(".species-row").addClass("success");
-    } else {          
-      $(this).siblings("input[type='checkbox']").attr('checked', true);
-      $(this).parents(".species-row").removeClass("success");
-    }
-  });
-  
-  $(".species-row").click(function(event) {
-    $(this).find('.species-cb').click();
-  });
-  
-  $("#species-toggle-all-cb").click(function() {
-    if($(this).is(':checked')) {
-      for(i=0; i<$(".species-cb").length; i++) {
-        if( !$($(".species-cb")[i]).is(':checked') ) {
-          $($(".species-cb")[i]).click();
-        }
-      }
-    } else {
-      for(i=0; i<$(".species-cb").length; i++) {
-        if( $($(".species-cb")[i]).is(':checked') ) {
-          $($(".species-cb")[i]).click();
-        }
-      }
-    }
-  })
-  
-})
-</script>
+    </tbody>
+  </table>
+<% end %>

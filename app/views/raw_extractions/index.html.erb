@@ -21,34 +21,36 @@
     </div>
   </div>
   
-  <div class="col-md-7" id="ra-content">
-    <p style="font-size: 150%; font-weight: bold;">
-      Welcome to the Phylotastic web portal!
-    </p>
-    <p>
-      The portal makes a tree from a list of species names. Choose from the "Make a new list" menu (at right) to
-      <ul>
-        <li>upload your list (one name per line or DwC-A)</li>
-        <li>extract names from a document (PDF, .docx, etc)</li>
-        <li>extract names from a web page</li>
-        <li>choose a taxon (e.g., Felidae) and sample from that</li>
-      </ul>
+  <div class="col-md-9" id="ra-holder">
+    <div class="col-md-9" id="ra-content">
+      <p style="font-size: 150%; font-weight: bold;">
+        Welcome to the Phylotastic web portal!
+      </p>
+      <p>
+        The portal makes a tree from a list of species names. Choose from the "Make a new list" menu (at right) to
+        <ul>
+          <li>upload your list (one name per line or DwC-A)</li>
+          <li>extract names from a document (PDF, .docx, etc)</li>
+          <li>extract names from a web page</li>
+          <li>choose a taxon (e.g., Felidae) and sample from that</li>
+        </ul>
       
-      If you don't have any lists of your own, choose a pre-made example from "Public Lists".
-    </p>
-    <p>
-      To find out more, go to <%= link_to "Help", static_pages_help_path %>.
-    </p>
+        If you don't have any lists of your own, choose a pre-made example from "Public Lists".
+      </p>
+      <p>
+        To find out more, go to <%= link_to "Help", static_pages_help_path %>.
+      </p>
     
-    <%= image_tag("welcome.png", alt: "welcome", width: "100%") %>
+      <%= image_tag("welcome.png", alt: "welcome", width: "100%") %>
     
-  </div>
-  
-  <div class="col-md-2">
-    <%= render partial: "creation_nav" %>  
-    <div id="nav-list">
     </div>
-  </div>  
+  
+    <div class="col-md-3">
+      <div id="nav-list">
+      </div>
+      <%= render partial: "creation_nav" %>  
+    </div>  
+  </div>
 </div>
 
 <script>

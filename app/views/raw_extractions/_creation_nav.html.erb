@@ -1,49 +1,51 @@
-<div class="center fix-heading">Make a New List</div>
+<div>
+  <div class="center fix-heading">Make a New List</div>
 
-<div class="row">
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-default btn-block scenario-selection" data-toggle="modal" data-target="#uploadList">
-    Upload my list
-  </button>
+  <div class="">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-default btn-block scenario-selection" data-toggle="modal" data-target="#uploadList">
+      Upload my list
+    </button>
 
-  <!-- Modal -->
-  <div class="modal fade" id="uploadList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel"></h4>
-        </div>
-        <div class="modal-body">
-          <div style="display: inline-block;">
-            <div class="row col-sm-9 col-sm-offset-1">
-              <div class="col-sm-4">
-                <%= link_to "Go", new_onpl_file_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
+    <!-- Modal -->
+    <div class="modal fade" id="uploadList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"></h4>
+          </div>
+          <div class="modal-body">
+            <div style="display: inline-block;">
+              <div class="row col-sm-9 col-sm-offset-1">
+                <div class="col-sm-4">
+                  <%= link_to "Go", new_onpl_file_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
+                </div>
+                <div class="col-sm-8">
+                  I have a text file with one name per line
+                </div>
               </div>
-              <div class="col-sm-8">
-                I have a text file with one name per line
-              </div>
-            </div>
-            <div class="row col-sm-9 col-sm-offset-1" style="margin-top: 40px;">
-              <div class="col-sm-4">
-                <%= link_to "Go", new_uploaded_list_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
-              </div>
-              <div class="col-sm-8">
-                I have a Darwin Core Archive(.zip)
+              <div class="row col-sm-9 col-sm-offset-1" style="margin-top: 40px;">
+                <div class="col-sm-4">
+                  <%= link_to "Go", new_uploaded_list_path, class: "btn btn-default btn-primary btn-lg scenario-selection" %>
+                </div>
+                <div class="col-sm-8">
+                  I have a Darwin Core Archive(.zip)
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   
-  <%= link_to "Extract from doc", new_con_file_path, class: "btn btn-default btn-block scenario-selection" %>
+    <%= link_to "Extract from doc", new_con_file_path, class: "btn btn-default btn-block scenario-selection" %>
 
-  <%= link_to "Extract from web", new_con_link_path, class: "btn btn-default btn-block scenario-selection" %>
+    <%= link_to "Extract from web", new_con_link_path, class: "btn btn-default btn-block scenario-selection" %>
 
-  <%= link_to "Choose taxon", new_con_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
+    <%= link_to "Choose taxon", new_con_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
+  </div>
 </div>

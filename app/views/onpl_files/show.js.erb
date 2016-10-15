@@ -1,13 +1,9 @@
 <% if @ra.nil? %>
-  $('#nav-list').html("");
-  $('#ra-content').html("<%= escape_javascript(render partial: 'con_files/content_error', locals: {f: @f}) %>");
+  $('#ra-holder').html("<%= escape_javascript(render partial: 'con_files/content_error', locals: {f: @f}) %>");
 <% else %>
-  $('#nav-list').html("<%= escape_javascript(render partial: 'raw_extractions/nav_list', 
-                                                    locals: { ra: @ra,
-                                                              resolved_names: @resolved_names } ) %>");
-  $('#ra-content').html("<%= escape_javascript(render partial: 'content', 
-                                                      locals: { resolved_names: @resolved_names, 
-                                                                unresolved:     @unresolved,
-                                                                name:           @f.name, 
-                                                                ra:             @ra} ) %>");
+  $('#ra-holder').html("<%= escape_javascript(render partial: 'content',
+                          locals: { resolved_names: @resolved_names,
+                                    unresolved:     @unresolved,
+                                    name:           @f.name, 
+                                    ra:             @ra} ) %>");                                                                
 <% end %>

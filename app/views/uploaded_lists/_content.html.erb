@@ -20,79 +20,49 @@
     </div>
   </div>
 <% else %>
-  <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form" } do |f| %>
-    <%= f.hidden_field :raw_extraction_id %>
     
-    <%= render partial: "raw_extractions/name_pop_up", locals: {ra: ra, f: f} %>
-	
-    <div>
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
-        <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
-      </ul>
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="content">
-          <table class="table table-bordered table-hover chosing-species">
-            <thead> 
-              <tr> 
-                <th class="species-heading-row">#</th> 
-                <th class="species-heading-row">Species</th> 
-                <th class="species-cb-column species-heading-row">
-                  Select/Deselect all<br>
-                  <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
-                </th> 
-              </tr> 
-            </thead>
-            <tbody>
-                <% species.each_with_index do |e, i| %>
-                  <tr class="species-row success">
-                    <td class=""><%= i + 1 %></td>
-                    <td class=""><%= e %></td>
-                    <td class="species-cb-column">           
-                      <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
-                      <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
-                    </td>
-                  </tr>
+  <div class="col-md-9" id="ra-content">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
+      <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="content">
+        <%= render partial: "trees/tree_form", locals: {ra: ra, species: species} %>
+        
+        <% unless unresolved.empty? %>
+          <hr>
+          <h4>Unmatched names</h4>
+          <strong>Edit name as desired, then click the 'Search' button to look for matches</strong>
+          <div class="">
+            <div> 
+              <div class="row"> 
+                <div class="col-sm-4">Vernacular Name (*)</div>
+                <div class="col-sm-5">Scientific Name (*)</div>
+                <div class="col-sm-2"></div>
+              </div> 
+            </div>
+            <div>
+              <% @list["list"]["list_species"].each_with_index do |s, i| %>
+                <% if unresolved.include? s["scientific_name"] %>
+                  <div class="row danger">
+                    <%= form_tag({controller: 'uploaded_lists', action: 'update_a_species', id: @list["list"]["list_id"]}, method: "post", remote: true, class: "fix-names") do %>
+                      <div class="col-sm-4"><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></div>
+                      <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
+                      <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
+                      <div class="col-sm-2">
+                        <%= submit_tag "Search", class: "btn btn-default"%>
+                      </div>
+                    <% end %>
+                  </div>
                 <% end %>
-            </tbody>
-          </table>
-          
-  <!-- End of form -->
-  <% end %>
-  <% unless unresolved.empty? %>
-    <hr>
-    <h4>Unmatched names</h4>
-    <strong>Edit name as desired, then click the 'Search' button to look for matches</strong>
-    <div class="">
-      <div> 
-        <div class="row"> 
-          <div class="col-sm-4">Vernacular Name (*)</div>
-          <div class="col-sm-5">Scientific Name (*)</div>
-          <div class="col-sm-2"></div>
-        </div> 
-      </div>
-      <div>
-        <% @list["list"]["list_species"].each_with_index do |s, i| %>
-          <% if unresolved.include? s["scientific_name"] %>
-            <div class="row danger">
-              <%= form_tag({controller: 'uploaded_lists', action: 'update_a_species', id: @list["list"]["list_id"]}, method: "post", remote: true, class: "fix-names") do %>
-                <div class="col-sm-4"><%= text_field_tag 'species[' + i.to_s + '][vernacular_name]', s["vernacular_name"], class: "form-control"%></div>
-                <div class="col-sm-5"><%= text_field_tag 'species[' + i.to_s + '][scientific_name]', s["scientific_name"], class: "form-control" %></div>
-                <%= hidden_field_tag 'species[' + i.to_s + '][old]', s["scientific_name"] %>
-                <div class="col-sm-2">
-                  <%= submit_tag "Search", class: "btn btn-default"%>
-                </div>
               <% end %>
             </div>
-          <% end %>
+          </div>
         <% end %>
       </div>
-    </div>
-  <% end %>
-      </div>
-      
       <div role="tabpanel" class="tab-pane" id="metadata">
         <% data = @list["list"] %>
         <div class="metadata-wrapper">
@@ -159,8 +129,25 @@
             <div class="col-sm-9"><%= data["list_source"] %></div>
           </div>
         </div>
+        
+       <!-- End of tab metadata   -->
       </div>
+    <!-- End of tab panel -->
     </div>
+  <!-- ra-content -->
+  </div>
+
+  <div class="col-md-3">
+    <div id="nav-list">
+      <% if nav_pub_list %>
+        <%= render partial: 'raw_extractions/nav_list_publish', 
+                                    locals: { ra: ra,
+                                              resolved_names: resolved_names} %>
+      <% else %>
+        <%= render partial: 'raw_extractions/nav_list', locals: { ra: ra, resolved_names: resolved_names} %>
+      <% end %>
+    </div>
+    <%= render partial: "raw_extractions/creation_nav" %>  
   </div>
 <% end %>
 
@@ -202,16 +189,6 @@ $(document).ready(function(){
     $(this).replaceWith("<img class='center' width=60 src='<%= image_path("loading-icon.gif") %>'>");
   })
   
-  $('.tree-form').submit(function(e) {
-      validateForm(e);
-  });
-  
 })
-function validateForm(e) {
-  if ($('#tree_name').value == null) {
-    $(".tree-name-alert").removeClass("hide");
-    e.preventDefault(); 
-    return false;
-  }
-}
+
 </script>

@@ -1,4 +1,15 @@
-<%= link_to "Download selected taxa as list", "#",  class: "btn btn-default btn-block", id: "download-selected-species" %>
+<div class="center fix-heading">List Actions</div>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#get-tree-modal-<%= ra.id %>" style="margin-bottom: 7px;">
+  Get tree
+</button>
+
+<%= render partial: "raw_extractions/name_pop_up", locals: {ra: ra} %>
+
+  
+<%= link_to "Download list", "#",  class: "btn btn-default btn-block", id: "download-selected-species" %>
 
 <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target=".taxon-matching-report-modal" style="margin-bottom: 7px;">Taxon matching</button>
   

@@ -1,9 +1,4 @@
 <div class="center">
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#get-tree-modal-<%= ra.id %>" style="margin-bottom: 20px;">
-    Get tree
-  </button>
-
   <!-- Modal -->
   <div class="modal fade" id="get-tree-modal-<%= ra.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -16,13 +11,30 @@
           <p class="tree-name-alert hide">
             * Please fill in name of tree
           </p>
-          <%= f.text_field :name, class: "form-control", id: "tree_name" %>
+          <%= text_field_tag :name, nil, class: "form-control", id: "tree_name" %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= f.submit "Get tree", class: "btn btn-primary btn-lg", style: "margin-bottom: 10px;" %>
+          <%= link_to "Get tree", "#", class: "btn btn-primary btn-lg psedo-submit", style: "margin-bottom: 10px;" %>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+
+  $('.psedo-submit').click(function(e) {
+    if ($('#tree_name').val().replace(/\s/g, '') == '') {
+      $(".tree-name-alert").removeClass("hide");
+      e.preventDefault();
+      return false;
+    } else {
+      e.preventDefault();
+      $('#hidden_tree_name').val($('#tree_name').val());
+      $(".tree-form").submit();
+    }
+  });
+});
+</script>
