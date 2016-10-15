@@ -8,8 +8,25 @@
 
 <%= render partial: "raw_extractions/name_pop_up", locals: {ra: ra} %>
 
-  
-<%= link_to "Download list", "#",  class: "btn btn-default btn-block", id: "download-selected-species" %>
+<button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#file-name-modal" style="margin-bottom: 7px;">Download list</button>
+
+<div class="modal fade" id="file-name-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button> 
+        <h3 class="modal-title center" id="myModalLabel">Please enter a name for file</h3>
+      </div>
+      <div class="modal-body">        
+        <%= text_field_tag :name, nil, class: "form-control", id: "file-name" %>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "Download list", "#",  class: "btn btn-default btn-primary", id: "download-selected-species" %>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+      </div>
+    </div>
+  </div>
+</div>
 
 <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target=".taxon-matching-report-modal" style="margin-bottom: 7px;">Taxon matching</button>
   
@@ -130,33 +147,43 @@
 <%= link_to('Delete list', ra.contributable, class: 'btn btn-danger btn-block', method: :delete, data: { confirm: "Are you sure to delete list #{ra.contributable.name}?" } ) %>
 
 <script type="text/javascript">
-$("#download-selected-species").click(function() {
-  input_checked = $( ".species-cb-column").children("input:checked");
-  data = {};
-  data["species"] = []
-  for (var i=0; i<input_checked.length; i++) {
-    if ($(input_checked[i]).val() == "1" && 
-        $(input_checked[i]).attr("id") != "species-toggle-all-cb" ) {
-      data["species"].push($(input_checked[i]).attr('name').match(/\[(.*?)\]/g)[1].replace('[', '').replace(']', ''));
-    }
-  }
-  
-  submit("<%= download_selected_species_raw_extraction_path %>", 'POST', data);
-  return false;
-});
+$(document).ready(function() {
 
-function submit(action, method, values) {
-    var form = $('<form/>', {
-        action: action,
-        method: method
-    });
-    $.each(values, function() {
-        form.append($('<input/>', {
-            type: 'hidden',
-            name: "species",
-            value: this
-        }));    
-    });
-    form.appendTo('body').submit();
-}
+  $("#download-selected-species").click(function() {
+    input_checked = $( ".species-cb-column").children("input:checked");
+    data = {};
+    data["species"] = []
+    for (var i=0; i<input_checked.length; i++) {
+      if ($(input_checked[i]).val() == "1" && 
+          $(input_checked[i]).attr("id") != "species-toggle-all-cb" ) {
+        data["species"].push($(input_checked[i]).attr('name').match(/\[(.*?)\]/g)[1].replace('[', '').replace(']', ''));
+      }
+    }
+  
+    submit("<%= download_selected_species_raw_extraction_path %>", 'POST', data);
+    return false;
+  });
+
+  function submit(action, method, values) {
+      var form = $('<form/>', {
+          action: action,
+          method: method
+      });
+      $.each(values, function() {
+          form.append($('<input/>', {
+              type: 'hidden',
+              name: "species",
+              value: this
+          }));    
+      });
+      
+      form.append($('<input/>', {
+        type: 'hidden',
+        name: 'name',
+        value: $('#file-name').val()
+      }));
+      
+      form.appendTo('body').submit();
+  }
+})
 </script>

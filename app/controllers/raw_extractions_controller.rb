@@ -97,7 +97,7 @@ class RawExtractionsController < ApplicationController
   
   def download_selected_species
     send_data params["species"].gsub(",", "\n"),
-        :filename => "species.txt",
+        :filename => params["name"] + ".txt",
         :type => "text/plain",
         disposition: 'attachment'
   end
