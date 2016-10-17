@@ -218,3 +218,21 @@ input[type=checkbox]
 {
   transform: scale(2);
 }
+
+.ui-tooltip {
+    position: relative;
+    display: inline-block;
+    background: grey;
+    color: white;
+    &::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent grey transparent;
+   }
+}
+

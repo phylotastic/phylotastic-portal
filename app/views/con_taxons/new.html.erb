@@ -6,11 +6,11 @@
     <%= form_tag :action=>"create", :controller=>"con_taxons", method: :post do %>
       <h2>Choose from a taxon</h2>
       
+      <%= label_tag "taxon" do %>
+        <span data-toggle="tooltip" data-placement="left" title="Enter the scientific name of a taxonomic group such as a genus, family or order. See the FAQ for how to find scientific names. You may choose only one taxon. When subsetting by NCBI genome, queries using large taxa are possible. Otherwise, we can't process queries on taxa with more than a few hundred species."><span class="red">*</span> Taxon name (mouse-over for important instructions)</span>
+      <% end %>
       <div class="taxon-field" style="width: 50%">
-        <%= label_tag "taxon" do %>
-          <span class="red">*</span> Taxon name (mouse-over for important instructions)
-        <% end %>
-        <%= text_field_tag 'taxon', nil, class: "form-control", placeholder: "Canidae, Felidae, Balaenoptera" %>
+        <%= text_field_tag 'taxon', nil, class: "form-control", placeholder: "e.g., Canidae, Felidae, Balaenoptera" %>
       </div>
   
       <div class="taxon-field" style="width: 50%">
@@ -62,3 +62,9 @@
     <% end %>
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
