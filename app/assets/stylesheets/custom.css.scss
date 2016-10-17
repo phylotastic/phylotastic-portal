@@ -224,17 +224,6 @@ input[type=checkbox]
     display: inline-block;
     background: grey;
     color: white;
-    
-    &::after {
-      content: "";
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 15px;
-      border-style: solid;
-      border-color: transparent transparent grey transparent;
-   }
 }
 
 #welcome-img {

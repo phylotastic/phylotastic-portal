@@ -22,7 +22,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">Ladderize Tree:</div>
+          <div class="col-md-6" data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree:</div>
+          
           <div class="col-md-6">
             <input type="checkbox" id="ladderize">
           </div>
@@ -247,6 +248,10 @@ $(document).ready(function() {
   }
   $("#gotit").click(function() {
     $.cookie("view_hint", "false");
+  });
+  
+  $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip(); 
   });
 })
 </script>
