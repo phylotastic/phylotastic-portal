@@ -18,7 +18,6 @@ class TreesWorker
                               representation: nil )
       return 
     end
-    
     at 30, "Query names"
     
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }

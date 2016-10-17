@@ -118,6 +118,19 @@ class TreesController < ApplicationController
       end
       @my_trees = []
     end
+    
+    if params[:hot]
+      @hot = true
+    else
+      @hot = false
+    end
+
+    if params[:failed]
+      @failed = true
+    else
+      @failed = false
+    end
+    
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
@@ -164,7 +177,11 @@ class TreesController < ApplicationController
       end
     
       if Sidekiq::Status::complete? job_id
-        data = {status: "complete", pct: 100}.to_json
+        if Tree.find(@tree.id).status == "unsuccessfully-constructed"
+          data = {status: "failed", pct: 0}.to_json
+        elsif Tree.find(@tree.id).status == "completed"
+          data = {status: "complete", pct: 100}.to_json
+        end
         tubesock.send_data data
       end
     

@@ -108,6 +108,16 @@ $(document).ready(function() {
 
   $("#nav-tree-" + "<%= @inspect %>").click();
   
+  <% if params[:hot] %>
+    <% tree = Tree.find(@inspect) %>
+    <% ra = tree.raw_extraction %>
+    alert("A tree with <%= JSON.parse(tree.chosen_species).count %> species was extracted (out of <%= JSON.parse(ra.species)["resolvedNames"].count %> names in query list)");
+  <% end %>
+
+  <% if params[:failed] %>
+    alert("Can not construct tree");
+  <% end %>
+  
 })
 </script>
 
