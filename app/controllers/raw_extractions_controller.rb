@@ -6,6 +6,10 @@ class RawExtractionsController < ApplicationController
   
   def index
     if user_signed_in?
+      if !cookies[:temp_id].nil?
+        cookies.delete :temp_id
+      end
+      
       my_failed_lists  = current_user.failed_lists
       my_failed_lists = [] if my_failed_lists.nil?
       @my_failed_lists = my_failed_lists.map do |l|
@@ -34,6 +38,66 @@ class RawExtractionsController < ApplicationController
       @ctaxons = current_user.con_taxons.map do |f|
         {id: f.id, name: f.name, class: "ConTaxon"}
       end
+      
+    else
+      if cookies[:temp_id].nil?
+        cookies[:temp_id] = { value: ('a'..'z').to_a.shuffle[0,20].join, expires: 1.day.from_now }
+      end
+      
+      user = User.find_by_email("anonymous@phylo.com")
+      
+      @my_lists = []
+      
+      my_failed_lists  = user.failed_lists.select do |l| 
+        if !l.raw_extraction.nil?
+          l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
+        end
+      end
+      if my_failed_lists.nil?
+        @my_failed_lists = [] 
+      else
+        @my_failed_lists = my_failed_lists.map do |l|
+          name = l.name.nil? ? l.file.original_filename : l.name
+          {id: l.id, name: name, class: "FailedList"}
+        end
+      end    
+        
+      @cfiles  = user.con_files.select do |l| 
+        if !l.raw_extraction.nil?
+          l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
+        end
+      end
+      @cfiles  = @cfiles.map do |f| 
+        {id: f.id, name: f.name, class: "ConFile"} 
+      end
+
+      @ofiles  = user.onpl_files.select do |l| 
+        if !l.raw_extraction.nil?
+          l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
+        end
+      end
+      @ofiles  = @ofiles.map do |f|
+        {id: f.id, name: f.name, class: "OnplFile"}
+      end
+      
+      @clinks  = user.con_links.select do |l| 
+        if !l.raw_extraction.nil?
+          l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
+        end
+      end
+      @clinks  = @clinks.map do |f|
+        {id: f.id, name: f.name, class: "ConLink"}
+      end
+      
+      @ctaxons = user.con_taxons.select do |l| 
+        if !l.raw_extraction.nil?
+          l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
+        end
+      end
+      @ctaxons = @ctaxons.map do |f|
+        {id: f.id, name: f.name, class: "ConTaxon"}
+      end
+      
     end
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []

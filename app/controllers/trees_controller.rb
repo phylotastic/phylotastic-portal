@@ -39,9 +39,9 @@ class TreesController < ApplicationController
   def create    
     params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json
     if user_signed_in?
-      @tree = current_user.trees.build(tree_params)
+      @tree = current_user.trees.build(tree_params.merge(temp_id: nil))
     else
-      @tree = User.anonymous.trees.build(tree_params.merge(:public => true))
+      @tree = User.anonymous.trees.build(tree_params.merge({:public => true, temp_id: cookies[:temp_id]}))
     end
     if @tree.save
       job_id = TreesWorker.perform_async(@tree.id)
@@ -116,7 +116,7 @@ class TreesController < ApplicationController
       if cookies[:view_hint].nil?
         cookies[:view_hint] = "true"
       end
-      @my_trees = []
+      @my_trees = Tree.where(temp_id: cookies[:temp_id])
     end
     
     if params[:hot]

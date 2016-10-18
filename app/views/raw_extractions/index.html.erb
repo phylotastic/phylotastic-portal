@@ -2,19 +2,17 @@
 
 <div class="row">
   <div class="col-md-3">
-    <% if user_signed_in? %>
-      <div class="list-selection">
-        <%= render partial: "my_lists", locals: { my_lists: @my_lists,
-                                             cfiles: @cfiles,
-                                             ofiles: @ofiles,
-                                             clinks: @clinks,
-                                             ctaxons: @ctaxons,
-                                             my_failed_lists: @my_failed_lists
-                                             # my_subcribing_lists: @my_subcribing_lists 
-                                             }%>
+    <div class="list-selection">
+      <%= render partial: "my_lists", locals: { my_lists: @my_lists,
+                                           cfiles: @cfiles,
+                                           ofiles: @ofiles,
+                                           clinks: @clinks,
+                                           ctaxons: @ctaxons,
+                                           my_failed_lists: @my_failed_lists
+                                           # my_subcribing_lists: @my_subcribing_lists 
+                                           }%>
 
-      </div>
-    <% end %>
+    </div>
     
     <div class="list-selection">
       <%= render partial: "public_lists", locals: { public_lists: @public_lists } %>
@@ -55,12 +53,7 @@
 
 <script>
 $(document).ready(function() {
-  $(".list-group-item").click(function() {
-    $(".list-group-item").removeClass("active");
-    $(this).addClass("active");
-    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
-    $('#nav-list').html("");
-  })
+  
     // $(".table-scroll" ).scrollTop( 300 );
   
   if("<%= params[:type] %>" != "") {
@@ -85,10 +78,24 @@ $(document).ready(function() {
             <% else %>
               <% case params[:type] %>
               <% when "cl" %>
-                $("#ra-content").append('<%= link_to "a", con_link_path(params[:id]), remote: true, class:"hide", id: "cl-#{params[:id]}" %>');
+                <% l = ConLink.find(params[:id]) %>
+                $("#my-lists").append('<%= link_to l.name, con_link_path(params[:id]), remote: true, class:"list-group-item", id: "cl-#{params[:id]}" %>');
+                $("#cl-<%= params[:id] %>").on("click", function() {
+                    $(".list-group-item").removeClass("active");
+                    $(this).addClass("active");
+                    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
+                    $('#nav-list').html("");
+                  })
                 $("#cl-<%= params[:id] %>").click();
               <% when "cf" %>
-                $("#ra-content").append('<%= link_to "a", con_file_path(params[:id]), remote: true, class:"hide", id: "cf-#{params[:id]}" %>');
+                <% f = ConFile.find(params[:id]) %>
+                $("#my-lists").append('<%= link_to f.name, con_file_path(params[:id]), remote: true, class:"list-group-item", id: "cf-#{params[:id]}" %>');
+                $("#cf-<%= params[:id] %>").on("click", function() {
+                  $(".list-group-item").removeClass("active");
+                  $(this).addClass("active");
+                  $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
+                  $('#nav-list').html("");
+                })
                 $("#cf-<%= params[:id] %>").click();
               <% end %>
             <% end %>
@@ -102,6 +109,13 @@ $(document).ready(function() {
     }
   }
   
+  
+  $(".list-group-item").on("click", function() {
+    $(".list-group-item").removeClass("active");
+    $(this).addClass("active");
+    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
+    $('#nav-list').html("");
+  })
 })
 
 </script>

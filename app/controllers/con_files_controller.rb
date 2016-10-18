@@ -4,6 +4,10 @@ class ConFilesController < ApplicationController
   
   def new
     @con_file = ConFile.new
+    if !user_signed_in? && cookies[:temp_id].nil?
+      redirect_to root_path
+      return
+    end
   end
     
   def show
@@ -31,13 +35,19 @@ class ConFilesController < ApplicationController
   def create
     if user_signed_in?
       user = current_user
+      temp_id = nil
     else
-      user = User.anonymous      
+      user = User.anonymous   
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]   
     end
     @con_file = user.con_files.build(con_file_params)
     if @con_file.save
       flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id)
+      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id, temp_id)
       redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id)
     else
       flash[:error] = "Can not process file!"

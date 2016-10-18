@@ -1,11 +1,13 @@
 <% lists = my_lists << my_failed_lists << cfiles << ofiles << clinks << ctaxons  %>
 <% lists.flatten!.sort_by!{|m| m[:name].downcase } %>
 
-<div class="fix-heading">My Lists</div>
+<% if !lists.empty? %>
+  <div class="fix-heading">My Lists</div>
+<% end %>
 
 <div class="table-wrapper">
   <div class="table-scroll">  
-    <div class="list-group">
+    <div class="list-group" id="my-lists">
       <% lists.each do |l| %>
         <% case l[:class] %>
         <% when "UploadedList" %>

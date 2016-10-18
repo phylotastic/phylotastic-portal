@@ -15,6 +15,10 @@ class ConTaxonsController < ApplicationController
   
   def new
     @con_taxon = ConTaxon.new
+    if !user_signed_in? && cookies[:temp_id].nil?
+      redirect_to root_path
+      return
+    end
   end
 
   def create
@@ -86,8 +90,14 @@ class ConTaxonsController < ApplicationController
     when 200
       if user_signed_in?
         user = current_user
+        temp_id = nil
       else
         user = User.anonymous      
+        if cookies[:temp_id].nil?
+          redirect_to root_path
+          return
+        end
+        temp_id = cookies[:temp_id]
       end
       @con_taxon = user.con_taxons.build(con_taxon_params)
       if @con_taxon.save
@@ -97,7 +107,7 @@ class ConTaxonsController < ApplicationController
                              extracted_response,
                              :content_type => :json)
 
-        extraction = @con_taxon.create_raw_extraction(species: resolved)
+        extraction = @con_taxon.create_raw_extraction(species: resolved, temp_id: temp_id)
         redirect_to root_path(type: "ct", id: @con_taxon.id)
       else
         render 'raw_extractions/new_from_taxon'

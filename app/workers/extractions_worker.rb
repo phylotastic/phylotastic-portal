@@ -3,7 +3,7 @@ class ExtractionsWorker
   # sidekiq_options retry: false
   include Sidekiq::Status::Worker
   
-  def perform(source_id, source_type, current_user_id)
+  def perform(source_id, source_type, current_user_id, temp_id)
     puts source_id
     puts source_type
     # puts self.jid
@@ -34,7 +34,7 @@ class ExtractionsWorker
     end
     
     # raw extraction
-    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(extracted_names: extracted_response)
+    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(extracted_names: extracted_response, temp_id: temp_id)
 
     # retrieve tree corresponding to the above raw extraction
     # tries = 3

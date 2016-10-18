@@ -1,9 +1,13 @@
 class ConLinksController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: [:new, :create, :show]
-  
+
   def new
     @con_link = ConLink.new
+    if !user_signed_in? && cookies[:temp_id].nil?
+      redirect_to root_path
+      return
+    end
   end
   
   def show
@@ -25,13 +29,19 @@ class ConLinksController < ApplicationController
   def create
     if user_signed_in?
       user = current_user
+      temp_id = nil
     else
       user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
     end
     @con_link = user.con_links.build(con_link_params)
     if @con_link.save
       flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id)
+      job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id, temp_id)
       redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id)
     else
       flash[:danger] = "Can not process link!"
