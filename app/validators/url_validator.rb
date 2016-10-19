@@ -9,7 +9,7 @@ class UrlValidator < ActiveModel::EachValidator
     end
     unless resp == true
       # record.errors[attribute] << (options[:message] || "is not an url")
-      record.errors[attribute] << "is invalid URL. Did you forget the http prefix? To be sure, go to the page you want, then copy the text from the browser's URL bar."
+      record.errors[attribute] << "is invalid URL. To ensure success, go to the page you want, then copy the text from the browser's URL bar."
     end
   end
 end
