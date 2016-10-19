@@ -20,7 +20,7 @@
       console.log(d);
       move(d["pct"]);
       if(d["status"] == "complete") {        
-        window.location.href = "<%= trees_path(ins: @tree.id, hot: true) %>";
+        window.location.href = "<%= trees_path({ins: @tree.id, hot: true}) %>";
       }
       if(d["status"] == "failed") {
         window.location.href = "<%= trees_path(ins: @tree.id, failed: true) %>";
