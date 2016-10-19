@@ -1,5 +1,5 @@
 class ConLink < ActiveRecord::Base
-  before_validation :smart_add_url_protocol
+  # before_validation :smart_add_url_protocol
 
   belongs_to :user
 
@@ -15,12 +15,12 @@ class ConLink < ActiveRecord::Base
     uri
   end
 
-  protected
+  # protected
 
-  def smart_add_url_protocol
-    unless self.uri[/^https?:\/\//]
-      self.uri = "http://#{self.uri}"
-    end
-  end
+  # def smart_add_url_protocol
+  #   unless self.uri[/^https?:\/\//]
+  #     self.uri = "http://#{self.uri}"
+  #   end
+  # end
     
 end
