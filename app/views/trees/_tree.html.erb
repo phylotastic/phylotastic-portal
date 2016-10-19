@@ -1,10 +1,12 @@
 <% tree_newick = sanitize_newick(tree) %>
+<% non_san_newick = JSON.parse(tree.representation)['newick'] %>
+
 <div class="row">
   <div class="col-md-10">
     <div id="tree-in-newick"></div>
     
     <div id='popup'></div>
-    <div class="row tree-wrapper">
+    <div class="row tree-wrapper well">
       <div class="col-md-6">
         <div class="row">
           <div class="col-md-4">Line width:</div>
@@ -67,13 +69,19 @@
 
   <!-- Modal -->
   <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
+          <div style="text-align: right; margin-top: 10px;">
+            <div style="display: inline; margin-right: 20px;">
+              <%= check_box_tag 'show_ott', '1' %> 
+            </div> 
+            <span data-toggle="tooltip" data-placement="top" title="Include the IDs used internally by the OpenTree project" id="copy-to-clipboard">Show OTT ids</span>
+          </div>
         </div>
         <div class="modal-footer">
           <div class="btn-group" role="group" aria-label="...">
@@ -83,19 +91,8 @@
             <div class="btn-wrapper">
               <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" id="copy-to-clipboard" data-clipboard-target="#tree-in-string-format" data-clipboard-action="copy">Copy</button>
             </div>
-            <div class="dropdown btn-wrapper">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-export-newick" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Export as TXT
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdown-export-newick">
-                <li>
-                  <%= link_to "WITH ottids", newick_trees_path(format: :txt, id: tree.id, ott: true) %> 
-                </li>
-                <li>
-                  <%= link_to "WITHOUT ottids", newick_trees_path(format: :txt, id: tree.id, ott: false) %>
-                </li>
-              </ul>
+            <div class="btn-wrapper" id="save-tree-text">
+              <%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %> 
             </div>
           </div>
         </div>
@@ -104,7 +101,7 @@
   </div>
   
   <div class="col-md-2">
-    <div class="row">
+    <div class="">
       <!-- <h4 class="center" id="tree-actions">Tree actions</h4> -->
 
       <!-- Button trigger modal -->
@@ -253,5 +250,15 @@ $(document).ready(function() {
   $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip(); 
   });
+  
+  $('#show_ott').change(function() {
+    if($(this).is(':checked')) {
+      $('#tree-in-string-format').val("<%= non_san_newick %>");
+      $('#save-tree-text').html('<%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: true), class: "btn btn-primary" %>');
+    } else {
+      $('#tree-in-string-format').val("<%= tree_newick %>");
+      $('#save-tree-text').html('<%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %>');   
+    }
+  })
 })
 </script>
