@@ -44,7 +44,7 @@ class ConLinksController < ApplicationController
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id, temp_id)
       redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id)
     else
-      flash[:danger] = "Can not process link!"
+      flash[:danger] = @con_link.errors.full_messages
       redirect_to new_con_link_path
     end
   end

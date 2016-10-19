@@ -31,12 +31,28 @@
   <%= render 'layouts/header' %>
   <div class="container">
     <% flash.each do |message_type, message| %>
-      <% if message_type == "notice" %>
-        <div class="alert alert-info"><%= message %></div>
-      <% elsif message_type == "alert" %>
-        <div class="alert alert-danger"><%= message %></div>
+      <% if message.kind_of?(Array) %>
+        <% if message_type == "notice" %>
+          <% message.each do |m| %>
+            <div class="alert alert-info"><%= m %></div>
+          <% end %>
+        <% elsif message_type == "alert" %>
+          <% message.each do |m| %>
+            <div class="alert alert-danger"><%= m %></div>
+          <% end %>
+        <% else %>
+          <% message.each do |m| %>
+            <div class="alert alert-<%= message_type %>"><%= m %></div>
+          <% end %>
+        <% end %>
       <% else %>
-        <div class="alert alert-<%= message_type %>"><%= message %></div>
+        <% if message_type == "notice" %>
+          <div class="alert alert-info"><%= message %></div>
+        <% elsif message_type == "alert" %>
+          <div class="alert alert-danger"><%= message %></div>
+        <% else %>
+          <div class="alert alert-<%= message_type %>"><%= message %></div>
+        <% end %>
       <% end %>
     <% end %>
     <%= yield %>
