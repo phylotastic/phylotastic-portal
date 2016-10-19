@@ -41,7 +41,7 @@ class TreesController < ApplicationController
     if user_signed_in?
       @tree = current_user.trees.build(tree_params.merge(temp_id: nil))
     else
-      @tree = User.anonymous.trees.build(tree_params.merge({:public => true, temp_id: cookies[:temp_id]}))
+      @tree = User.anonymous.trees.build(tree_params.merge(temp_id: cookies[:temp_id]))
     end
     if @tree.save
       job_id = TreesWorker.perform_async(@tree.id)
