@@ -111,7 +111,7 @@ $(document).ready(function() {
     <% tree = Tree.find(@inspect) %>
     <% ra = tree.raw_extraction %>
     <% leaves = NewickTree.new(JSON.parse(tree.representation)["newick"].to_s).root.leaves.count %>
-    alert("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> species were chosen (out of <%= JSON.parse(ra.species)["resolvedNames"].count %> names in query list)");
+    alert("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> of <%= JSON.parse(ra.species)["resolvedNames"].count %> taxa in the input list were matched.");
   <% end %>
 
   <% if params[:failed] %>
