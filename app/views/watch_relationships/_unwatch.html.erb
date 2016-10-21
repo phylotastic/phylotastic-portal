@@ -1,3 +1,0 @@
-<%= form_for(current_user.watch_relationships.find_by(tree_id: @tree.id), html: { method: :delete }, remote: true) do |f| %>
-  <%= f.submit "Remove from My Gallery", class: "btn btn-danger btn-block" %>
-<% end %>
