@@ -21,6 +21,16 @@
   </div>
   
   <div class="col-md-3">
+    <div id="nav-list" class="well">
+      <% if nav_pub_list %>
+        <%= render partial: 'raw_extractions/nav_list_publish', 
+                                    locals: { ra: ra,
+                                              resolved_names: resolved_names} %>
+      <% else %>
+        <%= render partial: 'raw_extractions/nav_list', locals: { ra: ra, resolved_names: resolved_names} %>
+      <% end %>
+    </div>
+    
     <%= render partial: "raw_extractions/creation_nav" %>  
   </div>
 <% else %>
