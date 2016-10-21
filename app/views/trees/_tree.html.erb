@@ -109,26 +109,7 @@
         Export as
       </button>
   
-      <!-- Add to gallery btn -->
-      <!-- <%= render 'watch_relationships/watch_form' unless current_user.nil? %> -->
-  
-      <!-- <% if tree.user == current_user %>
-        <% if !tree.public && tree.status == "completed" %>
-          <div id="publicise-btn">
-            <%= form_for(tree, url: public_trees_path, remote: true, html: {id: "publicise-tree"}) do |f| %>
-              <div><%= hidden_field_tag "tree[public]", true %></div>
-              <%= f.submit "Publish to Community", class: "btn btn-block btn-primary" %>
-            <% end %>
-          </div>
-        <% end %>
-        <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
-      <% end %> -->
-  
-      <!-- <%= form_tag "/trees/generate_image.svg", method: :post, id: "save-to-disk-form" do %>
-        <input type="hidden" name="image" value="" />
-      <% end %>
-      <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %> -->
-	     
+
       <% if user_signed_in? %>
     	  <!-- Button trigger modal -->
     	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
