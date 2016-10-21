@@ -24,7 +24,12 @@
 
 <script>
 $(document).ready(function(){
-
+  $('#tree_name').keypress(function(e) {
+    if(e.which == 13) {
+      $('.psedo-submit').click();
+    }
+  });
+  
   $('.psedo-submit').click(function(e) {
     if ($('#tree_name').val().replace(/\s/g, '') == '') {
       $(".tree-name-alert").removeClass("hide");
