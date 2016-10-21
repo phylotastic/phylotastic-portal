@@ -24,104 +24,113 @@
     <%= render partial: "raw_extractions/creation_nav" %>  
   </div>
 <% else %>
+  <div class="col-md-9" id="ra-content">
 
-  <div class="fix-heading">List viewer</div>
-  <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form" } do |f| %>
-    <%= f.hidden_field :raw_extraction_id %>
+    <div class="fix-heading">List viewer</div>
+    <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form" } do |f| %>
+      <%= f.hidden_field :raw_extraction_id %>
     
-    <%= render partial: "raw_extractions/name_pop_up", locals: {ra: ra, f: f} %>
+      <%= render partial: "raw_extractions/name_pop_up", locals: {ra: ra, f: f} %>
     
-    <div>
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name  %></a></li>
-        <li role="presentation"><a href="#taxon-matching-report" aria-controls="taxon-matching-report" role="tab" data-toggle="tab">Taxon Matching Report</a></li>
-        <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
-      </ul>
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="content">
-          <table class="table table-bordered table-hover chosing-species">
-            <thead> 
-              <tr> 
-                <th class="species-heading-row">#</th> 
-                <th class="species-heading-row">Species</th> 
-                <th class="species-cb-column species-heading-row">
-                  Select/Deselect all<br>
-                  <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
-                </th> 
-              </tr> 
-            </thead>
-            <tbody>
-              <% species.each_with_index do |e, i| %>
-                <tr class="species-row success">
-                  <td class=""><%= i + 1 %></td>
-                  <td class=""><%= e %></td>
-                  <td class="species-cb-column">           
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
-                    <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        
-        <div role="tabpanel" class="tab-pane" id="taxon-matching-report">
-          <table class="table table-hover">
-            <thead> 
-              <tr>
-                <th class="">#</th>
-                <th class="">Query</th> 
-                <th class="">Matched name</th> 
-                <th class="">Match</th> 
-                <th class="">Synonyms</th>
-              </tr> 
-            </thead>
-            <tbody>
-              <% resolved_names.each_with_index do |r, i| %>
-                <tr class="species-row">
-                  <td class=""><%= i + 1 %></td>
-                  <td class=""><%= r["search_string"] %></td>
-                  <td class=""><%= r["matched_name"] %></td>
-                  <td class=""><%= r["match_type"] %></td>
-                  <td class="">
-                    <% r["synonyms"].each do |s| %>
-                      <%= s %><br>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table> 
-          <p><em>The list of query species was validated with &lt;TNRS&gt; prior to querying for a tree. This table shows how the query strings were mapped to validated taxon names</em></p>
-          <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default" %> 
-        </div>
-        
-        <div role="tabpanel" class="tab-pane" id="metadata">
-          <div class="metadata-wrapper">
-            <% source = ra.contributable %>
-            <div class="row">
-              <div class="col-sm-3">Title</div>
-              <div class="col-sm-9"><%= source.name %></div>
-            </div>
-            <div class="row">
-              <div class="col-sm-3">Description</div>
-              <div class="col-sm-9">
-                <% if source.description.nil? %>
-                  <%= source.description %>
-                <% else %>
-                  "Names scraped"
+      <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name  %></a></li>
+          <li role="presentation"><a href="#taxon-matching-report" aria-controls="taxon-matching-report" role="tab" data-toggle="tab">Taxon Matching Report</a></li>
+          <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="content">
+            <table class="table table-bordered table-hover chosing-species">
+              <thead> 
+                <tr> 
+                  <th class="species-heading-row">#</th> 
+                  <th class="species-heading-row">Species</th> 
+                  <th class="species-cb-column species-heading-row">
+                    Select/Deselect all<br>
+                    <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+                  </th> 
+                </tr> 
+              </thead>
+              <tbody>
+                <% species.each_with_index do |e, i| %>
+                  <tr class="species-row success">
+                    <td class=""><%= i + 1 %></td>
+                    <td class=""><%= e %></td>
+                    <td class="species-cb-column">           
+                      <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
+                      <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
+                    </td>
+                  </tr>
                 <% end %>
+              </tbody>
+            </table>
+          </div>
+        
+          <div role="tabpanel" class="tab-pane" id="taxon-matching-report">
+            <table class="table table-hover">
+              <thead> 
+                <tr>
+                  <th class="">#</th>
+                  <th class="">Query</th> 
+                  <th class="">Matched name</th> 
+                  <th class="">Match</th> 
+                  <th class="">Synonyms</th>
+                </tr> 
+              </thead>
+              <tbody>
+                <% resolved_names.each_with_index do |r, i| %>
+                  <tr class="species-row">
+                    <td class=""><%= i + 1 %></td>
+                    <td class=""><%= r["search_string"] %></td>
+                    <td class=""><%= r["matched_name"] %></td>
+                    <td class=""><%= r["match_type"] %></td>
+                    <td class="">
+                      <% r["synonyms"].each do |s| %>
+                        <%= s %><br>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table> 
+            <p><em>The list of query species was validated with &lt;TNRS&gt; prior to querying for a tree. This table shows how the query strings were mapped to validated taxon names</em></p>
+            <%= link_to "Export as PDF", taxon_matching_report_trees_path(format: :pdf, ra: ra.id), class: "btn-primary btn btn-default" %> 
+          </div>
+        
+          <div role="tabpanel" class="tab-pane" id="metadata">
+            <div class="metadata-wrapper">
+              <% source = ra.contributable %>
+              <div class="row">
+                <div class="col-sm-3">Title</div>
+                <div class="col-sm-9"><%= source.name %></div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-3">Created at</div>
-              <div class="col-sm-9"><%= source.created_at %></div>
+              <div class="row">
+                <div class="col-sm-3">Description</div>
+                <div class="col-sm-9">
+                  <% if source.description.nil? %>
+                    <%= source.description %>
+                  <% else %>
+                    "Names scraped"
+                  <% end %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">Created at</div>
+                <div class="col-sm-9"><%= source.created_at %></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="col-md-3">
+      <div id="nav-list" class="well">
+        <%= render partial: 'raw_extractions/nav_list', locals: { ra: ra, resolved_names: resolved_names} %>
+      </div>
+      <%= render partial: "raw_extractions/creation_nav" %>  
     </div>
   <% end %>
 <% end %>
