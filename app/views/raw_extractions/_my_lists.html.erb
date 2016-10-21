@@ -1,14 +1,11 @@
-<% lists = my_lists << my_failed_lists << cfiles << ofiles << clinks << ctaxons  %>
-<% lists.flatten!.sort_by!{|m| m[:name].downcase } %>
-
-<% if !lists.empty? %>
+<% if !my_lists.empty? %>
   <div class="fix-heading">My Lists</div>
 <% end %>
 
 <div class="table-wrapper">
   <div class="table-scroll">  
     <div class="list-group" id="my-lists">
-      <% lists.each do |l| %>
+      <% my_lists.each do |l| %>
         <% case l[:class] %>
         <% when "UploadedList" %>
           <%= link_to truncate(l[:name]), uploaded_list_path(l[:id]), remote: true, class:"list-group-item", id: "ul-#{l[:id]}" %>

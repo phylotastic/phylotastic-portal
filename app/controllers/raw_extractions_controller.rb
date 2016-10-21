@@ -12,7 +12,7 @@ class RawExtractionsController < ApplicationController
       
       my_failed_lists  = current_user.failed_lists
       my_failed_lists = [] if my_failed_lists.nil?
-      @my_failed_lists = my_failed_lists.map do |l|
+      my_failed_lists.map! do |l|
         name = l.name.nil? ? l.file.original_filename : l.name
         {id: l.id, name: name, class: "FailedList"}
       end
@@ -20,22 +20,22 @@ class RawExtractionsController < ApplicationController
       # @my_subcribing_lists = current_user.subcribing_lists
       # @my_subcribing_lists = [] if @my_subcribing_lists.nil?
     
-      my_lists = get_private_lists["lists"] rescue []
-      my_lists = [] if my_lists.nil?
-      @my_lists = my_lists.map do |l|
+      my_private_lists = get_private_lists["lists"] rescue []
+      my_private_lists = [] if my_private_lists.nil?
+      my_private_lists.map! do |l|
         {id: l["list_id"], name: l["list_title"], class: "UploadedList"}
       end
       
-      @cfiles  = current_user.con_files.map do |f|
+      cfiles  = current_user.con_files.map do |f|
         {id: f.id, name: f.name, class: "ConFile"}
       end
-      @ofiles  = current_user.onpl_files.map do |f|
+      ofiles  = current_user.onpl_files.map do |f|
         {id: f.id, name: f.name, class: "OnplFile"}
       end
-      @clinks  = current_user.con_links.map do |f|
+      clinks  = current_user.con_links.map do |f|
         {id: f.id, name: f.name, class: "ConLink"}
       end
-      @ctaxons = current_user.con_taxons.map do |f|
+      ctaxons = current_user.con_taxons.map do |f|
         {id: f.id, name: f.name, class: "ConTaxon"}
       end
       
@@ -46,7 +46,7 @@ class RawExtractionsController < ApplicationController
       
       user = User.find_by_email(APP_CONFIG['anonymous'])
       
-      @my_lists = []
+      my_private_lists = []
       
       my_failed_lists  = user.failed_lists.select do |l| 
         if !l.raw_extraction.nil?
@@ -54,51 +54,55 @@ class RawExtractionsController < ApplicationController
         end
       end
       if my_failed_lists.nil?
-        @my_failed_lists = [] 
+        my_failed_lists = [] 
       else
-        @my_failed_lists = my_failed_lists.map do |l|
+        my_failed_lists.map! do |l|
           name = l.name.nil? ? l.file.original_filename : l.name
           {id: l.id, name: name, class: "FailedList"}
         end
       end    
         
-      @cfiles  = user.con_files.select do |l| 
+      cfiles  = user.con_files.select do |l| 
         if !l.raw_extraction.nil?
           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
         end
       end
-      @cfiles  = @cfiles.map do |f| 
+      cfiles.map! do |f| 
         {id: f.id, name: f.name, class: "ConFile"} 
       end
 
-      @ofiles  = user.onpl_files.select do |l| 
+      ofiles  = user.onpl_files.select do |l| 
         if !l.raw_extraction.nil?
           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
         end
       end
-      @ofiles  = @ofiles.map do |f|
+      ofiles.map! do |f|
         {id: f.id, name: f.name, class: "OnplFile"}
       end
       
-      @clinks  = user.con_links.select do |l| 
+      clinks  = user.con_links.select do |l| 
         if !l.raw_extraction.nil?
           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
         end
       end
-      @clinks  = @clinks.map do |f|
+      clinks.map! do |f|
         {id: f.id, name: f.name, class: "ConLink"}
       end
       
-      @ctaxons = user.con_taxons.select do |l| 
+      ctaxons = user.con_taxons.select do |l| 
         if !l.raw_extraction.nil?
           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
         end
       end
-      @ctaxons = @ctaxons.map do |f|
+      ctaxons.map! do |f|
         {id: f.id, name: f.name, class: "ConTaxon"}
       end
       
     end
+    
+    @my_lists = my_private_lists << my_failed_lists << cfiles << ofiles << clinks << ctaxons
+    @my_lists.flatten!.sort_by!{|m| m[:name].downcase }
+
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
     @public_lists.sort_by! {|m| m["list_title"].downcase }
