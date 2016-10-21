@@ -11,11 +11,11 @@
           <p class="tree-name-alert hide">
             * Please fill in name of tree
           </p>
-          <%= text_field_tag :name, nil, class: "form-control", id: "tree_name" %>
+          <%= text_field_tag :name, nil, class: "form-control", id: "tree_name-<%= ra.id %>" %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= link_to "Get tree", "#", class: "btn btn-primary btn-lg psedo-submit", style: "margin-bottom: 10px;" %>
+          <%= link_to "Get tree", "#", class: "btn btn-primary btn-lg" id: "psedo-submit-<%= ra.id %>", style: "margin-bottom: 10px;" %>
         </div>
       </div>
     </div>
@@ -24,21 +24,21 @@
 
 <script>
 $(document).ready(function(){
-  $('#tree_name').keypress(function(e) {
+  $('#tree_name-<%= ra.id %>').keypress(function(e) {
     if(e.which == 13) {
       $('.psedo-submit').click();
     }
   });
   
-  $('.psedo-submit').click(function(e) {
-    if ($('#tree_name').val().replace(/\s/g, '') == '') {
+  $('.psedo-submit-<%= ra.id %>').click(function(e) {
+    if ($('#tree_name-<%= ra.id %>').val().replace(/\s/g, '') == '') {
       $(".tree-name-alert").removeClass("hide");
       e.preventDefault();
       return false;
     } else {
       e.preventDefault();
-      $('#hidden_tree_name').val($('#tree_name').val());
-      $(".tree-form").submit();
+      $('#hidden_tree_name_<%= ra.id %>').val($('#tree_name-<%= ra.id %>').val());
+      $("#tree-form-<%= ra.id %>").submit();
     }
   });
 });
