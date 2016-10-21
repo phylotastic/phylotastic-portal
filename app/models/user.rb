@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   end
   
   def self.anonymous
-    User.find_by_email("anonymous@phylo.com")
+    User.find_by_email(APP_CONFIG['anonymous'])
   end
   
   # Watchs a tree.

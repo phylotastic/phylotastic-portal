@@ -75,7 +75,7 @@ class TreesController < ApplicationController
       return
     else
       if !@tree.public
-        if @tree.user.email != "anonymous@phylo.com"
+        if @tree.user.email != APP_CONFIG['anonymous']
           if @tree.user != current_user
             redirect_to root_path
             return

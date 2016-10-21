@@ -44,7 +44,7 @@ class RawExtractionsController < ApplicationController
         cookies[:temp_id] = { value: ('a'..'z').to_a.shuffle[0,20].join, expires: 1.day.from_now }
       end
       
-      user = User.find_by_email("anonymous@phylo.com")
+      user = User.find_by_email(APP_CONFIG['anonymous'])
       
       @my_lists = []
       
