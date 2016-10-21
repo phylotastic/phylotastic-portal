@@ -42,7 +42,7 @@ class OnplFilesController < ApplicationController
     if @onpl_file.save
       flash[:success] = "Processing! Please wait a couple of seconds"
       job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", current_user.id)
-      redirect_to root_path(type: "of", id: @onpl_file.id, jid: job_id)
+      redirect_to root_path(type: "of", id: @onpl_file.id, jid: job_id, waiting: 1)
     else
       flash[:error] = "Can not process file!"
       redirect_to new_onpl_file_path

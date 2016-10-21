@@ -42,7 +42,7 @@ class ConLinksController < ApplicationController
     if @con_link.save
       flash[:success] = "Processing! Please wait a couple of seconds"
       job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", user.id, temp_id)
-      redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id)
+      redirect_to root_path(type: "cl", id: @con_link.id, jid: job_id, waiting: 1)
     else
       flash[:danger] = @con_link.errors.full_messages
       redirect_to new_con_link_path

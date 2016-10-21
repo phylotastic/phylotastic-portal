@@ -17,10 +17,10 @@ class UploadedListsController < ApplicationController
       list_processor(current_user.email, uploaded_list.id)
       @uploaded_list = UploadedList.find(uploaded_list.id)
       if @uploaded_list.status
-        redirect_to root_path(type: "ul", id: @uploaded_list.lid)
+        redirect_to root_path(type: "ul", id: @uploaded_list.lid, waiting: 1)
         return
       else
-        redirect_to root_path(type: "fl", id: @uploaded_list.id)
+        redirect_to root_path(type: "fl", id: @uploaded_list.id, waiting: 1)
         return
       end
       @uploaded_list.errors.delete(:file)
@@ -241,35 +241,6 @@ class UploadedListsController < ApplicationController
         format.js
       end
     end
-  end
-  
-  def clone
-    data = get_a_list(params[:id])["list"]
-    data.delete("list_id")
-    data["list_species"] = []
-    data["is_list_public"] = params["public"].nil? ? false : true
-    data["list_title"] = params["title"]
-
-    species = JSON.parse(params["species"].to_json)
-    species.each do |k,v|
-      next if v["remove"] == 1
-      next if (v["scientific_name"].nil? || v["scientific_name"].empty?)
-      v.delete("remove")
-      data["list_species"] << v
-    end
-    response = Req.post( APP_CONFIG["sv_create_list"]["url"],
-                         { "user_id" => current_user.email,
-                           "list" => data
-                         }.to_json,
-                         {:content_type => :json} )
-
-    if !response || JSON.parse(response)["status_code"] != 200
-      flash[:danger] = "Unable to clone"
-    else
-      flash[:success] = "List cloned!"
-      CloningRelationship.create(parent: params[:id], child: JSON.parse(response)["list_id"])
-    end
-    redirect_to raw_extractions_new_from_pre_built_examples_path
   end
   
   def list_content

@@ -62,6 +62,8 @@
 </body>
 
 <script>
+  <% if !(params[:waiting] == "1") %>
     $(".alert" ).fadeOut(5000);
+  <% end %>
 </script>
 </html>

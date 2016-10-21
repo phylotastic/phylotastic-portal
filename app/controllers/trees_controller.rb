@@ -36,7 +36,10 @@ class TreesController < ApplicationController
     @resolved_names = JSON.parse @ra.species rescue []
   end
   
-  def create    
+  def create
+    if cookies[:welcome].nil?
+      cookies[:welcome] = 1
+    end
     params["tree"]["chosen_species"] = params["tree"]["chosen_species"].to_json
     if user_signed_in?
       @tree = current_user.trees.build(tree_params.merge(temp_id: nil))
