@@ -36,9 +36,9 @@ $(document).ready(function(){
       e.preventDefault();
       return false;
     } else {
-      e.preventDefault();
       $('#hidden_tree_name_<%= ra.id %>').val($('#tree_name-<%= ra.id %>').val());
       $("#tree-form-<%= ra.id %>").submit();
+      e.preventDefault();
     }
   });
 });

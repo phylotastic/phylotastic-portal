@@ -1,6 +1,6 @@
 <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form", id: "tree-form-#{ra.id}" } do |f| %>
   <%= f.hidden_field :raw_extraction_id %>
-  <%= f.hidden_field :name, id: "hidden_tree_name_#{ra.id}" %>
+  <%= f.hidden_field :name, nil, id: "hidden_tree_name_#{ra.id}" %>
 
   <table class="table table-bordered table-hover chosing-species">
     <thead> 
