@@ -30,7 +30,7 @@ $(document).ready(function(){
     }
   });
   
-  $('.psedo-submit-<%= ra.id %>').click(function(e) {
+  $('#psedo-submit-<%= ra.id %>').click(function(e) {
     if ($('#tree_name-<%= ra.id %>').val().replace(/\s/g, '') == '') {
       $(".tree-name-alert").removeClass("hide");
       e.preventDefault();
