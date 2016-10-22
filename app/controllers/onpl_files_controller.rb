@@ -1,6 +1,6 @@
 class OnplFilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :show, :update_a_species]
+  skip_before_action :authenticate_user!, only: [:new, :create, :show, :update, :update_a_species]
 
   def new
     @onpl_file = OnplFile.new
@@ -86,7 +86,19 @@ class OnplFilesController < ApplicationController
   end
   
   def update
-    @onpl_file = current_user.onpl_files.find_by_id(params[:id])
+    if user_signed_in?
+      user = current_user
+      temp_id = nil
+    else
+      user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
+    end
+    
+    @onpl_file = user.onpl_files.find_by_id(params[:id])
     if @onpl_file.update_attributes(onpl_file_params)
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @onpl_file.raw_extraction)

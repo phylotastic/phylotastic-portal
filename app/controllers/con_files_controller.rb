@@ -1,6 +1,6 @@
 class ConFilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :show]
+  skip_before_action :authenticate_user!, only: [:new, :create, :update]
   
   def new
     @con_file = ConFile.new
@@ -33,7 +33,19 @@ class ConFilesController < ApplicationController
   end
   
   def update
-    @con_file = current_user.con_files.find_by_id(params[:id])
+    if user_signed_in?
+      user = current_user
+      temp_id = nil
+    else
+      user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
+    end
+    
+    @con_file = user.con_files.find_by_id(params[:id])
     if @con_file.update_attributes(con_file_params)
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @con_file.raw_extraction)

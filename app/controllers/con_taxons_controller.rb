@@ -1,6 +1,6 @@
 class ConTaxonsController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_user!, only: [:new, :create, :update]
   
   def new
     @con_taxon = ConTaxon.new
@@ -47,7 +47,19 @@ class ConTaxonsController < ApplicationController
   end
   
   def update
-    @con_taxon = current_user.con_taxons.find_by_id(params[:id])
+    if user_signed_in?
+      user = current_user
+      temp_id = nil
+    else
+      user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
+    end
+    
+    @con_taxon = user.con_taxons.find_by_id(params[:id])
     if @con_taxon.update_attributes(name: params["con_taxon"]["name"])
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @con_taxon.raw_extraction)

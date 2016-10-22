@@ -1,6 +1,6 @@
 class ConLinksController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :show]
+  skip_before_action :authenticate_user!, only: [:new, :create, :update]
 
   def new
     @con_link = ConLink.new
@@ -33,7 +33,19 @@ class ConLinksController < ApplicationController
   end
   
   def update
-    @con_link = current_user.con_links.find_by_id(params[:id])
+    if user_signed_in?
+      user = current_user
+      temp_id = nil
+    else
+      user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
+    end
+    
+    @con_link = user.con_links.find_by_id(params[:id])
     if @con_link.update_attributes(con_link_params)
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @con_link.raw_extraction)
