@@ -1,6 +1,4 @@
-$("#save-to-server").html("Save tree view");
-$("#tree-image-btn").html("<%=j image_tag @tree.image.url(:thumb) %>");
-$("#show-tree-image").find(".modal-body").html("<%=j image_tag @tree.image.url, width: '100%' %>");
+$("#nav-tree-<%= @tree.id %>").parents(".dropdown").find(".treeMenuDropbox").html("<%= @tree.name %>");
 $("#edit-tree-name-modal-<%= @tree.id %>").modal('hide');
 $("#nav-tree-<%= @tree.id %>").text("<%= @tree.name %>");
 alert("Saved tree information");

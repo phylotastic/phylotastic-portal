@@ -8,34 +8,6 @@ class TreesController < ApplicationController
   include TreesHelper
   include Tubesock::Hijack
   
-  def new
-    @ra = RawExtraction.find(params[:ra])
-    source = @ra.contributable
-    if source.class.name != "UploadedList"
-      if source.user != current_user 
-        flash[:danger] = "Permission denied!"
-        redirect_to root_path
-        return
-      end
-    else
-      list = get_a_list(source.lid)
-      if source.public
-        unless current_user.owned?(list)
-          current_user.subcribe(source)
-        end
-      else
-        unless current_user.owned?(list)
-          flash[:danger] = "Permission denied!"
-          redirect_to root_path
-          return
-        end
-      end
-    end
-
-    @tree = current_user.trees.build(raw_extraction_id: params[:ra])
-    @resolved_names = JSON.parse @ra.species rescue []
-  end
-  
   def create
     if cookies[:welcome].nil?
       cookies[:welcome] = 1
@@ -128,12 +100,6 @@ class TreesController < ApplicationController
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
-  def edit
-    @tree = current_user.trees.find_by_id(params[:id])
-    @ra = @tree.raw_extraction
-    @resolved_names = JSON.parse @ra.species rescue []
-  end
-  
   def update
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
@@ -202,22 +168,6 @@ class TreesController < ApplicationController
         format.html { redirect_to trees_path }
         format.js
       end
-    end
-  end
-  
-  def taxon_matching_report
-    ra = RawExtraction.find(params[:ra])
-    @resolved_names = JSON.parse(ra.species)["resolvedNames"] rescue []
-    respond_to do |format|
-      format.html
-      format.pdf do
-        render pdf: "taxon_matching_report",
-               template: "trees/taxon_matching_report.pdf.erb"
-      end
-     format.csv do
-       render csv: "taxon_matching_report",
-              template: "trees/taxon_matching_report.csv.erb"
-     end
     end
   end
   
