@@ -36,10 +36,10 @@ class ConLinksController < ApplicationController
     @con_link = current_user.con_links.find_by_id(params[:id])
     if @con_link.update_attributes(con_link_params)
       flash[:success] = "List name updated"
-      redirect_to root_path
+      redirect_to root_path(ra: @con_link.raw_extraction)
     else
       flash[:danger] = "Failed to update list name"
-      redirect_to root_path
+      redirect_to root_path(ra: @con_link.raw_extraction)
     end
   end
   

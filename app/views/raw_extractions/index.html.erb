@@ -53,7 +53,7 @@ $(document).ready(function() {
   
   // There is a background job
   if("<%= params[:jid] %>" == "") {
-    
+    $("#ra-<%= params[:ra] %>").click();
   } else {
     socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:ra]%>" + "&jid=" + "<%=params[:jid] %>");
         

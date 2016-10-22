@@ -36,10 +36,10 @@ class ConFilesController < ApplicationController
     @con_file = current_user.con_files.find_by_id(params[:id])
     if @con_file.update_attributes(con_file_params)
       flash[:success] = "List name updated"
-      redirect_to root_path
+      redirect_to root_path(ra: @con_file.raw_extraction)
     else
       flash[:danger] = "Failed to update list name"
-      redirect_to root_path
+      redirect_to root_path(ra: @con_file.raw_extraction)
     end
   end
   

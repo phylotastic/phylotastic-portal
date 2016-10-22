@@ -89,10 +89,10 @@ class OnplFilesController < ApplicationController
     @onpl_file = current_user.onpl_files.find_by_id(params[:id])
     if @onpl_file.update_attributes(onpl_file_params)
       flash[:success] = "List name updated"
-      redirect_to root_path
+      redirect_to root_path(ra: @onpl_file.raw_extraction)
     else
       flash[:danger] = "Failed to update list name"
-      redirect_to root_path
+      redirect_to root_path(ra: @onpl_file.raw_extraction)
     end
   end
   

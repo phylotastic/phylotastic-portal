@@ -34,7 +34,7 @@ class UploadedListsController < ApplicationController
       redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
-      redirect_to root_path    
+      redirect_to root_path(ra: ra.id)
     end
   end
   
@@ -55,15 +55,15 @@ class UploadedListsController < ApplicationController
 
       if !response || JSON.parse(response)["status_code"] != 200
         flash[:danger] = "Failed to update list name"
-        redirect_to root_path
+        redirect_to root_path(ra: @uploaded_list.raw_extraction)
       else
         @uploaded_list.update_attributes(public: data["list"]["is_list_public"], name: data["list"]["list_title"])
         flash[:success] = "List name updated"
-        redirect_to root_path
+        redirect_to root_path(ra: @uploaded_list.raw_extraction)
       end
     else
       flash[:danger] = "Permission denied!"
-      redirect_to root_path
+      redirect_to root_path(ra: @uploaded_list.raw_extraction)
     end
   end
   
