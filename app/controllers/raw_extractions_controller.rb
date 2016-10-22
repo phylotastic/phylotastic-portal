@@ -9,36 +9,6 @@ class RawExtractionsController < ApplicationController
       if !cookies[:temp_id].nil?
         cookies.delete :temp_id
       end
-      
-      # my_failed_lists  = current_user.failed_lists
-#       my_failed_lists = [] if my_failed_lists.nil?
-#       my_failed_lists.map! do |l|
-#         name = l.name.nil? ? l.file.original_filename : l.name
-#         {id: l.id, name: name, class: "FailedList"}
-#       end
-#
-#       # @my_subcribing_lists = current_user.subcribing_lists
-#       # @my_subcribing_lists = [] if @my_subcribing_lists.nil?
-#
-#       my_private_lists = get_private_lists["lists"] rescue []
-#       my_private_lists = [] if my_private_lists.nil?
-#       my_private_lists.map! do |l|
-#         {id: l["list_id"], name: l["list_title"], class: "UploadedList"}
-#       end
-#
-#       cfiles  = current_user.con_files.map do |f|
-#         {id: f.id, name: f.name, class: "ConFile"}
-#       end
-#       ofiles  = current_user.onpl_files.map do |f|
-#         {id: f.id, name: f.name, class: "OnplFile"}
-#       end
-#       clinks  = current_user.con_links.map do |f|
-#         {id: f.id, name: f.name, class: "ConLink"}
-#       end
-#       ctaxons = current_user.con_taxons.map do |f|
-#         {id: f.id, name: f.name, class: "ConTaxon"}
-#       end
-#
       user = current_user
     else
       if cookies[:temp_id].nil?
@@ -46,63 +16,9 @@ class RawExtractionsController < ApplicationController
       end
       
       user = User.find_by_email(APP_CONFIG['anonymous'])
-      
-      # my_private_lists = []
-#
-#       my_failed_lists  = user.failed_lists.select do |l|
-#         if !l.raw_extraction.nil?
-#           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
-#         end
-#       end
-#       if my_failed_lists.nil?
-#         my_failed_lists = []
-#       else
-#         my_failed_lists.map! do |l|
-#           name = l.name.nil? ? l.file.original_filename : l.name
-#           {id: l.id, name: name, class: "FailedList"}
-#         end
-#       end
-#
-#       cfiles  = user.con_files.select do |l|
-#         if !l.raw_extraction.nil?
-#           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
-#         end
-#       end
-#       cfiles.map! do |f|
-#         {id: f.id, name: f.name, class: "ConFile"}
-#       end
-#
-#       ofiles  = user.onpl_files.select do |l|
-#         if !l.raw_extraction.nil?
-#           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
-#         end
-#       end
-#       ofiles.map! do |f|
-#         {id: f.id, name: f.name, class: "OnplFile"}
-#       end
-#
-#       clinks  = user.con_links.select do |l|
-#         if !l.raw_extraction.nil?
-#           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
-#         end
-#       end
-#       clinks.map! do |f|
-#         {id: f.id, name: f.name, class: "ConLink"}
-#       end
-#
-#       ctaxons = user.con_taxons.select do |l|
-#         if !l.raw_extraction.nil?
-#           l.created_at > Time.now - 1.day && l.raw_extraction.temp_id == cookies[:temp_id]
-#         end
-#       end
-#       ctaxons.map! do |f|
-#         {id: f.id, name: f.name, class: "ConTaxon"}
-#       end
-      
     end
     @my_lists = user.raw_extractions
     
-    # @my_lists = my_private_lists << my_failed_lists << cfiles << ofiles << clinks << ctaxons
     @my_lists.to_a.sort_by!{ |m| m.name.downcase }
 
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])

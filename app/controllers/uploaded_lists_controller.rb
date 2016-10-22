@@ -28,15 +28,10 @@ class UploadedListsController < ApplicationController
       FileUtils.rm_rf(File.dirname(uploaded_list.file.path))
     end
     if uploaded_list.update_attributes(uploaded_list_params)
-      list_processor(current_user.email, uploaded_list.id)
-      @uploaded_list = UploadedList.find(uploaded_list.id)
-      if @uploaded_list.status
-        redirect_to root_path(type: "ul", id: @uploaded_list.lid)
-        return
-      else
-        redirect_to root_path(type: "fl", id: @uploaded_list.id)
-        return
-      end
+      ra = uploaded_list.raw_extraction
+      flash[:success] = "Processing! Please wait a couple of seconds"
+      job_id = ExtractionsWorker.perform_async(uploaded_list.id, "UploadedList", current_user.id)
+      redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
     else
       flash[:danger] = "Can not re-upload file. Please try again later"
       redirect_to root_path    
@@ -203,14 +198,6 @@ class UploadedListsController < ApplicationController
         format.html
         format.js
       end
-    end
-  end
-  
-  def publish
-    @uploaded_list = current_user.uploaded_lists.find(params[:id])
-    if @uploaded_list.update_attributes(public: true)
-      flash[:success] = "List published!"
-      redirect_to uploaded_lists_path(params[:id])
     end
   end
   
