@@ -1,6 +1,11 @@
 class RawExtraction < ActiveRecord::Base
   has_many :trees, dependent: :destroy
   belongs_to :contributable, polymorphic: true
+  belongs_to :users
+  
+  def name
+    contributable.name
+  end
   
   def user
     contributable.user

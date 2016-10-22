@@ -1,51 +1,34 @@
 class OnplFilesController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :authenticate_user!, only: [:new, :create, :show]
 
   def new
     @onpl_file = OnplFile.new
-  end
-  
-  def show
-    @f = OnplFile.find(params[:id])
-    @ra = @f.raw_extraction
-    if @ra.nil?
-      respond_to do |format|
-        format.js
-      end
-      return
-    end
-    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
-    @resolved_names = [] if !@resolved_names
-    
-    names = JSON.parse(@ra.extracted_names)["scientificNames"]
-
-    @unresolved = []
-    names.each do |n|
-      flag = false
-      @resolved_names.each do |r|
-        if r["matched_name"] == n
-          flag = true 
-          break
-        end
-      end
-      @unresolved << n if !flag
-    end
-    
-    respond_to do |format|
-      format.html
-      format.js
+    if !user_signed_in? && cookies[:temp_id].nil?
+      redirect_to root_path
     end
   end
   
   def create
-    @onpl_file = current_user.onpl_files.build(onpl_file_params)
-    if @onpl_file.save
-      flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", current_user.id)
-      redirect_to root_path(type: "of", id: @onpl_file.id, jid: job_id, waiting: 1)
+    if user_signed_in?
+      user = current_user
+      temp_id = nil
     else
-      flash[:error] = "Can not process file!"
-      redirect_to new_onpl_file_path
+      user = User.anonymous      
+      if cookies[:temp_id].nil?
+        redirect_to root_path
+        return
+      end
+      temp_id = cookies[:temp_id]
+    end
+    @onpl_file = user.onpl_files.build(onpl_file_params)
+    if @onpl_file.save
+      ra = @onpl_file.create_raw_extraction(temp_id: temp_id, user_id: user.id)
+      flash[:success] = "Processing! Please wait a couple of seconds"
+      job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", user.id)
+      redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
+    else
+      render action: "new"
     end
   end
   

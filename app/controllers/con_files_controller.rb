@@ -6,32 +6,9 @@ class ConFilesController < ApplicationController
     @con_file = ConFile.new
     if !user_signed_in? && cookies[:temp_id].nil?
       redirect_to root_path
-      return
     end
   end
-    
-  def show
-    if user_signed_in?
-      user = current_user
-    else
-      user = User.anonymous      
-    end
-    @f = user.con_files.find(params[:id])
-    @ra = @f.raw_extraction
-    if @ra.nil?
-      respond_to do |format|
-        format.js
-      end
-      return
-    end
-    @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
-    @resolved_names = [] if !@resolved_names
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
-  
+      
   def create
     if user_signed_in?
       user = current_user
@@ -46,12 +23,12 @@ class ConFilesController < ApplicationController
     end
     @con_file = user.con_files.build(con_file_params)
     if @con_file.save
+      ra = @con_file.create_raw_extraction(temp_id: temp_id, user_id: user.id)
       flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id, temp_id)
-      redirect_to root_path(type: "cf", id: @con_file.id, jid: job_id, waiting: 1)
+      job_id = ExtractionsWorker.perform_async(@con_file.id, "ConFile", user.id)
+      redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
     else
-      flash[:error] = "Can not process file!"
-      redirect_to root_path
+      render action: "new"
     end
   end
   

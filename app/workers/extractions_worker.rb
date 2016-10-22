@@ -3,7 +3,7 @@ class ExtractionsWorker
   # sidekiq_options retry: false
   include Sidekiq::Status::Worker
   
-  def perform(source_id, source_type, current_user_id, temp_id)
+  def perform(source_id, source_type, current_user_id)
     puts source_id
     puts source_type
     # puts self.jid
@@ -20,6 +20,69 @@ class ExtractionsWorker
       file_url.slice!(/[?]\d*\z/)
       file_url = APP_CONFIG['domain'] + file_url
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url + "&engine=" + file.method.to_s) 
+    when "ConTaxon"
+      taxon = ConTaxon.find_by_id(source_id)
+      
+      location = taxon.country_id.nil? ? false : true
+      ncbi = taxon.has_genome_in_ncbi.nil? ? false : true
+      nb_species = taxon.nb_species.nil? ? false : true
+      
+      if (location && ncbi)
+        res_loc = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + taxon.taxon + "&country=" + Country.find(taxon.country_id).name)
+        res_ncbi = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + params[:taxon])
+            
+        new_res = JSON.parse(res_loc.to_s)
+        loc_species = new_res["species"]
+        mapping = []
+        
+        begin
+          JSON.parse(res_ncbi.to_s)["species"].each do |n|
+            if loc_species.include? n
+              mapping << n
+            end
+          end
+        rescue
+          mapping = []
+        end
+        
+        new_res["species"] = mapping
+        response = new_res.to_json
+      elsif location
+        response = Req.get(APP_CONFIG['sv_species_from_taxon_by_country']['url'] + taxon.taxon + "&country=" + Country.find(taxon.country_id).name)
+      elsif ncbi
+        response = Req.get(APP_CONFIG['sv_ncbi_genome']['url'] + taxon.taxon)
+      else
+        response = Req.get(APP_CONFIG['sv_species_from_taxon']['url'] + taxon.taxon)
+      end
+          
+      if nb_species
+        begin
+          if JSON.parse(response)["species"].count >= taxon.nb_species.to_i
+            species = JSON.parse(response)["species"].take(taxon.nb_species.to_i)
+            new_res = JSON.parse(response)
+            new_res["species"] = species
+            response = new_res.to_json
+          else
+            taxon.update_attributes(nb_species: JSON.parse(response)["species"].count)
+          end
+        rescue Exception => e  
+          puts e.message
+          puts e.backtrace
+        end
+      end
+      
+      code = JSON.parse(response)["status_code"] rescue 0
+      case code
+      when 404, 204
+        taxon.update_attributes(reason: response)
+        extracted_response = {"scientificNames": []}
+      when 200
+        species = JSON.parse(response)["species"] rescue []
+        faker = {scientificNames: []}
+        faker[:scientificNames].concat species
+        extracted_response = faker.to_json
+      end
+
     when "OnplFile"
       extracted_response = {}
       extracted = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
@@ -34,56 +97,14 @@ class ExtractionsWorker
     end
     
     # raw extraction
-    extraction = source_type.constantize.find_by_id(source_id).create_raw_extraction(extracted_names: extracted_response, temp_id: temp_id)
-
-    # retrieve tree corresponding to the above raw extraction
-    # tries = 3
-#     begin
-#       tree = Tree.find_by_bg_job(self.jid)
-#       raise "Cannot find tree executed by background job #{self.jid}." if tree.nil?
-#     rescue Exception => e
-#       puts e.message
-#       puts e.backtrace.inspect
-#       tries -= 1
-#       sleep 1
-#       if tries > 0
-#         retry
-#       else
-#         logger.info "Oh Noes!"
-#         tree = owner.trees.create(bg_job: self.jid)
-#       end
-#     end
-#
-#     # if extracting service has problems, it is time to terminate
-#     if extracted_response.nil?
-#       tree.update_attributes( raw_extraction_id: extraction.id,
-#                               bg_job: "-1",
-#                               status: "unsucessfully-extracted" )
-#       return
-#
-#     # if there are no names in resource
-#     elsif JSON.parse(extracted_response)["scientificNames"].empty?
-#       tree.update_attributes( raw_extraction_id: extraction.id,
-#                               bg_job: "-1",
-#                               status: "no-names" )
-#       return
-#     end
-#
-#     # update status "extracted" to tree
-#     tree.update_attributes( raw_extraction_id: extraction.id,
-#                             status: "extracted" )
-#
-#     # call to resolution names service
-      resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
+    extraction = source_type.constantize.find_by_id(source_id).raw_extraction
+    extraction.update_attributes(extracted_names: extracted_response)
+    
+    resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted_response,
                                   :content_type => :json )
-#
-#     # update state of tree
-#     if !resolved_response
-#       tree.update_attributes(bg_job: "-1", status: "unsucessfully-resolved")
-#     else
-      extraction.update_attributes(species: resolved_response)
-#       tree.update_attributes(bg_job: "-1", status: "resolved")
-#     end
+
+    extraction.update_attributes(species: resolved_response)
   end
+
 end

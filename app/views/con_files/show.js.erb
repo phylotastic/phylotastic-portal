@@ -1,9 +1,0 @@
-<% if @ra.nil? %>
-  $('#ra-holder').html("<%= escape_javascript(render partial: 'con_files/content_error', locals: {f: @f}) %>");
-<% else %>
-  $('#ra-holder').html("<%= escape_javascript(render partial: 'content',
-                                  locals: { resolved_names: @resolved_names, 
-                                            unresolved:     [],
-                                            name:           @f.name, 
-                                            ra:             @ra} ) %>");
-<% end %>                                                              

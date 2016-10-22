@@ -1,7 +1,7 @@
 <div class="col-md-9" id="ra-content">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= name %></a></li>
+    <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><%= ra.name %></a></li>
     <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">Metadata</a></li>
   </ul>
   <!-- Tab panes -->
@@ -10,8 +10,7 @@
       <p class="chosing-species">No species found</p>
     </div>
     <div role="tabpanel" class="tab-pane" id="metadata">
-      <div>
-      </div>
+      <%= render partial: "metadata", locals: {ra: ra} %>
     </div>
   </div>
 </div>
@@ -19,7 +18,7 @@
 <div class="col-md-3">
   <div id="nav-list" class="well">
     <div class="center fix-heading">List Actions</div>
-    <%= link_to('Delete list', ra.contributable, class: 'btn btn-danger btn-block', method: :delete, data: { confirm: "Are you sure to delete list #{ra.contributable.name}?" } ) %>
+    <%= link_to('Delete list', ra.contributable, class: 'btn btn-danger btn-block', method: :delete, data: { confirm: "Are you sure to delete list #{ra.name}?" } ) %>
   </div>
   
   <%= render partial: "raw_extractions/creation_nav" %>  

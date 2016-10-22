@@ -6,7 +6,7 @@ class Req < ActiveRecord::Base
     rescue => e
       puts e.message
       logger.info "Error: POST #{url}\n#{data}\n#{header}"
-      return false
+      return {}
     end
   end
   
@@ -16,7 +16,7 @@ class Req < ActiveRecord::Base
     rescue => e
       puts e.message
       logger.info "Error: GET #{url}"
-      return false
+      return {}
     end
   end
   

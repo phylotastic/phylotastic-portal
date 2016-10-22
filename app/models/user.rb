@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :uploaded_lists, dependent: :destroy
   has_many :user_list_relationships, dependent: :destroy
   has_many :subcribing_lists, through: :user_list_relationships, source: :uploaded_list
+  has_many :raw_extractions, dependent: :destroy
   
   validates_format_of :email, :with => Devise.email_regexp, :allow_blank => true, :if => :email_changed?
   

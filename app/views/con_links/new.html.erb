@@ -6,9 +6,13 @@
     <%= form_for @con_link do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.label :uri, "(*) URL " %>
+        <%= f.label :uri do %>
+          <span class="red">*</span> URL
+        <% end %>
         <%= f.text_field :uri, class: "form-control", style: "margin-bottom: 30px;" %>      
-        <%= f.label :name, "(*) Enter a name for this list" %>
+        <%= f.label :name do %>
+         <span class="red">*</span> Enter a name for this list" 
+        <% end %>
         <%= f.text_field :name, class: "form-control", style: "width: 50%;margin-bottom: 20px;" %>
       
         <%= f.label :description, "Description" %>

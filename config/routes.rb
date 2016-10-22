@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root 'raw_extractions#index'
 
-  resources :raw_extractions, only: [:index] do 
+  resources :raw_extractions, only: [:index, :show] do 
     member do
       post "download_selected_species"
     end

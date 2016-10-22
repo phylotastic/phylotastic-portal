@@ -5,7 +5,9 @@
     <%= form_for @onpl_file do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
       <div class="form-group">
-        <%= f.label :document, "(*) Choose a document " %>
+        <%= f.label :document do %>
+          <span class="red">*</span> Choose a document
+        <% end %>
         <div class="form-group" id="drop-zone">
           Drop files here...
           <div id="clickHere">
@@ -15,7 +17,9 @@
         </div>
         <div id="chosen_file"></div>
       
-        <%= f.label :name, "(*) Enter a name for this list" %>
+        <%= f.label :name do %>
+          <span class="red">*</span> Enter a name for this list
+        <% end %>
         <%= f.text_field :name, class: "form-control", style: "width: 50%;margin-bottom: 20px;" %>
       
         <%= f.label :description, "Description" %>

@@ -49,66 +49,42 @@
 <script>
 $(document).ready(function() {
   
-    // $(".table-scroll" ).scrollTop( 300 );
+  // $(".table-scroll" ).scrollTop( 300 );
   
-  if("<%= params[:type] %>" != "") {
-    if("<%= params[:jid] %>" == "") {
-      $("#<%= params[:type] %>-<%= params[:id] %>").click();
-      <% if !user_signed_in? %>
-        <% if params[:type] == "ct" %>
-          $("#ra-content").append('<%= link_to "a", con_taxon_path(params[:id]), remote: true, class:"hide", id: "ct-#{params[:id]}" %>');
-          $("#ct-<%= params[:id] %>").click();
-        <% end %>      
-      <% end %>
-    } else {
-      socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:id]%>" + "&type=" + "<%= params[:type] %>" + "&jid=" + "<%=params[:jid] %>");
-
-      socket.onmessage = function(event) {
-        if(event.data.length) {
-          d = JSON.parse(event.data)
-          console.log(d);
-          if(d["status"] == "complete") {
-            <% if user_signed_in? %>
-              $("#<%= params[:type] %>-<%= params[:id] %>").click();   
-            <% else %>
-              <% case params[:type] %>
-              <% when "cl" %>
-                <% l = ConLink.find(params[:id]) %>
-                $("#my-lists").append('<%= link_to l.name, con_link_path(params[:id]), remote: true, class:"list-group-item", id: "cl-#{params[:id]}" %>');
-                $("#cl-<%= params[:id] %>").on("click", function() {
-                    $(".list-group-item").removeClass("active");
-                    $(this).addClass("active");
-                    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
-                    $('#nav-list').html("");
-                  })
-                $("#cl-<%= params[:id] %>").click();
-              <% when "cf" %>
-                <% f = ConFile.find(params[:id]) %>
-                $("#my-lists").append('<%= link_to f.name, con_file_path(params[:id]), remote: true, class:"list-group-item", id: "cf-#{params[:id]}" %>');
-                $("#cf-<%= params[:id] %>").on("click", function() {
-                  $(".list-group-item").removeClass("active");
-                  $(this).addClass("active");
-                  $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
-                  $('#nav-list').html("");
-                })
-                $("#cf-<%= params[:id] %>").click();
-              <% end %>
-            <% end %>
-            <% if params[:waiting] == "1" %>
-              $(".alert" ).fadeOut(500);
-            <% end %>
-          }
-          if(d["status"] == "failed") {
-            $("#<%= params[:type] %>-<%= params[:id] %>").click(); 
-            <% if params[:waiting] == "1" %>
-              $(".alert" ).fadeOut(500);
-            <% end %>
-            
-          }
-        }
+  // There is a background job
+  if("<%= params[:jid] %>" == "") {
+    
+  } else {
+    socket = new WebSocket("ws://" + window.location.host + "/raw_extractions/checking_status?id=" + "<%= params[:ra]%>" + "&jid=" + "<%=params[:jid] %>");
+        
+    socket.onmessage = function(event) {
+      d = JSON.parse(event.data)
+      console.log(d);
+      if(d["status"] == "complete") {
+        $("#ra-<%= params[:ra] %>").click();
+        
+        // Fade away message
+        <% if params[:waiting] == "1" %>
+          $(".alert" ).fadeOut(500);
+        <% end %>
+      // End of status complete
       }
+      
+      if(d["status"] == "failed") {
+        $("#ra-<%= params[:ra] %>").click();
+        
+        // Fade away message
+        <% if params[:waiting] == "1" %>
+          $(".alert" ).fadeOut(500);
+        <% end %>
+      // End of status failed
+      }
+     
+     
+    // End of socket
     }
   }
+  
   
   
   $(".list-group-item").on("click", function() {
