@@ -108,76 +108,39 @@
       <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-format">
         Export as
       </button>
-  
-      <!-- Add to gallery btn -->
-      <!-- <%= render 'watch_relationships/watch_form' unless current_user.nil? %> -->
-  
-      <!-- <% if tree.user == current_user %>
-        <% if !tree.public && tree.status == "completed" %>
-          <div id="publicise-btn">
-            <%= form_for(tree, url: public_trees_path, remote: true, html: {id: "publicise-tree"}) do |f| %>
-              <div><%= hidden_field_tag "tree[public]", true %></div>
-              <%= f.submit "Publish to Community", class: "btn btn-block btn-primary" %>
-            <% end %>
-          </div>
-        <% end %>
-        <%= link_to "Save tree view", "#", class: "btn btn-default btn-block", id: "save-to-server" %>
-      <% end %> -->
-  
-      <!-- <%= form_tag "/trees/generate_image.svg", method: :post, id: "save-to-disk-form" do %>
-        <input type="hidden" name="image" value="" />
-      <% end %>
-      <%= link_to "Save tree to disk", "#", class: "btn btn-default btn-block", id: "save-to-disk", style: "margin-top:7px;" %> -->
 	     
       <% if user_signed_in? %>
-    	  <!-- Button trigger modal -->
-    	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
-    	  <!-- Modal -->
-    	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    	    <div class="modal-dialog" role="document">
-    	      <div class="modal-content">
-              <%= form_for tree, remote: true do |f| %>
-    	          <div class="modal-header">
-    	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
-    	          </div>
-    	          <div class="modal-body">
-    	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
-    	          </div>
-    	          <div class="modal-footer">
-    	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
-    	          </div>
-              <% end %>
+        <% if current_user == tree.user %>
+      	  <!-- Button trigger modal -->
+      	  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Edit tree name</a>
+      	  <!-- Modal -->
+      	  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      	    <div class="modal-dialog" role="document">
+      	      <div class="modal-content">
+                <%= form_for tree, remote: true do |f| %>
+      	          <div class="modal-header">
+      	            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      	            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
+      	          </div>
+      	          <div class="modal-body">
+      	            <%= f.text_field :name, value: tree.name, class: "form-control" %>
+      	          </div>
+      	          <div class="modal-footer">
+      	            <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+      	          </div>
+                <% end %>
+              </div>
             </div>
           </div>
-        </div>
     
-        <%= form_for(tree, html: { method: :delete }) do |f| %>
-          <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
-        <% end %>
+          <%= form_for(tree, html: { method: :delete }) do |f| %>
+            <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+          <% end %>
         
+        <% end %>
       <% end %>
     </div>  
 
-  </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"></h4>
-      </div>
-      <div class="modal-body center">
-        <%= image_tag tree.image.url, width: "100%" %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
   </div>
 </div>
 

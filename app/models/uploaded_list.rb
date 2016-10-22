@@ -4,8 +4,6 @@ require 'roo'
 class UploadedList < ActiveRecord::Base
   belongs_to :user
   has_one :raw_extraction, as: :contributable, dependent: :destroy
-  has_many :user_list_relationships, dependent: :destroy
-  has_many :subcribers, :through => :user_list_relationships, :source => :user
   
   has_attached_file :file
   validates_attachment :file,
@@ -138,16 +136,16 @@ class UploadedList < ActiveRecord::Base
                            "list" => data
                          }.to_json,
                          {:content_type => :json} )
-
-    if !response || JSON.parse(response)["status_code"] != 200
+                         
+    if response.empty? || JSON.parse(response)["status_code"] != 200
       ul.update_attributes(status: false, reason: JSON.parse(response)["message"])
+      return {}
     else
       ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
       # create a raw extraction
       t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
       found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
-      resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
-      extraction = ul.create_raw_extraction(species: resolved)
+      return found
     end
   end
 

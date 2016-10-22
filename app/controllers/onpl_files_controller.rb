@@ -1,6 +1,6 @@
 class OnplFilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :show]
+  skip_before_action :authenticate_user!, only: [:new, :create, :show, :update_a_species]
 
   def new
     @onpl_file = OnplFile.new
@@ -50,8 +50,8 @@ class OnplFilesController < ApplicationController
     resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted.to_json,
                                   :content_type => :json )
-    if !resolved_response || JSON.parse(resolved_response)["status_code"] != 200
-      @mess = "Species are not updated " + JSON.parse(response)["message"]
+    if resolved_response.empty? || JSON.parse(resolved_response)["status_code"] != 200
+      @mess = "Species is not updated " + JSON.parse(response)["message"]
       respond_to do |format|
         format.html
         format.js

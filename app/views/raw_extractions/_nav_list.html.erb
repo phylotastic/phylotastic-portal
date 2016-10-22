@@ -1,4 +1,4 @@
-<div class="center fix-heading">List Actions</div>
+<div class="center fix-heading">List actions</div>
 
 
 <!-- Button trigger modal -->
@@ -160,7 +160,7 @@ $(document).ready(function() {
       }
     }
   
-    submit("<%= download_selected_species_raw_extraction_path %>", 'POST', data);
+    submit("<%= download_selected_species_raw_extraction_path(ra.id) %>", 'POST', data);
     return false;
   });
 

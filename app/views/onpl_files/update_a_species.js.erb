@@ -1,7 +1,9 @@
+<% resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue [] %>
+<% resolved_names = [] if resolved_names.empty? %>
+<% species = resolved_names.map { |n| n["matched_name"] } %>
+<% species = species.sort %>
+
 alert("<%= @mess %>");
-$('#ra-content').html("<%= escape_javascript(render partial: 'content', 
-                                                    locals: { resolved_names: @resolved_names, 
-                                                              unresolved:     @unresolved,
-                                                              name:           @f.name, 
-                                                              ra:             @ra} ) %>");
-                                                            
+$('#content').html("<%= escape_javascript(render partial: 'trees/tree_form', locals: { ra: @ra, species: species }) %>");
+$('#content').append("<%= escape_javascript(render partial: 'onpl_files/unmatched_names', locals: {ra: @ra, resolved_names: resolved_names}) %>");
+$('#nav-list').html("<%= escape_javascript(render partial: 'raw_extractions/nav_list', locals: { ra: @ra, resolved_names: resolved_names}) %>");

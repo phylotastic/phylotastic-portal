@@ -11,21 +11,14 @@ class UploadedListsController < ApplicationController
   end
   
   def create
-    uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
-    if uploaded_list.save
+    @uploaded_list = current_user.uploaded_lists.build(uploaded_list_params)
+    if @uploaded_list.save
+      ra = @uploaded_list.create_raw_extraction(user_id: current_user.id)
       flash[:success] = "Processing! Please wait a couple of seconds"
-      list_processor(current_user.email, uploaded_list.id)
-      @uploaded_list = UploadedList.find(uploaded_list.id)
-      if @uploaded_list.status
-        redirect_to root_path(type: "ul", id: @uploaded_list.lid, waiting: 1)
-        return
-      else
-        redirect_to root_path(type: "fl", id: @uploaded_list.id, waiting: 1)
-        return
-      end
-      @uploaded_list.errors.delete(:file)
-      flash[:error] = "Can not process list!"
-      redirect_to root_path
+      job_id = ExtractionsWorker.perform_async(@uploaded_list.id, "UploadedList", current_user.id)
+      redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
+    else
+      render action: "new"
     end
   end
   
@@ -69,42 +62,12 @@ class UploadedListsController < ApplicationController
         flash[:danger] = "Failed to update list name"
         redirect_to root_path
       else
+        @uploaded_list.update_attributes(public: data["list"]["is_list_public"], name: data["list"]["list_title"])
         flash[:success] = "List name updated"
         redirect_to root_path
       end
     else
       flash[:danger] = "Permission denied!"
-      redirect_to root_path
-    end
-  end
-  
-  def show
-    @list = get_a_list(params[:id])
-    if @list["status_code"] == 200 # if there is a list in the service
-      @uploaded_list = UploadedList.find_or_create(@list)
-      @uploaded_list.update_attributes(name: @list["list"]["list_title"])
-      @ra = @uploaded_list.raw_extraction
-      @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
-      @resolved_names = [] if !@resolved_names
-      
-      names = @list["list"]["list_species"].map {|s| s["scientific_name"] }
-      @unresolved = []
-      names.each do |n|
-        flag = false
-        @resolved_names.each do |r|
-          if r["matched_name"] == n
-            flag = true 
-            break
-          end
-        end
-        @unresolved << n if !flag
-      end
-      respond_to do |format|
-        format.html
-        format.js
-      end
-    else
-      flash[:danger] = @list["message"]
       redirect_to root_path
     end
   end
@@ -243,27 +206,6 @@ class UploadedListsController < ApplicationController
     end
   end
   
-  def list_content
-    @list = get_a_list(params[:list_id])
-    @uploaded_list = UploadedList.find_or_create(@list)
-    respond_to do |format|
-      format.js
-    end
-  end
-  
-  def trees
-    @list = get_a_list(params["list_id"])
-    uploaded_list = UploadedList.find_or_create(@list)
-    if current_user.owned? @list
-      @tree_ids = uploaded_list.raw_extraction.trees.map {|t| t.id }
-    else
-      @tree_ids = uploaded_list.raw_extraction.trees.select {|t| t.user == current_user}.map {|t| t.id }
-    end
-    respond_to do |format|
-      format.js
-    end
-  end
-  
   def publish
     @uploaded_list = current_user.uploaded_lists.find(params[:id])
     if @uploaded_list.update_attributes(public: true)
@@ -272,40 +214,10 @@ class UploadedListsController < ApplicationController
     end
   end
   
-  def failed
-    @uploaded_list = current_user.uploaded_lists.find(params[:id])
-    respond_to do |format|
-      format.js
-    end
-  end
-  
   private
 
   def uploaded_list_params
     params.fetch(:uploaded_list, {}).permit(:file, :public, :name, :description)
   end
-  
-  def list_processor(user_name, ul_id)
-    f_path = UploadedList.find(ul_id).file.path
-    Zip::File.open(f_path) do |zip_file|
-      # Handle entries one by one
-      zip_file.each do |entry|
-        # Extract to file/directory/symlink
-        puts "Extracting #{entry.name}"
-        el = UploadedList.extraction_location(f_path, entry.name)
-        entry.extract(el)
-      end
 
-      begin
-        UploadedList.process(user_name, ul_id)
-      rescue Exception => e
-        puts e
-        puts e.backtrace
-      end
-      
-      # Find specific entry
-      # entry = zip_file.glob('*.csv').first
-      # puts entry.get_input_stream.read
-    end
-  end
 end

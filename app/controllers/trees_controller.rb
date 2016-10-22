@@ -93,17 +93,6 @@ class TreesController < ApplicationController
   end
   
   def index
-    # @con_link_jobs        = current_user.con_links
-#     @con_file_jobs        = current_user.con_files
-#     @con_taxon_jobs       = current_user.con_taxons
-#     @selection_taxon_jobs = current_user.selection_taxons.reverse
-#     @subset_taxon_jobs    = current_user.subset_taxons.reverse
-#
-#     @my_lists = get_private_lists["lists"] rescue []
-#     @my_failed_lists = current_user.failed_lists
-#     @my_subcribing_lists = current_user.subcribing_lists
-#
-#     @processing = current_user.processing_trees
     @inspect = params[:ins]
     if user_signed_in?
       if current_user.sign_in_count == 1
@@ -203,24 +192,6 @@ class TreesController < ApplicationController
     end
   end
   
-  def generate_image
-    respond_to do |format|
-      format.svg {
-        send_data(params["image"], disposition: 'attachment')
-      }
-    end
-  end
-  
-  def public
-    @tree = current_user.trees.find_by_id(params[:id])
-    if @tree.update_attributes(tree_params)
-      respond_to do |format|
-        format.html { redirect_to public_gallery_trees_path }
-        format.js { render 'public.js.erb'}
-      end
-    end
-  end
-  
   def destroy
     tree = Tree.find(params[:id])
     if tree.nil?
@@ -231,27 +202,6 @@ class TreesController < ApplicationController
         format.html { redirect_to trees_path }
         format.js
       end
-    end
-  end
-  
-  def public_gallery
-    @trees = Tree.search do
-      all do 
-        fulltext params[:search]
-        with(:public, true)
-        paginate :page => params[:page], :per_page => 9
-      end
-    end.results
-  end
-  
-  def image_getter
-    data = Req.get(APP_CONFIG["sv_get_species_image"]["url"] + params["spe"])
-    res = JSON.parse(data) rescue []
-    # image_url = res["species"].first["images"].first["eolThumbnailURL"]
-    image_url = res["species"].first["images"].first["eolMediaURL"]
-    image = Base64.encode64(open(image_url, "rb").read)
-    respond_to do |format|
-      format.json { render :json => {image: "data:image/png;base64,#{image}"} }
     end
   end
   
@@ -284,27 +234,6 @@ class TreesController < ApplicationController
     end
   end
   
-  def update_description
-    @tree = current_user.trees.find_by_id(params[:id])
-    if @tree.nil?
-      redirect_to root_path
-    else
-      @tree.update_attributes(description: params[:description])
-      respond_to do |format|
-        format.html
-        format.js
-      end
-    end
-  end
-  
-  def download_image
-    tree = current_user.trees.find_by_id(params[:id])
-    if tree.nil?
-      redirect_to root_path
-    else
-      send_file tree.image.path
-    end
-  end
   
   private
     def tree_params

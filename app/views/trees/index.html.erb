@@ -87,6 +87,23 @@
   </div>
 </div>
 
+<div class="modal fade" id="extraction-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body center" id="extraction-content">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 $(document).ready(function() {
   $(".list-group-item").click(function() {
@@ -111,11 +128,13 @@ $(document).ready(function() {
     <% tree = Tree.find(@inspect) %>
     <% ra = tree.raw_extraction %>
     <% leaves = NewickTree.new(JSON.parse(tree.representation)["newick"].to_s).root.leaves.count %>
-    alert("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> of <%= JSON.parse(ra.species)["resolvedNames"].count %> taxa in the input list were matched.");
+    $('#extraction-content').text("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> of <%= JSON.parse(ra.species)["resolvedNames"].count %> taxa in the input list were matched.");
+    $("#extraction-info").modal();
   <% end %>
 
   <% if params[:failed] %>
-    alert("Can not construct tree");
+    $('#extraction-content').text("Failed to extract tree.");
+    $("#extraction-info").modal();
   <% end %>
   
 })

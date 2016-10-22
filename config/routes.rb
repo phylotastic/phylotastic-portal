@@ -19,7 +19,6 @@ Rails.application.routes.draw do
       post 'update_metadata' => "uploaded_lists#update_metadata"
       post 'update_species' => "uploaded_lists#update_species"
       post 'update_a_species' => "uploaded_lists#update_a_species"
-      post 'clone' => "uploaded_lists#clone"
       get 'list_content' => 'uploaded_lists#list_content'
       get 'trees' => 'uploaded_lists#trees'
       get 'publish' => 'uploaded_lists#publish'
@@ -47,24 +46,13 @@ Rails.application.routes.draw do
  
   resources :trees do
     collection do
-      patch ':id/public' => 'trees#public', as: :public
-      get 'public_gallery' => 'trees#public_gallery', as: :public_gallery
-      get 'image_getter' => 'trees#image_getter'
-      post 'generate_image' => 'trees#generate_image', format: :svg 
       get 'taxon_matching_report' => 'trees#taxon_matching_report'
       get 'newick' => 'trees#newick'
-      post 'update_description' => 'trees#update_description'
-      get 'download_image' => 'trees#download_image'
       get 'status' => 'trees#status', as: :status
       get 'checking_status' => 'trees#checking_status'
     end
   end
     
-  get 'user/:id/gallery', to: "watch_relationships#gallery", as: :gallery
-  
-  resources :watch_relationships, only: [:create, :destroy]
-  get '/add_public_gallery' => 'watch_relationships#add_public_gallery', as: :pub_gal
-  
   get 'static_pages/about'
   get 'static_pages/help'
   get 'static_pages/feedback'

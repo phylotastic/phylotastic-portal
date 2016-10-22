@@ -1,42 +1,115 @@
 <div class="metadata-wrapper">
   <% source = ra.contributable %>
   
-  <div class="row">
-    <div class="col-sm-4">Origin source</div>
-    <div class="col-sm-8"><%= source.meta_origin %></div>
-  </div>
-  <div class="row">
-    <div class="col-sm-4">Created at</div>
-    <div class="col-sm-8"><%= source.created_at %></div>
-  </div>
-  
-  <% case ra.contributable.class.name %>
-  <% when ConTaxon %>
-    <% if source.class.name == "ConTaxon" %>
-      <div class="row">
-        <div class="col-sm-4">Number of species</div>
-        <div class="col-sm-8">
-          <% if source.nb_species.nil? %>
-            All
-          <% else %>
-            <% source.nb_species %>
-          <% end %>
+  <% if source.class.name == "UploadedList" %>
+    <% begin %>
+      <% list = get_a_list(source.lid) %>
+      <% data = list["list"] %>
+      <div class="metadata-wrapper">
+        <div class="row">
+          <div class="col-sm-3">Title</div>
+          <div class="col-sm-9"><%= data["list_title"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Description</div>
+          <div class="col-sm-9"><%= data["list_description"] %></div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-sm-3">Public</div>
+          <div class="col-sm-9"><%= data["is_list_public"] %></div>
+        </div> -->
+        <!-- <div class="row">
+          <div class="col-sm-3">List origin</div>
+          <div class="col-sm-9"><%= data["list_origin"] %></div>
+        </div> -->
+        <div class="row">
+          <div class="col-sm-3">Keywords</div>
+          <div class="col-sm-9">
+            <ul>
+              <% data["list_keywords"].each do |d| %>
+                <li><%= d %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Author</div>
+          <div class="col-sm-9">
+            <% data["list_author"].each do |d| %>
+              <p><%= d %></p>
+            <% end %>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-sm-3">Public</div>
+          <div class="col-sm-9"><%= data["list_species"] %></div>
+        </div> -->
+        <div class="row">
+          <div class="col-sm-3">Curation date</div>
+          <div class="col-sm-9"><%= data["list_curation_date"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Curator</div>
+          <div class="col-sm-9"><%= data["list_curator"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Date published</div>
+          <div class="col-sm-9"><%= data["list_date_published"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Extra info</div>
+          <div class="col-sm-9"><%= data["list_extra_info"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">Focal clade</div>
+          <div class="col-sm-9"><%= data["list_focal_clade"] %></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">List source</div>
+          <div class="col-sm-9"><%= data["list_source"] %></div>
         </div>
       </div>
-      <% if source.has_genome_in_ncbi %>
-        <div class="row">
-          <div class="col-sm-4">Has genome in NCBI</div>
-        </div>
-      <% end %>
-      <% if !source.country.nil? %>
-        <div class="row">
-          <div class="col-sm-4">Country</div>
-          <div class="col-sm-8"><%= source.country.name %></div>
-        </div>
-      <% end %>
+    <% rescue %>
+      <div>Can not access list service</div>
     <% end %>
-  <% when ConLink %>
+  <% else %>
+    <div class="row">
+      <div class="col-sm-4">Origin source</div>
+      <div class="col-sm-8"><%= source.meta_origin %></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">Created at</div>
+      <div class="col-sm-8"><%= source.created_at %></div>
+    </div>
+  
+    <% case ra.contributable.class.name %>
+    <% when ConTaxon %>
+      <% if source.class.name == "ConTaxon" %>
+        <div class="row">
+          <div class="col-sm-4">Number of species</div>
+          <div class="col-sm-8">
+            <% if source.nb_species.nil? %>
+              All
+            <% else %>
+              <% source.nb_species %>
+            <% end %>
+          </div>
+        </div>
+        <% if source.has_genome_in_ncbi %>
+          <div class="row">
+            <div class="col-sm-4">Has genome in NCBI</div>
+          </div>
+        <% end %>
+        <% if !source.country.nil? %>
+          <div class="row">
+            <div class="col-sm-4">Country</div>
+            <div class="col-sm-8"><%= source.country.name %></div>
+          </div>
+        <% end %>
+      <% end %>
+    <% when ConLink %>
 
-  <% when ConFile %>
+    <% when ConFile %>
+    <% end %>
   <% end %>
 </div>

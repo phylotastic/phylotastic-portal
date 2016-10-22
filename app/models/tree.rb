@@ -2,8 +2,6 @@ class Tree < ActiveRecord::Base
   belongs_to :user
   belongs_to :phylo_source
   belongs_to :raw_extraction 
-  has_many :watch_relationships, dependent: :destroy
-  has_many :followers, through: :watch_relationships, source: :user
   
   default_scope -> { order(created_at: :desc) }
   

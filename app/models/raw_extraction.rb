@@ -4,7 +4,7 @@ class RawExtraction < ActiveRecord::Base
   belongs_to :users
   
   def name
-    contributable.name
+    contributable.name.nil? ? "*no name*" : contributable.name
   end
   
   def user

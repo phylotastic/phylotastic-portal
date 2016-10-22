@@ -14,12 +14,49 @@ class ExtractionsWorker
     case source_type
     when "ConLink"
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + ConLink.find_by_id(source_id).uri)
+
+
+
+
     when "ConFile"
       file = ConFile.find_by_id(source_id)
       file_url = file.document.url
       file_url.slice!(/[?]\d*\z/)
       file_url = APP_CONFIG['domain'] + file_url
       extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url + "&engine=" + file.method.to_s) 
+
+
+
+
+    when "UploadedList"
+      f_path = UploadedList.find(source_id).file.path
+      Zip::File.open(f_path) do |zip_file|
+        # Handle entries one by one
+        zip_file.each do |entry|
+          # Extract to file/directory/symlink
+          puts "Extracting #{entry.name}"
+          el = UploadedList.extraction_location(f_path, entry.name)
+          entry.extract(el)
+        end
+
+        begin
+          extracted_response = UploadedList.process(owner.email, source_id)
+        rescue Exception => e
+          puts e
+          puts e.backtrace
+          extracted_response = {}
+        end
+      
+        # Find specific entry
+        # entry = zip_file.glob('*.csv').first
+        # puts entry.get_input_stream.read
+      end
+
+
+
+
+
+
     when "ConTaxon"
       taxon = ConTaxon.find_by_id(source_id)
       
@@ -82,6 +119,13 @@ class ExtractionsWorker
         faker[:scientificNames].concat species
         extracted_response = faker.to_json
       end
+
+
+
+
+
+
+
 
     when "OnplFile"
       extracted_response = {}
