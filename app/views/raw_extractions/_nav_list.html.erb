@@ -1,5 +1,3 @@
-<% list_is_public = ra.contributable.public %>
-
 <div class="center fix-heading">List actions</div>
 
 
@@ -113,6 +111,8 @@
                 <h4 class="modal-title" id="myModalLabel">Edit list</h4>
               </div>
               <div class="modal-body">
+                <% list_is_public = ra.contributable.public %>
+                
                 <% if list_is_public %>
                   <% list = get_a_public_list(ra.contributable.lid) %>
                 <% else %>
