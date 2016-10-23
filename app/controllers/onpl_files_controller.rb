@@ -1,6 +1,6 @@
 class OnplFilesController < ApplicationController
-  before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :show, :update, :update_a_species]
+  # before_action :authenticate_user!
+  # skip_before_action :authenticate_user!, only: [:new, :create, :update, :update_a_species]
 
   def new
     @onpl_file = OnplFile.new
@@ -10,22 +10,11 @@ class OnplFilesController < ApplicationController
   end
   
   def create
-    if user_signed_in?
-      user = current_user
-      temp_id = nil
-    else
-      user = User.anonymous      
-      if cookies[:temp_id].nil?
-        redirect_to root_path
-        return
-      end
-      temp_id = cookies[:temp_id]
-    end
-    @onpl_file = user.onpl_files.build(onpl_file_params)
+    @onpl_file = @user.onpl_files.build(onpl_file_params)
     if @onpl_file.save
-      ra = @onpl_file.create_raw_extraction(temp_id: temp_id, user_id: user.id)
+      ra = @onpl_file.create_raw_extraction(temp_id: @temp_id, user_id: @user.id)
       flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", user.id)
+      job_id = ExtractionsWorker.perform_async(@onpl_file.id, "OnplFile", @user.id)
       redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
     else
       render action: "new"
@@ -86,19 +75,7 @@ class OnplFilesController < ApplicationController
   end
   
   def update
-    if user_signed_in?
-      user = current_user
-      temp_id = nil
-    else
-      user = User.anonymous      
-      if cookies[:temp_id].nil?
-        redirect_to root_path
-        return
-      end
-      temp_id = cookies[:temp_id]
-    end
-    
-    @onpl_file = user.onpl_files.find_by_id(params[:id])
+    @onpl_file = @user.onpl_files.find_by_id(params[:id])
     if @onpl_file.update_attributes(onpl_file_params)
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @onpl_file.raw_extraction)
@@ -109,7 +86,7 @@ class OnplFilesController < ApplicationController
   end
   
   def destroy
-    of = current_user.onpl_files.find(params[:id])
+    of = @user.onpl_files.find(params[:id])
     if of.nil?
       redirect_to root_path
     else

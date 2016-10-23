@@ -10,18 +10,6 @@ class ConTaxonsController < ApplicationController
   end
 
   def create
-    if user_signed_in?
-      user = current_user
-      temp_id = nil
-    else
-      user = User.anonymous      
-      if cookies[:temp_id].nil?
-        redirect_to root_path
-        return
-      end
-      temp_id = cookies[:temp_id]
-    end
-    
     location = params["location"]
     ncbi = params["has_genome_in_ncbi"]
     nb_species = params["check_nb_species"]
@@ -35,11 +23,11 @@ class ConTaxonsController < ApplicationController
     if nb_species != "true"
       params.delete :nb_species
     end
-    @con_taxon = user.con_taxons.build(con_taxon_params)
+    @con_taxon = @user.con_taxons.build(con_taxon_params)
     if @con_taxon.save
-      ra = @con_taxon.create_raw_extraction(temp_id: temp_id, user_id: user.id)
+      ra = @con_taxon.create_raw_extraction(temp_id: @temp_id, user_id: @user.id)
       flash[:success] = "Processing! Please wait a couple of seconds"
-      job_id = ExtractionsWorker.perform_async(@con_taxon.id, "ConTaxon", user.id)
+      job_id = ExtractionsWorker.perform_async(@con_taxon.id, "ConTaxon", @user.id)
       redirect_to root_path(ra: ra.id, jid: job_id, waiting: 1)
     else
       render action: 'new'
@@ -47,19 +35,7 @@ class ConTaxonsController < ApplicationController
   end
   
   def update
-    if user_signed_in?
-      user = current_user
-      temp_id = nil
-    else
-      user = User.anonymous      
-      if cookies[:temp_id].nil?
-        redirect_to root_path
-        return
-      end
-      temp_id = cookies[:temp_id]
-    end
-    
-    @con_taxon = user.con_taxons.find_by_id(params[:id])
+    @con_taxon = @user.con_taxons.find_by_id(params[:id])
     if @con_taxon.update_attributes(name: params["con_taxon"]["name"])
       flash[:success] = "List name updated"
       redirect_to root_path(ra: @con_taxon.raw_extraction)
@@ -70,7 +46,7 @@ class ConTaxonsController < ApplicationController
   end
   
   def destroy
-    ctx = current_user.con_taxons.find(params[:id])
+    ctx = @user.con_taxons.find(params[:id])
     if ctx.nil?
       redirect_to root_path
     else 
