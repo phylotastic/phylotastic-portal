@@ -12,8 +12,7 @@ class ApplicationController < ActionController::Base
     else
       @user = User.anonymous      
       if cookies[:temp_id].nil?
-        redirect_to root_path
-        return
+        cookies[:temp_id] = { value: ('a'..'z').to_a.shuffle[0,20].join, expires: 1.day.from_now }
       end
       @temp_id = cookies[:temp_id]
     end

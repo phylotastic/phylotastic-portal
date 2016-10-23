@@ -5,19 +5,7 @@ class RawExtractionsController < ApplicationController
   include Tubesock::Hijack
   
   def index
-    if user_signed_in?
-      if !cookies[:temp_id].nil?
-        cookies.delete :temp_id
-      end
-      user = current_user
-    else
-      if cookies[:temp_id].nil?
-        cookies[:temp_id] = { value: ('a'..'z').to_a.shuffle[0,20].join, expires: 1.day.from_now }
-      end
-      
-      user = User.find_by_email(APP_CONFIG['anonymous'])
-    end
-    @my_lists = user.raw_extractions
+    @my_lists = @user.raw_extractions
     
     @my_lists.to_a.sort_by!{ |m| m.name.downcase }
 
