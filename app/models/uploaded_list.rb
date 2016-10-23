@@ -188,12 +188,18 @@ class UploadedList < ActiveRecord::Base
                                                status: true)
         else 
           user = User.find_by_email(list["user_id"])
+          if user.nil?
+            user = User.create(email: list["user_id"], password: list["user_id"])
+          end
           uploaded_list = user.uploaded_list.create( lid: list["list"]["list_id"], 
                                                      public: true, 
                                                      status: true)
         end
       else
         user = User.find_by_email(list["user_id"])
+        if user.nil?
+          user = User.create(email: list["user_id"], password: list["user_id"])
+        end
         uploaded_list = user.uploaded_lists.create!( lid: list["list"]["list_id"], 
                                                      public: false, 
                                                      status: true)
