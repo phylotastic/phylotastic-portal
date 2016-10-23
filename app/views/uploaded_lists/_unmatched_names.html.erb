@@ -12,7 +12,11 @@
   <% unresolved << n if !flag %>
 <% end %>
 
-<% list = get_a_list(ra.contributable.lid) %>
+<% if ra.contributable.public %>
+  <% list = get_a_public_list(ra.contributable.lid) %>
+<% else %>
+  <% list = get_a_list(ra.contributable.lid) %>
+<% end %>
 
 <% unless unresolved.empty? %>
   <hr>

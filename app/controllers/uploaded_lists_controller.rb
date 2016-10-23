@@ -73,8 +73,7 @@ class UploadedListsController < ApplicationController
     if @list["list"]["is_list_public"]
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction
-      @resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue []
-      @resolved_names = [] if !@resolved_names
+      @uploaded_list.update_attributes(name: @list["list"]["list_title"])
       
       respond_to do |format|
         format.js

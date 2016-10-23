@@ -208,7 +208,7 @@ class UploadedList < ActiveRecord::Base
       t = list["list"]["list_species"].map {|s| s["scientific_name"]}.join(", ")
       found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
       resolved = Req.post( APP_CONFIG["sv_resolve_names"]["url"], found, :content_type => :json)
-      ra = uploaded_list.create_raw_extraction(species: resolved)
+      ra = uploaded_list.create_raw_extraction(extracted_names: found, species: resolved)
     else
       ra = uploaded_list.raw_extraction
     end
