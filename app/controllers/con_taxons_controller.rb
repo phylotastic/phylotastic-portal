@@ -1,6 +1,6 @@
 class ConTaxonsController < ApplicationController
-  before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:new, :create, :update]
+  # before_action :authenticate_user!
+  # skip_before_action :authenticate_user!, only: [:new, :create, :update]
   
   def new
     @con_taxon = ConTaxon.new
