@@ -5,7 +5,9 @@ class RawExtractionsController < ApplicationController
   include Tubesock::Hijack
   
   def index
-    @my_lists = @user.raw_extractions
+    @my_lists = @user.raw_extractions.select do |r|
+      r.created_at > Time.now - 1.day && r.raw_extraction.temp_id == cookies[:temp_id]
+    end
     
     @my_lists.to_a.sort_by!{ |m| m.name.downcase }
 
