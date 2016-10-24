@@ -3,7 +3,11 @@
   
   <% if source.class.name == "UploadedList" %>
     <% begin %>
-      <% list = get_a_list(source.lid) %>
+      <% if source.public %>
+        <% list = get_a_public_list(source.lid) %>
+      <% else %>
+        <% list = get_a_list(source.lid) %>
+      <% end %>
       <% data = list["list"] %>
       <div class="metadata-wrapper">
         <div class="row">
@@ -69,8 +73,8 @@
           <div class="col-sm-9"><%= data["list_source"] %></div>
         </div>
       </div>
-    <% rescue %>
-      <div>Can not access list service</div>
+    <% rescue Exception => e %>
+      <div>There is an error that prevents displaying metadata</div>
     <% end %>
   <% else %>
     <div class="row">
