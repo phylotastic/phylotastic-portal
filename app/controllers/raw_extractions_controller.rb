@@ -7,7 +7,7 @@ class RawExtractionsController < ApplicationController
   def index
     if @user == User.anonymous
       @my_lists = @user.raw_extractions.select do |r|
-        r.created_at > Time.now - 1.day && r.raw_extraction.temp_id == cookies[:temp_id]
+        r.created_at > Time.now - 1.day && r.temp_id == cookies[:temp_id]
       end
     else
       @my_lists = @user.raw_extractions
