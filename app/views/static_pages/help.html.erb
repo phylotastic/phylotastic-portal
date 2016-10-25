@@ -30,7 +30,7 @@
           </div>
           <div id="quickstart" class="panel-collapse collapse in">
             <div class="panel-body">
-              <p>Everything is done from the List view (<b>Home</b>) or the Tree view (<b>Trees</b>). The basic workflow is to create a list of scientific names (species or higher taxa), click on <b>Get tree</b>, then view the tree.  If you only know common names instead of scientific names (e.g., "raven" instead of "Corvus corax"), check the FAQ item <a href="#commonnames">How do I find scientific names?</a>. </p>
+              <p>Everything is done from the List view (<b>Home</b>) or the Tree view (<b>Trees</b>). The basic workflow is to create a list of scientific names (species or higher taxa), click on <b>Get tree</b>, then view the tree.  If you only know common names instead of scientific names (e.g., "raven" instead of "Corvus corax"), check the FAQ item <a href="#commonnames" id="cmonnames">How do I find scientific names?</a>. </p>
               
               <p>If you don't have lists of your own, try a public list.  Create custom lists by selecting from the <b>Make a New List</b> menu:
               <ul>
@@ -418,5 +418,10 @@ $(document).ready(function() {
       $('#help-navbar').removeClass('navbar-fixed');
     }
   });
+  
+  var archor = window.location.hash.substring(window.location.hash.indexOf("#")+1);
+  if (archor == 'commonnames') {
+    $('#commonNames').collapse();
+  }
 });
 </script>
