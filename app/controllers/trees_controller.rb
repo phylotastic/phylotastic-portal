@@ -77,7 +77,7 @@ class TreesController < ApplicationController
         end
       end
       trees = current_user.trees
-      @my_trees = trees.select {|t| !t.public }.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
+      @my_trees = trees.to_a
     else
       if cookies[:view_hint].nil?
         cookies[:view_hint] = "true"
@@ -97,19 +97,18 @@ class TreesController < ApplicationController
       @failed = false
     end
     
+    @my_trees.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
   def update
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
-      respond_to do |format|
-        format.html { redirect_to tree_path(params[:id]) }
-        format.js { render 'update.js.erb'}
-      end
+      flash[:success] = "Updated tree information"
+      redirect_to trees_path(ins: params[:id])
     else
       flash[:danger] = "Cannot save tree info"
-      redirect_to tree_path(ins: params[:id])
+      redirect_to trees_path(ins: params[:id])
     end
   end
   
