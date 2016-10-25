@@ -2,6 +2,10 @@
   <div class="center fix-heading">Make a new list</div>
 
   <div class="">
+    <%= link_to "Extract from web", new_con_link_path, class: "btn btn-default btn-block scenario-selection" %>
+
+    <%= link_to "Extract from doc", new_con_file_path, class: "btn btn-default btn-block scenario-selection" %>
+    
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-default btn-block scenario-selection" data-toggle="modal" data-target="#uploadList">
       Upload my list
@@ -41,10 +45,6 @@
         </div>
       </div>
     </div>
-  
-    <%= link_to "Extract from doc", new_con_file_path, class: "btn btn-default btn-block scenario-selection" %>
-
-    <%= link_to "Extract from web", new_con_link_path, class: "btn btn-default btn-block scenario-selection" %>
 
     <%= link_to "Choose taxon", new_con_taxon_path, class: "btn btn-default btn-block scenario-selection" %>  
   </div>
