@@ -1,0 +1,81 @@
+<% flag = false %>
+<% if user_signed_in? %>
+  <% if current_user == tree.user %>
+    <% flag = true %>
+  <% end %>
+<% else %>
+  <% if tree.raw_extraction.temp_id == cookie[:temp_id] %>
+    <% flag = true %>
+  <% end %>
+<% end %>
+    
+<% if flag %>
+  <!-- Button trigger modal -->
+  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Tree settings</a>
+  <!-- Modal -->
+  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <%= form_for tree, remote: true do |f| %>
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <%= f.label :name, class: "col-sm-3" %>
+              <div class="col-sm-9">
+                <%= f.text_field :name, value: tree.name, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+              <%= f.label :public, class: "col-sm-3" %>
+              <div class="col-sm-9">
+                <% if tree.public %>
+                  <div class="col-sm-3">
+                    True: <%= f.radio_button("public", "true", checked: true) %>
+                  </div>
+                  <div class="col-sm-3">
+                    False: <%= f.radio_button("public", "false") %>
+                  </div>
+                <% else %>
+                  <div class="col-sm-3">
+                    True: <%= f.radio_button("public", "true") %>
+                  </div>
+                  <div class="col-sm-3">
+                    False: <%= f.radio_button("public", "false", checked: true) %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <%= f.submit "Change", class: "btn btn-primary" %>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= form_for(tree, html: { method: :delete }) do |f| %>
+    <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+  <% end %>
+<% end %>
+
+<script>
+$(document).ready(function() {
+  
+  $('#show_ott').change(function() {
+    if($(this).is(':checked')) {
+      $('#tree-in-string-format').val("<%= non_san_newick %>");
+      $('#save-tree-text').html('<%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: true), class: "btn btn-primary" %>');
+    } else {
+      $('#tree-in-string-format').val("<%= tree_newick %>");
+      $('#save-tree-text').html('<%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %>');   
+    }
+  })
+  
+})
+
+</script>

@@ -109,7 +109,7 @@ class TreesController < ApplicationController
       end
     else
       flash[:danger] = "Cannot save tree info"
-      redirect_to tree_path(params[:id])
+      redirect_to tree_path(ins: params[:id])
     end
   end
   

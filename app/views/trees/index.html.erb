@@ -117,13 +117,16 @@ $(document).ready(function() {
     $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
     if($(this).parents(".dropdown").parent().attr("class") == "my-trees") {      
       $(".my-trees .treeMenuDropbox").text($(this).text());
+      $(".my-trees .treeMenuDropbox").dropdown("toggle");
     } else {      
       $(".public-trees .treeMenuDropbox").text($(this).text());
+      $(".public-trees .treeMenuDropbox").dropdown("toggle");
     }
   });
 
   $("#nav-tree-" + "<%= @inspect %>").click();
-  
+  $("#nav-tree-" + "<%= @inspect %>").parents(".dropdown").removeClass('open');
+    
   <% if params[:hot] %>
     <% tree = Tree.find(@inspect) %>
     <% ra = tree.raw_extraction %>
