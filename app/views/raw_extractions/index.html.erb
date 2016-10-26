@@ -16,7 +16,7 @@
     <div class="col-md-9" id="ra-content">
       <% if params[:waiting] == "1" %>
         <div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>
-      <% elsif cookies[:welcome].nil? %>
+      <% else %>
         <p style="font-size: 150%; font-weight: bold;">
           Welcome to the Phylotastic web portal!
         </p>
