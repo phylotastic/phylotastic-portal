@@ -1,9 +1,24 @@
 class RawExtractionsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: :download_selected_species
+  skip_before_action :verify_authenticity_token, only: [:download_selected_species, :taxon_matching_report]
   
   include UploadedListsHelper
   include Tubesock::Hijack
   
+  def taxon_matching_report
+    ra = RawExtraction.find(params[:raw_extraction_id])
+    @resolved_names = JSON.parse(ra.species)["resolvedNames"] rescue []
+    respond_to do |format|
+      format.pdf do
+        render pdf: "taxon_matching_report",
+               template: "raw_extractions/taxon_matching_report.pdf.erb"
+      end
+      format.csv do
+        render csv: "taxon_matching_report",
+               template: "raw_extractions/taxon_matching_report.csv.erb"
+      end
+    end
+  end
+      
   def index
     if @user == User.anonymous
       @my_lists = @user.raw_extractions.select do |r|

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'raw_extractions#index'
 
   resources :raw_extractions, only: [:index, :show] do 
+    get 'taxon_matching_report' => 'raw_extractions#taxon_matching_report'
     member do
       post "download_selected_species"
     end
@@ -46,7 +47,6 @@ Rails.application.routes.draw do
  
   resources :trees do
     collection do
-      get 'taxon_matching_report' => 'trees#taxon_matching_report'
       get 'newick' => 'trees#newick'
       get 'status' => 'trees#status', as: :status
       get 'checking_status' => 'trees#checking_status'
