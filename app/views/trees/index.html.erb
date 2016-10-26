@@ -20,15 +20,19 @@
                 <div class="table-wrapper">
                   <div class="table-scroll">  
                     <div class="nav nav-stacked">
-                    <% @my_trees.each do |t| %>
-                      <% name = t.name.to_s == '' ? "*no name*" : t.name %>
-                      <% case t.status %>
-                      <% when "completed" %>
-                        <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
-                      <% when "unsuccessfully-constructed" %>
-                        <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
-                      <% when nil %>
-                        <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                    <% if @my_trees.empty? %>
+                      <div class="center" style="margin-top:40px;">You don't have any trees yet</div>
+                    <% else %>
+                      <% @my_trees.each do |t| %>
+                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                        <% case t.status %>
+                        <% when "completed" %>
+                          <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                        <% when "unsuccessfully-constructed" %>
+                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                        <% when nil %>
+                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                        <% end %>
                       <% end %>
                     <% end %>
                   </div>
