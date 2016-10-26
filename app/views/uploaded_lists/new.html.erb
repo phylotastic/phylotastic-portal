@@ -14,6 +14,10 @@
     </div>
     <div id="chosen_file"></div>
     
+    <%= f.check_box :public, class: "input-file", style: "margin: 0 20px 20px 10px;" %>
+    <%= f.label :public, "Allow others to watch this list" %>
+    <br>
+    
     <%= f.submit "Upload", class: "btn btn-primary btn-lg" %>
   <% end %>
 </div>
