@@ -97,7 +97,7 @@ class TreesController < ApplicationController
       @failed = false
     end
     
-    @my_trees.sort_by! {|t| t.name.nil? ? "" : t.name.downcase }
+    @my_trees = @my_trees.to_a.sort_by {|t| t.name.nil? ? "" : t.name.downcase }
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
     
