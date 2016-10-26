@@ -170,7 +170,13 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-
+  $('#file-name').keypress(function(e) {
+    console.log(e.which);
+    if(e.which == 13) {
+      $('#download-selected-species').click();
+    }
+  })
+  
   $("#download-selected-species").click(function() {
     input_checked = $( ".species-cb-column").children("input:checked");
     data = {};
@@ -183,6 +189,7 @@ $(document).ready(function() {
     }
   
     submit("<%= download_selected_species_raw_extraction_path(ra.id) %>", 'POST', data);
+    $('#file-name-modal').modal('hide');
     return false;
   });
 
