@@ -74,8 +74,8 @@ gem "font-awesome-rails"
 # gem 'capistrano-rails', group: :development
 
 # search
-gem 'sunspot_rails'
-gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
+# gem 'sunspot_rails'
+# gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development
 
 # unzip files
 gem 'rubyzip', '>= 1.0.0'

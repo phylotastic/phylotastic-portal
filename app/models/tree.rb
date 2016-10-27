@@ -11,10 +11,10 @@ class Tree < ActiveRecord::Base
 
   self.per_page = 9
   
-  searchable do
-    text :chosen_species, :description
-    boolean :public
-  end
+  # searchable do
+#     text :chosen_species, :description
+#     boolean :public
+#   end
   
   def semantic_status
     case self.status
