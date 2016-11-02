@@ -4,4 +4,26 @@
 <% when "unsuccessfully-constructed" %>
   $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name.to_s + ' - failed' %>");
 <% end %>
+
 $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: { tree: @tree, resolved_names: @resolved_names }) %>");
+
+<% if @last_state %>
+  <% tree_data = JSON.parse(@tree.action_sequence) %>
+  var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
+  var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
+  var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
+  try {
+    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
+    leftOffset = $("#img1").offset().left;
+    // console.log(topOffset, leftOffset);
+    get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
+    $("#topOffset").val(topOffset);
+    $("#leftOffset").val(leftOffset);
+  }
+  catch(err) {
+    $('#tree-rendering-failed').modal();
+  }
+<% end %>
+
+
+

@@ -32,6 +32,7 @@ class TreesController < ApplicationController
     @tree = Tree.find_by(id: params[:id])
     @id = params[:id]
     @resolved_names = JSON.parse(@tree.raw_extraction.species)["resolvedNames"] rescue []
+    @last_state = params[:last_state].nil? ? false : true
     if @tree.nil? 
       redirect_to root_url
       return
@@ -56,7 +57,6 @@ class TreesController < ApplicationController
       end
     end
     respond_to do |format|
-      format.html
       format.js
     end
   end
@@ -101,8 +101,13 @@ class TreesController < ApplicationController
   def update
     @tree = current_user.trees.find_by_id(params[:id])
     if @tree.update_attributes(tree_params)
-      flash[:success] = "Updated tree information"
-      redirect_to trees_path(ins: params[:id])
+      respond_to do |format|
+        format.html { 
+          flash[:success] = "Updated tree information"
+          redirect_to trees_path(ins: params[:id])
+        }
+        format.js
+      end
     else
       flash[:danger] = "Cannot save tree info"
       redirect_to trees_path(ins: params[:id])
@@ -186,6 +191,6 @@ class TreesController < ApplicationController
       params.require(:tree).permit(:phylo_source_id, :branch_length, 
                                    :images_from_EOL, :image, :public, 
                                    :raw_extraction_id, :chosen_species,
-                                   :description, :name)
+                                   :description, :name, :action_sequence)
     end
 end

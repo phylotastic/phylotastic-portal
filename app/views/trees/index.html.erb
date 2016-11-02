@@ -3,7 +3,7 @@
 <% require "Newick" %>
 
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="list-selection">
       <div class="row">
         <div class="col-md-4">
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="list-selection">
       <div class="row">
         <div class="col-md-5">
@@ -116,16 +116,30 @@ $(document).ready(function() {
     $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
   })
 
-  $('a[id*="nav-tree-"]').click(function() {
-    $(this).parent().addClass("active");
-    $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
-    if($(this).parents(".dropdown").parent().attr("class") == "my-trees") {      
-      $(".my-trees .treeMenuDropbox").text($(this).text());
+  $('a[id*="nav-tree-"]').click(function(e) {
+    var parentClass = $(this).parents(".dropdown").parent().attr("class");
+    if(parentClass == "my-trees") {      
       $(".my-trees .treeMenuDropbox").dropdown("toggle");
     } else {      
-      $(".public-trees .treeMenuDropbox").text($(this).text());
       $(".public-trees .treeMenuDropbox").dropdown("toggle");
     }
+    if(tree_state_changed) {
+      var r = confirm("Are you sure to leave the tree unsaved?");
+      if (r == true) {
+        tree_state_changed = false;
+      } else {
+        e.preventDefault;
+        return false;
+      }
+    }
+    $(this).parent().addClass("active");
+    $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
+    if(parentClass == "my-trees") {      
+      $(".my-trees .treeMenuDropbox").text($(this).text());
+    } else {      
+      $(".public-trees .treeMenuDropbox").text($(this).text());
+    }
+    
   });
 
   $("#nav-tree-" + "<%= @inspect %>").click();

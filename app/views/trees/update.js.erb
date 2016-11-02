@@ -1,0 +1,4 @@
+$('#edit-tree-name-modal-<%= @tree.id %>').modal('hide');
+$('#nav-tree-<%= @tree.id %>').text("<%= @tree.name %>");
+$('#nav-tree-<%= @tree.id %>').parents(".dropdown").find("button").text("<%= @tree.name %>");
+$('#tree-updated').modal();
