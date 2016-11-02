@@ -16,12 +16,12 @@
   <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <%= form_for tree, remote: true do |f| %>
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Enter a new name for this tree</h4>
-          </div>
-          <div class="modal-body">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Tree settings</h4>
+        </div>
+        <div class="modal-body">
+          <%= form_for tree, remote: true do |f| %>
             <div class="row">
               <%= f.label :name, class: "col-sm-3" %>
               <div class="col-sm-9">
@@ -48,19 +48,33 @@
                 <% end %>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <%= f.submit "Change", class: "btn btn-primary" %>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
+          <%= f.submit "Change", class: "btn btn-primary btn-block" %>
         <% end %>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-sm-3">
+              <%= form_for(tree, html: { method: :delete }) do |f| %>
+                <%= f.submit "Delete this tree", class: "btn btn-danger", data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </div>
+            <div class="col-sm-2 col-sm-offset-7">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <%= form_for(tree, html: { method: :delete }) do |f| %>
-    <%= f.submit "Delete", class: "btn btn-danger btn-block", data: { confirm: 'Are you sure?' } %>
+  
+  <%= form_for tree, url: { action: "update" }, remote: true, html: {id: "tree_state_form", class: "hide"} do |f| %>
+    <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
   <% end %>
+  <button id="save_tree_state_btn" class="btn btn-primary btn-block">Save tree state</button>
+  <% unless tree.action_sequence.nil? %>
+    <%= link_to "Load tree state", tree_path(tree.id, last_state: true), remote: true,  class:"btn btn-primary btn-block" %>
+  <% end %>
+  
 <% end %>
 
 <script>
