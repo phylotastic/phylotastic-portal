@@ -1,4 +1,9 @@
 $('#edit-tree-name-modal-<%= @tree.id %>').modal('hide');
 $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name %>");
 $('#nav-tree-<%= @tree.id %>').parents(".dropdown").find("button").text("<%= @tree.name %>");
+
+<% unless @tree.action_sequence.nil? %>
+  $('#tree-navigation').append('<%= escape_javascript(link_to "Load tree state", tree_path(@tree.id, last_state: true), remote: true,  class:"btn btn-primary btn-block", style: "margin-top: 7px;") %>');  
+<% end %>
+  
 $('#tree-updated').modal();
