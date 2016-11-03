@@ -1,0 +1,51 @@
+<% begin %>
+  <% source = ra.contributable %>
+
+  <% if source.public %>
+    <% list = get_a_public_list(source.lid) %>
+  <% else %>
+    <% list = get_a_list(source.lid) %>
+  <% end %>
+
+  <% common = list["list"]["list_species"] %>
+  <%= form_for Tree.new(raw_extraction: ra), html: { class: "form-horizontal tree-form", id: "tree-form-#{ra.id}" } do |f| %>
+    <%= f.hidden_field :raw_extraction_id %>
+    <%= f.text_field :name, id: "hidden_tree_name_#{ra.id}", class: 'hide' %>
+
+    <table class="table table-bordered table-hover chosing-species">
+      <thead> 
+        <tr> 
+          <th class="species-heading-row">#</th> 
+          <th class="species-heading-row">Species</th> 
+          <th class="species-heading-row">Common Name</th> 
+          <th class="species-cb-column species-heading-row">
+            Select/Deselect all<br>
+            <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+          </th> 
+        </tr> 
+      </thead>
+      <tbody>
+          <% species.each_with_index do |e, i| %>
+            <tr class="species-row success">
+              <td class=""><%= i + 1 %></td>
+              <td class=""><%= e %></td>
+              <td class="">
+                <% common.each do |c| %>
+                  <% if c["scientific_name"] == e %>
+                    <%= c["vernacular_name"] %>
+                    <% break %>
+                  <% end %>
+                <% end %>  
+              </td>
+              <td class="species-cb-column">           
+                <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
+                <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
+              </td>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% rescue => e %>
+  There is something wrong. We are sorry about this.
+<% end %>

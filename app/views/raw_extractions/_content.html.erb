@@ -22,7 +22,13 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="content">
-        <%= render partial: "trees/tree_form", locals: { ra: ra, species: species } %>
+        <% case ra.contributable.class.name %>
+        <% when "UploadedList" %>
+          <%= render partial: "trees/tree_form_with_common_names", locals: { ra: ra, species: species } %>
+        <% else %>
+          <%= render partial: "trees/tree_form", locals: { ra: ra, species: species } %>
+        <% end %>
+        
         
         <% case ra.contributable.class.name %>
         <% when "OnplFile" %>
