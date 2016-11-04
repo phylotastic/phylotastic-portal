@@ -7,7 +7,7 @@
 
 $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: { tree: @tree, resolved_names: @resolved_names }) %>");
 
-<% if @last_state %>
+<% if @last_state && !@tree.action_sequence.nil? %>
   <% tree_data = JSON.parse(@tree.action_sequence) %>
   var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
   var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';

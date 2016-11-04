@@ -16,6 +16,7 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.minicolors
 //= require d3
 //= require jquery.slick
 //= require clipboard

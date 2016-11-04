@@ -27,7 +27,7 @@
                         <% name = t.name.to_s == '' ? "*no name*" : t.name %>
                         <% case t.status %>
                         <% when "completed" %>
-                          <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                          <li><%= link_to name, tree_path(t.id, last_state: true), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
                         <% when "unsuccessfully-constructed" %>
                           <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
                         <% when nil %>
@@ -110,6 +110,19 @@
 
 <script>
 $(document).ready(function() {
+  save_tree_state = function() {
+    var tree_action_metadata = {};
+
+    tree_action_metadata['node_actions'] = node_actions_list;
+    tree_action_metadata['tree_actions'] = tree_actions;
+    tree_action_metadata['latest_node_id'] = latest_action_node_id;
+
+    // console.log(JSON.stringify(tree_action_metadata));
+    $('#tree_state').val(JSON.stringify(tree_action_metadata));
+    $('#tree_state_form').submit();
+    tree_state_changed = false;
+  }
+  
   $(".list-group-item").click(function() {
     $(".list-group-item").removeClass("active");
     $(this).addClass("active");
@@ -123,21 +136,16 @@ $(document).ready(function() {
     } else {      
       $(".public-trees .treeMenuDropbox").dropdown("toggle");
     }
-    if(tree_state_changed) {
-      var r = confirm("Are you sure to leave the tree unsaved?");
-      if (r == true) {
-        tree_state_changed = false;
-      } else {
-        e.preventDefault;
-        return false;
-      }
-    }
     $(this).parent().addClass("active");
     $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
     if(parentClass == "my-trees") {      
       $(".my-trees .treeMenuDropbox").text($(this).text());
     } else {      
       $(".public-trees .treeMenuDropbox").text($(this).text());
+    }
+    
+    if(tree_state_changed) {
+      save_tree_state();
     }
     
   });

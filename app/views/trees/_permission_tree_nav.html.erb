@@ -11,7 +11,10 @@
     
 <% if flag %>
   <!-- Button trigger modal -->
-  <a class="btn btn-default btn-block" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Tree settings</a>
+  <div style="text-align: right;">
+    <a class="btn btn-default" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Tree settings</a>
+  </div>
+ 
   <!-- Modal -->
   <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -70,10 +73,10 @@
   <%= form_for tree, url: { action: "update" }, remote: true, html: {id: "tree_state_form", class: "hide"} do |f| %>
     <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
   <% end %>
-  <button id="save_tree_state_btn" class="btn btn-primary btn-block">Save tree state</button>
-  <% unless tree.action_sequence.nil? %>
-    <%= link_to "Load tree state", tree_path(tree.id, last_state: true), remote: true,  class:"btn btn-primary btn-block" %>
-  <% end %>
+  <!-- <button id="save_tree_state_btn" class="btn btn-primary">Save tree state</button> -->
+  <!-- <% unless tree.action_sequence.nil? %> -->
+    <!-- <%= link_to "Load tree state", tree_path(tree.id, last_state: true), remote: true,  class:"btn btn-primary" %> -->
+  <!-- <% end %> -->
   
 <% end %>
 

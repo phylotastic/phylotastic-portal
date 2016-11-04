@@ -100,6 +100,10 @@ class TreesController < ApplicationController
     
   def update
     @tree = current_user.trees.find_by_id(params[:id])
+    @action_updated = false
+    unless tree_params[:action_sequence].nil?
+      @action_updated = true
+    end
     if @tree.update_attributes(tree_params)
       respond_to do |format|
         format.html { 

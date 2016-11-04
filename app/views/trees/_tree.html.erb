@@ -2,88 +2,73 @@
 <% non_san_newick = JSON.parse(tree.representation)['newick'] %>
 
 <div class="row">
-  <div class="col-md-10">
-    <div id="tree-in-newick"></div>
-    
-    <div id='popup'></div>
-    <div class="row tree-wrapper well">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-4">Line width:</div>
-          <div class="col-md-8">
-            <input type="radio" name="lwidth" value="1" checked="checked">1
-            <input type="radio" name="lwidth" value="2">2
-            <input type="radio" name="lwidth" value="3">3
-            <input type="radio" name="lwidth" value="4">4
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">Line Color:</div>
-          <div class="col-md-8">
-            <input type="text" name="color" value="" size="20">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6" data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree:</div>
-          
-          <div class="col-md-6">
-            <input type="checkbox" id="ladderize">
-          </div>
-        </div>
-        <!-- <div class="row">
-          <div class="col-md-6">Show branch length: </div>
-          <div class="col-md-6">
-            <input type="checkbox" id="branch">
-          </div>
-        </div> -->
-        <div class="row"  style="margin-top: 5px;">
-          <div class="col-md-6">Show node labels: </div> 
-          <div class="col-md-6">
-            <input type="checkbox" id="internal">
-          </div>
-        </div>
-        <input type="hidden" id="topOffset" value="">
-        <input type="hidden" id="leftOffset" value="">
-        <input type="submit" value="Apply" class="btn btn-primary" onclick="run_tree_action();">
-      </div>
-      
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md-4">Image format: </div>
-          <div class="col-md-8">
-            <input type="radio" name="format" value="png" checked="checked">png
-            <input type="radio" name="format" value="svg">svg
-            <a href="#" onclick="save_tree_image();">Generate link</a>
-          </div>
-          <div id="svg_image" class=""></div>
-        </div>
-        
-        <div style="display: inline-block;">
-          <button class="btn btn-primary" onclick="load_tip_images();">Load all images</button>
-        </div>
-        <div id="tree_image_message"></div>
-      </div>
-      
-    </div>
-    <div id='img1' class="ete_image"></div>
-
-
-    <div>
-      <div class="pull-right" style="font-size: 80%;">
-        Last edited: <%= time_ago_in_words(tree.updated_at) %> by <%= link_to tree.user.name, '#' %>
-      </div>
-    </div>
-  </div>
+  <div id="tree-in-newick"></div>
   
-  <div class="col-md-2">
-    <div id="tree-navigation">
-      <!-- <h4 class="center" id="tree-actions">Tree actions</h4> -->
-
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#show-tree-format" style="margin-bottom: 7px;">
-        Export as
-      </button>
+  <div id='popup'></div>
+  <div class="row tree-wrapper well">
+    <div class="col-sm-3">
+      <div class="row">
+        <div class="col-sm-2">
+          <input type="checkbox" id="internal" class="custom-tree-fields">
+        </div>
+        <div class="col-sm-10" data-toggle="tooltip" data-placement="bottom" title="Show taxon names associated with internal nodes">iNode labels</div>
+      </div>
       
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-sm-2">
+          <input type="checkbox" id="ladderize" class="custom-tree-fields">
+        </div>
+        <div class="col-sm-10" data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree</div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-6">Show branch length: </div>
+        <div class="col-md-6">
+          <input type="checkbox" id="branch">
+        </div>
+      </div> -->
+      <input type="hidden" id="topOffset" value="">
+      <input type="hidden" id="leftOffset" value="">
+      <input type="submit" value="Apply" class="btn btn-primary hide" id="apply-customization">
+    </div>
+    
+    <div class="col-sm-3">
+      <div class="row">
+        <div class="col-sm-5">Line weight:</div>
+        <div class="col-sm-4">
+          <select name="lwidth" id="line-weight" class="form-control custom-tree-fields">
+            <option value="1" selected="selected">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-5">Line Color:</div>
+        <div class="col-sm-7">
+          <input type="text" id="line-color" name="color" value="" size="20"  class="form-control custom-tree-fields">
+        </div>
+      </div>  
+    </div>
+    
+    <div class="col-sm-3" style="text-align: right;">
+      <div id="tree_image_message"></div>
+      <div style="display: inline-block;">
+        <button class="btn btn-default pull-right" onclick="load_tip_images();">Load all images</button>
+      </div>
+      
+      <!-- Button dropdown -->
+      <div class="dropdown" style="text-align: right;">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-bottom: 7px;">
+          Export as
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#" data-toggle="modal" data-target="#show-tree-format">text</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#show-tree-image">image</a></li>
+        </ul>
+      </div>
       <!-- Modal -->
       <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -114,10 +99,58 @@
         </div>
       </div>
 
-      <%= render partial: "permission_tree_nav", locals: { tree: tree, tree_newick: tree_newick, non_san_newick: non_san_newick } %>
-    </div>  
-
+      <!-- Modal -->
+      <div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <p><em>* Disable popup blocker in this brower to be redirected to image </em></p>
+            </div>
+            <div class="modal-body">
+          
+              <div class="row">
+                <div class="col-md-3">Image format: </div>
+                <div class="col-md-9">
+                  <input type="radio" name="format" value="png" checked="checked">png
+                  <input type="radio" name="format" value="svg">svg
+                  <a href="#" onclick="save_tree_image();" class="btn btn-primary">Generate link to download</a>
+                  <div id="svg_image" class=""></div>
+                </div>
+              </div>
+          
+            </div>
+            <div class="modal-footer">
+              <div class="btn-wrapper">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="col-sm-3">
+      <div id="tree-navigation">
+        <!-- <h4 class="center" id="tree-actions">Tree actions</h4> -->
+        <%= render partial: "permission_tree_nav", locals: { tree: tree, tree_newick: tree_newick, non_san_newick: non_san_newick } %>
+    
+        <!-- End of tree-navigation -->
+      </div>
+    </div>
+    
   </div>
+  <div id='img1' class="ete_image"></div>
+
+
+  <div>
+    <div class="pull-right" style="font-size: 80%;">
+      Last edited: <%= time_ago_in_words(tree.updated_at) %> by <%= link_to tree.user.name, '#' %>
+    </div>
+  </div>
+  
 </div>
 
 <div class="modal fade" id="tree-hint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -207,39 +240,23 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip(); 
   
   
-  $('#save_tree_state_btn').click(function(e) {
-    var tree_action_metadata = {};
-    
-    tree_action_metadata['node_actions'] = node_actions_list;
-    tree_action_metadata['tree_actions'] = tree_actions;
-    tree_action_metadata['latest_node_id'] = latest_action_node_id;
-    
-    // console.log(JSON.stringify(tree_action_metadata));
-    $('#tree_state').val(JSON.stringify(tree_action_metadata));
-    $('#tree_state_form').submit();
-    tree_state_changed = false;
-    e.preventDefault();
-    return false;
+  $.minicolors.defaults.defaultValue = "#787878";
+  $('#line-color').minicolors({theme: 'bootstrap'});
+  
+  $('#apply-customization').click(function() {
+    run_tree_action();
   })
   
+  $('.custom-tree-fields').change(function() {
+    $('#apply-customization').click();
+  })
   <% if user_signed_in? %>
     $( window ).on('beforeunload', function() {
       if(tree_state_changed) {
-        var message = "Are you sure to leave the tree unsaved?",
-        e = e || window.event;
-        // For IE and Firefox
-        if (e) {
-          e.returnValue = message;
-        }
-
-        // For Safari
-        return message;
-      }   
+        save_tree_state();
+      }
     })
-    $(document).on('page:before-change', function() {
-      confirm("Are you sure to leave the tree unsaved?")
-    })
-  <% end %>  
+  <% end %>
 })
 
 </script>

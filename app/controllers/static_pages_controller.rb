@@ -8,4 +8,5 @@ class StaticPagesController < ApplicationController
   
   def feedback
   end
+  
 end
