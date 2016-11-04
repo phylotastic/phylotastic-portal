@@ -6,19 +6,24 @@
   
   <div id='popup'></div>
   <div class="row tree-wrapper well">
+    
     <div class="col-sm-3">
       <div class="row">
         <div class="col-sm-2">
           <input type="checkbox" id="internal" class="custom-tree-fields">
         </div>
-        <div class="col-sm-10" data-toggle="tooltip" data-placement="bottom" title="Show taxon names associated with internal nodes">iNode labels</div>
+        <div class="col-sm-10">
+          <div data-toggle="tooltip" data-placement="bottom" title="Show taxon names associated with internal nodes">iNode labels</div>
+        </div>
       </div>
       
       <div class="row" style="margin-top: 10px;">
         <div class="col-sm-2">
           <input type="checkbox" id="ladderize" class="custom-tree-fields">
         </div>
-        <div class="col-sm-10" data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree</div>
+        <div class="col-sm-10">
+          <div data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree</div>
+        </div>
       </div>
       <!-- <div class="row">
         <div class="col-md-6">Show branch length: </div>
@@ -51,6 +56,7 @@
         </div>
       </div>  
     </div>
+    
     
     <div class="col-sm-3" style="text-align: right;">
       <div id="tree_image_message"></div>
@@ -215,6 +221,8 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
+  $('[data-toggle="tooltip"]').tooltip(); 
+  
   try {
     topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
     leftOffset = $("#img1").offset().left;
@@ -236,8 +244,6 @@ $(document).ready(function() {
   $("#gotit").click(function() {
     $.cookie("view_hint", "false");
   });
-  
-  $('[data-toggle="tooltip"]').tooltip(); 
     
   $('#apply-customization').click(function() {
     run_tree_action();

@@ -45,6 +45,14 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
   catch(err) {
     $('#tree-rendering-failed').modal();
   }
+
+<% else %>
+  
+  $('#internal').prop('checked', false);
+  $('#ladderize').prop('checked', false);
+  
+  $.minicolors.defaults.defaultValue = '#787878';
+  $('#line-color').minicolors({theme: 'bootstrap'});
 <% end %>
 
 
