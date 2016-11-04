@@ -9,22 +9,48 @@
   <% end %>
 <% end %>
     
-<% if flag %>
-  <!-- Button trigger modal -->
-  <div style="text-align: right;">
-    <a class="btn btn-default" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#" style="margin-bottom: 7px;">Tree settings</a>
+
+<!-- Button trigger modal -->
+<div style="display: inline-block;">
+  <div class="dropdown" style="display: inline-block;">
+    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-bottom: 7px;">
+      Tree
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><%= link_to "Revert to original", tree_path(tree.id), remote: true %></li>
+      
+      
+      <% if flag %>
+        <li class=""><a class="" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#">Settings</a></li>
+        <li role="separator" class="divider"></li>
+        <li class="">
+          <a class="delete-link" href="#" id="delete-tree-trigger-<%= tree.id %>">Delete</a>
+          <%= form_for(tree, html: { method: :delete, class: "hide" }) do |f| %>
+            <%= f.submit "Delete this tree", id: "delete-tree-submit-#{tree.id}", data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </li>
+      <% end %>
+      
+      
+    </ul>
   </div>
+  
+  
+</div>
  
+
+<% if flag %>
   <!-- Modal -->
   <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
+      <%= form_for tree, remote: true do |f| %>
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">Tree settings</h4>
         </div>
         <div class="modal-body">
-          <%= form_for tree, remote: true do |f| %>
             <div class="row">
               <%= f.label :name, class: "col-sm-3" %>
               <div class="col-sm-9">
@@ -51,22 +77,13 @@
                 <% end %>
               </div>
             </div>
-          <%= f.submit "Change", class: "btn btn-primary btn-block" %>
-        <% end %>
         </div>
         <div class="modal-footer">
-          <div class="row">
-            <div class="col-sm-3">
-              <%= form_for(tree, html: { method: :delete }) do |f| %>
-                <%= f.submit "Delete this tree", class: "btn btn-danger", data: { confirm: 'Are you sure?' } %>
-              <% end %>
-            </div>
-            <div class="col-sm-2 col-sm-offset-7">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <%= f.submit "Change", class: "btn btn-primary" %>
         </div>
       </div>
+      <% end %>
     </div>
   </div>
   
@@ -91,6 +108,10 @@ $(document).ready(function() {
       $('#tree-in-string-format').val("<%= tree_newick %>");
       $('#save-tree-text').html('<%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %>');   
     }
+  })
+  
+  $('#delete-tree-trigger-<%= tree.id %>').click(function() {
+    $('#delete-tree-submit-<%= tree.id %>').click();
   })
   
 })

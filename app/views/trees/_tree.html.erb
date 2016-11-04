@@ -5,6 +5,86 @@
   <div id="tree-in-newick"></div>
   
   <div id='popup'></div>
+  
+  <div id="tree-navigation">
+    <!-- <h4 class="center" id="tree-actions">Tree actions</h4> -->
+    <%= render partial: "permission_tree_nav", locals: { tree: tree, tree_newick: tree_newick, non_san_newick: non_san_newick } %>
+
+    <!-- Button dropdown -->
+    <div class="dropdown" style="display: inline-block;">
+      <button class="btn btn-sm btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-bottom: 7px;">
+        Export as
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#" data-toggle="modal" data-target="#show-tree-format">Text</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#show-tree-image">Image</a></li>
+      </ul>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
+            <div style="text-align: right; margin-top: 10px;">
+              <div style="display: inline; margin-right: 20px;">
+                <%= check_box_tag 'show_ott', '1' %> 
+              </div> 
+              <span data-toggle="tooltip" data-placement="top" title="Include the IDs used internally by the OpenTree project" id="copy-to-clipboard">Show OTT ids</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="btn-group" role="group" aria-label="...">
+              <div class="btn-wrapper">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+              <div class="btn-wrapper" id="save-tree-text">
+                <%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p><em>* Disable popup blocker in this brower to be redirected to image </em></p>
+          </div>
+          <div class="modal-body">
+        
+            <div class="row">
+              <div class="col-md-3">Image format: </div>
+              <div class="col-md-9">
+                <input type="radio" name="format" value="png" checked="checked">png
+                <input type="radio" name="format" value="svg">svg
+                <a href="#" onclick="save_tree_image();" class="btn btn-primary">Generate link to download</a>
+                <div id="svg_image" class=""></div>
+              </div>
+            </div>
+        
+          </div>
+          <div class="modal-footer">
+            <div class="btn-wrapper">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+    </div>
+    
+    <!-- End of tree-navigation -->
+  </div>
+  
   <div class="row tree-wrapper well">
     
     <div class="col-sm-3">
@@ -38,7 +118,7 @@
     
     <div class="col-sm-3">
       <div class="row">
-        <div class="col-sm-5">Line weight:</div>
+        <div class="col-sm-6">Line weight:</div>
         <div class="col-sm-4">
           <select name="lwidth" id="line-weight" class="form-control custom-tree-fields">
             <option value="1" selected="selected">1</option>
@@ -59,92 +139,13 @@
     
     
     <div class="col-sm-3" style="text-align: right;">
-      <div id="tree_image_message"></div>
       <div style="display: inline-block;">
         <button class="btn btn-default pull-right" onclick="load_tip_images();">Load all images</button>
       </div>
-      
-      <!-- Button dropdown -->
-      <div class="dropdown" style="text-align: right;">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-bottom: 7px;">
-          Export as
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#" data-toggle="modal" data-target="#show-tree-format">text</a></li>
-          <li><a href="#" data-toggle="modal" data-target="#show-tree-image">image</a></li>
-        </ul>
-      </div>
-      <!-- Modal -->
-      <div class="modal fade" id="show-tree-format" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-              <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree_newick %></textarea>
-              <div style="text-align: right; margin-top: 10px;">
-                <div style="display: inline; margin-right: 20px;">
-                  <%= check_box_tag 'show_ott', '1' %> 
-                </div> 
-                <span data-toggle="tooltip" data-placement="top" title="Include the IDs used internally by the OpenTree project" id="copy-to-clipboard">Show OTT ids</span>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <div class="btn-group" role="group" aria-label="...">
-                <div class="btn-wrapper">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-                <div class="btn-wrapper" id="save-tree-text">
-                  <%= link_to "Save", newick_trees_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %> 
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal -->
-      <div class="modal fade" id="show-tree-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <p><em>* Disable popup blocker in this brower to be redirected to image </em></p>
-            </div>
-            <div class="modal-body">
-          
-              <div class="row">
-                <div class="col-md-3">Image format: </div>
-                <div class="col-md-9">
-                  <input type="radio" name="format" value="png" checked="checked">png
-                  <input type="radio" name="format" value="svg">svg
-                  <a href="#" onclick="save_tree_image();" class="btn btn-primary">Generate link to download</a>
-                  <div id="svg_image" class=""></div>
-                </div>
-              </div>
-          
-            </div>
-            <div class="modal-footer">
-              <div class="btn-wrapper">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-        
-          </div>
-        </div>
-      </div>
-      
+      <div id="tree_image_message"></div>
     </div>
     
     <div class="col-sm-3">
-      <div id="tree-navigation">
-        <!-- <h4 class="center" id="tree-actions">Tree actions</h4> -->
-        <%= render partial: "permission_tree_nav", locals: { tree: tree, tree_newick: tree_newick, non_san_newick: non_san_newick } %>
-    
-        <!-- End of tree-navigation -->
-      </div>
     </div>
     
   </div>

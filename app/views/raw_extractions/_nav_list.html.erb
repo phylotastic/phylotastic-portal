@@ -21,8 +21,8 @@
         <%= text_field_tag :name, nil, class: "form-control", id: "file-name" %>
       </div>
       <div class="modal-footer">
-        <%= link_to "Download list", "#",  class: "btn btn-default btn-primary", id: "download-selected-species" %>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+        <%= link_to "Download list", "#",  class: "btn btn-default btn-primary", id: "download-selected-species" %>
       </div>
     </div>
   </div>
@@ -72,11 +72,10 @@
         </table>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
         <%= link_to "Export as CSV", raw_extraction_taxon_matching_report_path(ra, format: :csv), class: "btn-primary btn btn-default", target: '_blank' %> 
         
-        <%= link_to "Export as PDF", raw_extraction_taxon_matching_report_path(ra, format: :pdf), class: "btn-primary btn btn-default", target: '_blank' %> 
-        
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+        <%= link_to "Export as PDF", raw_extraction_taxon_matching_report_path(ra, format: :pdf), class: "btn-primary btn btn-default", target: '_blank' %>         
       </div>
     </div>
   </div>
@@ -111,6 +110,7 @@
             </div>
             <div class="modal-footer">
               <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
             </div>
           <% end %>
         <% else %>
@@ -154,7 +154,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <%= f.submit "Change", class: "btn btn-primary", style: "margin-bottom: 10px;" %>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+              <%= f.submit "Change", class: "btn btn-primary"%>
             </div>
           <% end %>
         <% end %>
