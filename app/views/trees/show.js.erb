@@ -11,6 +11,28 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
   <% tree_data = JSON.parse(@tree.action_sequence) %>
   var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
   var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
+  
+  if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
+    $('#internal').prop('checked', true);
+  } else {
+    $('#internal').prop('checked', false);
+  }
+  
+  if ('<%= tree_data["tree_actions"]["ladderize"] %>' == "true") {    
+    $('#ladderize').prop('checked', true);
+  } else {    
+    $('#ladderize').prop('checked', false);
+  }
+    
+  if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
+    $.minicolors.defaults.defaultValue = '#787878';
+  } else {
+    $.minicolors.defaults.defaultValue = '<%= tree_data["tree_actions"]["line_color"] %>';
+  }
+  $('#line-color').minicolors({theme: 'bootstrap'});
+  
+  $('#line-weight option[value=' + '<%= tree_data["tree_actions"]["line_width"] %>' + ']').attr("selected", "selected");
+  
   var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
   try {
     topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
