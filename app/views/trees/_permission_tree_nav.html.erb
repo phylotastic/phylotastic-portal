@@ -8,85 +8,62 @@
     <% flag = true %>
   <% end %>
 <% end %>
-    
-
-<!-- Button trigger modal -->
-<div style="display: inline-block;">
-  <div class="dropdown" style="display: inline-block;">
-    <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-bottom: 7px;">
-      Tree
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li><%= link_to "Revert to original", tree_path(tree.id), remote: true %></li>
-      
-      
-      <% if flag %>
-        <li class=""><a class="" data-toggle="modal" data-target="#edit-tree-name-modal-<%= tree.id %>" href="#">Settings</a></li>
-        <li role="separator" class="divider"></li>
-        <li class="">
-          <a class="delete-link" href="#" id="delete-tree-trigger-<%= tree.id %>">Delete</a>
-          <%= form_for(tree, html: { method: :delete, class: "hide" }) do |f| %>
-            <%= f.submit "Delete this tree", id: "delete-tree-submit-#{tree.id}", data: { confirm: 'Are you sure?' } %>
-          <% end %>
-        </li>
-      <% end %>
-      
-      
-    </ul>
-  </div>
-  
-  
-</div>
- 
 
 <% if flag %>
-  <!-- Modal -->
-  <div class="modal fade" id="edit-tree-name-modal-<%= tree.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-      <%= form_for tree, remote: true do |f| %>
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">Tree settings</h4>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-              <%= f.label :name, class: "col-sm-3" %>
-              <div class="col-sm-9">
-                <%= f.text_field :name, value: tree.name, class: "form-control" %>
-              </div>
+  <div class="tree-settings">
+    <div class="boxed-group" style="margin-top: 15px;">
+      <h3>Features</h3>
+      <div class="boxed-group-inner">
+        <%= form_for tree, remote: true do |f| %>
+          <div class="row">
+            <%= f.label :name, class: "col-sm-3 " %>
+            <div class="col-sm-9">
+              <%= f.text_field :name, value: tree.name, class: "form-control" %>
             </div>
-            <div class="row" style="margin-top: 20px;">
-              <%= f.label :public, class: "col-sm-3" %>
-              <div class="col-sm-9">
-                <% if tree.public %>
-                  <div class="col-sm-3">
-                    True: <%= f.radio_button("public", "true", checked: true) %>
-                  </div>
-                  <div class="col-sm-3">
-                    False: <%= f.radio_button("public", "false") %>
-                  </div>
-                <% else %>
-                  <div class="col-sm-3">
-                    True: <%= f.radio_button("public", "true") %>
-                  </div>
-                  <div class="col-sm-3">
-                    False: <%= f.radio_button("public", "false", checked: true) %>
-                  </div>
-                <% end %>
-              </div>
+          </div>
+          <hr class="bleed-flush"></hr>
+          <div class="row" style="margin-top: 20px;">
+            <%= f.label :public, class: "col-sm-3" %>
+            <div class="col-sm-9">
+              <% if tree.public %>
+                <div class="col-sm-3">
+                  True: <%= f.radio_button("public", "true", checked: true) %>
+                </div>
+                <div class="col-sm-3">
+                  False: <%= f.radio_button("public", "false") %>
+                </div>
+              <% else %>
+                <div class="col-sm-3">
+                  True: <%= f.radio_button("public", "true") %>
+                </div>
+                <div class="col-sm-3">
+                  False: <%= f.radio_button("public", "false", checked: true) %>
+                </div>
+              <% end %>
             </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= f.submit "Change", class: "btn btn-primary" %>
+          </div>
+          <hr class="bleed-flush"></hr>
+          <%= f.submit "Update", class:"btn btn-default" %>
+        <% end %>
+      </div>
+    </div>
+      
+    <div class="boxed-group dangerzone">
+      <h3>Danger option</h3>
+      <div class="boxed-group-inner">
+        <div class="row">
+          <div class="col-md-8">Once this tree is deleted, there is no way to retrieve it back.</div>
+          <div class="col-md-4">
+            <%= form_for(tree, html: { method: :delete }) do |f| %>
+              <%= f.submit "Delete this tree", data: { confirm: 'Are you sure?' }, class:"btn btn-danger" %>
+            <% end %>
+          </div>
         </div>
       </div>
-      <% end %>
     </div>
   </div>
-  
+<% end %>
+
   <%= form_for tree, url: { action: "update" }, remote: true, html: {id: "tree_state_form", class: "hide"} do |f| %>
     <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
   <% end %>
@@ -95,7 +72,6 @@
     <!-- <%= link_to "Load tree state", tree_path(tree.id, last_state: true), remote: true,  class:"btn btn-primary" %> -->
   <!-- <% end %> -->
   
-<% end %>
 
 <script>
 $(document).ready(function() {
@@ -110,9 +86,6 @@ $(document).ready(function() {
     }
   })
   
-  $('#delete-tree-trigger-<%= tree.id %>').click(function() {
-    $('#delete-tree-submit-<%= tree.id %>').click();
-  })
   
 })
 

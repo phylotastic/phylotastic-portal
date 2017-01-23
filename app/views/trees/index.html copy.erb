@@ -1,0 +1,173 @@
+<%= javascript_include_tag APP_CONFIG["ete_js"] %>
+<% provide(:title, "Tree Viewer") %>
+<% require "Newick" %>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="list-selection">
+      <div class="row">
+        <div class="col-md-4">
+          <h4 class="fix-heading">My Trees</h4>
+        </div>
+        <div class="col-md-6">
+    	    <div class="my-trees">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select a tree
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu tree-menu">
+                <div class="table-wrapper">
+                  <div class="table-scroll">  
+                    <div class="nav nav-stacked">
+                    <% if @my_trees.empty? %>
+                      <div class="center" style="margin-top:40px;">You don't have any trees yet</div>
+                    <% else %>
+                      <% @my_trees.each do |t| %>
+                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                        <% case t.status %>
+                        <% when "completed" %>
+                          <li><%= link_to name, tree_path(t.id, last_state: true), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                        <% when "unsuccessfully-constructed" %>
+                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                        <% when nil %>
+                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
+  	    </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5">
+    <div class="list-selection">
+      <div class="row">
+        <div class="col-md-5">
+          <h4 class="fix-heading">Public Trees</h4>
+        </div>
+        <div class="col-md-6">
+          <div class="public-trees">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Select a tree
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu tree-menu">
+                <div class="table-wrapper">
+                  <div class="table-scroll">  
+                    <div class="nav nav-stacked">
+                      <% @public_trees.each do |t| %>
+                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                        <% case t.status %>
+                        <% when "completed" %>
+                          <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                        <% when "unsuccessfully-constructed" %>
+                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                        <% when nil %>
+                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr style="margin-top: 0; margin-bottom: 5px;">
+<div>
+  <div class="row" id="tree-content">
+  </div>
+</div>
+
+<div class="modal fade" id="extraction-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body center" id="extraction-content">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  save_tree_state = function() {
+    var tree_action_metadata = {};
+
+    tree_action_metadata['node_actions'] = node_actions_list;
+    tree_action_metadata['tree_actions'] = tree_actions;
+    tree_action_metadata['latest_node_id'] = latest_action_node_id;
+
+    // console.log(JSON.stringify(tree_action_metadata));
+    $('#tree_state').val(JSON.stringify(tree_action_metadata));
+    $('#tree_state_form').submit();
+    tree_state_changed = false;
+  }
+  
+  $(".list-group-item").click(function() {
+    $(".list-group-item").removeClass("active");
+    $(this).addClass("active");
+    $('#ra-content').html("<div class='center'><img src='<%= image_path("loading-icon.gif") %>'></div>");
+  })
+
+  $('a[id*="nav-tree-"]').click(function(e) {
+    var parentClass = $(this).parents(".dropdown").parent().attr("class");
+    if(parentClass == "my-trees") {      
+      $(".my-trees .treeMenuDropbox").dropdown("toggle");
+    } else {      
+      $(".public-trees .treeMenuDropbox").dropdown("toggle");
+    }
+    $(this).parent().addClass("active");
+    $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
+    if(parentClass == "my-trees") {      
+      $(".my-trees .treeMenuDropbox").text($(this).text());
+    } else {      
+      $(".public-trees .treeMenuDropbox").text($(this).text());
+    }
+    
+    if(tree_state_changed) {
+      save_tree_state();
+    }
+    
+  });
+
+  $("#nav-tree-" + "<%= @inspect %>").click();
+  $("#nav-tree-" + "<%= @inspect %>").parents(".dropdown").removeClass('open');
+    
+  <% if params[:hot] %>
+    <% tree = Tree.find(@inspect) %>
+    <% ra = tree.raw_extraction %>
+    <% leaves = NewickTree.new(JSON.parse(tree.representation)["newick"].to_s).root.leaves.count rescue 'unparseable' %>
+    $('#extraction-content').text("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> of <%= JSON.parse(ra.species)["resolvedNames"].count %> taxa in the input list were matched.");
+    $("#extraction-info").modal();
+  <% end %>
+
+  <% if params[:failed] %>
+    $('#extraction-content').text("Failed to extract tree.");
+    $("#extraction-info").modal();
+  <% end %>
+  
+})
+</script>
+
+
+

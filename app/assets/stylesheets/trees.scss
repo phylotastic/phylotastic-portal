@@ -149,3 +149,54 @@ path.link {
     }
   }
 }
+
+.tree-directory {
+  display: inline-block;
+}
+
+.tree-directory, #seperator {
+  font-size: 30px;
+}
+
+.tree-settings {
+  width: 500px;
+  margin: 0 auto;
+}
+
+#tree-content, #ra-content {
+  margin-top: 15px;
+  .nav, .nav-tabs {
+    li {
+      .fa {
+        padding-right: 5px;
+      }
+      a {
+        padding-right: 25px;
+        padding-left: 25px;
+      }
+    }
+    .active {
+      a {
+        border-top: 4px #d26911 solid;;        
+      }
+    }
+  }
+}
+
+.tree-options-wrapper {
+  margin-top: 10px;
+  .cb-tree-viewer {
+    margin-right: 5px;
+  }
+  .tree-view-options {
+    display: inline-block;
+    margin-right: 20px;
+    .minicolors, .minicolors-theme-bootstrap {
+      display: inline-block;
+      width: 30px;
+    }
+    select {
+      font-size: 20px;
+    }
+  }
+}

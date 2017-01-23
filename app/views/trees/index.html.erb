@@ -2,90 +2,98 @@
 <% provide(:title, "Tree Viewer") %>
 <% require "Newick" %>
 
-<div class="row">
-  <div class="col-md-5">
-    <div class="list-selection">
-      <div class="row">
-        <div class="col-md-4">
-          <h4 class="fix-heading">My Trees</h4>
-        </div>
-        <div class="col-md-6">
-    	    <div class="my-trees">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Select a tree
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu tree-menu">
-                <div class="table-wrapper">
-                  <div class="table-scroll">  
-                    <div class="nav nav-stacked">
-                    <% if @my_trees.empty? %>
-                      <div class="center" style="margin-top:40px;">You don't have any trees yet</div>
-                    <% else %>
-                      <% @my_trees.each do |t| %>
-                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
-                        <% case t.status %>
-                        <% when "completed" %>
-                          <li><%= link_to name, tree_path(t.id, last_state: true), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
-                        <% when "unsuccessfully-constructed" %>
-                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
-                        <% when nil %>
-                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
-                        <% end %>
-                      <% end %>
-                    <% end %>
-                  </div>
-                  </div>
-                </div>
-              </ul>
-            </div>
-          </div>
-  	    </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="col-md-5">
-    <div class="list-selection">
-      <div class="row">
-        <div class="col-md-5">
-          <h4 class="fix-heading">Public Trees</h4>
+<div>
+  <div class="tree-directory">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span id="tdir-indicator">Select repository</span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" id="repo">
+        <div class="nav nav-stacked">
+          <li><%= link_to "My trees", "#", id: "my-trees-selected" %></li>
+          <li><%= link_to "Public trees", "#", id: "public-trees-selected" %></li>
         </div>
-        <div class="col-md-6">
-          <div class="public-trees">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Select a tree
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu tree-menu">
-                <div class="table-wrapper">
-                  <div class="table-scroll">  
-                    <div class="nav nav-stacked">
-                      <% @public_trees.each do |t| %>
-                        <% name = t.name.to_s == '' ? "*no name*" : t.name %>
-                        <% case t.status %>
-                        <% when "completed" %>
-                          <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
-                        <% when "unsuccessfully-constructed" %>
-                          <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
-                        <% when nil %>
-                          <!--Solr is denied to create tree but sidekiq still queued the tree -->
-                        <% end %>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
-              </ul>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="tree-directory" id="seperator">/</div>
+  
+  <div class="tree-directory">
+    <div class="dropdown" id="tree-selector-holder">
+      <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Select tree
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <div class="nav nav-stacked">
+          <div class="center">Please select repository</div>
+        </div>
+      </ul>
+    </div>
+    
+    <div class="dropdown" id="my-tree-selector" style="display: none;">
+      <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="tree-indicator">Select tree</span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu tree-menu">
+        <div class="table-wrapper">
+          <div class="table-scroll">  
+            <div class="nav nav-stacked">
+              <% if @my_trees.empty? %>
+                <div class="center" style="margin-top:40px;">You don't have any trees yet</div>
+              <% else %>
+                <% @my_trees.each do |t| %>
+                  <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                  <% case t.status %>
+                  <% when "completed" %>
+                    <li><%= link_to name, tree_path(t.id, last_state: true), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                  <% when "unsuccessfully-constructed" %>
+                    <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                  <% when nil %>
+                    <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                  <% end %>
+                <% end %>
+              <% end %>
             </div>
           </div>
         </div>
-      </div>
+      </ul>
     </div>
+    
+    <div class="dropdown" id="public-tree-selector" style="display: none;">
+      <button class="btn btn-default dropdown-toggle treeMenuDropbox" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="tree-indicator">Select tree</span>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu tree-menu">
+        <div class="table-wrapper">
+          <div class="table-scroll">  
+            <div class="nav nav-stacked">
+              <% @public_trees.each do |t| %>
+                <% name = t.name.to_s == '' ? "*no name*" : t.name %>
+                <% case t.status %>
+                <% when "completed" %>
+                  <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
+                <% when "unsuccessfully-constructed" %>
+                  <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
+                <% when nil %>
+                  <!--Solr is denied to create tree but sidekiq still queued the tree -->
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  <!-- End of tree selector -->
   </div>
+  
 </div>
-<hr style="margin-top: 0; margin-bottom: 5px;">
+
 <div>
   <div class="row" id="tree-content">
   </div>
@@ -130,20 +138,8 @@ $(document).ready(function() {
   })
 
   $('a[id*="nav-tree-"]').click(function(e) {
-    var parentClass = $(this).parents(".dropdown").parent().attr("class");
-    if(parentClass == "my-trees") {      
-      $(".my-trees .treeMenuDropbox").dropdown("toggle");
-    } else {      
-      $(".public-trees .treeMenuDropbox").dropdown("toggle");
-    }
-    $(this).parent().addClass("active");
-    $(".treeMenuDropbox").html("Select a tree <span class='caret'></span>");
-    if(parentClass == "my-trees") {      
-      $(".my-trees .treeMenuDropbox").text($(this).text());
-    } else {      
-      $(".public-trees .treeMenuDropbox").text($(this).text());
-    }
     
+    $('.tree-indicator').text($(this).text());
     if(tree_state_changed) {
       save_tree_state();
     }
@@ -166,6 +162,18 @@ $(document).ready(function() {
     $("#extraction-info").modal();
   <% end %>
   
+  $('#repo a').click(function() {
+    $("#tree-selector-holder").hide();
+    if($(this).attr('id') == "my-trees-selected") {
+      $("#my-tree-selector").show();
+      $("#public-tree-selector").hide();
+      $("#tdir-indicator").text("My trees");
+    } else {
+      $("#my-tree-selector").hide();
+      $("#public-tree-selector").show();
+      $("#tdir-indicator").text("Public trees");
+    }
+  });
 })
 </script>
 
