@@ -140,9 +140,11 @@ $(document).ready(function() {
   $('a[id*="nav-tree-"]').click(function(e) {
     
     $('.tree-indicator').text($(this).text());
-    if(tree_state_changed) {
-      save_tree_state();
-    }
+    <% if user_signed_in? %>
+      if(tree_state_changed) {
+        save_tree_state();
+      }
+    <% end %>
     
     $(this).parents('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
   });

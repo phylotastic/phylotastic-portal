@@ -269,13 +269,14 @@ $(document).ready(function() {
   $('.custom-tree-fields').change(function() {
     $('#apply-customization').click();
   })
-  <% if user_signed_in? %>
-    $( window ).on('beforeunload', function() {
+  
+  $( window ).on('beforeunload', function() {
+    <% if user_signed_in? %>
       if(tree_state_changed) {
         save_tree_state();
       }
-    })
-  <% end %>
+    <% end %>
+  })
 })
 
 </script>

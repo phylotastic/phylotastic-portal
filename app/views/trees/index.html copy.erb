@@ -144,10 +144,12 @@ $(document).ready(function() {
       $(".public-trees .treeMenuDropbox").text($(this).text());
     }
     
-    if(tree_state_changed) {
-      save_tree_state();
-    }
-    
+    <% if user_signed_in? %>
+      if(tree_state_changed) {
+        save_tree_state();
+      }
+    <% end %>
+      
   });
 
   $("#nav-tree-" + "<%= @inspect %>").click();
