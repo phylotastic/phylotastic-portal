@@ -240,7 +240,7 @@ $(document).ready(function() {
   $('[data-toggle="tooltip"]').tooltip(); 
   
   try {
-    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
+    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;
     leftOffset = $("#img1").offset().left;
     // console.log(topOffset, leftOffset);
     get_tree_image("<%= @id %>" , "<%= tree_newick %>", "#img1", topOffset, leftOffset);
@@ -248,6 +248,7 @@ $(document).ready(function() {
     $("#leftOffset").val(leftOffset);
   }
   catch(err) {
+    console.log(err);
     $('#tree-rendering-failed').modal();
   }
   

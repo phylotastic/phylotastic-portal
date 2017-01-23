@@ -35,7 +35,7 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
   
   var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
   try {
-    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
+    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;;
     leftOffset = $("#img1").offset().left;
     // console.log(topOffset, leftOffset);
     get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
@@ -58,7 +58,7 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
   $('#line-color').minicolors({theme: 'bootstrap'});
   
   try {
-    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $($(".list-selection")[0]).offset().top;
+    topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;;
     leftOffset = $("#img1").offset().left;
     // console.log(topOffset, leftOffset);
     get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);

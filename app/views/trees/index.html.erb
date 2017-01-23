@@ -144,6 +144,7 @@ $(document).ready(function() {
       save_tree_state();
     }
     
+    $(this).parents('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
   });
 
   $("#nav-tree-" + "<%= @inspect %>").click();
