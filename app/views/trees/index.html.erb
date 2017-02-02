@@ -156,6 +156,10 @@ $(document).ready(function() {
     <% tree = Tree.find(@inspect) %>
     <% ra = tree.raw_extraction %>
     <% leaves = NewickTree.new(JSON.parse(tree.representation)["newick"].to_s).root.leaves.count rescue 'unparseable' %>
+    $("#my-tree-selector").show();
+    $("#public-tree-selector").hide();
+    $("#tdir-indicator").text("My trees");
+    $("#tree-selector-holder").hide();
     $('#extraction-content').text("Retrieved a tree with <%= leaves %> tips. <%= JSON.parse(tree.chosen_species).count %> of <%= JSON.parse(ra.species)["resolvedNames"].count %> taxa in the input list were matched.");
     $("#extraction-info").modal();
   <% end %>
