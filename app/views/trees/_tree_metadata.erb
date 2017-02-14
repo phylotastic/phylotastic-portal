@@ -59,7 +59,7 @@
   
   <div class="col-md-8">
     <h3>Supporting studies</h3>
-    <% if tree_metadata.nil? %>
+    <% if tree_metadata.nil? || tree_metadata["supporting_studies"].empty? %>
       <p>No study found</p>
     <% else %>
       <% tree_metadata["supporting_studies"].each_with_index do |s, i| %>
