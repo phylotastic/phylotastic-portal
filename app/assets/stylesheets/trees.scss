@@ -201,3 +201,15 @@ path.link {
     }
   }
 }
+
+.study {
+  .study_title {
+    a {
+      color: #333;
+      &:hover {
+        color: #337ab7;
+        text-decoration: none;
+      };
+    }
+  }
+}

@@ -1,0 +1,88 @@
+<% tree = JSON.parse(tree.representation) rescue [] %>
+<% tree_metadata = tree["tree_metadata"] rescue [] %>
+<div class="row" style="margin-top: 15px;">
+  <div class="col-md-4">
+    <h3>Tree info</h3>
+    <table class="table table-hover">
+        <tbody>
+        <tr>
+          <th>Topology ID</th>
+          <td><%= tree_metadata["topology_id"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Gene or species</th>
+          <td><%= tree_metadata["gene_or_species"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Rooted</th>
+          <td><%= tree_metadata["rooted"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Anastomosing</th>
+          <td><%= tree_metadata["anastomosing"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Consensus type</th>
+          <td><%= tree_metadata["consensus_type"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Branch length type</th>
+          <td><%= tree_metadata["branch_length_type"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Branch support type</th>
+          <td><%= tree_metadata["branch_support_type"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Character matrix</th>
+          <td><%= tree_metadata["character_matrix"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Alignment method</th>
+          <td><%= tree_metadata["alignment_method"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Inference method</th>
+          <td><%= tree_metadata["inference_method"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Number of tips</th>
+          <td><%= tree_metadata["num_tips"] rescue "NA" %></td>
+        </tr>
+        <tr>
+          <th>Creation time</th>
+          <td><%= tree["creation_time"] rescue "NA" %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="col-md-8">
+    <h3>Supporting studies</h3>
+    <% if tree_metadata.nil? %>
+      <p>No study found</p>
+    <% else %>
+      <% tree_metadata["supporting_studies"].each_with_index do |s, i| %>
+        <div class="study">
+          <div class="study_title"><%= link_to truncate(s["Publication"], length: 200) { link_to "more", "#", class: "small", id: "more-info-#{i}"}, s["PublicationDOI"], target: "_blank" %>
+          </div>
+          <div class="study_info text-right">
+            <span class="small">Curator: <%= s["Curator"]%></span>
+          </div>
+          <hr>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+  
+<script>
+$("a[id^='more-info']").click(function(e) {
+  var ind = parseInt(/\d+/.exec($(this).attr('id'))[0]);
+  var tree_metadata = <%= tree_metadata.to_json.html_safe || 'null' %>;
+  html_text = "<a href=\"" + tree_metadata["supporting_studies"][ind]["PublicationDOI"] + "\" target=\"_blank\">" + tree_metadata["supporting_studies"][ind]["Publication"] + "</a>"
+  $(this).parent().html(html_text);
+  e.preventDefault();
+  return false;
+}); 
+</script>
