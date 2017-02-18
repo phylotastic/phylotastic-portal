@@ -28,7 +28,7 @@
           <% species.each_with_index do |e, i| %>
             <tr class="species-row success">
               <td class=""><%= i + 1 %></td>
-              <td class=""><%= e %></td>
+              <td class=""><em><%= e %></em></td>
               <td class="">
                 <% common.each do |c| %>
                   <% if c["scientific_name"] == e %>

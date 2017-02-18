@@ -17,7 +17,7 @@
         <% species.each_with_index do |e, i| %>
           <tr class="species-row success">
             <td class=""><%= i + 1 %></td>
-            <td class=""><%= e %></td>
+            <td class=""><em><%= e %></em></td>
             <td class="species-cb-column">           
               <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
               <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
