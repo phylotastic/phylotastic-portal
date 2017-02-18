@@ -212,4 +212,31 @@ path.link {
       };
     }
   }
+  .study_info {
+    .row {
+      margin-top: 5px;
+      margin-bottom: 30px;
+      height: 20px;
+      .small {
+        .btn-primary {
+          opacity: 0;
+          -webkit-transition: opacity 0.5s;
+          -moz-transition: opacity 0.5s;
+          -o-transition: opacity 0.5s;
+          transition: opacity 0.5s;
+        }
+      }
+    }
+  }
+  &:hover {
+    .study_info {
+      .row {
+        .small {
+          .btn-primary {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
 }

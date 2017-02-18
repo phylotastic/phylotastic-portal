@@ -131,7 +131,7 @@ class ExtractionsWorker
       extracted_response = {}
       extracted = Paperclip.io_adapters.for(OnplFile.find_by_id(source_id).document).read.split("\n")
       extracted_response["scientificNames"] = extracted.map do |n|
-        n.to_s.encode('UTF-8', {
+        n.to_s.strip.encode('UTF-8', {
           :invalid => :replace,
           :undef   => :replace,
           :replace => '?'
