@@ -3,6 +3,8 @@ class TreesWorker
   # sidekiq_options retry: false
   include Sidekiq::Status::Worker
   
+  include TreesHelper
+  
   def perform(tree_id)
     tree = Tree.find_by_id(tree_id)
     
@@ -13,7 +15,7 @@ class TreesWorker
     
     resolved = JSON.parse(tree.raw_extraction.species) rescue []
     if(resolved["resolvedNames"].length == 0)
-      tree.update_attributes( status: "unsuccessfully-constructed", 
+      tree.update_attributes( status: "unsuccessfully-extracted", 
                               bg_job: "-1",
                               representation: nil )
       return 
@@ -29,9 +31,9 @@ class TreesWorker
 
     sleep 3
     
-    at 70, "Construct tree"
+    at 60, "Extract tree"
     begin
-      constructed_response = Req.post( APP_CONFIG["sv_get_tree"]["url"],
+      extracted_response = Req.post( APP_CONFIG["sv_get_tree"]["url"],
                                        resolved.to_json,
                                        :content_type => :json, 
                                        :accept => :json )
@@ -40,22 +42,47 @@ class TreesWorker
       logger.info "Call service error"
     end
     
-    
-    at 90, "Save tree"
-    if !constructed_response
-      tree.update_attributes( status: "unsuccessfully-constructed", 
-                              bg_job: "-1",
+    at 70, "Save extracted tree"
+    if !extracted_response
+      tree.update_attributes( status: "unsuccessfully-extracted", 
                               representation: nil )
-    elsif JSON.parse(constructed_response)["message"] == "Success" 
-      constructed_response = constructed_response.to_s.gsub('\'', '')
+    elsif JSON.parse(extracted_response)["message"] == "Success" 
+      extracted_response = extracted_response.to_s.gsub('\'', '')
+      tree.update_attributes( status: "completed", 
+                              representation: extracted_response )
+    else
+      extracted_response = extracted_response.to_s.gsub('\'', '')
+      tree.update_attributes( status: "unsuccessfully-extracted", 
+                              representation: extracted_response )
+    end
+    
+    at 80, "Scale tree"
+    begin
+      scaled_response = Req.post( APP_CONFIG["sv_datelife_tree"]["url"],
+                                  {"newick": sanitize_newick(tree)}.to_json,
+                                  :content_type => :json, 
+                                  :accept => :json )
+    rescue => e
+      puts e
+      logger.info "Call service error"
+    end
+    
+    at 90, "Save scaled tree"
+    if !scaled_response
+      tree.update_attributes( status: "unsuccessfully-scaled", 
+                              bg_job: "-1",
+                              scaled_representation: nil )
+    elsif JSON.parse(scaled_response)["message"] == "Success" 
+      scaled_response = scaled_response.to_s.gsub('\'', '')
       tree.update_attributes( status: "completed", 
                               bg_job: "-1",
-                              representation: constructed_response )
+                              scaled_representation: scaled_response )
     else
-      constructed_response = constructed_response.to_s.gsub('\'', '')
-      tree.update_attributes( status: "unsuccessfully-constructed", 
+      scaled_response = scaled_response.to_s.gsub('\'', '')
+      tree.update_attributes( status: "unsuccessfully-scaled", 
                               bg_job: "-1",
-                              representation: constructed_response )
+                              scaled_representation: scaled_response )
     end
+    
   end
 end

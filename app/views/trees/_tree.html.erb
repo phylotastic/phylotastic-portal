@@ -1,5 +1,5 @@
 <% tree_newick = sanitize_newick(tree) %>
-<% non_san_newick = JSON.parse(tree.representation)['newick'] %>
+<% non_san_newick = JSON.parse(tree.representation)['scaled_tree'] %>
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
@@ -68,12 +68,26 @@
             <span data-toggle="tooltip" data-placement="bottom" title="Rotate nodes to maximize asymmetry (this usually makes the tree easier to read)">Ladderize Tree</span>
           </span>
         </div>
-        <!-- <div class="row">
-          <div class="col-md-6">Show branch length: </div>
-          <div class="col-md-6">
-            <input type="checkbox" id="branch">
-          </div>
-        </div> -->
+        
+        <div class="tree-view-options">
+          <% case tree.status %>
+          <% when "completed" %>
+            <span class="cb-tree-viewer">
+              <input type="checkbox" id="branch" class="custom-tree-fields">
+            </span>
+            <span>
+              <span data-toggle="tooltip" data-placement="bottom" title="Display result of scaling tree">Show branch length</span>
+            </span>        
+          <% when "unsuccessfully-scaled" %>
+            <span class="cb-tree-viewer">
+              <input type="checkbox" id="branch" class="custom-tree-fields" disabled>
+            </span>
+            <span>
+            <span data-toggle="tooltip" data-placement="bottom" title="<%= tree.semantic_status %>">Show branch length</span>
+            </span>        
+          <% end %>
+        </div>
+
         <input type="hidden" id="topOffset" value="">
         <input type="hidden" id="leftOffset" value="">
         <input type="submit" value="Apply" class="btn btn-primary hide" id="apply-customization">

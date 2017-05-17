@@ -49,9 +49,9 @@
                 <% @my_trees.each do |t| %>
                   <% name = t.name.to_s == '' ? "*no name*" : t.name %>
                   <% case t.status %>
-                  <% when "completed" %>
+                  <% when "completed", "unsuccessfully-scaled" %>
                     <li><%= link_to name, tree_path(t.id, last_state: true), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
-                  <% when "unsuccessfully-constructed" %>
+                  <% when "unsuccessfully-extracted" %>
                     <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>
                   <% when nil %>
                     <!--Solr is denied to create tree but sidekiq still queued the tree -->
@@ -76,7 +76,7 @@
               <% @public_trees.each do |t| %>
                 <% name = t.name.to_s == '' ? "*no name*" : t.name %>
                 <% case t.status %>
-                <% when "completed" %>
+                <% when "completed", "unsuccessfully-scaled" %>
                   <li><%= link_to name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}" %></li>
                 <% when "unsuccessfully-constructed" %>
                   <li><%= link_to(name, tree_path(t.id), remote: true, class:"", id: "nav-tree-#{t.id}") %></li>

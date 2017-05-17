@@ -19,7 +19,7 @@ class TreesController < ApplicationController
     if @tree.save
       job_id = TreesWorker.perform_async(@tree.id)
       @tree.update_attributes( bg_job: job_id,
-                               status: "constructing",
+                               status: "extracting",
                                notifiable: true )
 
       render status_trees_path
@@ -37,13 +37,13 @@ class TreesController < ApplicationController
     if @tree.nil? 
       redirect_to root_url
       return
-    elsif @tree.status == "unsuccessfully-constructed"
+    elsif @tree.status == "unsuccessfully-extracted"
       respond_to do |format|
         format.html
         format.js { render 'show_fail' }
       end
       return
-    elsif @tree.status != "completed"
+    elsif @tree.status != "completed" && @tree.status != "unsuccessfully-scaled"
       flash[:danger] = "Tree is not ready to view"
       redirect_to trees_path
       return
@@ -143,8 +143,10 @@ class TreesController < ApplicationController
       end
     
       if Sidekiq::Status::complete? job_id
-        if Tree.find(@tree.id).status == "unsuccessfully-constructed"
+        if Tree.find(@tree.id).status == "unsuccessfully-extracted"
           data = {status: "failed", pct: 0}.to_json
+        elsif Tree.find(@tree.id).status == "unsuccessfully-scaled"
+          data = {status: "complete", pct: 100}.to_json
         elsif Tree.find(@tree.id).status == "completed"
           data = {status: "complete", pct: 100}.to_json
         end

@@ -1,7 +1,7 @@
 <% case @tree.status %>
-<% when "completed" %>
+<% when "completed", "unsuccessfully-scaled" %>
   $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name.to_s %>");
-<% when "unsuccessfully-constructed" %>
+<% when "unsuccessfully-extracted" %>
   $('#nav-tree-<%= @tree.id %>').text("<%= @tree.name.to_s + ' - failed' %>");
 <% end %>
 
@@ -22,6 +22,12 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
     $('#ladderize').prop('checked', true);
   } else {    
     $('#ladderize').prop('checked', false);
+  }
+  
+  if ('<%= tree_data["tree_actions"]["branch"] %>' == "true") {    
+    $('#branch').prop('checked', true);
+  } else {    
+    $('#branch').prop('checked', false);
   }
     
   if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
@@ -53,6 +59,7 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
   
   $('#internal').prop('checked', false);
   $('#ladderize').prop('checked', false);
+  $('#branch').prop('checked', false);
   
   $.minicolors.defaults.defaultValue = '#787878';
   $('#line-color').minicolors({theme: 'bootstrap'});
@@ -61,7 +68,12 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
     topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;;
     leftOffset = $("#img1").offset().left;
     // console.log(topOffset, leftOffset);
-    get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
+    <% case @tree.status %>
+    <% when "completed" %>
+      get_tree_image("<%= @id %>" , "<%= JSON.parse(@tree.scaled_representation)['scaled_tree'] %>", "#img1", topOffset, leftOffset);
+    <% when "unsuccessfully-scaled" %>
+      get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
+    <% end %>
     $("#topOffset").val(topOffset);
     $("#leftOffset").val(leftOffset);
   }
