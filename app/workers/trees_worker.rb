@@ -48,7 +48,7 @@ class TreesWorker
                               representation: nil )
     elsif JSON.parse(extracted_response)["message"] == "Success" 
       extracted_response = extracted_response.to_s.gsub('\'', '')
-      tree.update_attributes( status: "completed", 
+      tree.update_attributes( status: "unsuccessfully-scaled", 
                               representation: extracted_response )
     else
       extracted_response = extracted_response.to_s.gsub('\'', '')
