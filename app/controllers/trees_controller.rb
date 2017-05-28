@@ -2,7 +2,7 @@ require 'csv'
 
 class TreesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:show_public, :create, :index,
+  skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :status,
                                                  :checking_status, :show, :newick, :update]
   
   include UploadedListsHelper
@@ -83,18 +83,6 @@ class TreesController < ApplicationController
       @my_trees = Tree.where(temp_id: cookies[:temp_id])
     end
     
-    if params[:hot]
-      @hot = true
-    else
-      @hot = false
-    end
-
-    if params[:failed]
-      @failed = true
-    else
-      @failed = false
-    end
-    
     @my_trees = @my_trees.to_a.sort_by {|t| t.name.nil? ? "" : t.name.downcase }
     @public_trees = Tree.all.select {|t| t.public }.sort_by! {|t| t.name.downcase }
   end
@@ -120,6 +108,9 @@ class TreesController < ApplicationController
   end
   
   def status
+    if @tree.nil?
+      redirect_to trees_path
+    end
   end
   
   def checking_status
@@ -143,11 +134,10 @@ class TreesController < ApplicationController
       end
     
       if Sidekiq::Status::complete? job_id
-        if Tree.find(@tree.id).status == "unsuccessfully-extracted"
+        case Tree.find(@tree.id).status
+        when "unsuccessfully-extracted"
           data = {status: "failed", pct: 0}.to_json
-        elsif Tree.find(@tree.id).status == "unsuccessfully-scaled"
-          data = {status: "complete", pct: 100}.to_json
-        elsif Tree.find(@tree.id).status == "completed"
+        when "unsuccessfully-scaled", "completed"
           data = {status: "complete", pct: 100}.to_json
         end
         tubesock.send_data data
