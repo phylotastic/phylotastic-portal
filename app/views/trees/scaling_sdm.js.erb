@@ -1,0 +1,4 @@
+$('#display-scaled-tree-by-method').dropdown("toggle");
+$('#display-scaled-tree-by-method').text("Displaying scaled tree by sdm method");
+current_tree_newick = "<%= JSON.parse(@tree.scaled_representation)['scaled_tree'] %>";
+get_tree_image("<%= @tree.id %>" , current_tree_newick, "#img1", 0, 0);

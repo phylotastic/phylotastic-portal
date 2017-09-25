@@ -17,7 +17,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.minicolors
-//= require d3
+//= require raphael
 //= require jquery.slick
 //= require clipboard
 //= require_tree .

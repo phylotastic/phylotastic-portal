@@ -1,9 +1,11 @@
 require 'csv'
+require 'rest-client'
 
 class TreesController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :status,
-                                                 :checking_status, :show, :newick, :update]
+                                                 :checking_status, :show, :newick, :update,
+                                                 :scaling_sdm, :scaling_mediam]
   
   include UploadedListsHelper
   include TreesHelper
@@ -57,8 +59,16 @@ class TreesController < ApplicationController
         end
       end
     end
+    
     respond_to do |format|
-      format.js
+      format.js {
+        # generate workflow explanation
+        response = RestClient.post( APP_CONFIG["gf_server"],
+          {
+            :file => @tree.workflow
+          })
+        @explanation = JSON.parse(response)
+      }
     end
   end
   
@@ -182,6 +192,98 @@ class TreesController < ApplicationController
     end
   end
   
+  def scaling_mediam
+    @tree = Tree.find(params[:id])
+    if !@tree.scaled_representation.nil?
+      if JSON.parse(@tree.scaled_representation.to_s).has_key?("scaled_tree")
+        respond_to do |format|
+          format.js
+        end
+        return
+      end
+    end
+    
+    begin
+      scaled_response = Req.post( APP_CONFIG["sv_datelife_tree"]["url"],
+                                  {"newick": sanitize_newick(@tree), method: "median"}.to_json,
+                                  :content_type => :json, 
+                                  :accept => :json )
+    rescue => e
+      puts e
+      logger.info "Call service error"
+    end
+    
+    if !scaled_response
+      @tree.update_attributes( status: "unsuccessfully-scaled", 
+                              bg_job: "-1",
+                              scaled_representation: nil )
+    elsif JSON.parse(scaled_response)["message"] == "Success" 
+      scaled_response = scaled_response.to_s.gsub('\'', '')
+      @tree.update_attributes( status: "completed", 
+                              bg_job: "-1",
+                              scaled_representation: scaled_response )
+      respond_to do |format|
+        format.js
+      end
+      return
+    else
+      scaled_response = scaled_response.to_s.gsub('\'', '')
+      @tree.update_attributes( status: "unsuccessfully-scaled", 
+                              bg_job: "-1",
+                              scaled_representation: scaled_response )
+    end
+    
+    respond_to do |format|
+      format.js { render 'scaling_failed.js.erb' }
+    end
+    
+  end
+  
+  def scaling_sdm
+    @tree = Tree.find(params[:id])
+    if !@tree.scaled_sdm_representation.nil?
+      if JSON.parse(@tree.scaled_sdm_representation).has_key?("scaled_tree")
+        respond_to do |format|
+          format.js
+        end
+        return
+      end
+    end
+    
+    begin
+      scaled_response = Req.post( APP_CONFIG["sv_datelife_tree"]["url"],
+                                  {"newick": sanitize_newick(@tree), method: "sdm"}.to_json,
+                                  :content_type => :json, 
+                                  :accept => :json )
+    rescue => e
+      puts e
+      logger.info "Call service error"
+    end
+    
+    if !scaled_response
+      @tree.update_attributes( status: "unsuccessfully-scaled", 
+                              bg_job: "-1",
+                              scaled_sdm_representation: nil )
+    elsif JSON.parse(scaled_response)["message"] == "Success" 
+      scaled_response = scaled_response.to_s.gsub('\'', '')
+      @tree.update_attributes( status: "completed", 
+                              bg_job: "-1",
+                              scaled_sdm_representation: scaled_response )
+      respond_to do |format|
+        format.js
+      end
+      return
+    else
+      scaled_response = scaled_response.to_s.gsub('\'', '')
+      @tree.update_attributes( status: "unsuccessfully-scaled", 
+                              bg_job: "-1",
+                              scaled_sdm_representation: scaled_response )
+    end
+    
+    respond_to do |format|
+      format.js { render 'scaling_failed.js.erb' }
+    end
+  end
   
   private
     def tree_params

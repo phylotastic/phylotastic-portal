@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post 'workflow/update'
+
   devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
 
   root 'raw_extractions#index'
@@ -50,6 +52,8 @@ Rails.application.routes.draw do
       get 'newick' => 'trees#newick'
       get 'status' => 'trees#status', as: :status
       get 'checking_status' => 'trees#checking_status'
+      get 'scaling_mediam'
+      get 'scaling_sdm'
     end
   end
     

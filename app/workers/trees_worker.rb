@@ -59,7 +59,7 @@ class TreesWorker
     at 80, "Scale tree"
     begin
       scaled_response = Req.post( APP_CONFIG["sv_datelife_tree"]["url"],
-                                  {"newick": sanitize_newick(tree)}.to_json,
+                                  {"newick": sanitize_newick(tree), method: "mediam"}.to_json,
                                   :content_type => :json, 
                                   :accept => :json )
     rescue => e

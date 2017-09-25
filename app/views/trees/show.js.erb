@@ -68,12 +68,7 @@ $('#tree-content').html("<%= escape_javascript(render partial: 'tree', locals: {
     topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;;
     leftOffset = $("#img1").offset().left;
     // console.log(topOffset, leftOffset);
-    <% case @tree.status %>
-    <% when "completed" %>
-      get_tree_image("<%= @id %>" , "<%= JSON.parse(@tree.scaled_representation)['scaled_tree'] %>", "#img1", topOffset, leftOffset);
-    <% when "unsuccessfully-scaled" %>
-      get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
-    <% end %>
+    get_tree_image("<%= @id %>" , "<%= sanitize_newick(@tree) %>", "#img1", topOffset, leftOffset);
     $("#topOffset").val(topOffset);
     $("#leftOffset").val(leftOffset);
   }

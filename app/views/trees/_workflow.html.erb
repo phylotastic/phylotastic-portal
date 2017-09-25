@@ -1,0 +1,287 @@
+<div id="workflow-wrapper" style="margin-top: 25px; visibility: hidden;">
+  
+  <div class="row">
+    <div class="col-md-9">
+      <div id="diagram-wrapper">
+        <div id="diagram"></div>
+      </div>
+    </div>
+    
+    <div class="col-md-3" id="explanation">
+      <%= @explanation["paragraph"] %>
+    </div>
+  </div>
+  
+<%= form_tag("/workflow/update", method: :post, id: "traverser", remote: true) do %>
+  <%= text_field_tag('tree', tree.id) %>
+  <%= text_field_tag("io[0][0]", 0, id: "io-0-0") %>
+  <% @explanation["steps"].each_with_index do |e, i| %>
+    <%= text_field_tag('step-' + (i+1).to_s, 0, id: "step-" + (i+1).to_s) %>
+    <% e.values[0]["output"].each_with_index do |o, idx| %>
+      <%= text_field_tag("io[" + (i+1).to_s + "][" + idx.to_s + "]", 0, id: "io-" + (i+1).to_s +  "-" + idx.to_s) %>
+    <% end %>
+  <% end %>
+  <%= submit_tag("Submit") %>
+<% end %>
+
+</div>
+
+<script>
+  draw_flowchart();
+  
+  var root_class = "operationClassification";
+  
+  // draw button for traversing ontology
+  var svgns = "http://www.w3.org/2000/svg";
+  var pattern = document.createElementNS(svgns, 'pattern');
+  pattern.setAttributeNS(null, 'x', '1');
+  pattern.setAttributeNS(null, 'y', '1');
+  pattern.setAttributeNS(null, 'width', '1');
+  pattern.setAttributeNS(null, 'height', '1');
+  pattern.setAttributeNS(null, 'patternUnits', 'objectBoundingBox');
+  pattern.setAttributeNS(null, 'id', 'pattern-up');
+  $('#diagram svg defs').append(pattern);
+
+  var image = document.createElementNS(svgns, 'image');
+  image.setAttributeNS('http://www.w3.org/1999/xlink','href','https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-up-01-128.png');
+  image.setAttribute('width', '30');
+  image.setAttribute('height', '30');
+  $(document).find('#pattern-up').append(image);
+  
+  var svgns = "http://www.w3.org/2000/svg";
+  var pattern = document.createElementNS(svgns, 'pattern');
+  pattern.setAttributeNS(null, 'x', '0');
+  pattern.setAttributeNS(null, 'y', '0');
+  pattern.setAttributeNS(null, 'width', '1');
+  pattern.setAttributeNS(null, 'height', '1');
+  pattern.setAttributeNS(null, 'patternUnits', 'objectBoundingBox');
+  pattern.setAttributeNS(null, 'id', 'pattern-down');
+  $('#diagram svg defs').append(pattern);
+
+  var image = document.createElementNS(svgns, 'image');
+  image.setAttributeNS('http://www.w3.org/1999/xlink','href','https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-down-01-128.png');
+  image.setAttribute('width', '30');
+  image.setAttribute('height', '30');
+  $(document).find('#pattern-down').append(image);
+  
+  // create service navigator buttons
+  for (i = 1; i < parseInt("<%= @explanation['steps'].count + 1 %>"); i++) {
+    for (j = 1; j < 3; j++) {
+      var rect = document.createElementNS(svgns, 'rect');
+      
+      coor = extract_coordinate( $("rect#op" + i) );
+      var x = coor[0];
+      var y = coor[1];
+      
+      rect.setAttributeNS(null, 'x', '100%');
+      rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 15 );
+      rect.setAttributeNS(null, 'height', '30');
+      rect.setAttributeNS(null, 'width', '30');
+
+      if ( j == 1 ) {
+        rect.setAttributeNS(null, 'fill', 'url(#pattern-up)');
+        rect.setAttributeNS(null, 'class', 'service-navigator nav-up');
+      } else {
+        rect.setAttributeNS(null, 'fill', 'url(#pattern-down)');
+        rect.setAttributeNS(null, 'class', 'service-navigator nav-down hide');
+      }
+      
+      $('#diagram svg')[0].appendChild(rect);
+    }
+  }
+  
+  // create input, output navigator buttons
+  explanation = JSON.parse("<%= @explanation.to_json %>".replace(/&quot;/g,'"'));
+  
+  for (j = 1; j < 3; j++) {
+    var rect = document.createElementNS(svgns, 'rect');
+  
+    coor = extract_coordinate( $("path#io0") );
+    var x = coor[0];
+    var y = coor[1];
+  
+    rect.setAttributeNS(null, 'x', '100%');
+    rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 15 );
+    rect.setAttributeNS(null, 'height', '30');
+    rect.setAttributeNS(null, 'width', '30');
+
+    if ( j == 1 ) {
+      rect.setAttributeNS(null, 'fill', 'url(#pattern-up)');
+      rect.setAttributeNS(null, 'class', 'io-navigator nav-up for-io-0-0');
+    } else {
+      rect.setAttributeNS(null, 'fill', 'url(#pattern-down)');
+      rect.setAttributeNS(null, 'class', 'io-navigator nav-down for-io-0-0 hide');
+    }
+  
+    $('#diagram svg')[0].appendChild(rect);
+  }
+  
+  for (i = 1; i < parseInt("<%= @explanation['steps'].count + 1 %>"); i++) {
+    for (var key in explanation["steps"][i-1]) {
+      num_outputs = explanation["steps"][i-1][key]["output"].length;
+    }
+    for (k = 0; k < parseInt(num_outputs); k++) {
+      for (j = 1; j < 3; j++) {
+        var rect = document.createElementNS(svgns, 'rect');
+      
+        coor = extract_coordinate( $("path#io" + i) );
+        var x = coor[0];
+        var y = coor[1];
+      
+        rect.setAttributeNS(null, 'x', (100 / num_outputs * (k+1)).toString() + '%');
+        rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 15 );
+        rect.setAttributeNS(null, 'height', '30');
+        rect.setAttributeNS(null, 'width', '30');
+
+        if ( j == 1 ) {
+          rect.setAttributeNS(null, 'fill', 'url(#pattern-up)');
+          rect.setAttributeNS(null, 'class', 'io-navigator nav-up for-io-' + i.toString() + '-' + k.toString());
+        } else {
+          rect.setAttributeNS(null, 'fill', 'url(#pattern-down)');
+          rect.setAttributeNS(null, 'class', 'io-navigator nav-down hide for-io-' + i.toString() + '-' + k.toString());
+        }
+      
+        $('#diagram svg')[0].appendChild(rect);
+      }
+    }
+  }
+  
+  $('#diagram svg').find('.service-navigator').click(function() {
+    var index = $('.service-navigator').index( this ) + 1;
+    serv = Math.round(index / 2);
+
+    if ( index % 2 == 1 ) {
+      $( $('.service-navigator')[index] ).removeClass("hide");
+      if ( $("#op" + serv + "t" + " tspan").text() == root_class ) {
+        $(this).addClass("hide");
+        return false;
+      }
+      $('#step-' + serv).val( parseInt($('#step-' + serv).val()) + 1 );
+    } else {
+      $('#step-' + serv).val( Math.max(parseInt($('#step-' + serv).val()) - 1, 0) );
+      if ( $('#step-' + serv).val() == '0' ) {
+        $( $('.service-navigator')[index-1] ).addClass("hide");
+      }
+      $( $('.service-navigator')[index-2] ).removeClass("hide");
+    }
+    
+    $("#traverser").submit();
+  });
+  
+  $('#diagram svg').find('.io-navigator').click(function() {
+    var id = $(this).attr('class');
+    var regex = /\d+/g;
+    var matches = id.match(regex);
+
+    var index = $('.io-navigator').index( this );
+    
+    id_form_field = '#io-' + matches[0] + '-' + matches[1];
+    if ( index % 2 == 0 ) {
+      $( $('.io-navigator')[index + 1] ).removeClass("hide");
+      // if ( $("#op" + io + "t" + " tspan").text() == root_class ) {
+      //   $(this).addClass("hide");
+      //   return false;
+      // }
+      $(id_form_field).val( parseInt($(id_form_field).val()) + 1 );
+    } else {
+      $(id_form_field).val( Math.max(parseInt($(id_form_field).val()) - 1, 0) );
+      if ( $(id_form_field).val() == '0' ) {
+        $( $('.io-navigator')[index] ).addClass("hide");
+      }
+      $( $('.io-navigator')[index-1] ).removeClass("hide");
+    }
+    
+    $("#traverser").submit();
+  });
+  
+  $('#workflow').removeClass('active');
+  $('#workflow-wrapper').css("visibility", "visible");
+  $('#diagram svg').css("width", "100%");
+  
+  function extract_coordinate( obj ) {
+    var transformMatrix = obj.attr("-webkit-transform") ||
+      obj.attr("-moz-transform")    ||
+      obj.attr("-ms-transform")     ||
+      obj.attr("-o-transform")      ||
+      obj.attr("transform");
+    var matrix = transformMatrix.replace(/[^0-9\-.,]/g, '').split(',');
+    var x = matrix[12] || matrix[4];//translate x
+    var y = matrix[13] || matrix[5];//translate y
+    
+    return [x, y]
+  }
+  
+  function draw_flowchart() {
+    op = "";
+    flow = "";
+    io = "io0=>inputoutput: " + '<%= @explanation["steps"][0].values[0]["input"][0] %>' + "\n";
+    <% (1..@explanation["steps"].count).each do |i| %>
+      op = op + "op" + '<%= i %>' + '=>operation: ' + '<%= @explanation["steps"][i-1].keys[0] %>' + "\n";
+      io = io + "io" + '<%= i %>' + '=>inputoutput: ';
+      
+      <% @explanation["steps"][i-1].values[0]["output"].each_with_index do |j, ind| %>
+        <% if ind == @explanation["steps"][i-1].values[0]["output"].count - 1 %>
+          io = io + '<%= j %>';
+        <% else %>
+          io = io + '<%= j %> AND ';
+        <% end %>
+      <% end %>
+      io = io + "\n";
+      
+      flow = flow + "op" + '<%= i %>' + "->" + "io" + '<%= i %>' + "->" ;
+    <% end %>
+    
+    st_label = "<%= @explanation['steps'][0].values[0]['input'][0] %>";
+    
+    var diagram = flowchart.parse(op +
+                                  io +
+                                  "io0->" + flow);
+
+    // var diagram = flowchart.parse("st=>start: " + st_label + "\n" +
+    //                               op +
+    //                               io +
+    //                               "st->" + flow);
+    
+    // var diagram = flowchart.parse("st=>start\n" +
+    //                               "e=>end\n" +
+    //                               "op1=>operation: Phylotastic_findscientificnamesfromfreetext_gnrd_get\n" +
+    //                               "op2=>operation: phylotastic_resolvedscientificnames_ot_tnrs_get\n" +
+    //                               "op3=>operation: Phylotastic_getphylogenetictree_ot_get\n" +
+    //                               "st->op1->op2->op3->e");
+
+    diagram.drawSVG('diagram', {
+                                  'x': 0,
+                                  'y': 0,
+                                  'line-width': 3,
+                                  'line-length': 50,
+                                  'text-margin': 10,
+                                  'font-size': 14,
+                                  'font-color': 'black',
+                                  'line-color': 'black',
+                                  'element-color': 'black',
+                                  'fill': 'white',
+                                  'yes-text': 'yes',
+                                  'no-text': 'no',
+                                  'arrow-end': 'block',
+                                  'scale': 1,
+                                  // style symbol types
+                                  'symbols': {
+                                    'start': {
+                                      // 'font-color': 'red',
+                                      // 'element-color': 'green',
+                                      // 'fill': 'yellow'
+                                    },
+                                    'operation': {
+                                      // 'font-color': 'blue',
+                                      // 'element-color': 'blue',
+                                      'fill': '#58c4a3'
+                                    },
+                                    'end':{
+                                      // 'class': 'end-element'
+                                    }
+                                  }
+                                });
+  }
+  
+  
+</script>

@@ -36,5 +36,8 @@ class Tree < ActiveRecord::Base
       return "There is no species names in your provided resource"
     end
   end
-
+  
+  def workflow
+    File.new( Rails.root.join('app', 'views', 'trees', "workflow_plan_1.json"), 'rb' )
+  end
 end
