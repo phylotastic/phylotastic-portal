@@ -1,8 +1,9 @@
 class WorkflowController < ApplicationController
   def update
+    @tree = Tree.find(params["tree"])
     response = RestClient.post( APP_CONFIG["gf_server_with_traversing"],
       {
-        :file => Tree.find(params["tree"]).workflow        
+        :file => @tree.workflow        
       }.merge(params)
     )
     @explanation = JSON.parse(response)

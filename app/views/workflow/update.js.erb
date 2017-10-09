@@ -1,29 +1,10 @@
 $("#explanation").html('<%=h @explanation["paragraph"] %>');
-<% @explanation["steps"].each_with_index do |e, i| %>
-  op_id = "op" + '<%= i+1 %>' + "t";
-  $("#" + op_id + " tspan").text('<%=h e.keys[0] %>');
-  io_id = "io" + '<%= i+1 %>' + "t";
-  
-  io_text = "";
-  <% if i == 0 %>
-    <% e.values[0]["input"].each_with_index do |o, idx| %>
-      <% if idx == e.values[0]["input"].count - 1 %>
-        io_text = io_text + '<%= o %>'
-      <% else %>
-        io_text = io_text + '<%= o %> AND ';
-      <% end %>
-    <% end %>
-        console.log(io_text);
-    $("#io0t tspan").text(io_text);    
-  <% end %>
-  
-  io_text = "";
-  <% e.values[0]["output"].each_with_index do |o, idx| %>
-    <% if idx == e.values[0]["output"].count - 1 %>
-      io_text = io_text + '<%= o %>'
-    <% else %>
-      io_text = io_text + '<%= o %> AND ';
-    <% end %>
-  <% end %>
-  $("#" + io_id + " tspan").text(io_text);
-<% end %>
+$('#navigator-form').html("<%= escape_javascript( render :partial => 'workflow/workflow_navigator_form', :locals => { explanation: @explanation, tree: @tree } ) %>");
+$('#diagram').html("");
+
+explanation = JSON.parse("<%= @explanation.to_json %>".replace(/&quot;/g,'"'));
+console.log(explanation);
+
+draw_flowchart(explanation);
+add_navigator(explanation);
+$('#diagram svg').css("width", "100%");

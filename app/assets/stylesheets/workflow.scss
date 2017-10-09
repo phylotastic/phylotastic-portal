@@ -2,10 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.service-navigator, .io-navigator {
+.service-navigator, .o-navigator, .i-navigator {
   opacity: 0.4;
   &:hover {
     opacity: 0.95;
     cursor: pointer;
   }
+}
+
+#explanation {
+  right: 0;
+  font-family: "Oxygen", sans-serif;
+  font-size: 15px;
 }
