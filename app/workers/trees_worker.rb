@@ -71,7 +71,6 @@ class TreesWorker
       puts e
       logger.info "Call service error"
     end
-    binding.pry
     
     at 90, "Save scaled tree"
     if !scaled_response
