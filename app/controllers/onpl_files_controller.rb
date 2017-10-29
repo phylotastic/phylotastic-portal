@@ -55,7 +55,12 @@ class OnplFilesController < ApplicationController
       changed_species.each do |n|
         flag = false
         @resolved_names.each do |r|
-          if r["matched_name"] == n
+          if r.key?("matched_results")
+            v = r["matched_results"][0]
+          else
+            v = r
+          end
+          if v == n
             flag = true 
             break
           end

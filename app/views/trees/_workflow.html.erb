@@ -25,49 +25,31 @@
   
   var root_class = "operationClassification";
 
+  // draw buttons for traversing ontology
   function add_navigator(explanation) {
-    // draw button for traversing ontology
-    var svgns = "http://www.w3.org/2000/svg";
-    var pattern = document.createElementNS(svgns, 'pattern');
-    pattern.setAttributeNS(null, 'x', '1');
-    pattern.setAttributeNS(null, 'y', '1');
-    pattern.setAttributeNS(null, 'width', '1');
-    pattern.setAttributeNS(null, 'height', '1');
-    pattern.setAttributeNS(null, 'patternUnits', 'objectBoundingBox');
-    pattern.setAttributeNS(null, 'id', 'pattern-up');
-    $('#diagram svg defs').append(pattern);
+    // pattern up
+    add_pattern('pattern-up', $('#diagram svg defs'), 'https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-up-01-128.png');
 
-    var image = document.createElementNS(svgns, 'image');
-    image.setAttributeNS('http://www.w3.org/1999/xlink','href','https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-up-01-128.png');
-    image.setAttribute('width', '30');
-    image.setAttribute('height', '30');
-    $(document).find('#pattern-up').append(image);
+    // pattern down
+    add_pattern('pattern-down', $('#diagram svg defs'), 'https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-down-01-128.png');
 
-    var svgns = "http://www.w3.org/2000/svg";
-    var pattern = document.createElementNS(svgns, 'pattern');
-    pattern.setAttributeNS(null, 'x', '0');
-    pattern.setAttributeNS(null, 'y', '0');
-    pattern.setAttributeNS(null, 'width', '1');
-    pattern.setAttributeNS(null, 'height', '1');
-    pattern.setAttributeNS(null, 'patternUnits', 'objectBoundingBox');
-    pattern.setAttributeNS(null, 'id', 'pattern-down');
-    $('#diagram svg defs').append(pattern);
-
-    var image = document.createElementNS(svgns, 'image');
-    image.setAttributeNS('http://www.w3.org/1999/xlink','href','https://cdn3.iconfinder.com/data/icons/faticons/32/arrow-down-01-128.png');
-    image.setAttribute('width', '30');
-    image.setAttribute('height', '30');
-    $(document).find('#pattern-down').append(image);
-
+    // pattern add
+    add_pattern('pattern-add', $('#diagram svg defs'), 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/add-128.png');
+    
+    // pattern remove
+    add_pattern('pattern-remove', $('#diagram svg defs'), 'https://cdn0.iconfinder.com/data/icons/typicons-2/24/minus-128.png');
+    
     // create service navigator buttons
+    var svgns = "http://www.w3.org/2000/svg";
     for (i = 0; i < explanation['steps'].length ; i++) {
+      
       for (j = 1; j < 3; j++) {
         var rect = document.createElementNS(svgns, 'rect');
-
+        
         coor = extract_coordinate( $("rect#op" + i) );
         var x = coor[0];
         var y = coor[1];
-
+    
         rect.setAttributeNS(null, 'x', '100%');
         rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 10 );
         rect.setAttributeNS(null, 'height', '30');
@@ -84,7 +66,7 @@
         $('#diagram svg')[0].appendChild(rect);
       }
     }
-
+    
     // create input, output navigator buttons
     for (i = 0; i < explanation["steps"].length; i++) {
       for (var key in explanation["steps"][i]) {
@@ -137,6 +119,67 @@
           } else {
             rect.setAttributeNS(null, 'fill', 'url(#pattern-down)');
             rect.setAttributeNS(null, 'class', 'i-navigator nav-down for-inp-' + i.toString() + '-' + k.toString());
+          }
+
+          $('#diagram svg')[0].appendChild(rect);
+        }
+      }
+    }
+    
+    // add, remove datatype buttons
+    for (i = 0; i < explanation["steps"].length; i++) {
+      for (var key in explanation["steps"][i]) {
+        num_inputs = explanation["steps"][i][key]["input"].length;
+      }
+      for (k = 0; k < parseInt(num_inputs); k++) {
+        for (j = 1; j < 3; j++) {
+          var rect = document.createElementNS(svgns, 'rect');
+
+          coor = extract_coordinate( $("path#i" + i) );
+          var x = coor[0];
+          var y = coor[1];
+
+          rect.setAttributeNS(null, 'x', "0%");
+          rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 10 + k*40 );
+          rect.setAttributeNS(null, 'height', '30');
+          rect.setAttributeNS(null, 'width', '30');
+
+          if ( j == 1 ) {
+            rect.setAttributeNS(null, 'fill', 'url(#pattern-add)');
+            rect.setAttributeNS(null, 'class', 'd-navigator nav-add for-inp-' + i.toString() + '-' + k.toString());
+          } else {
+            rect.setAttributeNS(null, 'fill', 'url(#pattern-remove)');
+            rect.setAttributeNS(null, 'class', 'd-navigator nav-remove for-inp-' + i.toString() + '-' + k.toString());
+          }
+
+          $('#diagram svg')[0].appendChild(rect);
+        }
+      }
+      
+      
+      for (var key in explanation["steps"][i]) {
+        num_outputs = 1;
+        // num_outputs = explanation["steps"][i][key]["output"].length;
+      }
+      for (k = 0; k < parseInt(num_outputs); k++) {
+        for (j = 1; j < 3; j++) {
+          var rect = document.createElementNS(svgns, 'rect');
+
+          coor = extract_coordinate( $("path#o" + i) );
+          var x = coor[0];
+          var y = coor[1];
+
+          rect.setAttributeNS(null, 'x', "0%");
+          rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 10 + k*40 );
+          rect.setAttributeNS(null, 'height', '30');
+          rect.setAttributeNS(null, 'width', '30');
+
+          if ( j == 1 ) {
+            rect.setAttributeNS(null, 'fill', 'url(#pattern-add)');
+            rect.setAttributeNS(null, 'class', 'd-navigator nav-add for-outp-' + i.toString() + '-' + k.toString());
+          } else {
+            rect.setAttributeNS(null, 'fill', 'url(#pattern-remove)');
+            rect.setAttributeNS(null, 'class', 'd-navigator nav-remove for-outp-' + i.toString() + '-' + k.toString());
           }
 
           $('#diagram svg')[0].appendChild(rect);
@@ -199,7 +242,33 @@
       }
 
       $("#traverser").submit();
-    });  
+    });
+    
+    $('#diagram svg').find('.d-navigator').click(function() {
+      var klass = $(this).attr('class');
+      var regex = /\d+/g;
+      var matches = klass.match(regex);
+
+      var index = $('.d-navigator').index( this );
+
+      id_form_field = '#step-' + Math.floor( index/4 ).toString();
+      switch(index % 4) {
+      case 0:
+        $(id_form_field + '-input-add').prop("checked", true);
+        break;
+      case 1:
+        $(id_form_field + '-input-add').prop("checked", false);
+        break;
+      case 2:
+        $(id_form_field + '-output-add').prop("checked", true);
+        break;
+      case 3:
+        $(id_form_field + '-output-add').prop("checked", false);
+        break;
+      }
+      
+      $("#traverser").submit();
+    });
   }
   
   $('#workflow').removeClass('active');
@@ -219,6 +288,24 @@
     return [x, y]
   }
 
+  function add_pattern(pid, defs, image_url) {
+    var svgns = "http://www.w3.org/2000/svg";
+    var pattern = document.createElementNS(svgns, 'pattern');
+    pattern.setAttributeNS(null, 'x', '1');
+    pattern.setAttributeNS(null, 'y', '1');
+    pattern.setAttributeNS(null, 'width', '1');
+    pattern.setAttributeNS(null, 'height', '1');
+    pattern.setAttributeNS(null, 'patternUnits', 'objectBoundingBox');
+    pattern.setAttributeNS(null, 'id', pid);
+    defs.append(pattern);
+
+    var image = document.createElementNS(svgns, 'image');
+    image.setAttributeNS('http://www.w3.org/1999/xlink','href', image_url);
+    image.setAttribute('width', '30');
+    image.setAttribute('height', '30');
+    $(document).find('#' + pid).append(image);
+  }
+  
   function draw_flowchart(explanation) {
     op   = "";
     flow = "";

@@ -5,7 +5,7 @@
 <ul class="nav nav-tabs" role="tablist">
   <li role="presentation" class="active"><a href="#tree-viewer" aria-controls="tree-viewer" role="tab" data-toggle="tab" id="tab-name"><i class="fa fa-pagelines" aria-hidden="true"></i>Tree</a></li>
   <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i>Metadata</a></li>
-  <li role="presentation"><a href="#workflow" aria-controls="workflow" role="tab" data-toggle="tab" id="wf"><i class="fa fa-server" aria-hidden="true"></i>Workflow</a></li>
+  <!-- <li role="presentation"><a href="#workflow" aria-controls="workflow" role="tab" data-toggle="tab" id="wf"><i class="fa fa-server" aria-hidden="true"></i>Workflow</a></li> -->
   <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i>Settings</a></li>
 </ul>
 <!-- Tab panes -->
@@ -18,9 +18,11 @@
     <%= render partial: "tree_metadata", locals: { tree: tree } %>
   </div>
   
-  <div role="tabpanel" class="tab-pane active" id="workflow">
-    <%= render partial: "workflow", locals: { tree: tree }  %>
-  </div>
+  <!-- <div role="tabpanel" class="tab-pane active" id="workflow"> -->
+    <% if false %>
+      <%= render partial: "workflow", locals: { tree: tree } %>
+    <% end %>
+  <!-- </div> -->
   
   <div role="tabpanel" class="tab-pane" id="settings">
     <%= render partial: "permission_tree_nav", locals: { tree: tree, tree_newick: tree_newick, non_san_newick: non_san_newick } %>

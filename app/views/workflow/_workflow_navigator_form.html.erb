@@ -7,6 +7,10 @@
     <%= radio_button_tag field_name + "[direction]", "up", false, id: field_id + '-up' %>
     <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
     <br>
+
+    <%= radio_button_tag field_name + "[input][datatype]", "add", false, id: field_id + '-input-add' %>
+    <%= radio_button_tag field_name + "[output][datatype]", "add", false, id: field_id + '-output-add' %>
+    <br>    
   
     <% e.values[0]["input"].each_with_index do |inp, idx| %>
       <%= field_name = "input[" + i.to_s + "][" + idx.to_s + "]" %>
@@ -24,6 +28,7 @@
       <%= radio_button_tag field_name + "[direction]", "up", false, id: field_id + '-up' %>
       <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
     <% end %>
+    
     <br>
   <% end %>
   <%= submit_tag("Submit") %>

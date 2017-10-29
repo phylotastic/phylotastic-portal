@@ -24,7 +24,12 @@ class TreesWorker
     
     chosen_species = JSON.parse(tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
     resolved["resolvedNames"] = resolved["resolvedNames"].select do |r|
-      chosen_species.include? r["matched_name"]
+      if r.key?("matched_results")
+        v = r["matched_results"][0]
+      else
+        v = r
+      end
+      chosen_species.include? v["matched_name"]
     end
 
     at 50, "Verify names"
@@ -66,6 +71,7 @@ class TreesWorker
       puts e
       logger.info "Call service error"
     end
+    binding.pry
     
     at 90, "Save scaled tree"
     if !scaled_response

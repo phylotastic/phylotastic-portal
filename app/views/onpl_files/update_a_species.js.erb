@@ -1,6 +1,13 @@
 <% resolved_names = JSON.parse(@ra.species)['resolvedNames'] rescue [] %>
 <% resolved_names = [] if resolved_names.empty? %>
-<% species = resolved_names.map { |n| n["matched_name"] } %>
+<% species = resolved_names.map do |r| %>
+  <% if r.key?("matched_results") %>
+    <% v = r["matched_results"][0] %>
+  <% else %>
+    <% v = r %>
+  <% end %>
+  <% v["matched_name"] %>
+<% end %>
 <% species = species.sort %>
 
 alert("<%= @mess %>");

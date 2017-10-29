@@ -58,14 +58,25 @@
             <% resolved_names.each_with_index do |r, i| %>
               <tr class="species-row">
                 <td class=""><%= i + 1 %></td>
-                <td class=""><%= r["search_string"] %></td>
-                <td class=""><%= r["matched_name"] %></td>
-                <td class=""><%= r["match_type"] %></td>
-                <td class="">
-                  <% r["synonyms"].each do |s| %>
-                    <%= s %><br>
-                  <% end %>
-                </td>
+                <% if r.key?("matched_results") %>
+                  <td class=""><%= r["matched_results"][0]["search_string"].to_s %></td>
+                  <td class=""><%= r["matched_results"][0]["matched_name"] %></td>
+                  <td class=""><%= r["matched_results"][0]["match_type"] %></td>
+                  <td class="">
+                    <% r["matched_results"][0]["synonyms"].each do |s| %>
+                      <%= s %><br>
+                    <% end %>
+                  </td>
+                <% else %>
+                  <td class=""><%= r["search_string"].to_s %></td>
+                  <td class=""><%= r["matched_name"] %></td>
+                  <td class=""><%= r["match_type"] %></td>
+                  <td class="">
+                    <% r["synonyms"].each do |s| %>
+                      <%= s %><br>
+                    <% end %>
+                  </td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

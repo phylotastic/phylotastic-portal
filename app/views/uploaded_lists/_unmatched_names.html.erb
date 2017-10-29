@@ -4,10 +4,16 @@
 <% names.each do |n| %>
   <% flag = false %>
   <% resolved_names.each do |r| %>
-    <% if r["matched_name"] == n %>
-      <% flag = true %>
-      <% break %>
+    <% if r.key?("matched_results") %>
+      <% if r["matched_results"][0]["matched_name"] == n %>
+        <% flag = true %>
+      <% end %>
+    <% else %>
+      <% if r["matched_name"] == n %>
+        <% flag = true %>
+      <% end %>
     <% end %>
+    <% break %>      
   <% end %>
   <% unresolved << n if !flag %>
 <% end %>

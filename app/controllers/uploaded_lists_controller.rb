@@ -69,7 +69,6 @@ class UploadedListsController < ApplicationController
   
   def show_public
     @list = get_a_public_list(params[:id])
-    
     if @list["list"]["is_list_public"]
       @uploaded_list = UploadedList.find_or_create(@list)
       @ra = @uploaded_list.raw_extraction
@@ -180,7 +179,12 @@ class UploadedListsController < ApplicationController
       names.each do |n|
         flag = false
         @resolved_names.each do |r|
-          if r["matched_name"] == n
+          if r.key?("matched_results")
+            v = r["matched_results"][0]
+          else
+            v = r
+          end
+          if v == n
             flag = true 
             break
           end
