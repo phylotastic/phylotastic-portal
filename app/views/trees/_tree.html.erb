@@ -93,8 +93,10 @@
   </div>
 </div>
 <script type="text/javascript">
+  console.log("aaaa");
+  
 $(document).ready(function() {
-  $('[data-toggle="tooltip"]').tooltip(); 
+  $('[data-toggle="tooltip"]').tooltip();
   
   try {
     topOffset = $("#img1").offset().top - $($(".container")[1]).offset().top - $('.nav-tabs').offset().top;
@@ -103,8 +105,7 @@ $(document).ready(function() {
     get_tree_image("<%= @id %>" , "<%= tree_newick %>", "#img1", topOffset, leftOffset);
     $("#topOffset").val(topOffset);
     $("#leftOffset").val(leftOffset);
-  }
-  catch(err) {
+  } catch(err) {
     console.log(err);
     $('#tree-rendering-failed').modal();
   }
@@ -112,7 +113,7 @@ $(document).ready(function() {
   // console.log(typeof($.cookie("view_hint")));
   //console.log($.cookie("view_hint") == "true");
   
-  if($.cookie("view_hint") == "true") {        
+  if($.cookie("view_hint") == "true") {
     $('#tree-hint').modal();
   }
   $("#gotit").click(function() {
@@ -128,7 +129,12 @@ $(document).ready(function() {
   })
   
   $('#display-scaled-tree').click(function() {
-    current_tree_newick = "<%= JSON.parse(tree.scaled_representation)["scaled_tree"] %>";
+    <% if tree.scaled_representation.nil? %>
+      alert("Scaled tree is unavailable now.");
+      return;
+    <% else %>
+      current_tree_newick = "<%= JSON.parse(tree.scaled_representation)["scaled_tree"] %>";
+    <% end %>
     run_tree_action();
     $('#display-original-tree').removeClass('hide');
     $('.scaled-tree-options').removeClass('hide');

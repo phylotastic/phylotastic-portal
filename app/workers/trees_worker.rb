@@ -72,22 +72,25 @@ class TreesWorker
       logger.info "Call service error"
     end
     
-    at 90, "Save scaled tree"
-    if !scaled_response
-      tree.update_attributes( status: "unsuccessfully-scaled", 
-                              bg_job: "-1",
-                              scaled_representation: nil )
-    elsif JSON.parse(scaled_response)["message"] == "Success" 
-      scaled_response = scaled_response.to_s.gsub('\'', '')
-      tree.update_attributes( status: "completed", 
-                              bg_job: "-1",
-                              scaled_representation: scaled_response )
-    else
-      scaled_response = scaled_response.to_s.gsub('\'', '')
-      tree.update_attributes( status: "unsuccessfully-scaled", 
-                              bg_job: "-1",
-                              scaled_representation: scaled_response )
+    begin
+      at 90, "Save scaled tree"
+      if !scaled_response
+        tree.update_attributes( status: "unsuccessfully-scaled", 
+                                bg_job: "-1",
+                                scaled_representation: nil )
+      elsif JSON.parse(scaled_response)["message"] == "Success" 
+        scaled_response = scaled_response.to_s.gsub('\'', '')
+        tree.update_attributes( status: "completed", 
+                                bg_job: "-1",
+                                scaled_representation: scaled_response )
+      else
+        scaled_response = scaled_response.to_s.gsub('\'', '')
+        tree.update_attributes( status: "unsuccessfully-scaled", 
+                                bg_job: "-1",
+                                scaled_representation: scaled_response )
+      end
+    rescue => e
+      puts e
     end
-    
   end
 end

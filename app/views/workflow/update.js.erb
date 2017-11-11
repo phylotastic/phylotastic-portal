@@ -2,7 +2,7 @@ explanation = JSON.parse("<%= @explanation.to_json %>".replace(/&quot;/g,'"'));
 
 if (explanation["figure"]) {
   $("#explanation").html('<%=h @explanation["paragraph"] %>');
-  $("#explanation").append('<div class="center"><figure><img src="' + "<%= @href %>" + '" alt="Mountain View" style="width:304px;height:228px;"><figcaption>Fig.1 - A view of the pulpit rock in Norway.</figcaption></figure></div>');
+  $("#explanation").append('<div class="center"><figure><img src="' + "<%= @href %>" + '" alt="Extracted tree" style="width:304px;height:228px;"><figcaption>Fig.1 - Extracted tree.</figcaption></figure></div>');
   
 } else {
   $("#explanation").html('<%=h @explanation["paragraph"] %>');
