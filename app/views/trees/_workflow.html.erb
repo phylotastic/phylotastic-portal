@@ -1,28 +1,32 @@
-<div id="workflow-wrapper" style="margin-top: 25px; visibility: hidden;">
-  
-  <div class="row">
-    <div class="col-md-7" style="min-height: 1200px;">
-      <div id="diagram-wrapper">
-        <div id="diagram"></div>
+<% if @explanation.nil? %>
+  <div id="workflow-wrapper" style="margin-top: 25px;">
+    Workflow explanation is currently unavailable
+  </div>
+<% else %>
+  <div id="workflow-wrapper" style="margin-top: 25px; visibility: hidden;">
+    <div class="row">
+      <div class="col-md-7" style="min-height: 1200px;">
+        <div id="diagram-wrapper">
+          <div id="diagram"></div>
+        </div>
+      </div>
+    
+      <div class="col-md-5" id="explanation" data-spy="affix" data-offset-top="0">
+        <%= @explanation["paragraph"] %>
       </div>
     </div>
-    
-    <div class="col-md-5" id="explanation" data-spy="affix" data-offset-top="0">
-      <%= @explanation["paragraph"] %>
-    </div>
-  </div>
   
-  <div id="navigator-form" class="hide">
-    <%= render :partial => "workflow/workflow_navigator_form", :locals => { explanation: @explanation, tree: tree } %>
-  </div>
+    <div id="navigator-form" class="hide">
+      <%= render :partial => "workflows/workflow_navigator_form", :locals => { explanation: @explanation, tree: tree } %>
+    </div>
 
-</div>
+  </div>
 
 <script>
   explanation = JSON.parse("<%= @explanation.to_json %>".replace(/&quot;/g,'"'));
   draw_flowchart(explanation);
   add_navigator(explanation);
-  
+
   var root_class = "operationClassification";
 
   // draw buttons for traversing ontology
@@ -35,21 +39,21 @@
 
     // pattern add
     add_pattern('pattern-add', $('#diagram svg defs'), 'https://cdn4.iconfinder.com/data/icons/wirecons-free-vector-icons/32/add-128.png');
-    
+  
     // pattern remove
     add_pattern('pattern-remove', $('#diagram svg defs'), 'https://cdn0.iconfinder.com/data/icons/typicons-2/24/minus-128.png');
-    
+  
     // create service navigator buttons
     var svgns = "http://www.w3.org/2000/svg";
     for (i = 0; i < explanation['steps'].length ; i++) {
-      
+    
       for (j = 1; j < 3; j++) {
         var rect = document.createElementNS(svgns, 'rect');
-        
+      
         coor = extract_coordinate( $("rect#op" + i) );
         var x = coor[0];
         var y = coor[1];
-    
+  
         rect.setAttributeNS(null, 'x', '100%');
         rect.setAttributeNS(null, 'y', parseInt(y) + Math.pow(-1, j) * 10 );
         rect.setAttributeNS(null, 'height', '30');
@@ -66,7 +70,7 @@
         $('#diagram svg')[0].appendChild(rect);
       }
     }
-    
+  
     // create input, output navigator buttons
     for (i = 0; i < explanation["steps"].length; i++) {
       for (var key in explanation["steps"][i]) {
@@ -96,7 +100,7 @@
           $('#diagram svg')[0].appendChild(rect);
         }
       }
-    
+  
       for (var key in explanation["steps"][i]) {
         num_inputs = explanation["steps"][i][key]["input"].length;
       }
@@ -125,7 +129,7 @@
         }
       }
     }
-    
+  
     // add, remove datatype buttons
     for (i = 0; i < explanation["steps"].length; i++) {
       for (var key in explanation["steps"][i]) {
@@ -155,8 +159,8 @@
           $('#diagram svg')[0].appendChild(rect);
         }
       }
-      
-      
+    
+    
       for (var key in explanation["steps"][i]) {
         num_outputs = 1;
         // num_outputs = explanation["steps"][i][key]["output"].length;
@@ -201,7 +205,7 @@
       }
       $("#traverser").submit();
     });
-  
+
     $('#diagram svg').find('.o-navigator').click(function() {
       var klass = $(this).attr('class');
       var regex = /\d+/g;
@@ -243,7 +247,7 @@
 
       $("#traverser").submit();
     });
-    
+  
     $('#diagram svg').find('.d-navigator').click(function() {
       var klass = $(this).attr('class');
       var regex = /\d+/g;
@@ -266,15 +270,15 @@
         $(id_form_field + '-output-add').prop("checked", false);
         break;
       }
-      
+    
       $("#traverser").submit();
     });
   }
-  
+
   $('#workflow').removeClass('active');
   $('#workflow-wrapper').css("visibility", "visible");
   $('#diagram svg').css("width", "100%");
-  
+
   function extract_coordinate( obj ) {
     var transformMatrix = obj.attr("-webkit-transform") ||
       obj.attr("-moz-transform")    ||
@@ -305,14 +309,14 @@
     image.setAttribute('height', '30');
     $(document).find('#' + pid).append(image);
   }
-  
+
   function draw_flowchart(explanation) {
     op   = "";
     flow = "";
     inp  = "";
     outp = "";
-    
-       
+  
+     
     for (i = 0; i < explanation["steps"].length; i++) { 
       var keys = [];
       for(var k in explanation["steps"][i]) keys.push(k);
@@ -320,7 +324,7 @@
       op   = op + "op" + i.toString() + '=>operation: ' + keys[0] + "\n";
       inp  = inp + "i" + i.toString() + '=>inputoutput: ';
       outp = outp + "o" + i.toString() + '=>inputoutput: ';
-      
+    
       for (j = 0; j < explanation["steps"][i][keys[0]]["input"].length; j++) {
         if (j == explanation["steps"][i][keys[0]]["input"].length - 1) {
           inp = inp + explanation["steps"][i][keys[0]]["input"][j];          
@@ -329,7 +333,7 @@
         }
       }
       inp = inp + "\n";
-      
+    
       for (j = 0; j < explanation["steps"][i][keys[0]]["output"].length; j++) {
         if (j == explanation["steps"][i][keys[0]]["output"].length - 1)
           outp = outp + explanation["steps"][i][keys[0]]["output"][j];
@@ -337,13 +341,13 @@
           outp = outp + explanation["steps"][i][keys[0]]["output"][j] + ' \n AND \n';
       }
       outp = outp + "\n";
-      
+    
       if (i == explanation["steps"].length-1)
         flow = flow + "i" + i.toString() + "->" + "op" + i.toString() + "->" + "o" + i.toString() + "\n";
       else
         flow = flow + "i" + i.toString() + "->" + "op" + i.toString() + "->" + "o" + i.toString() + "->";
     }
-    
+  
     var diagram = flowchart.parse(op + inp + outp + flow);
 
     diagram.drawSVG('diagram', {
@@ -379,6 +383,6 @@
                                   }
                                 });
   }
-  
-  
 </script>
+
+<% end %>

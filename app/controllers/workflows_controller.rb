@@ -1,4 +1,4 @@
-class WorkflowController < ApplicationController
+class WorkflowsController < ApplicationController
   def update
     @tree = Tree.find(params["tree"])
     response = RestClient.post( APP_CONFIG["gf_server_with_traversing"],

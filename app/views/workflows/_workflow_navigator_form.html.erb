@@ -1,4 +1,4 @@
-<%= form_tag("/workflow/update", method: :post, id: "traverser", remote: true) do %>
+<%= form_tag("/workflows/update", method: :post, id: "traverser", remote: true) do %>
   <%= text_field_tag('tree', tree.id) %>
   <% explanation["steps"].each_with_index do |e, i| %>
     <%= field_name = "step[" + i.to_s + "]" %>
@@ -8,8 +8,17 @@
     <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
     <br>
 
-    <%= radio_button_tag field_name + "[input][datatype]", "add", false, id: field_id + '-input-add' %>
-    <%= radio_button_tag field_name + "[output][datatype]", "add", false, id: field_id + '-output-add' %>
+    <% if e.values[0]["input_in_paragraph"] %>
+      <%= radio_button_tag field_name + "[input][datatype]", "add", true, id: field_id + '-input-add' %>
+    <% else %>
+      <%= radio_button_tag field_name + "[input][datatype]", "add", false, id: field_id + '-input-add' %>
+    <% end %>
+
+    <% if e.values[0]["output_in_paragraph"] %>
+      <%= radio_button_tag field_name + "[output][datatype]", "add", true, id: field_id + '-output-add' %>
+    <% else %>
+      <%= radio_button_tag field_name + "[output][datatype]", "add", false, id: field_id + '-output-add' %>
+    <% end %>
     <br>    
   
     <% e.values[0]["input"].each_with_index do |inp, idx| %>

@@ -8,7 +8,7 @@ if (explanation["figure"]) {
   $("#explanation").html('<%=h @explanation["paragraph"] %>');
 }
 
-$('#navigator-form').html("<%= escape_javascript( render :partial => 'workflow/workflow_navigator_form', :locals => { explanation: @explanation, tree: @tree } ) %>");
+$('#navigator-form').html("<%= escape_javascript( render :partial => 'workflows/workflow_navigator_form', :locals => { explanation: @explanation, tree: @tree } ) %>");
 $('#diagram').html("");
 
 draw_flowchart(explanation);

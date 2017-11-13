@@ -17,7 +17,6 @@ class ExtractionsWorker
 
 
 
-
     when "ConFile"
       file = ConFile.find_by_id(source_id)
       file_url = file.document.url
@@ -147,7 +146,7 @@ class ExtractionsWorker
     resolved_response = Req.post( APP_CONFIG["sv_resolve_names"]["url"],
                                   extracted_response,
                                   :content_type => :json )
-
+                                  
     extraction.update_attributes(species: resolved_response)
   end
 

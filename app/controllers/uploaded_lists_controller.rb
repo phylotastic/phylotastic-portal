@@ -5,7 +5,8 @@ class UploadedListsController < ApplicationController
   skip_before_action :authenticate_user!, only: :show_public
   
   include UploadedListsHelper
-
+  include RawExtractionsHelper
+  
   def new
     @uploaded_list = UploadedList.new
   end
@@ -175,22 +176,7 @@ class UploadedListsController < ApplicationController
       @resolved_names = JSON.parse(resolved_req)["resolvedNames"] rescue []
       @resolved_names = [] if !resolved_req
       
-      @unresolved = []
-      names.each do |n|
-        flag = false
-        @resolved_names.each do |r|
-          if r.key?("matched_results")
-            v = r["matched_results"][0]
-          else
-            v = r
-          end
-          if v == n
-            flag = true 
-            break
-          end
-        end
-        @unresolved << n if !flag
-      end
+      @unresolved = unresolved_filter(names, @resolved_names)
       
       if @unresolved.include? subject["scientific_name"]
         @mess = "#{subject["scientific_name"]} is unresolvable"

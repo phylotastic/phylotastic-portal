@@ -1,7 +1,8 @@
 class OnplFilesController < ApplicationController
   # before_action :authenticate_user!
   # skip_before_action :authenticate_user!, only: [:new, :create, :update, :update_a_species]
-
+  include RawExtractionsHelper
+  
   def new
     @onpl_file = OnplFile.new
     if !user_signed_in? && cookies[:temp_id].nil?
@@ -51,22 +52,8 @@ class OnplFilesController < ApplicationController
       @resolved_names = JSON.parse(resolved_response)["resolvedNames"] rescue []
       @resolved_names = [] if !resolved_response
       
-      @unresolved = []
-      changed_species.each do |n|
-        flag = false
-        @resolved_names.each do |r|
-          if r.key?("matched_results")
-            v = r["matched_results"][0]
-          else
-            v = r
-          end
-          if v == n
-            flag = true 
-            break
-          end
-        end
-        @unresolved << n if !flag
-      end
+      @unresolved = unresolved_filter(changed_species, @resolved_names)
+      
       if @unresolved.include? subject["scientific_name"]
         @mess = "#{subject["scientific_name"]} is unresolvable"
       else

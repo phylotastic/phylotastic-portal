@@ -59,16 +59,19 @@ class TreesController < ApplicationController
         end
       end
     end
-    # respond_to do |format|
-    #   format.js {
+    respond_to do |format|
+      begin
         # generate workflow explanation
-  #       response = RestClient.post( APP_CONFIG["gf_server"],
-  #         {
-  #           :file => @tree.workflow
-  #         })
-        # @explanation = JSON.parse(response)
-  #     }
-  #   end
+        response = RestClient.post( APP_CONFIG["gf_server"],
+          {
+            :file => @tree.workflow
+          })
+        @explanation = JSON.parse(response)
+      rescue => e
+        @explanation = nil
+      end
+      format.js
+    end
   end
   
   def index

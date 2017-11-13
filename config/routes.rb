@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'workflow/update'
+  post 'workflows/update'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
 
