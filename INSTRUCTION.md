@@ -10,11 +10,34 @@ Some design documents, including a workflow, are in the design folder, and there
 
 `sudo apt-get install build-essential libssl-dev libyaml-dev libreadline-dev openssl curl git-core zlib1g-dev bison libxml2-dev libxslt1-dev libcurl4-openssl-dev nodejs`
 
-##### 2. Install Ruby
+##### 2. Install Ruby and Rails
 
-We recommend to install Ruby on Rails using rbenv.  
-* OSX: see https://gorails.com/setup/osx/10.10-yosemite
-* Ubuntu: see https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
+`sudo apt-get update`
+
+`sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev`
+
+`cd
+git clone git://github.com/sstephenson/rbenv.git .rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+
+git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc`
+
+`rbenv install -v 2.3.0`
+
+`rbenv global 2.3.0`
+
+`echo "gem: --no-document" > ~/.gemrc`
+
+`gem install bundler`
+
+`gem install rails -v 4.2.3`
+
+`rbenv rehash`
+
+https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
 
 ##### 3. Install Javascript runtime
 
@@ -24,13 +47,13 @@ We recommend to install Ruby on Rails using rbenv.
 
 `sudo apt-get install nodejs`
 
+##### 4. Install redis
+
 `sudo apt-get install redis-server`
 
-##### 4. Install redis and sidekiq
+##### 5. Generate SSH (optional, in case you want to contribute code to the portal)
 
-##### 5. Generate SSH (if you don't have one)
-
-`ssh-keygen -t rsa -b 4096 -C "your_email@pikachu.com"`
+`ssh-keygen -t rsa -b 4096 -C "your_email@mail.com"`
 
 `eval "$(ssh-agent -s)"`
 
@@ -46,35 +69,36 @@ We recommend to install Ruby on Rails using rbenv.
 
 * In top level of repository 
 
+`cd phylotastic-portal`
+
 `bundle install`
    
 ##### 8. Config database
 
-* Make a postgres user.  You will be prompted for a password. Write it down. 
+* Make a postgres user.  You will be prompted for a password.
 
 `createuser -PSDR portal-app` 
 
 * Make the db
 
-   `createdb -O portal-app phylotastic-portal` 
+`createdb -O portal-app phylotastic-portal` 
 
 * Set up the config file that the app will use 
   
-  `cp config/database.yml.example config/database.yml`
+`cp config/database.yml.example config/database.yml`
     
-  * Then edit the password to indicate the password written down previously. 
+* THe portal need password to access the database. Edit the password field in database.yml as password for postgres user. 
 
-##### 9. Start Solr
-  * `rails generate sunspot_rails:install`
-  * `bundle exec rake sunspot:solr:start # or sunspot:solr:run to start in foreground`
+##### 9. Create tables in database
+
+   `rake db:migrate`
+
+##### 10. Contact us for config.yml
   
-  * `bundle exec rake sunspot:reindex` if needed
-  
-##### 10. To run, execute the following commands in separate terminals: 
+##### 11. To run, execute the following commands in separate terminals: 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
-
 
 ============
 
@@ -111,7 +135,7 @@ FOR INSTALLATION IN OS X:
 
    `$ gem install bundler`
 
-   `$ gem install rails -v 4.2.6`
+   `$ gem install rails -v 4.2.3`
    
    `$ rbenv rehash`
 
@@ -125,7 +149,7 @@ FOR INSTALLATION IN OS X:
    
    `git clone https://github.com/phylotastic/phylotastic-portal.git`
 
-#####7. Generate SSH (if you don't have one)
+#####7. Generate SSH (optinal)
    `ssh-keygen -t rsa -b 4096 -C "your_email@pikachu.com"`
 
    `eval "$(ssh-agent -s)"`
@@ -137,83 +161,49 @@ FOR INSTALLATION IN OS X:
 Add ssh key to your account if you want to contribute
 
 ##### 8. Install any needed ruby gems.
-In top level of repository
-   `bundle install`
+`cd phylotastic-portal`
+
+`bundle install`
 
 
 ##### 9. Install database
 
-   `brew install postgres`
-   
-   `brew services`
+`brew install postgres`
 
-   `gem install pg`
+`brew services`
+
+`gem install pg`
 
 ##### 10. Run background database
 
-   `brew services start postgresql`
+ `brew services start postgresql`
 
 ##### 11 Config database
-	•	Make a postgres user. You will be prompted for a password. Write it down.
-createuser -PSDR portal-app
-	•	Make the db createdb -O portal-app phylotastic-portal 
-	•	Set up the config file that the app will use  cp config/database.yml.example config/database.yml
-	◦	Then edit the password to indicate the password written down previously.
-	◦	
-##### 12. Comment 
+  * Make a postgres user.  You will be prompted for a password.
 
-   `#devise :database_authenticatable, `
+  `createuser -PSDR portal-app` 
 
-   `  #:registerable,`
+  * Make the db
 
-   `  #       :recoverable, :rememberable, :trackable, :validatable,`
+  `createdb -O portal-app phylotastic-portal` 
 
-   `  #       :omniauthable, :omniauth_providers => [:google_oauth2]`
-
-in user.rb
-
-Comment 
+  * Set up the config file that the app will use 
   
-   `# devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }`
-
-in routes.rb
-
-Then run
-
-   `rails generate devise:install`
-
-Then uncomment all of them.
-
-Add 
-
-   `config.omniauth :google_oauth2, APP_CONFIG['google']['id'], APP_CONFIG['google']['secret'], {
-    scope: "email"
-  }`
-
-in config/initialize/devise.rb
-
-##### 13. Run
+  `cp config/database.yml.example config/database.yml`
+    
+  * THe portal need password to access the database. Edit the password field in database.yml as password for postgres user.
+		
+##### 12. Create tables in database
 
    `rake db:migrate`
 
-##### 14. Contact us for config.yml
+##### 13. Contact us for config.yml
 
-##### 15. Install JAVA SDK
-http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-
-##### 16. Start Solr
-	•	rails generate sunspot_rails:install
-	•	bundle exec rake sunspot:solr:start # or sunspot:solr:run to start in foreground
-	•	bundle exec rake sunspot:reindex if needed
-If you can’t run reindex, delete all /solr folder and stop all solr progresses. Restart again.
-
-If you still get into trouble (likely you are trying to deploy the portal, change path in config/sunspot.yml to /solr/default)
-
-##### 17. To run, execute the following commands in separate terminals:
+##### 14. To run, execute the following commands in separate terminals:
 	•	rails server -b 0.0.0.0
 	•	redis-server
 	•	bundle exec sidekiq
 	•	
 
-##### 18. Open localhost:3000 in browser
+##### 15. Open localhost:3000 in browser
 
