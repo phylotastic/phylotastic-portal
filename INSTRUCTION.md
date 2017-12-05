@@ -77,7 +77,11 @@ The above commands are extracted from [this installation tutorial](https://www.d
 `cd phylotastic-portal`
 
 `bundle install`
-   
+
+`sudo apt-get install postgresql`
+
+`sudo apt-get install libpq-dev`
+
 ##### 8. Config database
 
 * Make a postgres user.  You will be prompted for a password.
