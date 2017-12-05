@@ -76,11 +76,11 @@ The above commands are extracted from [this installation tutorial](https://www.d
 
 `cd phylotastic-portal`
 
-`bundle install`
-
 `sudo apt-get install postgresql`
 
 `sudo apt-get install libpq-dev`
+
+`bundle install`
 
 ##### 8. Config database
 
