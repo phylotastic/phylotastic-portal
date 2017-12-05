@@ -42,7 +42,7 @@ Some design documents, including a workflow, are in the design folder, and there
 
 `rbenv rehash`
 
-https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
+The above commands are extracted from [this installation tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04).
 
 ##### 3. Install Javascript runtime
 
