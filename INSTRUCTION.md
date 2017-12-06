@@ -136,9 +136,12 @@ Add in config/initializers/devise.rb
  
 ##### 11. Create tables in database
 
-   `rake db:migrate`
+`rake db:migrate`
+
+##### 12. Seed database
+`rake db:seed`
   
-##### 12. To run, execute the following commands in separate terminals (but keep running in root folder): 
+##### 13. To run, execute the following commands in separate terminals (but keep running in root folder): 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
