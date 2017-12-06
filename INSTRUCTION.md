@@ -118,7 +118,7 @@ Comment out these lines in app/models/user.rb
 
    `  #       :omniauthable, :omniauth_providers => [:google_oauth2]`
 
-Comment this line in routes.rb
+Comment this line in config/routes.rb
   
    `# devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }`
 
@@ -126,21 +126,19 @@ Then run
 
    `rails generate devise:install`
 
-Then uncomment all of them.
+Then uncomment all of commented lines.
 
-Add 
+Add in config/initializers/devise.rb
 
    `config.omniauth :google_oauth2, APP_CONFIG['google']['id'], APP_CONFIG['google']['secret'], {
     scope: "email"
   }`
-
-in config/initialize/devise.rb
  
 ##### 11. Create tables in database
 
    `rake db:migrate`
   
-##### 12. To run, execute the following commands in separate terminals: 
+##### 12. To run, execute the following commands in separate terminals (but keep running in root folder): 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
