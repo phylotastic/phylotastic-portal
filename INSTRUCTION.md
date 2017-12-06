@@ -84,13 +84,17 @@ The above commands are extracted from [this installation tutorial](https://www.d
 
 ##### 8. Config database
 
-* Make a postgres user.  You will be prompted for a password.
+* Create a postgres user.  You will be prompted for a password.
+
+`sudo -u postgres -i`
 
 `createuser -PSDR portal-app` 
 
-* Make the db
+* Create the db
 
 `createdb -O portal-app phylotastic-portal` 
+
+`exit`
 
 * Set up the config file that the app will use 
   
