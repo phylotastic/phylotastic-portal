@@ -102,11 +102,47 @@ The above commands are extracted from [this installation tutorial](https://www.d
     
 * THe portal need password to access the database. Edit the password field in database.yml as password for postgres user. 
 
-##### 9. Create tables in database
+##### 9. Contact us for config.yml
+
+Put the config inside /config folder
+
+##### 10. Devise installation
+
+Comment 
+
+   `#devise :database_authenticatable, `
+
+   `  #:registerable,`
+
+   `  #       :recoverable, :rememberable, :trackable, :validatable,`
+
+   `  #       :omniauthable, :omniauth_providers => [:google_oauth2]`
+
+in app/models/user.rb
+
+Comment 
+  
+   `# devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }`
+
+in routes.rb
+
+Then run
+
+   `rails generate devise:install`
+
+Then uncomment all of them.
+
+Add 
+
+   `config.omniauth :google_oauth2, APP_CONFIG['google']['id'], APP_CONFIG['google']['secret'], {
+    scope: "email"
+  }`
+
+in config/initialize/devise.rb
+ 
+##### 10. Create tables in database
 
    `rake db:migrate`
-
-##### 10. Contact us for config.yml
   
 ##### 11. To run, execute the following commands in separate terminals: 
   * `rails server -b 0.0.0.0`
