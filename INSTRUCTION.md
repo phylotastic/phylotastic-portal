@@ -108,7 +108,7 @@ Put the config inside /config folder
 
 ##### 10. Devise installation
 
-Comment 
+Comment out these lines in app/models/user.rb
 
    `#devise :database_authenticatable, `
 
@@ -118,13 +118,9 @@ Comment
 
    `  #       :omniauthable, :omniauth_providers => [:google_oauth2]`
 
-in app/models/user.rb
-
-Comment 
+Comment this line in routes.rb
   
    `# devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }`
-
-in routes.rb
 
 Then run
 
@@ -140,11 +136,11 @@ Add
 
 in config/initialize/devise.rb
  
-##### 10. Create tables in database
+##### 11. Create tables in database
 
    `rake db:migrate`
   
-##### 11. To run, execute the following commands in separate terminals: 
+##### 12. To run, execute the following commands in separate terminals: 
   * `rails server -b 0.0.0.0`
   * `redis-server`
   * `bundle exec sidekiq`
