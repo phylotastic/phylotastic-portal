@@ -18,13 +18,20 @@ class ExtractionsWorker
 
 
     when "ConFile"
-      file = ConFile.find_by_id(source_id)
-      file_url = file.document.url
-      file_url.slice!(/[?]\d*\z/)
-      file_url = APP_CONFIG['domain'] + file_url
-      extracted_response = Req.get(APP_CONFIG['sv_find_names']['url'] + file_url + "&engine=" + file.method.to_s) 
-
-
+      f = ConFile.find_by_id(source_id)
+      
+      file = File.new(f.document.path, 'rb')
+      
+      extracted_response = Req.post(APP_CONFIG['sv_find_names_in_file']['url'],
+                                    { 
+                                      multipart: true,
+                                      inputFile: file,
+                                      engine: f.method.to_s
+                                    },
+                                    {} )
+                                    
+                                    
+                                    
 
 
     when "UploadedList"
