@@ -1,0 +1,9 @@
+$('#log').append("<div>" + currentTime() + " Scale tree successfully</div>");
+$('#log').append("<div>" + currentTime() + " Redirecting to tree visualization</div>");
+
+$("#op2").css("fill", '#58c4a3');
+$("#o").css("fill", '#58c4a3');
+
+setTimeout(function(){
+  window.location.href = "<%= trees_path({ins: @tree.id, hot: true}) %>";
+}, 1000);

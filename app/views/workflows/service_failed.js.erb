@@ -1,0 +1,14 @@
+$('#log').append("<div class=\"alert alert-danger\">" + currentTime() + " Call service error<br />");
+
+<% unless @e.nil? %>
+  $('#log').append("<%=j @e %></div>");
+<% else %>
+  $('#log').append("</div>");
+<% end %>
+
+
+<% if @op == 2 %>
+  $('#log').append("<div class=\"\">" + currentTime() + " Switching to an alternative service</div>");
+  $("#op1t tspan").html("<i class=\"spinner fa fa-spinner fa-spin\"></i>")
+  $('#alternative-extract-tree').click();
+<% end %>

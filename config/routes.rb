@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  post 'workflows/update'
+  resources :workflows, only: [:update] do
+    collection do
+      get 'resolve'                  => 'workflows#resolve'
+      get 'extract_tree'             => 'workflows#extract_tree'
+      get 'scale_tree'               => 'workflows#scale_tree'
+      get 'alternative_extract_tree' => 'workflows#alternative_extract_tree'
+      get 'alternative_scale_tree'   => 'workflows#alternative_scale_tree'
+    end
+  end
 
   devise_for :users, :controllers => { :omniauth_callbacks => "callbacks" }
 
@@ -23,16 +31,9 @@ Rails.application.routes.draw do
       post 'update_species' => "uploaded_lists#update_species"
       post 'update_a_species' => "uploaded_lists#update_a_species"
       get 'list_content' => 'uploaded_lists#list_content'
-      get 'trees' => 'uploaded_lists#trees'
-      get 'publish' => 'uploaded_lists#publish'
-      get 'failed' => 'uploaded_lists#failed'
       get 'show_public' => 'uploaded_lists#show_public'
     end
   end
-
-  get 'matched_names/show'
-
-  get '/track' => 'trackers#track'
   
   require 'sidekiq/web'
   # ...

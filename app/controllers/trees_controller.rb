@@ -3,7 +3,7 @@ require 'rest-client'
 
 class TreesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :authenticate_user!, only: [:show_public, :create, :index, :status,
+  skip_before_action :authenticate_user!, only: [:create, :index, :status,
                                                  :checking_status, :show, :newick, :update,
                                                  :scaling_sdm, :scaling_mediam]
   
@@ -19,15 +19,16 @@ class TreesController < ApplicationController
       @tree = User.anonymous.trees.build(tree_params.merge(temp_id: cookies[:temp_id]))
     end
     if @tree.save
-      job_id = TreesWorker.perform_async(@tree.id)
-      @tree.update_attributes( bg_job: job_id,
-                               status: "extracting",
-                               notifiable: true )
+      # job_id = TreesWorker.perform_async(@tree.id)
+      # @tree.update_attributes( bg_job: job_id,
+      #                          status: "extracting",
+      #                          notifiable: true )
 
+      @workflow = ActiveSupport::JSON.encode(JSON.parse(File.read(@tree.workflow)))
       render status_trees_path
       return
     else
-      render root_path
+      redirect_to root_path
     end
   end
   
@@ -120,9 +121,7 @@ class TreesController < ApplicationController
   end
   
   def status
-    if @tree.nil?
-      redirect_to trees_path
-    end
+    redirect_to trees_path if @tree.nil?
   end
   
   def checking_status
@@ -134,14 +133,14 @@ class TreesController < ApplicationController
     job_id = @tree.bg_job
     hijack do |tubesock|
       while Sidekiq::Status::queued? job_id
-        sleep 1
         data = {status: "queue", pct: 0}.to_json
         tubesock.send_data data
       end
       while Sidekiq::Status::working? job_id
         sleep 1        
-        pct = Sidekiq::Status::pct_complete job_id
-        data = {status: "working", pct: pct}.to_json
+        pct     = Sidekiq::Status::pct_complete job_id
+        message = Sidekiq::Status::message job_id
+        data = {status: "working", pct: pct, message: message}.to_json
         tubesock.send_data data
       end
     

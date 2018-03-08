@@ -1,30 +1,136 @@
-<h3 style="margin-top: 150px; margin-bottom: 30px; font-size:30px;" class="center">Extracting tree...</h3>
-<div id="myProgress" class="progress">
-  <div id="myBar" class="progress-bar" role="progressbar">
-    <div id="label">0%</div>
+<h3 style="margin-bottom: 30px; font-size:30px;" class="center">Extracting tree</h3>
+
+<div class="row">
+  <div class="col-md-7">
+    <div id="diagram-wrapper">
+      <div id="diagram" class='center'>
+        <img src='<%= image_path("loading-icon.gif") %>' width=500><br />
+        Waiting for generating workflow
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-5 center" id="infor-box">
+    <div id="node-des"></div>
+    
+    <hr>
+    
+    <div id="log-wrapper" style="text-align: left;">
+      <h3>Log</h3>
+      <div id="log">
+      </div>
+    </div>
   </div>
 </div>
-        
+
+<%= link_to "l", resolve_workflows_path(tree: @tree.id, :format => "js"), remote: true, class:"hide", id: "resolve" %>
+
+<%= link_to "l", extract_tree_workflows_path(tree: @tree.id, :format => "js"), remote: true, class:"hide", id: "extract-tree" %>
+
+<%= link_to "l", scale_tree_workflows_path(tree: @tree.id, :format => "js"), remote: true, class:"hide", id: "scale-tree" %>
+
+<%= link_to "a", alternative_extract_tree_workflows_path(tree: @tree.id, :format => "js"), remote: true, class:"hide", id: "alternative-extract-tree" %>
+
+
 <script type="text/javascript">
-  function move(pct) {
-    var elem = document.getElementById("myBar"); 
-    elem.style.width = pct + '%'; 
-    document.getElementById("label").innerHTML = pct * 1 + '%';
-  }
+  var workflow_data = <%= raw @workflow %>;
+  setTimeout(function(){
+    $('#diagram').html(""); 
+    draw_flowchart(workflow_data);
+    $("#log").append("<div>" + currentTime() + " Extract resolved species names</div>");
+    $("#i").css("fill", '#58c4a3');
+    $("#op0").css("fill", '#58c4a3');
+    $("#resolve").click();
+  }, 3000);
+  
+  function draw_flowchart(data) {
+    var workflow = data["workflow_plan"][0]["plan"];
+    
+    op   = "";
+    flow = "i->";
+    inp  = "i=>inputoutput: Species names\n";
+    outp = "o=>inputoutput: Scaled tree\n";
+    
+    for (i = 0; i < workflow.length; i++) { 
+      op = op + "op" + i.toString() + '=>operation: ' + workflow[i]["operation_name"] + "\n";
+      if (i == workflow.length-1)
+        flow = flow + "op" + i.toString() + "->o" + "\n";
+      else
+        flow = flow + "op" + i.toString() + "->";
 
-  socket = new WebSocket("ws://" + window.location.host + "/trees/checking_status?id=" + "<%= @tree.id %>");
-
-  socket.onmessage = function(event) {
-    if(event.data.length) {
-      d = JSON.parse(event.data)
-      console.log(d);
-      move(d["pct"]);
-      if(d["status"] == "complete") {        
-        window.location.href = "<%= trees_path({ins: @tree.id, hot: true}) %>";
-      }
-      if(d["status"] == "failed") {
-        window.location.href = "<%= trees_path(ins: @tree.id, failed: true) %>";
-      }
+      console.log(flow);
+      var diagram = flowchart.parse(op + inp + outp + flow);
     }
+    
+    
+    diagram.drawSVG('diagram', {
+                                  'x': 0,
+                                  'y': 0,
+                                  'line-width': 3,
+                                  'line-length': 50,
+                                  'text-margin': 10,
+                                  'font-size': 14,
+                                  'font-color': 'black',
+                                  'line-color': 'black',
+                                  'element-color': 'black',
+                                  'fill': 'white',
+                                  'yes-text': 'yes',
+                                  'no-text': 'no',
+                                  'arrow-end': 'block',
+                                  'scale': 1,
+                                  // style symbol types
+                                  'symbols': {
+                                    'start': {
+                                      // 'font-color': 'red',
+                                      // 'element-color': 'green',
+                                      // 'fill': 'yellow'
+                                    },
+                                    'operation': {
+                                      // 'font-color': 'blue',
+                                      // 'element-color': 'blue',
+                                      // 'fill': '#58c4a3'
+                                    },
+                                    'end':{
+                                      // 'class': 'end-element'
+                                    }
+                                  }
+                                });
   }
+  
+  Number.prototype.pad = function (len) {
+    return (new Array(len+1).join("0") + this).slice(-len);
+  }
+  
+  function currentTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    // add a zero in front of numbers<10
+    return h.pad(2) + ":" + m.pad(2) + ":" + s.pad(2);
+  }
+  
+  // function update(data) {
+  //   var des = $("#node-des");
+  //   var pct = $("#pct");
+  //   var log = $("#log");
+    // pct.html(data["pct"] + '%');
+    // log.html(data["message"]);
+  // }
+
+  // socket = new WebSocket("ws://" + window.location.host + "/trees/checking_status?id=" + "<%= @tree.id %>");
+//
+//   socket.onmessage = function(event) {
+//     if(event.data.length) {
+//       d = JSON.parse(event.data)
+//       console.log(d);
+//       update(d);
+//       if(d["status"] == "complete") {
+//         window.location.href = "<%= trees_path({ins: @tree.id, hot: true}) %>";
+//       }
+//       if(d["status"] == "failed") {
+//         window.location.href = "<%= trees_path(ins: @tree.id, failed: true) %>";
+//       }
+//     }
+//   }
 </script>
