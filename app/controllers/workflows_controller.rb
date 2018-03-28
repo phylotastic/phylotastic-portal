@@ -54,6 +54,7 @@ class WorkflowsController < ApplicationController
   end
   
   def alternative_extract_tree
+    @service = "OToL_wrapper_Tree"
     resolved = JSON.parse(@tree.raw_extraction.species)
 
     chosen_species = JSON.parse(@tree.chosen_species).select {|k,v| v == "1"}.map {|k,v| k }
@@ -99,6 +100,7 @@ class WorkflowsController < ApplicationController
   end
   
   def scale_tree
+    @service = "Datelife_scale_tree"
     @op = 3
     scaled_response = Req.post( APP_CONFIG["sv_datelife_tree"]["url"],
                                 {"newick": sanitize_newick(@tree), method: "median"}.to_json,
@@ -135,6 +137,7 @@ class WorkflowsController < ApplicationController
   
   
   def extract_tree
+    @service = "PhyloT_wrapper_Tree"
     @op = 2
     resolved = JSON.parse(@tree.raw_extraction.species)
 

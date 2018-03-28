@@ -1,4 +1,4 @@
-$('#log').append("<div class=\"alert alert-danger\">" + currentTime() + " Call service error<br />");
+$('#log').append("<div class=\"alert alert-danger\">" + currentTime() + " Call service " + "<%= @service %>" + " error<br />");
 
 <% unless @e.nil? %>
   $('#log').append("<%=j @e %></div>");

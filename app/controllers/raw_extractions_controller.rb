@@ -33,6 +33,11 @@ class RawExtractionsController < ApplicationController
     res = Req.get(APP_CONFIG["sv_get_public_lists"]["url"])
     @public_lists = JSON.parse(res)["lists"] rescue []
     @public_lists.sort_by! {|m| m["list_title"].downcase }
+    respond_to do |format|
+      format.js
+      format.html
+    end
+        
   end
   
   def checking_status
