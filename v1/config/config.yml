@@ -1,0 +1,96 @@
+share: &share
+  sv_find_names:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
+    method: "get"
+  sv_find_names_in_file:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_file"
+    method: "post"
+  sv_find_names_in_text:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_text?text="
+    method: "get"
+  sv_resolve_names:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
+    method: "post"
+  sv_datelife_tree:
+    url: "http://phylo.cs.nmsu.edu:5009/phylotastic_ws/sc/scale"
+    method: "post"
+  sv_get_tree:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
+    method: "post"
+  sv_species_from_taxon:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/all_species?taxon="
+    method: "get"
+  sv_create_list:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/insert_list"
+    method: "post"
+  sv_get_private_lists:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
+    method: "get"
+  sv_get_public_lists:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
+    method: "get"
+  sv_get_a_list:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
+    method: "get"
+  sv_remove_private_list:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/remove_list"
+    method: "get"  
+  sv_get_species_image:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/si/eol/get_images?species="
+    method: "get"
+  sv_ncbi_genome:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/ncbi/genome_species?taxon="
+    method: "get"
+  sv_replace_species:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/replace_species"
+    method: "post"
+  sv_species_from_taxon_by_country:
+    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/country_species?taxon="
+    method: "get"
+  sv_update_metadata_list:
+    url: "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/update_list"
+    method: "post"
+  ot_tree_uri: "https://tree.opentreeoflife.org/curator/study/view/"
+  anonymous: "anonymous@phylo.com"
+  gf_server: "http://127.0.0.1:5000/generate"
+  gf_server_with_traversing: "http://127.0.0.1:5000/traversing_ontology_generate"
+  db:
+    username: "phylotastic"
+    password: ""
+    
+development:
+  <<: *share
+      
+  domain: "http://phylo.cs.nmsu.edu:3001"
+  
+  google:
+    id: "304895613392-c5fgo81fpbqqlpl17jpoqmqdinvdl8j8.apps.googleusercontent.com"
+    secret: "ODTlcwmTc2XHCd9tsdSqoyH1" 
+  
+  ete_js: "http://phylo.cs.nmsu.edu:8080/TreeViewer/demo/ete_dev2.js"
+  sv_image: "http://phylo.cs.nmsu.edu:8990/save_tree_image"
+
+test:
+  <<: *share
+  
+  domain: "http://0.0.0.0:3000"
+  
+  google:
+    id: "936627843472-tbvfhfohauanrehv1l94a6lrj5lvq0r3.apps.googleusercontent.com"
+    secret: "VHM9EWvk47_8STw8eCe_FebK"
+
+  ete_js: "http://phylo.cs.nmsu.edu:8080/TreeViewer/demo/ete_dev.js"
+  sv_image: "http://phylo.cs.nmsu.edu:8990/save_tree_image"
+    
+production:
+  <<: *share
+
+  domain: "http://phylo.cs.nmsu.edu:3000"
+  
+  google:
+    id: "936627843472-tbvfhfohauanrehv1l94a6lrj5lvq0r3.apps.googleusercontent.com"
+    secret: "VHM9EWvk47_8STw8eCe_FebK"
+    
+  ete_js: "http://phylo.cs.nmsu.edu:8080/TreeViewer/demo/ete.js"
+  sv_image: "http://phylo.cs.nmsu.edu:8989/save_tree_image"
+  

@@ -1,0 +1,6 @@
+Oryza sativa
+Zea mays
+Solanum lycopersicum
+Arabidopsis thaliana
+Glycine max
+Medicago sativa
