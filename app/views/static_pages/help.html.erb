@@ -1,23 +1,21 @@
 <% provide(:title, "Help") %>
 
-<div data-spy="scroll" data-target="#help-navbar">
-  <div class="">
-    <div class="" style="width: 23%; min-width: 200px; float:left;">
-      <nav id='help-navbar'>
-        <ul class='nav nav-pills nav-stacked'>
-          <li role="presentation"><%= link_to "Video", "#video" %></li>
-          <li role="presentation"><a href="#userguide">User guide</a></li>
-          <li role="presentation"><a href="#faq">FAQ</a></li>
-        </ul>
-      </nav>
+<nav id="help-navbar" class='navbar navbar-fixed-top' style="width: 15%; min-width: 170px; float:left; margin-top: 60px;">
+  <ul class="nav nav-pills nav-stacked">
+    <li role="presentation"><%= link_to "Video", "#video" %></li>
+    <li role="presentation"><a href="#userguide">User guide</a></li>
+    <li role="presentation"><a href="#faq">FAQ</a></li>
+  </ul>
+</nav>
+  
+<div data-spy="scroll" data-target="#help-navbar" style="position: relative;">
+  <div style="width: 80%; min-width: 400px; float: right; margin-right: 20px;">
+    <div id="video" class="center">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
     </div>
-
-    <div class="" style="width: 75%; min-width: 400px; float: right;">
-      <div id="video">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
-      </div>
-      
-      <h1 id="userguide">User guide</h1>
+    
+    <div id="userguide">
+      <h1>User guide</h1>
 
       <div class="panel-group" id="accordion">
         <div class="panel panel-default">
@@ -31,7 +29,7 @@
           <div id="quickstart" class="panel-collapse collapse in">
             <div class="panel-body">
               <p>Everything is done from the List view (<b>Home</b>) or the Tree view (<b>Trees</b>). The basic workflow is to create a list of scientific names (species or higher taxa), click on <b>Get tree</b>, then view the tree.  If you only know common names instead of scientific names (e.g., "raven" instead of "Corvus corax"), check the FAQ item <a href="#commonnames" id="cmonnames">How do I find scientific names?</a>. </p>
-              
+            
               <p>If you don't have lists of your own, try a public list.  Create custom lists by selecting from the <b>Make a New List</b> menu:
               <ul>
               <li><b>Upload my list</b>: upload a pre-made list of names (one per line, or DwC-A)
@@ -39,14 +37,14 @@
               <li><b>Extract from web</b>: create a list by scraping names from a web page
               <li><b>Choose taxon</b>: create a list by sampling from a taxon
               </ul>
-              
+            
               The new list will appear in <b>My Lists</b>.  At any time, you can click on <b>Home</b> and select a list to view it.</p>
-              
+            
               <p>If you don't have any trees, select a list and choose <b>Get tree</b>.  Retrieved trees are saved and can be accessed in <b>Trees</b> at any time from the <b>My trees</b> list.  </p>
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -81,7 +79,7 @@
           <div id="managetrees" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>To view a tree, from <b>Trees</b> view, select a tree name from <b>My Trees</b> or <b>Public Trees</b>.  We sometimes don't get the size of the tree right: you may need to use your browser's zoom feature. </p>
-            
+          
             <p>Use the control panel (above) to modify features that affect the whole tree (e.g., line width), or to download an image.  "Show node labels" often reveals useful taxonomic names on internal nodes.  Click on individual nodes to access options such as
             <ul>
             <li>highlight this group or branch
@@ -89,9 +87,9 @@
             <li>see a web page about this species in the Encyclopedia of Life
             </ul>
             </p>
-            
+          
             <p>Using the menu at right, you can rename, delete, or export the tree.  Select <b>Export</b> to save the tree in Newick (New Hampshire) format.</p>
-            
+          
             </div>
           </div>
         </div>
@@ -173,15 +171,17 @@
         	<li>random subset - picks a random subset of species from the named taxon
         	</ul>
         	The new list will appear in <b>My Lists</b>. </p>
-        	
+      	
         	<p><b>Important note</b>: You can choose a taxon of any size if you subset by "has genome in NCBI", but if you try to enter the name of a taxon with > 1000 species (e.g., "Aves", "Mammalia") and you are not subsetting by genome, <b>you will be disappointed</b>-- we just don't have the capacity for that yet.  </p>
             </div>
           </div>
         </div>
-  
+
       </div> <!-- end of instructions accordion --> 
-      
-      <h1 id="faq">FAQ</h1>
+    </div>
+    
+    <div id="faq">
+      <h1>FAQ</h1>
 
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
@@ -231,7 +231,7 @@
           <div id="speciesLost" class="panel-collapse collapse">
             <div class="panel-body">
             <p><b>If you uploaded your own list</b> (text or DwC-A), unrecognized names appear below the list viewer: you can edit the name and click <b>Search</b> to try again.  Most failures are due to spelling errors, but sometimes the name just isn't in our sources (to find out if a name is in OpenTree, use the search box in the upper right of <a href="https://tree.opentreeoflife.org/opentree/argus">this page</a>). </p>
-      
+    
             <p><b>If you attempted to scrape names from a file or web page</b>, then your list will be missing both (1) names that were not recognized by GNRD, and (2) names that were recognized by GNRD but did not match any of its taxonomies.  You can try to debug this problem by going directly to <a href="http://gnrd.globalnames.org/">Global Names Recognition and Discovery</a>, but the practical work-around is to download the extracted list, add the missing names, and upload it again (see <a href="#editList">"How can I add, remove or change a species in my list?"</a>).  </p>
 
                 </li>
@@ -252,15 +252,15 @@
           <div id="listProblems" class="panel-collapse collapse">
             <div class="panel-body">
             <p>If you start the "Choose taxon" workflow with a taxon that is too large, the job may terminate before a list is returned (see the user guide above).  The same thing will happen if you submit a resource for name-scraping that is enormous.  The solution is to scale down your ambitions.  </p>
-      
+    
             <p>If the issue is not size, it is probably something to do with format, language, or encoding.  If you are trying to use a DwC-A input, compare the format carefully to the template provided.  See this <%= link_to "stackoverflow thread", "http://stackoverflow.com/questions/3001177/how-do-i-grep-for-all-non-ascii-characters-in-unix", target: "_blank" %> for ways to find non-standard characters.  If you can't fix the original resource (e.g., a web page you don't own), make a copy and fix it. </p>
-      
+    
             <p>If you still can't make a list, contact us using the <a href="http://bit.ly/phylofeedback">feedback form</a> and be sure to include your email address. 
             </p>
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -271,13 +271,13 @@
           </div>
           <div id="treeView" class="panel-collapse collapse">
             <div class="panel-body">
-        
+      
                <p>Currently the tree viewer supports only minimal editing and customization, and the <b>Export</b> function only includes the tree topology and names-- not images, link-outs, or high-lighting.  In the future, we will provide a way to export Phylotastic trees with images and link-outs, so that they can be modified using other tree-viewers-- but first we have to convince other developers to agree with us on annotation standards.  </p>
 
             </div>
           </div>
         </div>
-          
+        
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -292,7 +292,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -313,7 +313,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -328,7 +328,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 id="commonnames" class="panel-title">
@@ -349,7 +349,7 @@
               </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -361,11 +361,11 @@
           <div id="polytomies" class="panel-collapse collapse">
             <div class="panel-body">
             <p>Our ability to deliver trees instantly depends on resources that provide pre-computed trees.  Currently, OpenTree is the only resource we are using.  Large parts of OpenTree's synthetic tree are based on taxonomy alone: this is why there are so many polytomies.  If you know of published phylogenies that would cover some of these gaps, and you want to help, see <a href="#betterPlace">"How can I make the world a better place?"</a>.</p>
-      
+    
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -377,12 +377,12 @@
           <div id="betterPlace" class="panel-collapse collapse">
             <div class="panel-body">
             <p>Our ability to deliver results quickly and conveniently depends on the availability of other resources that have programmable interfaces and provide good-quality data.  Click on "About" (above) to see a list of these resources. </p>
-      
+    
             <p>By making it incredibly easy to find results, the Phylotastic project <b>exposes both the strengths and weaknesses of these resources</b>.  If the results obtained here are misleading or incomplete, this means that the underlying resources can be improved.  For instance, if you find a part of the tree that is unresolved, and you are aware of published trees that provide more information, you can help out by notifying OpenTree or, better, <a href="https://tree.opentreeoflife.org/curator">becoming a curator yourself</a> and adding the tree to OpenTree's database, so that it will be included automatically the next time a supertree is computed.</p> 
             </div>
           </div>
         </div>
-  
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab">
             <h4 class="panel-title">
@@ -399,26 +399,19 @@
         </div>
 
       </div>
-    </div>      
-  </div>
+    </div>   
+  </div>   
 </div>
 
 <script>
 $(document).ready(function() {
+   
+  $('body').scrollspy({ target: '#help-navbar' })
   
-  $(window).scroll(function () {
-      //if you hard code, then use console
-      //.log to determine when you want the 
-      //nav bar to stick.  
-      console.log($(window).scrollTop())
-    if ($(window).scrollTop() > 280) {
-      $('#help-navbar').addClass('navbar-fixed');
-    }
-    if ($(window).scrollTop() < 281) {
-      $('#help-navbar').removeClass('navbar-fixed');
-    }
-  });
-  
+  $('#help-navbar').on('activate.bs.scrollspy', function () {
+    console.log("aaa");
+  })
+   
   var archor = window.location.hash.substring(window.location.hash.indexOf("#")+1);
   if (archor == 'commonnames') {
     $('#commonNames').collapse();
