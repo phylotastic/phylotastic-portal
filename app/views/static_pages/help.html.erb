@@ -1,0 +1,427 @@
+<% provide(:title, "Help") %>
+
+<div data-spy="scroll" data-target="#help-navbar">
+  <div class="">
+    <div class="" style="width: 23%; min-width: 200px; float:left;">
+      <nav id='help-navbar'>
+        <ul class='nav nav-pills nav-stacked'>
+          <li role="presentation"><%= link_to "Video", "#video" %></li>
+          <li role="presentation"><a href="#userguide">User guide</a></li>
+          <li role="presentation"><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="" style="width: 75%; min-width: 400px; float: right;">
+      <div id="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
+      </div>
+      
+      <h1 id="userguide">User guide</h1>
+
+      <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#quickstart">
+                Quick Start
+              </a>
+            </h4>
+          </div>
+          <div id="quickstart" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <p>Everything is done from the List view (<b>Home</b>) or the Tree view (<b>Trees</b>). The basic workflow is to create a list of scientific names (species or higher taxa), click on <b>Get tree</b>, then view the tree.  If you only know common names instead of scientific names (e.g., "raven" instead of "Corvus corax"), check the FAQ item <a href="#commonnames" id="cmonnames">How do I find scientific names?</a>. </p>
+              
+              <p>If you don't have lists of your own, try a public list.  Create custom lists by selecting from the <b>Make a New List</b> menu:
+              <ul>
+              <li><b>Upload my list</b>: upload a pre-made list of names (one per line, or DwC-A)
+              <li><b>Extract from doc</b>: create a list by scraping names from a file
+              <li><b>Extract from web</b>: create a list by scraping names from a web page
+              <li><b>Choose taxon</b>: create a list by sampling from a taxon
+              </ul>
+              
+              The new list will appear in <b>My Lists</b>.  At any time, you can click on <b>Home</b> and select a list to view it.</p>
+              
+              <p>If you don't have any trees, select a list and choose <b>Get tree</b>.  Retrieved trees are saved and can be accessed in <b>Trees</b> at any time from the <b>My trees</b> list.  </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#managinglists">
+                Managing lists (Home)
+              </a>
+            </h4>
+          </div>
+          <div id="managinglists" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+              <p>The list view (<b>Home</b>) shows available lists (left), a list viewer (center), and a menu for making new lists (right). Click a list to view its contents in the list viewer.  Now you can 
+              <ul>
+              <li>select or unselect names before requesting a tree
+              <li>view a taxon matching report
+              <li>download the list as text
+              <li>delete or rename the list
+              </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#managetrees">
+                Managing and viewing trees (Trees)
+              </a>
+            </h4>
+          </div>
+          <div id="managetrees" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>To view a tree, from <b>Trees</b> view, select a tree name from <b>My Trees</b> or <b>Public Trees</b>.  We sometimes don't get the size of the tree right: you may need to use your browser's zoom feature. </p>
+            
+            <p>Use the control panel (above) to modify features that affect the whole tree (e.g., line width), or to download an image.  "Show node labels" often reveals useful taxonomic names on internal nodes.  Click on individual nodes to access options such as
+            <ul>
+            <li>highlight this group or branch
+            <li>retrieve an image for this species
+            <li>see a web page about this species in the Encyclopedia of Life
+            </ul>
+            </p>
+            
+            <p>Using the menu at right, you can rename, delete, or export the tree.  Select <b>Export</b> to save the tree in Newick (New Hampshire) format.</p>
+            
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#uplist">
+                Uploading a list you have created
+              </a>
+            </h4>
+          </div>
+          <div id="uplist" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>From <b>Home</b>, choose <b>Upload my list</b> from the menu at right.  You can upload your own custom list of taxa as either a text (.txt) file with one name per line, or as a Darwin Core Archive (DwC-A) file.  The DwC-A format allows you to maintain metadata such as a description and author with your list of names (click <%= link_to "here", "/template.zip"%> for a template you can modify). </p>
+
+             <p>The portal will immediately try to match your names against OpenTree's taxonomy.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#createlistfromfile">
+                Creating a list by scraping names from a file
+              </a>
+            </h4>
+          </div>
+          <div id="createlistfromfile" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>From <b>Home</b>, choose <b>Extract from doc</b> from the menu at right, then select a file (.pdf, .txt, .doc, .docx, .xls, .xlsx) that includes scientific names (it can also include other text).  The file will be processed in 3 steps: 
+        	<ol>
+        	<li>text will be extracted (or recognized by OCR-- very slow)
+        	<li>name-like strings will be identified
+        	<li>the name-like strings will be matched against GlobalNames resources
+        	</ol>
+        	and the new list will appear in <b>My Lists</b>. </p>
+        	</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#createlistfromweb">
+                Creating a list by scraping names from a web page
+              </a>
+            </h4>
+          </div>
+          <div id="createlistfromweb" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>From <b>Home</b>, choose <b>Extract from web</b> from the menu at right, then enter a URL.  The resource will be processed in 3 steps: 
+        	<ol>
+        	<li>text will be extracted
+        	<li>name-like strings will be identified
+        	<li>the name-like strings will be matched against GlobalNames resources
+        	</ol>
+        	and the new list will appear in <b>My Lists</b>. </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" href="#createlistfromtaxon">
+                Creating a list by sampling from a taxon
+              </a>
+            </h4>
+          </div>
+          <div id="createlistfromtaxon" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>From <b>Home</b>, choose <b>Choose taxon</b> from the menu at right, then enter a scientific name for a higher taxon such as a genus or family ("Canidae", "Felidae", "Passerina"). If desired, choose one of the options to get a subset of that taxon
+        	<ul>
+        	<li>location - checks iNaturalist for occurrence records in designated country
+        	<li>has genome in NCBI - checks NCBI for species with genome record
+        	<li>random subset - picks a random subset of species from the named taxon
+        	</ul>
+        	The new list will appear in <b>My Lists</b>. </p>
+        	
+        	<p><b>Important note</b>: You can choose a taxon of any size if you subset by "has genome in NCBI", but if you try to enter the name of a taxon with > 1000 species (e.g., "Aves", "Mammalia") and you are not subsetting by genome, <b>you will be disappointed</b>-- we just don't have the capacity for that yet.  </p>
+            </div>
+          </div>
+        </div>
+  
+      </div> <!-- end of instructions accordion --> 
+      
+      <h1 id="faq">FAQ</h1>
+
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeSave" aria-expanded="false" aria-controls="treeSave">
+                I added images and markup to my tree, but now they are gone.  What happened?
+              </a>
+            </h4>
+          </div>
+          <div id="treeSave" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>Your modifications (e.g., highlights, thumbnail images) were lost when you navigated away from the tree.  We're sorry about that.  Until this is fixed, be sure to save your modified tree view as an image file before navigating away.  </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#noTree" aria-expanded="false" aria-controls="noTree">
+                I did not get a tree.  What happened?
+              </a>
+            </h4>
+          </div>
+          <div id="noTree" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>The two most common reasons are 
+            <ul>
+            <li><b>More than 1000 matching names</b>.  You can maintain a list with &gt; 1000 names, but currently we can't get a tree that large.  This will be fixed in the future.   
+            <li><b>Less than 3 matching names</b>.  This can happen if your list is mostly <b>extinct taxa</b>: many such taxa are recognized in taxonomies but are not in our phylogeny resources. 
+            </ul>
+            If you failed to get a tree <b>for some other reason</b>, please tell us about it using the <a href="http://bit.ly/phylofeedback">feedback form</a> (include your email address, and paste your downloaded list into the form). </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#speciesLost" aria-expanded="false" aria-controls="speciesLost">
+                My species isn't found.  Why?  What do I do?
+              </a>
+            </h4>
+          </div>
+          <div id="speciesLost" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p><b>If you uploaded your own list</b> (text or DwC-A), unrecognized names appear below the list viewer: you can edit the name and click <b>Search</b> to try again.  Most failures are due to spelling errors, but sometimes the name just isn't in our sources (to find out if a name is in OpenTree, use the search box in the upper right of <a href="https://tree.opentreeoflife.org/opentree/argus">this page</a>). </p>
+      
+            <p><b>If you attempted to scrape names from a file or web page</b>, then your list will be missing both (1) names that were not recognized by GNRD, and (2) names that were recognized by GNRD but did not match any of its taxonomies.  You can try to debug this problem by going directly to <a href="http://gnrd.globalnames.org/">Global Names Recognition and Discovery</a>, but the practical work-around is to download the extracted list, add the missing names, and upload it again (see <a href="#editList">"How can I add, remove or change a species in my list?"</a>).  </p>
+
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#listProblems" aria-expanded="false" aria-controls="listProblems">
+             I can't make the list I was trying to make. What happened? Can you help me?
+             </a>
+            </h4>
+          </div>
+          <div id="listProblems" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>If you start the "Choose taxon" workflow with a taxon that is too large, the job may terminate before a list is returned (see the user guide above).  The same thing will happen if you submit a resource for name-scraping that is enormous.  The solution is to scale down your ambitions.  </p>
+      
+            <p>If the issue is not size, it is probably something to do with format, language, or encoding.  If you are trying to use a DwC-A input, compare the format carefully to the template provided.  See this <%= link_to "stackoverflow thread", "http://stackoverflow.com/questions/3001177/how-do-i-grep-for-all-non-ascii-characters-in-unix", target: "_blank" %> for ways to find non-standard characters.  If you can't fix the original resource (e.g., a web page you don't own), make a copy and fix it. </p>
+      
+            <p>If you still can't make a list, contact us using the <a href="http://bit.ly/phylofeedback">feedback form</a> and be sure to include your email address. 
+            </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeView" aria-expanded="false" aria-controls="treeView">
+             How do I add labels to the tree, or change branches?  How can I customize the tree view?  
+              </a>
+            </h4>
+          </div>
+          <div id="treeView" class="panel-collapse collapse">
+            <div class="panel-body">
+        
+               <p>Currently the tree viewer supports only minimal editing and customization, and the <b>Export</b> function only includes the tree topology and names-- not images, link-outs, or high-lighting.  In the future, we will provide a way to export Phylotastic trees with images and link-outs, so that they can be modified using other tree-viewers-- but first we have to convince other developers to agree with us on annotation standards.  </p>
+
+            </div>
+          </div>
+        </div>
+          
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#treeSources" aria-expanded="false" aria-controls="treeSources">
+                How is the tree made?  Where does it come from? 
+              </a>
+            </h4>
+          </div>
+          <div id="treeSources" class="panel-collapse collapse">
+            <div class="panel-body">
+            Phylotastic trees are retrieved from existing sources that store trees or merge them into supertrees. Currently all Phylotastic trees are based on the supertree developed by the OpenTree project (their "synthetic tree").  For more information on the synthetic tree, visit <a href="https://tree.opentreeoflife.org/">OpenTree</a> or read <a href="http://www.pnas.org/content/112/41/12764">Hinchliff et al. (2015)</a>.  
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#editList" aria-expanded="false" aria-controls="editList">
+                How can I add, remove or change a species in my list?
+              </a>
+            </h4>
+          </div>
+          <div id="editList" class="panel-collapse collapse">
+            <div class="panel-body">
+              <p>List editing is not fully implemented.  The work-around is: 
+              <ul>
+              <li>in the list viewer, select the names you want to keep
+              <li>choose "Download selected taxa as text"
+              <li>edit the file, and then upload it as a new list
+              <li>delete the old list if desired
+              </ul></p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#thumbnails" aria-expanded="false" aria-controls="thumbnails">
+                Where do you get the images?
+              </a>
+            </h4>
+          </div>
+          <div id="thumbnails" class="panel-collapse collapse">
+            <div class="panel-body">
+              Our image service harvests thumbnails from the <a href="http://eol.org">Encyclopedia of Life</a> (EOL) project.  Full-size images can be found by clicking on a node and following the "EOL" link.  Note that the authors of images frequently retain rights to their use (the use of thumbnails is allowed under the Fair Use doctrine). 
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 id="commonnames" class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#commonNames" aria-expanded="false" aria-controls="commonNames">
+                Can I use common names?  How do I find scientific names? 
+              </a>
+            </h4>
+          </div>
+          <div id="commonNames" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>In the future, we will provide some support for common names like "raven" (<i>Corvus corax</i>) or "Minke whale" (<i>Balaenoptera acutorostrata</i>).  At present, you need to supply scientific names.  They are not hard to find-- you can search Wikipedia or NCBI taxonomy, or just use Google (for best results, combine the name with "species" or "taxonomy"), e.g.,
+              <ul>
+              <li>search "minke whale" at NCBI: <a href="https://www.ncbi.nlm.nih.gov/taxonomy/?term=minke+whale">https://www.ncbi.nlm.nih.gov/taxonomy/?term=minke+whale</a>
+              <li>search "raven species" at Google: <a href="https://www.google.com/search?q=raven+species">https://www.google.com/search?q=raven+species</a>
+              <li>search "goose" at Wikipedia: <a href="https://en.wikipedia.org/w/index.php?search=goose">https://en.wikipedia.org/w/index.php?search=goose</a>
+              </ul>
+              </p>
+              </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#polytomies" aria-expanded="false" aria-controls="polytomies">
+                I got a tree, but it isn't well resolved.  Why are there so many polytomies? What can I do? 
+              </a>
+            </h4>
+          </div>
+          <div id="polytomies" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>Our ability to deliver trees instantly depends on resources that provide pre-computed trees.  Currently, OpenTree is the only resource we are using.  Large parts of OpenTree's synthetic tree are based on taxonomy alone: this is why there are so many polytomies.  If you know of published phylogenies that would cover some of these gaps, and you want to help, see <a href="#betterPlace">"How can I make the world a better place?"</a>.</p>
+      
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#betterPlace" aria-expanded="false" aria-controls="betterPlace">
+                How can I make the (phyloinformatics) world a better place? 
+              </a>
+            </h4>
+          </div>
+          <div id="betterPlace" class="panel-collapse collapse">
+            <div class="panel-body">
+            <p>Our ability to deliver results quickly and conveniently depends on the availability of other resources that have programmable interfaces and provide good-quality data.  Click on "About" (above) to see a list of these resources. </p>
+      
+            <p>By making it incredibly easy to find results, the Phylotastic project <b>exposes both the strengths and weaknesses of these resources</b>.  If the results obtained here are misleading or incomplete, this means that the underlying resources can be improved.  For instance, if you find a part of the tree that is unresolved, and you are aware of published trees that provide more information, you can help out by notifying OpenTree or, better, <a href="https://tree.opentreeoflife.org/curator">becoming a curator yourself</a> and adding the tree to OpenTree's database, so that it will be included automatically the next time a supertree is computed.</p> 
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" href="#publicList" aria-expanded="false" aria-controls="publicList">
+                How do I make my list public?
+                </a>
+            </h4>
+          </div>
+          <div id="publicList" class="panel-collapse collapse">
+            <div class="panel-body">
+             <p>Currently, the only way to make a list public is to use the DwC-A format.  This is because we want public lists to be documented with author, description, source, and so on.  </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>      
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  
+  $(window).scroll(function () {
+      //if you hard code, then use console
+      //.log to determine when you want the 
+      //nav bar to stick.  
+      console.log($(window).scrollTop())
+    if ($(window).scrollTop() > 280) {
+      $('#help-navbar').addClass('navbar-fixed');
+    }
+    if ($(window).scrollTop() < 281) {
+      $('#help-navbar').removeClass('navbar-fixed');
+    }
+  });
+  
+  var archor = window.location.hash.substring(window.location.hash.indexOf("#")+1);
+  if (archor == 'commonnames') {
+    $('#commonNames').collapse();
+  }
+});
+</script>

@@ -1,0 +1,10 @@
+<% if notice %>
+  <p class="alert alert-success center"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger center"><%= alert %></p>
+<% end %>
+
+<script type="text/javascript">
+  $(".alert" ).fadeOut(7000);
+</script>

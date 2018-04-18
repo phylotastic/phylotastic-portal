@@ -1,0 +1,58 @@
+<% provide(:title, "About") %>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h1>About</h1>
+    <h2>What we do</h2>
+       <p>Until recently, expert knowledge on phylogenetic relationships-- the Tree of Life-- was scattered in thousands of inaccessible publications.  Then the <a href="https://tree.opentreeoflife.org//">OpenTree project</a> processed thousands of publications to generate a "synthetic tree" covering millions of species, a resource with enormous potential both for educational purposes and to guide research. </p>
+       <p>Yet, there is still a very large accessibility gap, making it unlikely that this trove of knowledge will flow into the hands of scientists, educators, and the public.  </p>
+       <p>The Phylotastic project aims to lower the barriers to accessing the tree of life: we want to make getting a species tree just as easy-- and as fast-- as getting online driving directions.  We solve problems involved in using scientific names, extracting relationships, integrating time-scales, and finding images and other resources about species. </p>
+     <h2>How it works</h2>
+     <p>For users, the part that you see-- the <a href="http://phylo.cs.nmsu.edu:3000/">web portal</a> or the mobile app-- are just two of the many possible <b>front-ends</b> or "clients" that use an underlying toolbox of <b>phylotastic web services</b>, each with a defined role providing data or operations.  Many of our services rely on key information resources such as: 
+      <ul>
+        <li><a href="https://tree.opentreeoflife.org/">OpenTree</a></li> 
+        <li><a href="http://eol.org/">Encyclopedia of Life</a> - images, information for mash-ups</li>
+        <li><a href="http://gnrd.globalnames.org/">Global Names Recognition and Discovery</a> - finding name-like strings and validating them against taxonomic databases</li>
+        <li><a href="http://www.inaturalist.org/">iNaturalist</a> - occurrence records matching a species with a location</li>
+        <li><a href="http://datelife.org//">DateLife</a> - chronograms (trees with dates based on the fossil record)</li>
+      </ul>
+   We aim to grow this toolbox into a sustainable community resource that is open to anyone and that evolves to integrate new resources and operations.  
+     </p>
+
+     <h2>How to get involved</h2>
+      <p> The Phylotastic project is in many ways an <b>open</b> project.  We maintain a <a href="https://gitter.im/phylotastic/phylotastic">public channel</a> for project information. Our source code is all available on <a fhref="https://github.com/phylotastic">github</a>.  We welcome feedback and are open to new opportunities to collaborate (use the Feedback form). </p>
+
+     <h2>Who we are</h2>
+      <p>The Phylotastic project is an NSF-funded research project ("Collaborative Research: ABI Development: An open infrastructure to disseminate phylogenetic knowledge", NSF 1458572) with 3 centers and 4 work sites. 
+      <!-- 
+      <ul>
+      <li>IBBR (University of Maryland) (NSF 1458572). 
+      <li>New Mexico State University (NSF )
+      <li>University of Tennessee, Knoxville (NSF )
+      <li>University of Illinois, Urbana-Champaign
+      </ul>
+      </p>
+      <p>
+      -->
+      Current project staff include
+     <ul>
+      <li>Dail Laughinghouse (Post-Doc, UMD) - requirements, design, testing, outreach
+      <li>Dmitry Mozzherin (de facto co-PI, UIUC) - name recognition and discovery
+      <li>Thanh Nguyen (Grad, NMSU) - mobile app, web services, semantic integration
+      <li>Van Nguyen (Grad, NMSU) - web portal
+      <li>Brian O'Meara (co-PI, UTK) - DateLife
+      <li>Enrico Pontelli (co-PI, NMSU) - design, semantic integration
+      <li>Abu Saleh (Grad, NMSU) - web services design and implementation
+      <li>Arlin Stoltzfus (PI, UMD) - project management, design, testing
+      </ul>
+      We have benefited from feedback from a number of consultants and collaborators, including Yan Wong, James Rosindell (Imperial College London), Karen Cranston (OpenTree), Jonathan Rees (OpenTree), Jaime Huerta-Cepas (ETE), Brian Sidlauskas (Oregon State University), Ramona Walls (CyVerse), Cyndy Parr and Katja Schulz. </p>
+
+<div class="center">
+  <%= image_tag("group_photo.png", style: "border:1px solid black;max-width:80%;", alt: "Phylotastic project staff, Dripping Springs, NM, September 24, 2016 (Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, Van)") %>
+</div>
+
+<p>Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, and Van at the first phylotastic face-to-face project meeting (Dripping Springs, NM, September 24, 2016).  
+ </p>
+  </div>
+</div>
+
