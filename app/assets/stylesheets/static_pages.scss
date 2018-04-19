@@ -1,3 +1,18 @@
 // Place all the styles related to the StaticPages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#help-navbar {
+  width: 15%; 
+  min-width: 170px; 
+  float:left; 
+  margin-top: 60px;
+  margin-left: 15px;
+}
+
+#help-content {
+  width: 80%; 
+  min-width: 400px; 
+  float: right; 
+  margin-right: 20px;
+}

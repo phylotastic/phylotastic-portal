@@ -1,6 +1,6 @@
 <% provide(:title, "Help") %>
 
-<nav id="help-navbar" class='navbar navbar-fixed-top' style="width: 15%; min-width: 170px; float:left; margin-top: 60px;">
+<nav id="help-navbar" class='navbar navbar-fixed-top'>
   <ul class="nav nav-pills nav-stacked">
     <li role="presentation"><%= link_to "Video", "#video" %></li>
     <li role="presentation"><a href="#userguide">User guide</a></li>
@@ -9,11 +9,14 @@
 </nav>
   
 <div data-spy="scroll" data-target="#help-navbar" style="position: relative;">
-  <div style="width: 80%; min-width: 400px; float: right; margin-right: 20px;">
-    <div id="video" class="center">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
+  <div id="help-content">
+    <div class="center">
+      <div id="video">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
+      </div>
     </div>
     
+    <hr>
     <div id="userguide">
       <h1>User guide</h1>
 
@@ -180,6 +183,7 @@
       </div> <!-- end of instructions accordion --> 
     </div>
     
+    <hr>
     <div id="faq">
       <h1>FAQ</h1>
 
