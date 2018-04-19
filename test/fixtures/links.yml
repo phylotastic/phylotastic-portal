@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+fish_link:
+  url: "https://en.wikipedia.org/wiki/Common_ling"
+  user_id: 1 
+
+malformed_link:
+  # url: "https://en.wikipedia.org/wiki/Agrostis_capillaris"
+  url: "abc"
+  user_id: 2 
