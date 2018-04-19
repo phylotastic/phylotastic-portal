@@ -10,9 +10,48 @@
   margin-left: 15px;
 }
 
-#help-content {
-  width: 80%; 
-  min-width: 400px; 
-  float: right; 
-  margin-right: 20px;
+#help-content-wrapper {
+  display: inline-block;
+  #help-content {
+    width: 80%; 
+    min-width: 400px; 
+    float: right; 
+    margin-right: 20px;
+  }  
+}
+
+footer.page-footer {
+  bottom: 0;
+  background-color: rgba(0,0,0,.1);
+  
+//  color: #fff;
+  .py-5 {
+    padding-bottom: 3rem!important;
+    padding-top: 3rem!important;
+  }
+  .footer-copyright {
+    overflow: hidden;
+    padding-bottom: 1em;
+//    background-color: rgba(0,0,0,.1);
+//    color: rgba(255,255,255,.6);
+  }
+  .flex-center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100%;
+    
+    .mr-md-5 {
+      margin-right: 3rem!important;
+    }
+  }
 }

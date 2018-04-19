@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PhylotasticPortal</title>
+    <title><%= full_title(yield(:title)) %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,14 +9,14 @@
   </head>
 
   <body>
-  <%= render 'layouts/header' %>
+    <%= render 'layouts/header' %>
   
-  <div id="flash">
-    <%= render 'layouts/flash' %>
-  </div>
+    <div id="flash">
+      <%= render 'layouts/flash' %>
+    </div>
   
-  <%= yield %>
+    <%= yield %>
 
-  <%= render 'layouts/footer' %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>
