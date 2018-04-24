@@ -94,11 +94,17 @@ footer {
 }
 
 .content-wrapper {
-  min-width: 900px;
+  min-width: 992px;
+  width: 100%;
+  margin-left: 0;
 }
 
 .dropdown-menu {
   .fa {
     min-width: 20px;
   }
+}
+
+body {
+  font-size: 15px;
 }

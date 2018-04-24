@@ -17,5 +17,31 @@
 }
 
 .table-wrapper {
+  .table-scroll {
+    max-height: 350px;
+    overflow-y: scroll;
+  } 
   padding: 0 5px;
+  max-height: 350px;
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
+}
+
+#new-list-wrapper {
+  padding: 0 4px;
+  .list-group-item {
+    color: #337ab7;
+    border-color: #337ab7 !important;
+    &:hover {
+      color: #fff;
+      background: #337ab7;
+    }
+  }
 }
