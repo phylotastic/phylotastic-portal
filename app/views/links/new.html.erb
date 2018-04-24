@@ -1,0 +1,45 @@
+<% provide(:title, "Create trees from online sources") %>
+
+<div class="container">
+  <h1>Extract names from online sources</h1>
+  <%= form_for @link, html: {class: "form-horizontal"} do |f| %>
+
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <%= render 'shared/error_messages', object: f.object %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :url, for: "link_url", class: "col-sm-3 control-label" do %>
+        <span class="red">*</span> URL
+      <% end %>
+      <div class="col-sm-7">
+        <%= f.text_field :url, placeholder: "URL", class: "form-control", autofocus: true %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :name, for: "name", class: "col-sm-3 control-label" do %>
+        A name for this list
+      <% end %>
+      <div class="col-sm-4">
+        <%= text_field_tag :name, nil, placeholder: "Name", class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :description, "Description", for: "description_", class: "col-sm-3 control-label" %>
+      <div class="col-sm-7">
+        <%= text_area :description, nil, placeholder: "Description", class: "form-control", rows: 5 %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <%= f.submit "Submit", class: "btn btn-default btn-lg btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

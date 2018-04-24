@@ -1,0 +1,31 @@
+<% unless @my_lists.empty? %>
+  <h2 class="list-category">
+    <%= fa_icon "leaf", text: "My lists" %>
+  </h2>
+  <div class="table-wrapper">
+    <div class="table-scroll">  
+      <div class="list-group">
+        <% @my_lists.each do |l| %>
+          <%= link_to truncate(l.name), "#", remote: true, class:"list-group-item" %>
+        <% end %>
+      </div>
+    </div>
+  </div>  
+<% end %>
+
+
+<% unless @public_lists.empty? %>
+  <h2 class="list-category">
+    <%= fa_icon "leaf", text: "Public lists" %>
+  </h2>
+
+  <div class="table-wrapper">
+    <div class="table-scroll">  
+      <div class="list-group">
+        <% @public_lists.each do |l| %>
+          <%= link_to truncate(l["list_title"]), "#", remote: true, class:"list-group-item" %>      
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

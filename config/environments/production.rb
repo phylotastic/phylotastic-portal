@@ -88,4 +88,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  Rails.application.configure do
+    config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
+  end
 end

@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: Fish
-  description: Animal
-
+  name: "Fish"
+  description: "Animal"
+  species_names: "Fish"
+  
 two:
-  name: Top10popular
-  description: Animal
+  name: "Top10popular"
+  description: "Animal"
+  species_names: "Fish"

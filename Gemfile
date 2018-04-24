@@ -33,7 +33,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'devise', '4.4.3'
+gem 'devise', git: 'https://github.com/plataformatec/devise.git', branch: 'master'
 
 gem 'bootstrap-sass', '3.3.7'
 
@@ -44,6 +44,8 @@ gem "font-awesome-rails", '4.7.0.4'
 gem "breadcrumbs_on_rails", '3.0.1'
 
 gem 'jquery-rails', '4.3.1'
+
+gem 'rest-client', '2.0.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

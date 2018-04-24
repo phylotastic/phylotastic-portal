@@ -36,12 +36,56 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form> -->
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="<%= static_pages_feedback_path %>">Feedback</a></li>
-        <li><a href="<%= static_pages_help_path %>">Help</a></li>
-        <li><a href="<%= static_pages_about_path %>">About</a></li>
+        <li class="<%= active?(static_pages_feedback_path) %>">
+          <a href="<%= static_pages_feedback_path %>">
+            <%= fa_icon "comments", text: "Feedback" %>
+          </a>
+        </li>
+        <li class="<%= active?(static_pages_help_path) %>">
+          <a href="<%= static_pages_help_path %>">
+            <%= fa_icon "question-circle", text: "Help" %>
+          </a>
+          </li>
+        <li class="<%= active?(static_pages_about_path) %>">
+          <a href="<%= static_pages_about_path %>">
+            <%= fa_icon "info-circle", text: "About" %>
+          </a>
+        </li>
         <li class="dropdown">
-          
-            
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <% if user_signed_in? %>
+              Hello, <%= current_user.email %>
+            <% else %>
+              Hello, Guest
+            <% end %>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <% if user_signed_in? %>
+              <li>
+                <%= link_to edit_user_registration_path, :class => 'navbar-link' do %>
+                  <%= fa_icon "user", text: "Edit profile" %>
+                <% end %>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <%= link_to destroy_user_session_path, method: :delete, :class => 'navbar-link' do %>
+                  <%= fa_icon "sign-out", text: "Sign out" %>
+                <% end %>
+              </li>
+            <% else %>
+              <li>
+                <%= link_to new_user_session_path, :class => 'navbar-link' do %>
+                  <%= fa_icon "sign-in", text: "Sign in" %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to new_user_registration_path, :class => 'navbar-link' do %>
+                  <%= fa_icon "user-plus", text: "Sign up" %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>    
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->

@@ -25,4 +25,14 @@ class LinkTest < ActiveSupport::TestCase
     assert_not link.save, "Saved the link with a malformed url"
   end
   
+  test "should save associated list" do
+    @link.save
+    @list = @link.build_list( name: lists(:one).name, 
+                              description: lists(:one).description, 
+                              species_names: "Common ling" )
+    assert @list.save, "Not save associated list"
+    assert @link.list.name = @list.name, "Can not call list"
+    assert @list.resource.url = @link.url, "Can not call associated resource"
+  end
+  
 end
