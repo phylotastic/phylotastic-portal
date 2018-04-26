@@ -4,10 +4,15 @@
   <div class="col-xs-3">
     <%= render partial: "list_name" %>
   </div>
-  <div class="col-xs-7">
+  <div class="col-xs-7" id="list-content">
     <%= render partial: "welcome" %>
   </div>
   <div class="col-xs-2">
+    <div id="list-actions">
+    </div>
+
+    <hr id="list-action-seperator" class="hide">
+
     <%= render partial: "new_list" %>
   </div>
 </div>

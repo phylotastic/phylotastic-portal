@@ -12,7 +12,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get lists_index_url
+    get lists_path
     assert_response :success
     assert_select "title", "Home | Phylotastic Portal"
   end

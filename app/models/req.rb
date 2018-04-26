@@ -16,20 +16,47 @@ class Req < ActiveRecord::Base
   def self.get(url)
     begin
       resp = RestClient.get url
+      return JSON.parse(resp)
     rescue RestClient::Unauthorized, RestClient::Forbidden => err
       puts Time.current.to_s + ": Access denied"
-      print_in_logger([err.response.code.to_s + " GET #{url}", "Access denied"])
-      return err.response
+      print_in_logger([
+        err.response.code.to_s + " GET #{url}", 
+        "Access denied", 
+        err.response
+      ])
+      return {}
     rescue RestClient::ImATeapot => err
       puts Time.current.to_s + ": The server is a teapot! # RFC 2324"
-      print_in_logger([err.response.code.to_s + " GET #{url}", "The server is a teapot! # RFC 2324"])
-      return err.response
+      print_in_logger([
+        err.response.code.to_s + " GET #{url}", 
+        "The server is a teapot! # RFC 2324", 
+        err.response
+      ])
+      return {}
     rescue RestClient::ExceptionWithResponse => err
       puts Time.current.to_s + ": The server responsed " + err.response.code.to_s
-      print_in_logger([err.response.code.to_s + " GET #{url}"])
-      return err.response
-    else
-      return resp
+      print_in_logger([
+        err.response.code.to_s + " GET #{url}",
+        "The server responsed but something wrong",
+        err.response
+      ])
+      return {}
+    rescue JSON::ParserError => err
+      puts Time.current.to_s + ": The server responsed " + err.response.code.to_s
+      print_in_logger([
+        "GET #{url}", 
+        "JSON parsing error",
+        resp
+      ])
+      return {}
+    rescue
+      puts Time.current.to_s
+      print_in_logger([
+        "GET #{url}", 
+        "New exception!!!",
+        resp
+      ])
+      return {}
     end
   end
 

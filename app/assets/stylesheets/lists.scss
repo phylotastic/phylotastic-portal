@@ -9,7 +9,7 @@
   .fa {
     min-width: 30px;
   }
-  
+  font-family: Tahoma, Geneva, sans-serif;
   text-align: left;
   padding-left: 10px;
   margin-bottom: 5px;
@@ -36,6 +36,12 @@
 
 #new-list-wrapper {
   padding: 0 4px;
+  .panel-heading {
+    font-family: Tahoma, Geneva, sans-serif;
+  }
+}
+
+.panel-primary {
   .list-group-item {
     color: #337ab7;
     border-color: #337ab7 !important;
@@ -44,4 +50,14 @@
       background: #337ab7;
     }
   }
+  #get-tree-btn {
+    font-size: 150%;
+  }
+}
+
+.list-title {
+  font-size: 150%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: Tahoma, Geneva, sans-serif;
 }

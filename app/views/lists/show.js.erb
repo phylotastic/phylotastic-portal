@@ -1,0 +1,13 @@
+$('#new-list-wrapper > div').removeClass("panel-primary");
+$('#new-list-wrapper > div').addClass("panel-default");
+
+$('#list-content').html(
+  "<%= escape_javascript(render partial: 'lists/content', 
+                                locals: { :list            => @list,
+                                          :list_name       => @list_name,
+                                          :names           => @names, 
+                                          :unmatched_names => @unmatched_names }) %>"
+);
+
+$('#list-actions').html("<%= escape_javascript(render partial: 'lists/actions', locals: { list: @list} ) %>");
+$('#list-action-seperator').removeClass("hide");

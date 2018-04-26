@@ -6,7 +6,7 @@
     <div class="table-scroll">  
       <div class="list-group">
         <% @my_lists.each do |l| %>
-          <%= link_to truncate(l.name), "#", remote: true, class:"list-group-item" %>
+          <%= link_to truncate(l.name), list_path(id: l.id), remote: true, class:"list-group-item" %>
         <% end %>
       </div>
     </div>
@@ -23,9 +23,17 @@
     <div class="table-scroll">  
       <div class="list-group">
         <% @public_lists.each do |l| %>
-          <%= link_to truncate(l["list_title"]), "#", remote: true, class:"list-group-item" %>      
+          <%= link_to truncate(l["list_title"]), list_path(from_service: true, id: l["list_id"]), remote: true, class:"list-group-item" %>      
         <% end %>
       </div>
     </div>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(".list-group-item").on("click", function() {
+    $(".list-group-item").removeClass("active");
+    $(this).addClass("active");
+    $('#list-content').html("<div class='center loading'><img src='<%= image_path("loading-icon.gif") %>'></div>");
+  })
+</script>

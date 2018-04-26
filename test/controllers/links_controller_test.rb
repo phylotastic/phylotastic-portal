@@ -16,11 +16,13 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   
   test "should be created" do
     post "/links",
-      params: { link: { url: links(:fish_link).url }, name: "Fish", description: "A list of fish species" }
+      params: { link: { url: links(:fish_link).url }, 
+                name: lists(:one).name, 
+                description: "A list of fish species" }
     assert_response :redirect
     follow_redirect!
     assert_response :success
-    assert_select "p", "Title:\n  Fish"
+    assert_select "a.list-group-item", text: lists(:one).name
     assert_response :success
   end
 
