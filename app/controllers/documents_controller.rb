@@ -6,7 +6,7 @@ class DocumentsController < ApplicationController
   def create
     @document = current_or_guest_user.documents.build(document_params)
     if @document.save
-      name = params[:name].empty? ? link_params[:url] : params[:name]
+      name = params[:name].empty? ? @document.file.original_filename : params[:name]
       @list = @document.create_list(name: name, description: params[:description])
       flash[:success] = @list.name + " list is created!"
       # job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", @user.id)

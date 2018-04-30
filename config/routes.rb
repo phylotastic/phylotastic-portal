@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]
+  resources :onpls, only: [:new, :create]
 
   get 'static_pages/help'
   get 'static_pages/feedback'

@@ -1,0 +1,47 @@
+<% provide(:title, "Create trees from files that have one name per line") %>
+
+<div class="container">
+  <h1>Extract names from files that have one name per line</h1>
+  <%= form_for @onpl, html: {multipart: true, class: "form-horizontal"} do |f| %>
+
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <%= render 'shared/error_messages', object: f.object %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :file, for: "onpl_file", class: "col-sm-3 control-label" do %>
+        <span data-toggle="tooltip" title="Accepted file extensions: .pdf, .txt, .doc, .docs, .xls or .xlsx">
+          <%= fa_icon "info-circle" %>
+        </span>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "File" %></span>
+      <% end %>
+      <div class="col-sm-7">
+        <%= f.file_field :file, id: "file-dropzone" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :name, for: "name", class: "col-sm-3 control-label" do %>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "A name for this list" %></span>
+      <% end %>
+      <div class="col-sm-4">
+        <%= text_field_tag :name, nil, placeholder: "Name", class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :description, "Description", for: "description_", class: "col-sm-3 control-label" %>
+      <div class="col-sm-7">
+        <%= text_area :description, "", placeholder: "Description", class: "form-control", rows: 5 %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <%= f.submit "Submit", class: "btn btn-default btn-lg btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -6,7 +6,7 @@ class LinkTest < ActiveSupport::TestCase
     @link = @user.links.build(url: "https://en.wikipedia.org/wiki/Common_ling")
   end
   
-  test "should save article with validated url" do
+  test "should save link with validated url" do
     link = links(:fish_link)
     assert @link.save, "Did not save the correct link"
   end
