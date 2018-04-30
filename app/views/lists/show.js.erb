@@ -9,5 +9,11 @@ $('#list-content').html(
                                           :unmatched_names => @unmatched_names }) %>"
 );
 
-$('#list-actions').html("<%= escape_javascript(render partial: 'lists/actions', locals: { list: @list} ) %>");
+$('#list-actions').html(
+  "<%= escape_javascript(render partial: 'lists/actions', 
+                               locals: { :list         => @list, 
+                                         :is_private   => @is_private,
+                                         :from_service => @from_service }) %>"
+);
+
 $('#list-action-seperator').removeClass("hide");

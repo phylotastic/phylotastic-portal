@@ -54,6 +54,8 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   
+  Paperclip.options[:command_path] = "/usr/local/bin/"
+  
   Rails.application.configure do
     config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
   end

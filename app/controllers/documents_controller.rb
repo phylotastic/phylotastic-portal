@@ -1,14 +1,13 @@
-class LinksController < ApplicationController
+class DocumentsController < ApplicationController
   def new
-    @link = Link.new
+    @document = Document.new
   end
 
   def create
-    @link = current_or_guest_user.links.build(link_params)
-    if @link.save
+    @document = current_or_guest_user.documents.build(document_params)
+    if @document.save
       name = params[:name].empty? ? link_params[:url] : params[:name]
-      # binding.pry
-      @list = @link.create_list(name: name, description: params[:description])
+      @list = @document.create_list(name: name, description: params[:description])
       flash[:success] = @list.name + " list is created!"
       # job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", @user.id)
       redirect_to root_path
@@ -19,8 +18,7 @@ class LinksController < ApplicationController
   
   private
   
-    def link_params
-      params.require(:link).permit(:url)
+    def document_params
+      params.require(:document).permit(:file, :method)
     end
-    
 end

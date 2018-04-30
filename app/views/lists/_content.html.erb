@@ -1,10 +1,15 @@
 <p class="list-title"><%= list_name %></p>
 
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name"><i class="fa fa-list-ol" aria-hidden="true"></i>
-Species names</a></li>
-  <li role="presentation"><a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i>
-List metadata</a></li>
+  <li role="presentation" class="active">
+    <a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name">Species names</a>
+  </li>
+  <li role="presentation">
+    <a href="#taxon-matching" aria-controls="taxon-matching" role="tab" data-toggle="tab">Taxon matching</a>
+  </li>
+  <li role="presentation">
+    <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">List metadata</a>
+  </li>
 </ul>
 
 <!-- Tab panes -->
@@ -12,11 +17,18 @@ List metadata</a></li>
   <div role="tabpanel" class="tab-pane active" id="content">
     <%= render partial: "species_names", locals: { names: names } %>
     <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
+    <!-- End of tab species names   -->
+  </div>
+  
+  <div role="tabpanel" class="tab-pane" id="metadata">
+    <%= render partial: "lists/taxon_matching", locals: { list: list } %>
+  <!-- End of tab metadata   -->
   </div>
   
   <div role="tabpanel" class="tab-pane" id="metadata">
     <%= render partial: "lists/metadata", locals: { list: list } %>
   <!-- End of tab metadata   -->
   </div>
+  
 <!-- End of tab panel -->
 </div>

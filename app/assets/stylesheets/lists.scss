@@ -41,7 +41,7 @@
   }
 }
 
-.panel-primary {
+.panel-primary.emphasize-panel {
   .list-group-item {
     color: #337ab7;
     border-color: #337ab7 !important;
@@ -50,11 +50,19 @@
       background: #337ab7;
     }
   }
-  #get-tree-btn {
-    font-size: 150%;
-  }
 }
 
+.panel-danger.emphasize-panel {
+  border-color: #a94442 !important;
+  .list-group-item {
+    color: #a94442;
+    &:hover {
+      color: #fff;
+      background: #a94442;
+    }
+  }
+  
+}
 .list-title {
   font-size: 150%;
   font-weight: bold;

@@ -70,6 +70,9 @@ module ApplicationHelper
     guest_user.links.each do |l|
       l.update_attributes(user_id: current_user.id)
     end
+    guest_user.documents.each do |d|
+      d.update_attributes(user_id: current_user.id)
+    end
   end
 
   # creates guest user by adding a record to the DB

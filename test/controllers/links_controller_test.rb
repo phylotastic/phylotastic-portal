@@ -26,10 +26,4 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get destroy" do
-    get links_destroy_url
-    assert_response :success
-    assert_text "Link is removed"
-  end
-
 end

@@ -1,12 +1,22 @@
-<div class="panel panel-primary">
+<div class="panel panel-primary emphasize-panel">
   <!-- <div class="panel-heading">
     <h3 class="panel-title center">
       <%= fa_icon "leaf", text: "List actions" %>
     </h3>
   </div> -->
   <div class="list-group center">
-    <%= link_to "Get tree", "#", class:"list-group-item list-group-item-info", id: "get-tree-btn" %>
-    <%= link_to "Download list", "#", class:"list-group-item" %>
-    <%= link_to "Taxon matching", "#", class:"list-group-item" %>
-  </div>    
+    <% if is_private %>
+      <%= link_to "Edit", edit_list_path(list), class:"list-group-item" %>
+    <% end %>
+    
+    <%= link_to "Download", "#", class:"list-group-item" %>
+  </div>
 </div>
+
+<% if is_private %>
+  <div class="panel panel-danger emphasize-panel">
+    <div class="list-group center">
+      <%= link_to "Delete", list, class:"list-group-item list-group-item-danger", method: :delete, data: { confirm: "Are you sure?" } %>
+    </div>    
+  </div>
+<% end %>

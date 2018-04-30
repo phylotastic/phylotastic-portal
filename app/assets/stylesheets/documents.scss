@@ -1,0 +1,15 @@
+// Place all the styles related to the Documents controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#file-dropzone {
+  padding: 40px;
+  border: 2px dashed #777;
+  border-radius: 10px;  
+}
+
+.field_with_errors {
+  #file-dropzone {
+    border-color: #a94442;
+  }
+}

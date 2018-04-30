@@ -8,10 +8,14 @@ class User < ApplicationRecord
          
   validates :email, presence: true
   has_many  :links, dependent: :destroy
+  has_many  :documents, dependent: :destroy
   
   def lists
     lists = []
     online_resource_lists = self.links.map {|l| l.list}
     lists.concat online_resource_lists
+
+    document_resource_lists = self.documents.map {|l| l.list}
+    lists.concat document_resource_lists
   end
 end

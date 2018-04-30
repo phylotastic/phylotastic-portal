@@ -1,8 +1,15 @@
 class ListsController < ApplicationController
+  before_action :find_list, only: [:destroy, :edit, :update]
+  
+  
   include ListsHelper
   
   def show
+    @from_service = false
+    @is_private   = false
+    
     if params[:from_service]
+      @from_service = true
       @list = get_a_list_from_service(params[:id])
       if @list.empty?
         respond_to do |format|
@@ -32,7 +39,9 @@ class ListsController < ApplicationController
       end
 
     else
+      @is_private = true
       @list = current_or_guest_user.lists.select{ |l| l.id == params[:id].to_i}
+      
       if @list.empty?
         respond_to do |format|
           format.js { 
@@ -53,6 +62,9 @@ class ListsController < ApplicationController
   end
 
   def update
+    @list.update_attributes(list_params)
+    flash[:success] = "List is updated!"
+    redirect_to lists_path
   end
 
   def index
@@ -68,5 +80,21 @@ class ListsController < ApplicationController
   end
 
   def destroy
+    unless @list.nil?
+      @list.resource.destroy
+      flash[:success] = @list.name + " is removed!"
+    end
+    redirect_to lists_path
   end
+  
+  private
+  
+    def find_list
+      @list = current_or_guest_user.lists.select{ |l| l.id == params[:id].to_i }.first
+    end
+  
+    def list_params
+      params.require(:list).permit(:name, :description)
+    end
+  
 end

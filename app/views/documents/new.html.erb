@@ -1,8 +1,8 @@
-<% provide(:title, "Create trees from online sources") %>
+<% provide(:title, "Create trees from files") %>
 
 <div class="container">
-  <h1>Extract names from online sources</h1>
-  <%= form_for @link, html: {class: "form-horizontal"} do |f| %>
+  <h1>Extract names from my document</h1>
+  <%= form_for @document, html: {multipart: true, class: "form-horizontal"} do |f| %>
 
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
@@ -11,14 +11,26 @@
     </div>
     
     <div class="form-group">
-      <%= f.label :url, for: "link_url", class: "col-sm-3 control-label" do %>
-        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "URL" %></span>
+      <%= f.label :file, for: "document_file", class: "col-sm-3 control-label" do %>
+        <span data-toggle="tooltip" title="Accepted file extensions: .pdf, .txt, .doc, .docs, .xls or .xlsx">
+          <%= fa_icon "info-circle" %>
+        </span>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "File" %></span>
       <% end %>
       <div class="col-sm-7">
-        <%= f.text_field :url, placeholder: "URL", class: "form-control", autofocus: true %>
+        <%= f.file_field :file, id: "file-dropzone" %>
       </div>
     </div>
 
+    <div class="form-group">
+      <%= f.label :method, for: "document_method", class: "col-sm-3 control-label" do %>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "Method" %></span>
+      <% end %>
+      <div class="col-sm-3">
+        <%= select_tag("document[method]", options_for_select([['NetiNeti', "NetiNeti"], ['TaxonFinder', "TaxonFinder"], ["NetiNeti & TaxonFinder", "NetiNeti & TaxonFinder"]]), class: "form-control" ) %>
+      </div>
+    </div>
+    
     <div class="form-group">
       <%= label_tag :name, for: "name", class: "col-sm-3 control-label" do %>
         <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "A name for this list" %></span>
@@ -42,4 +54,3 @@
     </div>
   <% end %>
 </div>
-
