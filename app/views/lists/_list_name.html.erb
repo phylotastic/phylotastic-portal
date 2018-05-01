@@ -2,7 +2,7 @@
   <h2 class="list-category">
     <%= fa_icon "leaf", text: "My lists" %>
   </h2>
-  <div class="table-wrapper">
+  <div class="table-wrapper list-name-table">
     <div class="table-scroll">  
       <div class="list-group">
         <% @my_lists.each do |l| %>
@@ -19,7 +19,7 @@
     <%= fa_icon "leaf", text: "Public lists" %>
   </h2>
 
-  <div class="table-wrapper">
+  <div class="table-wrapper list-name-table">
     <div class="table-scroll">  
       <div class="list-group">
         <% @public_lists.each do |l| %>
@@ -31,7 +31,7 @@
 <% end %>
 
 <script type="text/javascript">
-  $(".list-group-item").on("click", function() {
+  $(".list-name-table .list-group-item").on("click", function() {
     $(".list-group-item").removeClass("active");
     $(this).addClass("active");
     $('#list-content').html("<div class='center loading'><img src='<%= image_path("loading-icon.gif") %>'></div>");

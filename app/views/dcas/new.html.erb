@@ -1,0 +1,35 @@
+<% provide(:title, "Create trees from DCA") %>
+
+<div class="container">
+  <h1>Extract names from Darwin Core Archive file</h1>
+  <p class="center">
+    <%= link_to "Click here for sample", "/template.zip" %>
+  </p>
+  
+  <%= form_for @dca, html: {multipart: true, class: "form-horizontal"} do |f| %>
+
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <%= render 'shared/error_messages', object: f.object %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :file, for: "dca_file", class: "col-sm-4 control-label" do %>
+        <span data-toggle="tooltip" title="Accepted file extension: .zip">
+          <%= fa_icon "info-circle" %>
+        </span>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "File" %></span>
+      <% end %>
+      <div class="col-sm-8">
+        <%= f.file_field :file, id: "file-dropzone" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-4 col-sm-8">
+        <%= f.submit "Submit", class: "btn btn-default btn-lg btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

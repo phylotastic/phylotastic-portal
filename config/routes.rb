@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
-
   resources :lists, only: [:show, :edit, :update, :index, :destroy]
 
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]
   resources :onpls, only: [:new, :create]
+  resources :dcas, only: [:new, :create]
 
   get 'static_pages/help'
   get 'static_pages/feedback'

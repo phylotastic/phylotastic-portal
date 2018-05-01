@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  taxon: MyString
+  location: false
+  country: one
+  has_genome_in_ncbi: false
+  quantity: false
+  number_species: 1
+
+two:
+  user: two
+  taxon: MyString
+  location: false
+  country: two
+  has_genome_in_ncbi: false
+  quantity: false
+  number_species: 1

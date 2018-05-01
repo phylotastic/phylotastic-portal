@@ -13,7 +13,9 @@ class Document < ApplicationRecord
                                     "application/vnd.ms-excel", 
                                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
                                     "application/msword",
-                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ] }
+                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ] },
+    size: { in: 0..2.megabytes, :message => "must be less than 2MB" }
+    
   validates_attachment_presence :file
   validates :method, inclusion: { in: ["NetiNeti", "TaxonFinder", "NetiNeti & TaxonFinder"] },
                      presence: true

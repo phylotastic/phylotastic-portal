@@ -8,8 +8,34 @@
     <div class="list-group center">
       <%= link_to "Extract from web", new_link_path, class:"list-group-item" %>
       <%= link_to "Extract from doc", new_document_path, class:"list-group-item" %>
-      <%= link_to "Upload my list", new_onpl_path, class:"list-group-item" %>
+      <!-- Button trigger modal -->
+      <%= link_to "Upload my list", "#", class:"list-group-item", data: { toggle:"modal", target:"#uploadListModal"} %>
       <%= link_to "Choose taxon", new_link_path, class:"list-group-item" %>
-    </div>    
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="uploadListModal" tabindex="-1" role="dialog" aria-labelledby="uploadListModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="uploadListModalLabel">Select the list you have</h4>
+      </div>
+      
+      <div class="modal-body">
+        <div class="panel panel-primary emphasize-panel">
+          <div class="list-group">
+            <%= link_to "I have a text file with one name per line", new_onpl_path, class:"list-group-item" %>
+            <%= link_to "I have a Darwin Core Archive (.zip)", new_dca_path, class:"list-group-item" %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
