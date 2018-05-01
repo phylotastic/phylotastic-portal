@@ -1,4 +1,3 @@
-
 namespace :import do
 
   desc "Import countries from csv file"

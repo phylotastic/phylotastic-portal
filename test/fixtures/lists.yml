@@ -5,8 +5,11 @@ one:
   name: "Fish"
   description: "Animal"
   species_names: "Fish"
-  
+  resource: one (Taxonomy)
+    
 two:
   name: "Top10popular"
   description: "Animal"
   species_names: "Fish"
+  resource: one (Link)
+  

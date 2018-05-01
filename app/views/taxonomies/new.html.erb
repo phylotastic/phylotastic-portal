@@ -1,0 +1,89 @@
+<% provide(:title, "Create trees from taxonomy") %>
+
+<div class="container">
+  <h1>Extract names from online sources</h1>
+  <%= form_for @taxonomy, html: {class: "form-horizontal"} do |f| %>
+
+    <div class="row">
+      <div class="col-sm-6 col-sm-offset-3">
+        <%= render 'shared/error_messages', object: f.object %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= f.label :taxon, for: "taxonomy_taxon", class: "col-sm-3 control-label" do %>
+        <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "Taxon name" %></span>
+      <% end %>
+      <div class="col-sm-4">
+        <%= f.text_field :taxon, placeholder: "e.g., Canidae, Felidae, Balaenoptera", class: "form-control", autofocus: true %>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+      <%= fa_icon "info-circle" %> Enter the scientific name of a taxonomic group such as a genus, family or order. See the <%= link_to "FAQ", static_pages_help_path(anchor: "faq") %> for how to find scientific names. You may choose only one taxon. When subsetting by NCBI genome, queries using large taxa are possible. Otherwise, we can't process queries on taxa with more than a few hundred species.
+      </div>
+    </div>
+
+    <div class="form-group subsets">
+      <label class="col-sm-3 control-label">
+        Subset (choose one)
+      </label>
+      <div class="col-sm-6">
+        <div class="row subset-options">
+          <div class="col-sm-1">
+            <%= f.check_box :location, {}, true, false %>
+          </div>
+          <div class="col-sm-3">
+            by country 
+          </div>
+          <div class="col-sm-5">
+            <%= f.select :country_id, options_from_collection_for_select(Country.all, "id", "name", 227), {}, { class: "form-control" } %>
+          </div>
+        </div>
+
+        <div class="row subset-options">
+          <div class="col-sm-1">
+            <%= f.check_box :has_genome_in_ncbi, {}, true, false %>
+          </div>
+          <div class="col-sm-4">by known genomes</div>
+        </div>
+
+        <div class="row subset-options">
+          <div class="col-sm-1">
+            <%= f.check_box :quantity, {}, true, false %>
+          </div>
+          <div class="col-sm-3">
+            At random
+          </div> 
+          <div class="col-sm-4">
+            <%= f.select :number_species, options_for_select([10, 20, 30]), {}, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <%= label_tag :name, for: "name", class: "col-sm-3 control-label" do %>
+        A name for this list
+      <% end %>
+      <div class="col-sm-4">
+        <%= text_field_tag :name, nil, placeholder: "List name", class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag :description, "Description", for: "description_", class: "col-sm-3 control-label" %>
+      <div class="col-sm-7">
+        <%= text_area :description, "", placeholder: "Description", class: "form-control", rows: 5 %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-9">
+        <%= f.submit "Submit", class: "btn btn-default btn-lg btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

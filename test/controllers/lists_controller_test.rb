@@ -8,7 +8,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
                 name: lists(:one).name, 
                 description: "A list of fish species" }
     
-    @list = Link.last.list      
+    @list = Link.first.list      
     get edit_list_path(@list.id)
     assert_select "title", "Edit list | Phylotastic Portal"
     

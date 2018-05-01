@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many  :documents, dependent: :destroy
   has_many  :onpls, dependent: :destroy
   has_many  :dcas, dependent: :destroy
+  has_many  :taxonomies, dependent: :destroy
     
   def lists
     lists = []
@@ -25,5 +26,9 @@ class User < ApplicationRecord
 
     dca_resource_lists = self.dcas.map {|l| l.list}
     lists.concat dca_resource_lists
+
+    taxonomy_resource_lists = self.taxonomies.map {|l| l.list}
+    lists.concat taxonomy_resource_lists
+
   end
 end
