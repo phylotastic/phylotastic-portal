@@ -91,5 +91,6 @@ Rails.application.configure do
   
   Rails.application.configure do
     config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
+    config.x.wct = "http://104.197.8.189/WCT/"
   end
 end

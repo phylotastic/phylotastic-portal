@@ -48,12 +48,24 @@ class ListsController < ApplicationController
             render template: "lists/redirect.js.erb" 
             return
           }
+          format.html {
+            redirect_to root_path
+            return
+          }
         end
       end
       @list = @list.first
       @list_name = @list.name
+      
       respond_to do |format|
         format.js
+        format.html {
+          @my_lists = current_or_guest_user.lists
+          @my_lists.sort_by!{ |m| m.name.downcase }
+
+          @public_lists = get_lists_from_service()
+          @public_lists.sort_by! {|m| m["list_title"].downcase }
+        }
       end
     end
   end
