@@ -7,6 +7,8 @@
        <p>Until recently, expert knowledge on phylogenetic relationships-- the Tree of Life-- was scattered in thousands of inaccessible publications.  Then the <a href="https://tree.opentreeoflife.org//">OpenTree project</a> processed thousands of publications to generate a "synthetic tree" covering millions of species, a resource with enormous potential both for educational purposes and to guide research. </p>
        <p>Yet, there is still a very large accessibility gap, making it unlikely that this trove of knowledge will flow into the hands of scientists, educators, and the public.  </p>
        <p>The Phylotastic project aims to lower the barriers to accessing the tree of life: we want to make getting a species tree just as easy-- and as fast-- as getting online driving directions.  We solve problems involved in using scientific names, extracting relationships, integrating time-scales, and finding images and other resources about species. </p>
+     <hr>
+     
      <h2>How it works</h2>
      <p>For users, the part that you see-- the <a href="http://phylo.cs.nmsu.edu:3000/">web portal</a> or the mobile app-- are just two of the many possible <b>front-ends</b> or "clients" that use an underlying toolbox of <b>phylotastic web services</b>, each with a defined role providing data or operations.  Many of our services rely on key information resources such as: 
       <ul>
@@ -18,9 +20,11 @@
       </ul>
    We aim to grow this toolbox into a sustainable community resource that is open to anyone and that evolves to integrate new resources and operations.  
      </p>
-
+     <hr>
+     
      <h2>How to get involved</h2>
       <p> The Phylotastic project is in many ways an <b>open</b> project.  We maintain a <a href="https://gitter.im/phylotastic/phylotastic">public channel</a> for project information. Our source code is all available on <a fhref="https://github.com/phylotastic">github</a>.  We welcome feedback and are open to new opportunities to collaborate (use the Feedback form). </p>
+     <hr>
 
      <h2>Who we are</h2>
       <p>The Phylotastic project is an NSF-funded research project ("Collaborative Research: ABI Development: An open infrastructure to disseminate phylogenetic knowledge", NSF 1458572) with 3 centers and 4 work sites. 
@@ -34,20 +38,61 @@
       </p>
       <p>
       -->
-      Current project staff include
-     <ul>
-      <li>Dail Laughinghouse (Post-Doc, UMD) - requirements, design, testing, outreach
-      <li>Dmitry Mozzherin (de facto co-PI, UIUC) - name recognition and discovery
-      <li>Thanh Nguyen (Grad, NMSU) - mobile app, web services, semantic integration
-      <li>Van Nguyen (Grad, NMSU) - web portal
-      <li>Brian O'Meara (co-PI, UTK) - DateLife
-      <li>Enrico Pontelli (co-PI, NMSU) - design, semantic integration
-      <li>Abu Saleh (Grad, NMSU) - web services design and implementation
-      <li>Arlin Stoltzfus (PI, UMD) - project management, design, testing
+      Current and former project staff include
+      <ul>
+        <li>Dail Laughinghouse (former Post-doc) - analysis, design, testing, outreach
+        <li>Dmitry Mozzherin (de facto co-PI, UIUC) - name recognition and discovery
+        <li>Thanh Nguyen (Grad, NMSU) - mobile app, web services, semantic integration
+        <li>Van Nguyen (Grad, NMSU) - web portal
+        <li>Brian O'Meara (co-PI, UTK) - DateLife
+        <li>Enrico Pontelli (co-PI, NMSU) - design, semantic integration
+        <li>Luna Luisa Sanchez Reyes (Post-doc, UTK) - DateLife
+        <li>Abu Saleh (Grad, NMSU) - web services design and implementation
+        <li>Arlin Stoltzfus (PI, UMD) - project management, analysis, design, testing
       </ul>
       We have benefited from feedback from a number of consultants and collaborators, including Yan Wong, James Rosindell (Imperial College London), Karen Cranston (OpenTree), Jonathan Rees (OpenTree), Jaime Huerta-Cepas (ETE), Brian Sidlauskas (Oregon State University), Ramona Walls (CyVerse), Cyndy Parr and Katja Schulz. </p>
 
-<%= image_tag("group_photo.png", style: "border:1px solid black;max-width:80%;", alt: "Phylotastic project staff, Dripping Springs, NM, September 24, 2016 (Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, Van)") %>
+<div class="center">
+  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <%= image_tag("group_photo.png", alt: "Phylotastic project staff, Dripping Springs, NM, September 24, 2016 (Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, Van)") %>
+        <div class="carousel-caption">
+          <h3>September 24, 2016</h3>
+          <p>Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, Van</p>
+        </div>
+      </div>
+      <div class="item">
+        <%= image_tag("group_photo2.jpg", alt: "Phylotastic project staff, Dripping Springs, NM, January, 2018 (Luna, Arlin, Thanh, Van,  Enrico, Brian, without Dima or Abu)") %>
+        <div class="carousel-caption">
+          <h3>January, 2018</h3>
+          <p>Luna, Arlin, Thanh, Van,  Enrico, Brian, without Dima or Abu</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  
+  
+  <p>Project staff on excursions to Dripping Springs in New Mexico for project meetings</p>
+  
+</div>
 
 <p>Thanh, Dima, Dail, Abu, Arlin, Enrico, Brian, and Van at the first phylotastic face-to-face project meeting (Dripping Springs, NM, September 24, 2016).  
  </p>

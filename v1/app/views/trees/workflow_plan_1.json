@@ -84,7 +84,7 @@
           },
           {
             "operation_id" : 2,
-            "operation_name" : "PhyloT_wrapper_Tree",
+            "operation_name" : "phylotastic_ResolvedScientificNames_OT_TNRS_GET",
             "operation_of_web_service_name" : "phylotastic_ws",
             "operation_of_web_service_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ws",
             "operation_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_GET",
@@ -133,7 +133,7 @@
           },
           {
             "operation_id" : 3,
-            "operation_name" : "phylotastic_DateLife_GET",
+            "operation_name" : "phylotastic_GetPhylogeneticTree_OT_GET",
             "operation_of_web_service_name" : "phylotastic_ws",
             "operation_of_web_service_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ws",
             "operation_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_GET",
