@@ -9,8 +9,26 @@ class OnplsController < ApplicationController
       name = params[:name].empty? ? @onpl.file.original_filename : params[:name]
       @list = @onpl.create_list(name: name, description: params[:description])
       flash[:success] = @list.name + " list is created!"
-      # job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", @user.id)
-      redirect_to root_path
+
+      extracted_response = {}
+      extracted = Paperclip.io_adapters.for(@onpl.file).read.split("\n")
+      extracted_response["scientificNames"] = extracted.map do |n|
+        n.to_s.strip.encode('UTF-8', {
+          :invalid => :replace,
+          :undef   => :replace,
+          :replace => '?'
+        })
+      end
+      
+      @list.update_attributes(extracted: extracted_response)
+      
+      resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
+                                    extracted_response.to_json,
+                                    :content_type => :json )
+                                  
+      @list.update_attributes(resolved: resolved_response)
+      
+      redirect_to list_path(@list)
     else
       render action: "new"
     end

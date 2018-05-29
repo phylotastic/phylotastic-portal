@@ -57,6 +57,9 @@ class ListsController < ApplicationController
       @list = @list.first
       @list_name = @list.name
       
+      @names = @list.species_names
+      @unmatched_names = @list.unmatched_names
+      
       respond_to do |format|
         format.js
         format.html {

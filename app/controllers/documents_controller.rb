@@ -9,8 +9,34 @@ class DocumentsController < ApplicationController
       name = params[:name].empty? ? @document.file.original_filename : params[:name]
       @list = @document.create_list(name: name, description: params[:description])
       flash[:success] = @list.name + " list is created!"
-      # job_id = ExtractionsWorker.perform_async(@con_link.id, "ConLink", @user.id)
-      redirect_to root_path
+
+      file = File.new(@document.file.path, 'rb')
+      
+      if @document.method == "NetiNeti"
+        method = 2
+      elsif @document.method == "TaxonFinder"
+        method = 1
+      else
+        method = 0
+      end
+      
+      extracted_response = Req.post(Rails.configuration.x.sv_GNRD_wrapper_file,
+                                    { 
+                                      multipart: true,
+                                      inputFile: file,
+                                      engine: method
+                                    },
+                                    {} )
+                                    
+      @list.update_attributes(extracted: extracted_response)
+      
+      resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
+                                    extracted_response.to_json,
+                                    :content_type => :json )
+                                  
+      @list.update_attributes(resolved: resolved_response)
+      
+      redirect_to list_path(@list)
     else
       render action: "new"
     end

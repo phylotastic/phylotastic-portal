@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  species: MyText
+  tree: MyText
+  scaled_sdm: MyText
+  branch_length: false
+  user: one
+  action_sequence: MyText
+
+two:
+  name: MyString
+  species: MyText
+  tree: MyText
+  scaled_sdm: MyText
+  branch_length: false
+  user: two
+  action_sequence: MyText

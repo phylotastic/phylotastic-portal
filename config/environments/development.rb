@@ -59,5 +59,12 @@ Rails.application.configure do
   Rails.application.configure do
     config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
     config.x.wct = "http://104.197.8.189/WCT/"
+    config.x.sv_GNRD_wrapper_URL = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
+    config.x.sv_OToL_TNRS_wrapper = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
+    config.x.sv_GNRD_wrapper_file = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_file"
+    config.x.sv_GNRD_wrapper_text = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_text?text="
+    config.x.sv_Taxon_country_species = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/country_species?taxon="
+    config.x.sv_Taxon_genome_species = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/ncbi/genome_species?taxon="
+    config.x.sv_Taxon_all_species = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/all_species?taxon="
   end
 end
