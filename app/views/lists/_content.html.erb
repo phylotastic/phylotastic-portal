@@ -1,34 +1,59 @@
-<p class="list-title"><%= list_name %></p>
+<div class="list-content-wrapper">
+  <p class="list-title"><%= list_name %></p>
 
-<ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active">
-    <a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name">Species names</a>
-  </li>
-  <li role="presentation">
-    <a href="#taxon-matching" aria-controls="taxon-matching" role="tab" data-toggle="tab">Taxon matching</a>
-  </li>
-  <li role="presentation">
-    <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">List metadata</a>
-  </li>
-</ul>
+  <% if names.nil? %>
+    <% extracted_names = list.extracted_names %>
+    <% begin %>
+      <% if extracted_names.empty? %>
+        <p class="bg-danger">We could not extract any names from your provided resource</p>
+        <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% else %>
+        <p>We extracted some names from your resource: <%= extracted_names.join(', ') %></p>
+        <p class="bg-danger">But we could not resolve any of them</p>
+        <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% end %>
+    <% rescue %>
+      <p class="bg-danger">We could not extract any names from your provided resource</p>
+      <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+    <% end %>
+  <% else %>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name">
+          <%= fa_icon "list-ol", text: "Species" %>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#taxon-matching" aria-controls="taxon-matching" role="tab" data-toggle="tab">
+          <%= fa_icon "check-square-o", text: "Taxon matching" %>
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">
+          <%= fa_icon "info-circle", text: "List metadata" %>
+        </a>
+      </li>
+    </ul>
 
-<!-- Tab panes -->
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="content">
-    <%= render partial: "species_names", locals: { names: names, list: list, tree: @tree } %>
-    <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
-    <!-- End of tab species names   -->
-  </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="content">
+        <%= render partial: "species_names", locals: { names: names, list: list, tree: @tree } %>
+        <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
+        <!-- End of tab species names   -->
+      </div>
   
-  <div role="tabpanel" class="tab-pane" id="metadata">
-    <%= render partial: "lists/taxon_matching", locals: { list: list } %>
-  <!-- End of tab metadata   -->
-  </div>
+      <div role="tabpanel" class="tab-pane" id="taxon-matching">
+        <%= render partial: "lists/taxon_matching", locals: { list: list, names: names } %>
+      <!-- End of tab metadata   -->
+      </div>
   
-  <div role="tabpanel" class="tab-pane" id="metadata">
-    <%= render partial: "lists/metadata", locals: { list: list } %>
-  <!-- End of tab metadata   -->
-  </div>
+      <div role="tabpanel" class="tab-pane" id="metadata">
+        <%= render partial: "lists/metadata", locals: { list: list } %>
+      <!-- End of tab metadata   -->
+      </div>
   
-<!-- End of tab panel -->
+    <!-- End of tab panel -->
+    </div>
+  <% end %>
 </div>

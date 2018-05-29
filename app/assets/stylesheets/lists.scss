@@ -72,7 +72,9 @@
 
 .panel-content-wrapper {
   margin-top: 20px;
- 
+}
+
+.list-content-wrapper { 
   .bg-danger {
     padding: 15px;
     border-radius: 10px;
@@ -83,8 +85,8 @@
   }
 }
 
-#extract-tree-btn-wrapper {
-  background: rgba(254, 254, 254, 0.5);
+.sticky-btn-wrapper {
+  background: rgba(254, 254, 254, 0.6);
   position: sticky;
   position: -webkit-sticky;
   bottom: 0px;

@@ -1,0 +1,11 @@
+<% headers = ["Query", "Matched Name", "Match", "Synonyms"] %>
+<%= CSV.generate_line(headers).html_safe %>
+<% @resolved_names.each_with_index do |r, i| %>
+  <% if r.key?("matched_results") %>
+    <% v = r["matched_results"][0] %>
+  <% else %>
+    <%= v = r %>
+  <% end %>
+  
+  <%= CSV.generate_line([v["search_string"], v["matched_name"], v["match_type"], "\"#{v["synonyms"].join(", ")}\""]).strip.html_safe %>
+<% end %>

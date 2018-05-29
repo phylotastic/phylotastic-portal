@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :trees, only: [:show, :edit, :update, :destroy]
   resources :lists, only: [:show, :edit, :update, :index, :destroy] do
     resources :trees, only: [:index, :create]
+    resources :taxon, only: [:show]
   end
 
   resources :links, only: [:new, :create]

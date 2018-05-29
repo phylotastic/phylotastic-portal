@@ -1,1 +1,48 @@
-aaaaa
+<div class="panel-content-wrapper">
+
+  <em>The list of query species was validated with &lt;TNRS&gt; prior to querying for a tree. This table shows how the query strings were mapped to validated taxon names. Names not listed in this table are not recognizable by taxon finder.</em>
+  <hr>
+  <table class="table table-hover">
+    <thead> 
+      <tr>
+        <th class="">#</th>
+        <th class="">Query</th> 
+        <th class="">Matched name</th> 
+        <th class="">Match</th> 
+        <th class="">Synonyms</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <% names.each_with_index do |r, i| %>
+        <tr class="species-row">
+          <td class=""><%= i + 1 %></td>
+          <% if r.key?("matched_results") %>
+            <td class=""><%= r["matched_results"][0]["search_string"].to_s %></td>
+            <td class=""><%= r["matched_results"][0]["matched_name"] %></td>
+            <td class=""><%= r["matched_results"][0]["match_type"] %></td>
+            <td class="">
+              <% r["matched_results"][0]["synonyms"].each do |s| %>
+                <%= s %><br>
+              <% end %>
+            </td>
+          <% else %>
+            <td class=""><%= r["search_string"].to_s %></td>
+            <td class=""><%= r["matched_name"] %></td>
+            <td class=""><%= r["match_type"] %></td>
+            <td class="">
+              <% r["synonyms"].each do |s| %>
+                <%= s %><br>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <div class="center sticky-btn-wrapper">
+    <%= link_to "Export as CSV", list_taxon_path(list, format: :csv), class: "btn-primary btn btn-lg", target: '_blank' %> 
+  
+    <%= link_to "Export as PDF", list_taxon_path(list, format: :pdf), class: "btn-primary btn btn-lg", target: '_blank' %>
+  </div>
+</div>
