@@ -20,4 +20,7 @@ class List < ApplicationRecord
   def unmatched_names
   end
   
+  def trees
+    Tree.where(list_id: self.id, list_from_service: false)
+  end
 end

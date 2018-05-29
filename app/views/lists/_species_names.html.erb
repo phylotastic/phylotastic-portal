@@ -8,7 +8,7 @@
   <%= form_for [list, tree], html: { id: tree_form_id } do |f| %>
     <%= f.hidden_field :name, id: "tree-name-#{list.id}" %>
 
-    <%= f.hidden_field :from_service, value: @from_service %>
+    <%= f.hidden_field :list_from_service, value: @from_service %>
     
     <p class="select-species-note"><em>* Click on a row to select or deselect species which you want to use for extracting tree</em></p>
     
@@ -38,11 +38,36 @@
     </table>
     
     <div class="center sticky-btn-wrapper">
-      <%= f.submit "Extract tree", class: "btn btn-lg btn-primary", id: "extract-tree-btn" %>
+      <!-- Button trigger modal -->
+      <a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#give-tree-name" href="#">Extract tree</a>
     </div>
+    
+    <!--Modal -->
+    <div class="modal fade" id="give-tree-name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Please enter a name for the tree</h4>
+          </div>
+          <div class="modal-body">
+              <%= f.text_field :name, class: "form-control" %>
+          </div>
+          <div class="modal-footer">
+            <%= f.submit "Extract tree", class: "btn btn-lg btn-primary" %>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End modal -->
+    
   <% end %>
 </div>
 
+  
+  
+  
 <script type="text/javascript">
   $(".species-cb").click(function() {
     event.stopPropagation();

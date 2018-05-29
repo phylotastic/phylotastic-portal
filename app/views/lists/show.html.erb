@@ -18,5 +18,9 @@
 </div>
 
 <script type="text/javascript">
-  $('a[href="/lists/<%= params[:id] %>"]').click();
+  <% if @from_service %>
+    $('a[href="/lists/<%= params[:id] %>?from_service=true"]').click();
+  <% else %>
+    $('a[href="/lists/<%= params[:id] %>"]').click();
+  <% end %>
 </script>

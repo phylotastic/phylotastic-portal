@@ -1,2 +1,58 @@
-<h1>Trees#show</h1>
-<p>Find me in app/views/trees/show.html.erb</p>
+<%= javascript_include_tag Rails.configuration.x.ete_js %>
+<% provide(:title, "Tree Viewer") %>
+
+<div class="tree-content-wrapper">
+  
+  <ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li>
+      <% if @link_to_list.nil? %>
+        <em>deleted list<em>
+      <% else %>
+        <%= link_to @list.name, @list %>
+      <% end %>
+    </li>
+    <li class="active"><%= @tree.name %></li>
+  </ol>
+    
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#tree-viewer" aria-controls="tree-viewer" role="tab" data-toggle="tab" id="tab-name">
+        <%= fa_icon "pagelines", text: "Tree" %>
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">
+        <%= fa_icon "info-circle", text: "Metadata" %>
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#workflow" aria-controls="workflow" role="tab" data-toggle="tab" id="wf">
+        <%= fa_icon "info-server", text: "Workflow" %>
+      </a>
+    </li>
+    <li role="presentation">
+      <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
+        <%= fa_icon "info-cog", text: "Settings" %>
+      </a>
+    </li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tree-viewer">
+    </div>
+  
+    <div role="tabpanel" class="tab-pane" id="metadata">
+    </div>
+  
+    <div role="tabpanel" class="tab-pane active" id="workflow">
+    </div>
+  
+    <div role="tabpanel" class="tab-pane" id="settings">
+    <!-- End of tab settings   -->
+    </div>
+  <!-- End of tab panel -->
+  </div>
+
+</div>

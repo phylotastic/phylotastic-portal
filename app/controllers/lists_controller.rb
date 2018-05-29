@@ -28,6 +28,13 @@ class ListsController < ApplicationController
         @list_name = @list["list"]["list_title"]
         respond_to do |format|
           format.js
+          format.html {
+            @my_lists = current_or_guest_user.lists
+            @my_lists.sort_by!{ |m| m.name.downcase }
+
+            @public_lists = get_lists_from_service()
+            @public_lists.sort_by! {|m| m["list_title"].downcase }
+          }
         end
       else
         respond_to do |format|
