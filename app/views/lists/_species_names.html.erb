@@ -1,29 +1,94 @@
-<%= form_for Tree.new(raw_extraction: ra) do |f| %>
-  <%= f.hidden_field :raw_extraction_id %>
-  <%= f.text_field :name, id: "hidden_tree_name_#{ra.id}", class: 'hide' %>
-
-  <table class="table table-bordered table-hover chosing-species">
-    <thead> 
-      <tr> 
-        <th class="species-heading-row">#</th> 
-        <th class="species-heading-row">Species</th> 
-        <th class="species-cb-column species-heading-row">
-          Select/Deselect all<br>
-          <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
-        </th> 
-      </tr> 
-    </thead>
-    <tbody>
-        <% species.each_with_index do |e, i| %>
-          <tr class="species-row success">
-            <td class=""><%= i + 1 %></td>
-            <td class=""><em><%= e %></em></td>
-            <td class="species-cb-column">           
-              <%= check_box_tag("tree[chosen_species][#{e}]", 1, true, class: "species-cb") %>
-              <%= check_box_tag("tree[chosen_species][#{e}]", 0, false, class: "hidden") %>
-            </td>
-          </tr>
-        <% end %>
-    </tbody>
-  </table>
+<% if @from_service %>
+  <% tree_form_id = "tree-form-from-service-#{list.id}" %>
+<% else %>
+  <% tree_form_id = "tree-form-#{list.id}" %>
 <% end %>
+
+<div class="panel-content-wrapper">
+  <% if names.nil? %>
+    <% extracted_names = list.extracted_names %>
+    <% begin %>
+      <% if extracted_names.empty? %>
+        <p class="bg-danger">We could not extract any names from your provided resource</p>
+        <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% else %>
+        <p>We extracted some names from your resource: <%= extracted_names.join(', ') %></p>
+        <p class="bg-danger">But we could not resolve any of them</p>
+        <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% end %>
+    <% rescue %>
+      <p class="bg-danger">We could not extract any names from your provided resource</p>
+      <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+    <% end %>
+  <% else %>
+    <%= form_for [list, tree], html: { id: tree_form_id } do |f| %>
+      <%= f.hidden_field :name, id: "tree-name-#{list.id}" %>
+  
+      <%= f.hidden_field :from_service, value: @from_service %>
+      
+      <p class="select-species-note"><em>* Click on a row to select or deselect species which you want to use for extracting tree</em></p>
+      
+      <table class="table table-hover">
+        <thead> 
+          <tr> 
+            <th class="species-heading-row">#</th> 
+            <th class="species-heading-row">Species</th> 
+            <th class="species-cb-column species-heading-row">
+              <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+            </th> 
+          </tr> 
+        </thead>
+        <tbody>
+            <% names.each_with_index do |s, i| %>
+              <tr class="species-row success">
+                <td class=""><%= i + 1 %></td>
+                <% n = s["matched_results"][0]["matched_name"] %>
+                <td class=""><em><%= n %></em></td>
+                <td class="species-cb-column">           
+                  <%= check_box_tag("tree[species][#{n}]", 1, true, class: "species-cb") %>
+                  <%= check_box_tag("tree[species][#{n}]", 0, false, class: "hidden") %>
+                </td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+      
+      <div class='center' id="extract-tree-btn-wrapper">
+        <%= f.submit "Extract tree", class: "btn btn-lg btn-primary", id: "extract-tree-btn" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(".species-cb").click(function() {
+    event.stopPropagation();
+    if($(this).is(':checked')) {
+      $(this).siblings("input[type='checkbox']").attr('checked', false);
+      $(this).parents(".species-row").addClass("success");
+    } else {          
+      $(this).siblings("input[type='checkbox']").attr('checked', true);
+      $(this).parents(".species-row").removeClass("success");
+    }
+  });
+  
+  $(".species-row").click(function(event) {
+    $(this).find('.species-cb').click();
+  });
+  
+  $("#species-toggle-all-cb").click(function() {
+    if($(this).is(':checked')) {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( !$($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    } else {
+      for(i=0; i<$(".species-cb").length; i++) {
+        if( $($(".species-cb")[i]).is(':checked') ) {
+          $($(".species-cb")[i]).click();
+        }
+      }
+    }
+  })
+</script>

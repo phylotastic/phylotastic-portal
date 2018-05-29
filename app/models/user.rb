@@ -12,7 +12,8 @@ class User < ApplicationRecord
   has_many  :onpls, dependent: :destroy
   has_many  :dcas, dependent: :destroy
   has_many  :taxonomies, dependent: :destroy
-    
+  has_many  :trees, dependent: :destroy
+  
   def lists
     lists = []
     online_resource_lists = self.links.map {|l| l.list}

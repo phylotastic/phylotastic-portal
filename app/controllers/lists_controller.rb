@@ -57,6 +57,7 @@ class ListsController < ApplicationController
       @list = @list.first
       @list_name = @list.name
       
+      @tree = current_or_guest_user.trees.build
       @names = @list.species_names
       @unmatched_names = @list.unmatched_names
       

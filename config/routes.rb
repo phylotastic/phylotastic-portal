@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :lists, only: [:show, :edit, :update, :index, :destroy]
+  resources :trees, only: [:show, :edit, :update, :destroy]
+  resources :lists, only: [:show, :edit, :update, :index, :destroy] do
+    resources :trees, only: [:index, :create]
+  end
 
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]

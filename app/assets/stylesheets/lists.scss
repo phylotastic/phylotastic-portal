@@ -69,3 +69,24 @@
   margin-bottom: 20px;
   font-family: Tahoma, Geneva, sans-serif;
 }
+
+.panel-content-wrapper {
+  margin-top: 20px;
+ 
+  .bg-danger {
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .select-species-note {
+    font-size: 80%;
+  }
+}
+
+#extract-tree-btn-wrapper {
+  background: rgba(254, 254, 254, 0.5);
+  position: sticky;
+  position: -webkit-sticky;
+  bottom: 0px;
+  padding: 10px;  
+}

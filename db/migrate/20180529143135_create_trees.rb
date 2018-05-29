@@ -8,8 +8,8 @@ class CreateTrees < ActiveRecord::Migration[5.1]
       t.boolean :branch_length
       t.references :user, foreign_key: true
       t.text :action_sequence
-      t.list_from_service :boolean
-      t.list_id :integer
+      t.boolean :list_from_service 
+      t.integer :list_id
       
       t.timestamps
     end

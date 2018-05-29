@@ -15,7 +15,7 @@
 <!-- Tab panes -->
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active" id="content">
-    <%= render partial: "species_names", locals: { names: names } %>
+    <%= render partial: "species_names", locals: { names: names, list: list, tree: @tree } %>
     <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
     <!-- End of tab species names   -->
   </div>
