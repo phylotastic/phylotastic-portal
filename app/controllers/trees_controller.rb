@@ -20,19 +20,19 @@ class TreesController < ApplicationController
       else
         @link_to_list = list_path(@list)
       end
-    end
+    end    
   end
 
   def create
     @tree = current_or_guest_user.trees.build(tree_params.merge(list_id: params[:list_id]))
     species = params[:tree][:species]
-    @tree.species = species.to_s
+    @tree.species = species.to_json
     chosen_species = species.select { |x| species[x] == "1" }.keys
     extracted_response = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {"taxa": chosen_species}.to_json,
                                      :content_type => :json,
                                      :accept => :json )
-    @tree.tree = extracted_response
+    @tree.tree = extracted_response.to_json
     if @tree.save
       redirect_to @tree
     else
@@ -56,6 +56,9 @@ class TreesController < ApplicationController
   end
 
   def destroy
+    @tree.destroy
+    flash[:success] = "Tree was removed"
+    redirect_to root_path
   end
   
   def download

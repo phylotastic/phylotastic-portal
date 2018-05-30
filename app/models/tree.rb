@@ -21,4 +21,26 @@ class Tree < ApplicationRecord
       ""
     end
   end
+  
+  def metadata
+    begin
+      n = JSON.parse(self.tree)["tree_metadata"]
+      return n.nil? ? "" : n 
+    rescue
+      ""
+    end
+  end
+  
+  def chosen_species
+    species = JSON.parse(self.species) rescue {}
+    chosen_species = species.select { |x| species[x] == "1" }.keys
+    return chosen_species
+  end
+  
+  def list
+    unless self.list_from_service
+      @list = List.find(self.list_id)
+    end
+  end
+  
 end

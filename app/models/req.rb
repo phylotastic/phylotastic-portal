@@ -1,10 +1,13 @@
 require 'rest-client'
 
 class Req < ActiveRecord::Base
+  # return a Hash anyway
+  
   
   def self.post(url, data, header)
     begin
-      RestClient.post( url, data, header)
+      res = RestClient.post( url, data, header)
+      JSON.parse(res)
     rescue RestClient::ExceptionWithResponse => e
       puts e.response
       logger.info "Error: POST #{url}\n#{data}\n#{header}"
@@ -15,8 +18,8 @@ class Req < ActiveRecord::Base
   
   def self.get(url)
     begin
-      resp = RestClient.get url
-      return JSON.parse(resp)
+      res = RestClient.get url
+      JSON.parse(res)
     rescue RestClient::Unauthorized, RestClient::Forbidden => err
       puts Time.current.to_s + ": Access denied"
       print_in_logger([

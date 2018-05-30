@@ -20,13 +20,13 @@ class OnplsController < ApplicationController
         })
       end
       
-      @list.update_attributes(extracted: extracted_response)
+      @list.update_attributes(extracted: extracted_response.to_json)
       
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,
                                     :content_type => :json )
                                   
-      @list.update_attributes(resolved: resolved_response)
+      @list.update_attributes(resolved: resolved_response.to_json)
       
       redirect_to list_path(@list)
     else

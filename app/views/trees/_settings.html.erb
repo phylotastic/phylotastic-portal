@@ -1,0 +1,31 @@
+  <div class="tree-settings">
+    <div class="boxed-group" style="margin-top: 15px;">
+      <h3>Features</h3>
+      <div class="boxed-group-inner">
+        <%= form_for tree do |f| %>
+          <div class="row">
+            <%= f.label :name, class: "col-sm-3 " %>
+            <div class="col-sm-9">
+              <%= f.text_field :name, value: tree.name, class: "form-control" %>
+            </div>
+          </div>
+          <hr class="bleed-flush"></hr>
+          <%= f.submit "Update", class:"btn btn-default" %>
+        <% end %>
+      </div>
+    </div>
+      
+    <div class="boxed-group dangerzone">
+      <h3>Danger option</h3>
+      <div class="boxed-group-inner">
+        <div class="row">
+          <div class="col-md-8">Once this tree is deleted, there is no way to retrieve it back.</div>
+          <div class="col-md-4">
+            <%= form_for(tree, html: { method: :delete }) do |f| %>
+              <%= f.submit "Delete this tree", data: { confirm: 'Are you sure?' }, class:"btn btn-danger" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -84,7 +84,7 @@
     </div>
     
     <div class="tree-view-options">
-      <%= link_to "Revert", tree_path(tree), remote: true, class: "btn btn-default" %>
+      <%= link_to "Revert", "#", class: "btn btn-default", id: "revert" %>
     </div>
     
     <div class="tree-view-options">
@@ -108,12 +108,12 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-              <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= tree.unscaled %></textarea>
+              <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= sanitize_newick(tree) %></textarea>
               <div style="text-align: right; margin-top: 10px;">
                 <div style="display: inline; margin-right: 20px;">
                   <%= check_box_tag 'show_ott', '1' %> 
                 </div> 
-                <span data-toggle="tooltip" data-placement="top" title="Include the IDs used internally by the OpenTree project" id="copy-to-clipboard">Show OTT ids</span>
+                <label for="show_ott" data-toggle="tooltip" data-placement="top" title="Include the IDs used internally by the OpenTree project" id="copy-to-clipboard">Show OTT ids</span>
               </div>
             </div>
             <div class="modal-footer">
@@ -175,6 +175,15 @@
   <%= form_for tree, url: { action: "update" }, remote: true, html: {id: "tree_state_form", class: "hide"} do |f| %>
     <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
   <% end %>
+  
+  <!-- Display information -->
+  <% leaves = NewickTree.new(@tree.unscaled.to_s).root.leaves.count rescue 'undetermined' %>
+  <div class="row">
+    <div class="alert alert-warning alert-dismissible col-md-6 col-md-offset-3" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= @tree.chosen_species.count %></strong> of <strong><%= JSON.parse(@tree.species).count %></strong> taxa in the input list were matched.
+    </div>
+  </div>
   
   <div id='img1' class="ete_image"></div>
 
@@ -304,8 +313,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
   
-  init_visualizer();
-  
   if(Cookies.get("view_hint") == "true") {
     $('#tree-hint').modal();
   }
@@ -342,94 +349,36 @@ $(document).ready(function() {
     $('.scaled-tree-options').addClass('hide');
     $(this).addClass('hide');
   });
-
-  $( window ).on('beforeunload', function() {
-    if(tree_state_changed) {
-      save_tree_state();
-    }
-  });
-})
-
-$(".spinner").hide();
-
-$(document).ajaxStart(function() {
-  $(".spinner").fadeIn('slow');
-}).ajaxStop(function() {
-    $(".spinner").hide();
-});
-
-function save_tree_state() {
-  var tree_action_metadata = {};
-
-  tree_action_metadata['node_actions'] = node_actions_list;
-  tree_action_metadata['tree_actions'] = tree_actions;
-  tree_action_metadata['latest_node_id'] = latest_action_node_id;
-
-  // console.log(JSON.stringify(tree_action_metadata));
-  $('#tree_state').val(JSON.stringify(tree_action_metadata));
-  $('#tree_state_form').submit();
-  tree_state_changed = false;
-}
-
-function init_visualizer() {
-  <% if !tree.action_sequence.nil? %>
-    <% tree_data = JSON.parse(@tree.action_sequence) %>
-    var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
-    var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
   
-    if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
-      $('#internal').prop('checked', true);
-    } else {
-      $('#internal').prop('checked', false);
-    }
-  
-    if ('<%= tree_data["tree_actions"]["ladderize"] %>' == "true") {    
-      $('#ladderize').prop('checked', true);
-    } else {    
-      $('#ladderize').prop('checked', false);
-    }
-  
-    if ('<%= tree_data["tree_actions"]["branch"] %>' == "true") {    
-      $('#branch').prop('checked', true);
-    } else {    
-      $('#branch').prop('checked', false);
-    }
-    
-    if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
-      $('#line-color').val('#787878');
-    } else {
-      $('#line-color').val('<%= tree_data["tree_actions"]["line_color"] %>');
-    }
-  
-    $('#line-weight option[value=' + '<%= tree_data["tree_actions"]["line_width"] %>' + ']').attr("selected", "selected");
-  
-    var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
-    try {
-      get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@tree) %>", "#img1", 0, 0);
-      run_tree_action();
-    }
-    catch(err) {
-      console.log(err);
-      $('#tree-rendering-failed').modal();
-    }
-
-  <% else %>
-  
-    var node_actions_list = '{}';
-    var tree_actions = '{}';
-  
+  $('#revert').click(function() {
     $('#internal').prop('checked', false);
     $('#ladderize').prop('checked', false);
     $('#branch').prop('checked', false);
     $('#line-color').val('#787878');
+    // $('#line-weight option[value="1"]').attr("selected", "selected");
+    $('#line-weight').val("1");
+    run_tree_action();
+  });
+
+  $('#show_ott').change(function() {
+    if($(this).is(':checked')) {
+      $('#tree-in-string-format').val("<%= tree.unscaled %>");
+      $('#save-tree-text').html('<%= link_to "Save", download_tree_path(format: :txt, id: tree.id, ott: true), class: "btn btn-primary" %>');
+    } else {
+      $('#tree-in-string-format').val("<%= sanitize_newick(tree) %>");
+      $('#save-tree-text').html('<%= link_to "Save", download_tree_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %>');   
+    }
+  })
   
-    try {
-      get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@tree) %>", "#img1", 0, 0);
-    }
-    catch(err) {
-      console.log(err);
-      $('#tree-rendering-failed').modal();
-    }
-  <% end %>
-}
+})
+
+//
+// $(".spinner").hide();
+//
+// $(document).ajaxStart(function() {
+//   $(".spinner").fadeIn('slow');
+// }).ajaxStop(function() {
+//     $(".spinner").hide();
+// });
+
 </script>

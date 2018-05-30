@@ -34,13 +34,13 @@ class DcasController < ApplicationController
       t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
       
       extracted_response = Req.get( Rails.configuration.x.sv_GNRD_wrapper_text + t )
-      @list.update_attributes(extracted: extracted_response)
+      @list.update_attributes(extracted: extracted_response.to_json)
       
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,
                                     :content_type => :json )
                                   
-      @list.update_attributes(resolved: resolved_response)
+      @list.update_attributes(resolved: resolved_response.to_json)
       
       redirect_to list_path(@list)
     else
