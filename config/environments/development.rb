@@ -68,5 +68,6 @@ Rails.application.configure do
     config.x.sv_Taxon_genome_species = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/ncbi/genome_species?taxon="
     config.x.sv_Taxon_all_species = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/ts/all_species?taxon="
     config.x.sv_OToL_wrapper_Tree = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/tree"
+    config.x.sv_Datelife_scale_tree = "http://phylo.cs.nmsu.edu:5009/phylotastic_ws/sc/scale"
   end
 end

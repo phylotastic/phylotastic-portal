@@ -12,5 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/widgets/draggable
 //= require bootstrap
+//= require js.cookie
 //= require_tree .

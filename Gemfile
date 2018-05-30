@@ -21,8 +21,7 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -44,6 +43,7 @@ gem "font-awesome-rails", '4.7.0.4'
 gem "breadcrumbs_on_rails", '3.0.1'
 
 gem 'jquery-rails', '4.3.1'
+gem "jquery-ui-rails", '6.0.1'
 
 gem 'rest-client', '2.0.2'
 
@@ -59,6 +59,8 @@ gem 'roo', '2.3.2'
 
 gem 'wkhtmltopdf-binary', '0.12.3'
 gem 'wicked_pdf', '1.1.0'
+
+gem 'js_cookie_rails', '2.2.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

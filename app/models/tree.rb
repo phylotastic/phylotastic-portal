@@ -6,15 +6,15 @@ class Tree < ApplicationRecord
   
   def unscaled
     begin
-      JSON.parse(Tree.first.tree)["newick"]
+      JSON.parse(self.tree)["newick"]
     rescue
       []
     end
   end
   
-  def scaled_sdm
+  def sdm_scaled
     begin
-      JSON.parse(Tree.first.scaled_sdm)["newick"]
+      JSON.parse(self.scaled_sdm)["newick"]
     rescue
       []
     end

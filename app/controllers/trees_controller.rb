@@ -1,10 +1,16 @@
 class TreesController < ApplicationController
-  before_action :find_tree, only: [:destroy, :edit, :update, :show]
+  include TreesHelper
+  
+  before_action :find_tree, only: [:destroy, :edit, :update, :show, :download]
   
   def index
   end
 
   def show
+    if cookies[:view_hint].nil?
+      cookies[:view_hint] = { :value => "true", :expires => 1.month.from_now }
+    end
+    
     if @tree.list_from_service
       @link_to_list = list_path(@tree.list_id, from_service: true)
     else
@@ -41,6 +47,18 @@ class TreesController < ApplicationController
   end
 
   def destroy
+  end
+  
+  def download
+    if @tree.nil?
+      redirect_to root_path
+    else 
+      if params[:ott] == "true"
+        send_data @tree.unscaled, :filename => @tree.name + "_newick.txt"
+      else
+        send_data sanitize_newick(@tree), :filename => @tree.name + "_newick.txt"
+      end
+    end
   end
   
   private 

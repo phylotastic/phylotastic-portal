@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
-  resources :trees, only: [:show, :edit, :update, :destroy]
+  get 'workflows/scale_sdm'
+
+  resources :trees, only: [:show, :edit, :update, :destroy] do
+    member do
+      get 'download'
+    end
+  end
+  
   resources :lists, only: [:show, :edit, :update, :index, :destroy] do
     resources :trees, only: [:index, :create]
     resources :taxon, only: [:show]

@@ -6,3 +6,35 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+
+.tree-options-wrapper {
+  label {
+    font-weight: normal;
+  }
+  margin-top: 10px;
+  margin-bottom: 10px;
+  .cb-tree-viewer {
+    margin-right: 5px;
+  }
+  .tree-view-options {
+    display: inline-block;
+    margin-right: 20px;
+    .minicolors, .minicolors-theme-bootstrap {
+      display: inline-block;
+      width: 30px;
+    }
+    select {
+      font-size: 20px;
+    }
+  }
+}
+
+.ete_image {
+  margin-top: 40px;
+}
+
+.btn-wrapper {
+  float: right;
+  display: inline-block;
+  margin-left: 10px;
+}

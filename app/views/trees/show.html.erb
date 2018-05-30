@@ -28,25 +28,18 @@
       </a>
     </li>
     <li role="presentation">
-      <a href="#workflow" aria-controls="workflow" role="tab" data-toggle="tab" id="wf">
-        <%= fa_icon "info-server", text: "Workflow" %>
-      </a>
-    </li>
-    <li role="presentation">
       <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
-        <%= fa_icon "info-cog", text: "Settings" %>
+        <%= fa_icon "cog", text: "Settings" %>
       </a>
     </li>
   </ul>
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="tree-viewer">
+      <%= render partial: "visualization", locals: { tree: @tree } %>
     </div>
   
     <div role="tabpanel" class="tab-pane" id="metadata">
-    </div>
-  
-    <div role="tabpanel" class="tab-pane active" id="workflow">
     </div>
   
     <div role="tabpanel" class="tab-pane" id="settings">
