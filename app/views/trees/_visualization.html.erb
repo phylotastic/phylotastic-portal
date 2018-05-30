@@ -1,5 +1,5 @@
 <div>
-  <div id="tree-in-newick"></div>
+  <!-- <div id="tree-in-newick"></div> -->
 
   <div id='popup'></div>
 
@@ -57,8 +57,6 @@
       </span>
     </div>
     
-    <input type="hidden" id="topOffset" value="">
-    <input type="hidden" id="leftOffset" value="">
     <input type="submit" value="Apply" class="btn btn-primary hide" id="apply-customization">
 
     <div class="tree-view-options">
@@ -173,6 +171,10 @@
     </div>
     
   </div>
+  
+  <%= form_for tree, url: { action: "update" }, remote: true, html: {id: "tree_state_form", class: "hide"} do |f| %>
+    <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
+  <% end %>
   
   <div id='img1' class="ete_image"></div>
 
@@ -301,12 +303,8 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-  try {
-    get_tree_image("<%= @tree.id %>" , "<%= @tree.unscaled %>", "#img1", 0, 0);
-  } catch(err) {
-    console.log(err);
-    $('#tree-rendering-failed').modal();
-  }
+  
+  init_visualizer();
   
   if(Cookies.get("view_hint") == "true") {
     $('#tree-hint').modal();
@@ -345,13 +343,11 @@ $(document).ready(function() {
     $(this).addClass('hide');
   });
 
-  // $( window ).on('beforeunload', function() {
-  //   <% if user_signed_in? %>
-  //     if(tree_state_changed) {
-  //       save_tree_state();
-  //     }
-  //   <% end %>
-  // })
+  $( window ).on('beforeunload', function() {
+    if(tree_state_changed) {
+      save_tree_state();
+    }
+  });
 })
 
 $(".spinner").hide();
@@ -362,4 +358,78 @@ $(document).ajaxStart(function() {
     $(".spinner").hide();
 });
 
+function save_tree_state() {
+  var tree_action_metadata = {};
+
+  tree_action_metadata['node_actions'] = node_actions_list;
+  tree_action_metadata['tree_actions'] = tree_actions;
+  tree_action_metadata['latest_node_id'] = latest_action_node_id;
+
+  // console.log(JSON.stringify(tree_action_metadata));
+  $('#tree_state').val(JSON.stringify(tree_action_metadata));
+  $('#tree_state_form').submit();
+  tree_state_changed = false;
+}
+
+function init_visualizer() {
+  <% if !tree.action_sequence.nil? %>
+    <% tree_data = JSON.parse(@tree.action_sequence) %>
+    var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
+    var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
+  
+    if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
+      $('#internal').prop('checked', true);
+    } else {
+      $('#internal').prop('checked', false);
+    }
+  
+    if ('<%= tree_data["tree_actions"]["ladderize"] %>' == "true") {    
+      $('#ladderize').prop('checked', true);
+    } else {    
+      $('#ladderize').prop('checked', false);
+    }
+  
+    if ('<%= tree_data["tree_actions"]["branch"] %>' == "true") {    
+      $('#branch').prop('checked', true);
+    } else {    
+      $('#branch').prop('checked', false);
+    }
+    
+    if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
+      $('#line-color').val('#787878');
+    } else {
+      $('#line-color').val('<%= tree_data["tree_actions"]["line_color"] %>');
+    }
+  
+    $('#line-weight option[value=' + '<%= tree_data["tree_actions"]["line_width"] %>' + ']').attr("selected", "selected");
+  
+    var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
+    try {
+      get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@tree) %>", "#img1", 0, 0);
+      run_tree_action();
+    }
+    catch(err) {
+      console.log(err);
+      $('#tree-rendering-failed').modal();
+    }
+
+  <% else %>
+  
+    var node_actions_list = '{}';
+    var tree_actions = '{}';
+  
+    $('#internal').prop('checked', false);
+    $('#ladderize').prop('checked', false);
+    $('#branch').prop('checked', false);
+    $('#line-color').val('#787878');
+  
+    try {
+      get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@tree) %>", "#img1", 0, 0);
+    }
+    catch(err) {
+      console.log(err);
+      $('#tree-rendering-failed').modal();
+    }
+  <% end %>
+}
 </script>

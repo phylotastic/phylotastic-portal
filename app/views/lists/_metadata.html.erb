@@ -15,11 +15,11 @@
       <td><%= list.created_at %></td>
     </tr>
     <tr>
-      <th>Tree associated with this list</th>
+      <th>Tree(s) associated with this list</th>
       <td>
         <ul>
           <% list.trees.each do |t|  %>
-            <%= link_to t.name, t %>
+            <li><%= link_to t.name, t %></li>
           <% end %>
         </ul>
       </td>

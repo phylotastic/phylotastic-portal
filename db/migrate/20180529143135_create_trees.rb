@@ -5,6 +5,7 @@ class CreateTrees < ActiveRecord::Migration[5.1]
       t.text :species
       t.text :tree
       t.text :scaled_sdm
+      t.text :action_sequence
       t.boolean :branch_length
       t.references :user, foreign_key: true
       t.text :action_sequence

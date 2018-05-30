@@ -44,6 +44,15 @@ class TreesController < ApplicationController
   end
 
   def update
+    @tree.update_attributes(tree_params)
+    respond_to do |format|
+      format.html { 
+        flash[:success] = "Updated tree information"
+        redirect_to @tree
+      }
+      format.js
+    end
+    
   end
 
   def destroy

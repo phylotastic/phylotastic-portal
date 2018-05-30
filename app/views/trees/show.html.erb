@@ -36,7 +36,13 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="tree-viewer">
-      <%= render partial: "visualization", locals: { tree: @tree } %>
+      <% if @tree.unscaled.empty? %>
+        <p class="bg-danger">
+          We could not extract the tree. Please leave us a message at <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further.
+        </p>
+      <% else %>
+        <%= render partial: "visualization", locals: { tree: @tree } %>
+      <% end %>
     </div>
   
     <div role="tabpanel" class="tab-pane" id="metadata">
