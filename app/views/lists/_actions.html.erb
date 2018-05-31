@@ -9,7 +9,8 @@
       <%= link_to "Edit", edit_list_path(list), class:"list-group-item" %>
     <% end %>
     
-    <%= link_to "Download", "#", class:"list-group-item" %>
+    <%= link_to "Download", "#", class:"list-group-item", id: "download-selected-species" %>
+    
   </div>
 </div>
 
@@ -21,3 +22,45 @@
     </div>    
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+ 
+    $("#download-selected-species").click(function() {
+      input_checked = $( ".species-cb-column").children("input:checked");
+      data = {};
+      data["species"] = []
+      for (var i=0; i<input_checked.length; i++) {
+        if ($(input_checked[i]).val() == "1" && 
+            $(input_checked[i]).attr("id") != "species-toggle-all-cb" ) {
+          data["species"].push($(input_checked[i]).attr('name').match(/\[(.*?)\]/g)[1].replace('[', '').replace(']', ''));
+        }
+      }
+  
+      submit("<%= download_list_path(1) %>", 'POST', data);
+      return false;
+    });
+  
+    function submit(action, method, values) {
+      var form = $('<form/>', {
+          action: action,
+          method: method
+      });
+      $.each(values, function() {
+          form.append($('<input/>', {
+              type: 'hidden',
+              name: "species",
+              value: this
+          }));    
+      });
+    
+      form.append($('<input/>', {
+        type: 'hidden',
+        name: 'name',
+        value: $('#file-name').val()
+      }));
+    
+      form.appendTo('body').submit();
+    }
+  });
+</script>

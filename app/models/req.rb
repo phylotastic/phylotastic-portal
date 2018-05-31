@@ -37,7 +37,7 @@ class Req < ActiveRecord::Base
       ])
       return {}
     rescue RestClient::ExceptionWithResponse => err
-      puts Time.current.to_s + ": The server responsed " + err.response.code.to_s
+      puts Time.current.to_s + ": The server responsed " + err.response.to_s
       print_in_logger([
         err.response.code.to_s + " GET #{url}",
         "The server responsed but something wrong",

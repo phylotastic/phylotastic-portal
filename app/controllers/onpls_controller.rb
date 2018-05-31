@@ -37,6 +37,10 @@ class OnplsController < ApplicationController
   private
   
     def onpl_params
-      params.require(:onpl).permit(:file)
+      begin
+        params.require(:onpl).permit(:file)
+      rescue
+        {}
+      end
     end
 end

@@ -1,5 +1,7 @@
 class ListsController < ApplicationController
-  before_action :find_list, only: [:destroy, :edit, :update, :resolve_names]
+  skip_before_action :verify_authenticity_token, only: [:download]
+  
+  before_action :find_list, only: [:destroy, :edit, :update, :resolve_names, :download]
   
   
   include ListsHelper
@@ -132,6 +134,8 @@ class ListsController < ApplicationController
       resolved = @list.species_names.map {|l| l["matched_results"][0]["matched_name"]}
       unless resolved.include? res["resolvedNames"][0]["matched_results"][0]["matched_name"]
         updated = @list.species_names << res["resolvedNames"][0]
+      else
+        updated = @list.species_names
       end
       @list.update_attributes(
         resolved: {"resolvedNames": updated}.to_json, 
@@ -148,6 +152,13 @@ class ListsController < ApplicationController
     # redirect_to lists_path
   end
   
+  def download
+    send_data params["species"].gsub(",", "\n"),
+        :filename => "list.txt",
+        :type => "text/plain",
+        disposition: 'attachment'
+  end
+
   private
   
     def find_list

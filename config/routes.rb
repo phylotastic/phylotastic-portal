@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :taxon, only: [:show]
     member do
       post 'resolve_names'
+      post 'download'
     end
   end
 

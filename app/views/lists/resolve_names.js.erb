@@ -10,3 +10,4 @@ $('#unmatched-alert-content').html("<em><%= @replace %></em> resolved and will b
 $('#unmatched-alert').addClass("alert-success").removeClass('alert-warning hide');
 
 $("#species_names").html("<%=j render partial: 'species_names', locals: { names: @names, list: @list, tree: @tree } %>");
+$("#taxon-matching").html("<%=j render partial: 'lists/taxon_matching', locals: { list: @list, names: @names } %>");
