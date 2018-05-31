@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :find_list, only: [:destroy, :edit, :update]
+  before_action :find_list, only: [:destroy, :edit, :update, :resolve_names]
   
   
   include ListsHelper
@@ -109,6 +109,43 @@ class ListsController < ApplicationController
       flash[:success] = @list.name + " is removed!"
     end
     redirect_to lists_path
+  end
+  
+  def resolve_names
+    @replace = params[:replace]
+    res = Req.get(Rails.configuration.x.sv_OToL_TNRS_wrapper_get + @replace)
+    if res["total_names"] == 0
+      respond_to do |format|
+        format.js { 
+          render template: "lists/unresolve.js.erb" 
+          return
+        }
+      end
+    else
+      extracted = @list.extracted_names
+      extracted.each_with_index do |n, i| 
+        if n == params[:unresolve]
+          extracted[i] = params[:replace]
+        end
+      end
+      
+      resolved = @list.species_names.map {|l| l["matched_results"][0]["matched_name"]}
+      unless resolved.include? res["resolvedNames"][0]["matched_results"][0]["matched_name"]
+        updated = @list.species_names << res["resolvedNames"][0]
+      end
+      @list.update_attributes(
+        resolved: {"resolvedNames": updated}.to_json, 
+        extracted: {"scientificNames": extracted}.to_json
+      )
+      
+      @names = updated
+      @tree = current_or_guest_user.trees.build
+      
+      respond_to do |format|
+        format.js 
+      end
+    end
+    # redirect_to lists_path
   end
   
   private

@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :lists, only: [:show, :edit, :update, :index, :destroy] do
     resources :trees, only: [:index, :create]
     resources :taxon, only: [:show]
+    member do
+      post 'resolve_names'
+    end
   end
 
   resources :links, only: [:new, :create]

@@ -1,0 +1,5 @@
+$('.fa-spinner').addClass('hide');
+$('.resolve-btn').removeClass('hide');
+
+$('#unmatched-alert-content').html("<em><%= @replace %></em> unresolved");
+$('#unmatched-alert').addClass("alert-warning").removeClass('hide');

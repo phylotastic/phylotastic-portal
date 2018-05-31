@@ -19,7 +19,7 @@
   <% else %>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active">
-        <a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name">
+        <a href="#species_names" aria-controls="species_names" role="tab" data-toggle="tab" id="tab-name">
           <%= fa_icon "list-ol", text: "Species" %>
         </a>
       </li>
@@ -45,15 +45,14 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="content">
+      <div role="tabpanel" class="tab-pane active" id="species_names">
         <%= render partial: "species_names", locals: { names: names, list: list, tree: @tree } %>
         <!-- End of tab species names   -->
       </div>
 
       <% unless unmatched_names.empty? %>
         <div role="tabpanel" class="tab-pane" id="unmatched">
-          <%= unmatched_names %>
-          <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
+          <%= render partial: "unmatched_names", locals: { list: list, names: unmatched_names} %>
         </div>
         <!-- End of tab unmatched names   -->
       <% end %>

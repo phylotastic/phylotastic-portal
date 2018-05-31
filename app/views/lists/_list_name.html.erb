@@ -34,6 +34,7 @@
   $(".list-name-table .list-group-item").on("click", function() {
     $(".list-group-item").removeClass("active");
     $(this).addClass("active");
+    $('#list-actions').html("");
     $('#list-content').html("<div class='center loading'><img src='<%= image_path("loading-icon.gif") %>'></div>");
   })
 </script>

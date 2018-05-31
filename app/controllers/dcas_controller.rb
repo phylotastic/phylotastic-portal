@@ -51,6 +51,10 @@ class DcasController < ApplicationController
   private
   
     def dca_params
-      params.require(:dca).permit(:file)
+      begin
+        params.require(:dca).permit(:file)
+      rescue
+        {}
+      end
     end
 end

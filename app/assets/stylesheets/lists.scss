@@ -92,3 +92,21 @@
   bottom: 0px;
   padding: 10px;  
 }
+
+.resolve-row {
+  padding: 5px 0;
+  &:not(:first-child) {
+    border-top: 1px #ddd solid;
+    border-spacing: 1px;
+  }
+  .resolve-btn {
+    -webkit-transition: opacity 0.2s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 0.2s;
+    opacity: 0;
+  }
+  &:hover {
+    .resolve-btn {
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+$('.fa-spinner').addClass('hide');
+$('.resolve-btn.hide').parents('.resolve-row').addClass('list-group-item-success');
+$('.resolve-btn.hide').parents('.resolve-row').find('input[type="text"]').prop('disabled', true);
+$('.resolve-btn.hide').replaceWith("");
+
+badge = $('a[href="#unmatched"] .badge').text();
+$('a[href="#unmatched"] .badge').text(parseInt(badge)-1);
+
+$('#unmatched-alert-content').html("<em><%= @replace %></em> resolved and will be available in 'Species' tab");
+$('#unmatched-alert').addClass("alert-success").removeClass('alert-warning hide');
+
+$("#species_names").html("<%=j render partial: 'species_names', locals: { names: @names, list: @list, tree: @tree } %>");
