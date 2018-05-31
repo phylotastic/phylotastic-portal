@@ -70,28 +70,26 @@
           </thead>
           <tbody>
             <% @resolved_names.each_with_index do |r, i| %>
-              <tr class="species-row">
-                <td class=""><%= i + 1 %></td>
-                <% if r.key?("matched_results") %>
-                  <td class=""><%= r["matched_results"][0]["search_string"].to_s %></td>
-                  <td class=""><%= r["matched_results"][0]["matched_name"] %></td>
-                  <td class=""><%= r["matched_results"][0]["match_type"] %></td>
-                  <td class="">
-                    <% r["matched_results"][0]["synonyms"].each do |s| %>
-                      <%= s %><br>
+              <% r["matched_results"].each_with_index do |m, j| %>
+                <tr class="species-row">
+
+                  <% n = m["matched_name"] %>
+                  <% if j == 0 %>
+                    <td class=""><%= i + 1 %></td>
+                  <% else %>
+                    <td></td>
+                  <% end %>
+        
+                  <td><%= m["search_string"].to_s %></td>
+                  <td><em><%= n %></em></td>
+                  <td><%= m["match_type"] %>
+                  <td>           
+                    <% m["synonyms"].each do |s| %>
+                      <em><%= s %></em><br>
                     <% end %>
                   </td>
-                <% else %>
-                  <td class=""><%= r["search_string"].to_s %></td>
-                  <td class=""><%= r["matched_name"] %></td>
-                  <td class=""><%= r["match_type"] %></td>
-                  <td class="">
-                    <% r["synonyms"].each do |s| %>
-                      <%= s %><br>
-                    <% end %>
-                  </td>
-                <% end %>
-              </tr>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

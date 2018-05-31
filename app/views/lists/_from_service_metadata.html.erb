@@ -15,19 +15,13 @@
     <tr>
       <th>Keywords</th>
       <td>
-        <ul>
-          <% data["list_keywords"].each do |d| %>
-            <li><%= d %></li>
-          <% end %>
-        </ul>
+        <%= data["list_keywords"].join(", ") %>
       </td>
     </tr>
     <tr>
       <th>Author</th>
       <td>
-        <% data["list_author"].each do |d| %>
-          <p><%= d %></p>
-        <% end %>
+        <%= data["list_author"].join(" ") %>
       </td>
     </tr>
     <tr>

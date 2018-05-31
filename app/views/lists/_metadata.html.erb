@@ -8,7 +8,16 @@
     </tr>
     <tr>
       <th>Resource</th>
-      <td><%= list.resource_type %></td>
+      <td>
+        <% case list.resource_type %>
+        <% when "Dca" %>
+          Darwin Core Archive (DwC-A)
+        <% when "Onpl" %>
+          One-name-per-line file
+        <% else %>
+          <%= list.resource_type %>
+        <% end %>
+      </td>
     </tr>
     <tr>
       <th>Created at</th>

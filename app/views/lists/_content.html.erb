@@ -23,6 +23,14 @@
           <%= fa_icon "list-ol", text: "Species" %>
         </a>
       </li>
+      <% unless unmatched_names.empty? %>
+        <li role="presentation">
+          <a href="#unmatched" aria-controls="metadata" role="tab" data-toggle="tab">
+            <%= fa_icon "pencil-square-o", text: "Unmatched" %>
+            <span class="badge"><%= unmatched_names.count %></span>
+          </a>
+        </li>
+      <% end %>
       <li role="presentation">
         <a href="#taxon-matching" aria-controls="taxon-matching" role="tab" data-toggle="tab">
           <%= fa_icon "check-square-o", text: "Taxon matching" %>
@@ -30,7 +38,7 @@
       </li>
       <li role="presentation">
         <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">
-          <%= fa_icon "info-circle", text: "List metadata" %>
+          <%= fa_icon "info", text: "List metadata" %>
         </a>
       </li>
     </ul>
@@ -39,9 +47,17 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="content">
         <%= render partial: "species_names", locals: { names: names, list: list, tree: @tree } %>
-        <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
         <!-- End of tab species names   -->
       </div>
+
+      <% unless unmatched_names.empty? %>
+        <div role="tabpanel" class="tab-pane" id="unmatched">
+          <%= unmatched_names %>
+          <%= render partial: "unmatched_names", locals: { names: unmatched_names} %>
+        </div>
+        <!-- End of tab unmatched names   -->
+      <% end %>
+      
   
       <div role="tabpanel" class="tab-pane" id="taxon-matching">
         <%= render partial: "lists/taxon_matching", locals: { list: list, names: names } %>

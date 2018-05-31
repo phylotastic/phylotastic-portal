@@ -2,6 +2,7 @@
 <%= CSV.generate_line(headers).html_safe %>
 
 <% if @from_service %>
+  
   <% names = @list["list"]["list_species"] %>
 
   <% names.each_with_index do |r, i| %>
@@ -9,13 +10,11 @@
   <% end %>
   
 <% else %>
-  <% @resolved_names.each_with_index do |r, i| %>
-    <% if r.key?("matched_results") %>
-      <% v = r["matched_results"][0] %>
-    <% else %>
-      <%= v = r %>
-    <% end %>
   
-    <%= CSV.generate_line([v["search_string"], v["matched_name"], v["match_type"], "\"#{v["synonyms"].join(", ")}\""]).strip.html_safe %>
+  <% @resolved_names.each_with_index do |r, i| %>
+    <% r["matched_results"].each_with_index do |m, j| %>
+      <%= CSV.generate_line([m["search_string"], m["matched_name"], m["match_type"], "\"#{m["synonyms"].join(", ")}\""]).strip.html_safe %>
+    <% end %>
   <% end %>
+  
 <% end %>

@@ -19,17 +19,26 @@
         </tr> 
       </thead>
       <tbody>
-          <% names.each_with_index do |s, i| %>
+        <% names.each_with_index do |s, i| %>
+          <% s["matched_results"].each_with_index do |m, j| %>
             <tr class="species-row success">
-              <td class=""><%= i + 1 %></td>
-              <% n = s["matched_results"][0]["matched_name"] %>
+
+              <% n = m["matched_name"] %>
+              <% if j == 0 %>
+                <td class=""><%= i + 1 %></td>
+              <% else %>
+                <td></td>
+              <% end %>
+            
               <td class=""><em><%= n %></em></td>
               <td class="species-cb-column">           
                 <%= check_box_tag("tree[species][#{n}]", 1, true, class: "species-cb") %>
                 <%= check_box_tag("tree[species][#{n}]", 0, false, class: "hidden") %>
               </td>
             </tr>
-          <% end %>
+
+          <% end %>          
+        <% end %>
       </tbody>
     </table>
     

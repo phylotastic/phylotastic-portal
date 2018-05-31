@@ -18,6 +18,9 @@ class List < ApplicationRecord
   end
   
   def unmatched_names
+    species = self.species_names.map {|data| data["matched_results"][0]["matched_name"]}
+    extracted = self.extracted_names
+    extracted.select {|e| !species.include?(e) }
   end
   
   def trees
