@@ -2,7 +2,13 @@ $('#new-list-wrapper > div').removeClass("panel-primary");
 $('#new-list-wrapper > div').addClass("panel-default");
 
 <% if @from_service %>
-
+  $('#list-content').html(
+    "<%= escape_javascript(render partial: 'lists/from_service_content', 
+                                  locals: { :list            => @list,
+                                            :list_name       => @list_name,
+                                            :names           => @names }) %>"
+  );
+  
 <% else %>
   $('#list-content').html(
     "<%= escape_javascript(render partial: 'lists/content', 

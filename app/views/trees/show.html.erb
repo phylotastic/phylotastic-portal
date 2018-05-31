@@ -10,7 +10,7 @@
       <% if @link_to_list.nil? %>
         <em>deleted list<em>
       <% else %>
-        <%= link_to @list.name, @list %>
+        <%= link_to @list_name, @link_to_list %>
       <% end %>
     </li>
     <li class="active"><%= @tree.name %></li>

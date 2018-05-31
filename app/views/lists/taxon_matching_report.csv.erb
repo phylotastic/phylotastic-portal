@@ -1,11 +1,21 @@
 <% headers = ["Query", "Matched Name", "Match", "Synonyms"] %>
 <%= CSV.generate_line(headers).html_safe %>
-<% @resolved_names.each_with_index do |r, i| %>
-  <% if r.key?("matched_results") %>
-    <% v = r["matched_results"][0] %>
-  <% else %>
-    <%= v = r %>
+
+<% if @from_service %>
+  <% names = @list["list"]["list_species"] %>
+
+  <% names.each_with_index do |r, i| %>
+    <%= CSV.generate_line([r["scientific_name"], r["scientific_name"], r["scientific_name"], r["scientific_name"]]).strip.html_safe %>
   <% end %>
   
-  <%= CSV.generate_line([v["search_string"], v["matched_name"], v["match_type"], "\"#{v["synonyms"].join(", ")}\""]).strip.html_safe %>
+<% else %>
+  <% @resolved_names.each_with_index do |r, i| %>
+    <% if r.key?("matched_results") %>
+      <% v = r["matched_results"][0] %>
+    <% else %>
+      <%= v = r %>
+    <% end %>
+  
+    <%= CSV.generate_line([v["search_string"], v["matched_name"], v["match_type"], "\"#{v["synonyms"].join(", ")}\""]).strip.html_safe %>
+  <% end %>
 <% end %>

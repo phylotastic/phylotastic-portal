@@ -43,4 +43,8 @@ class Tree < ApplicationRecord
     end
   end
   
+  def self.of_service_list(list_id)
+    Tree.where(list_id: list_id, list_from_service: true)
+  end
+  
 end

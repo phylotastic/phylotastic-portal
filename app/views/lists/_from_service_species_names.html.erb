@@ -1,8 +1,10 @@
-<% tree_form_id = "tree-form-#{list.id}" %>
+<% list_id = list['list']['list_id'] %>
+<% list = List.new(id: list_id)%>
+<% tree_form_id = "from-service-tree-form-#{list_id}" %>
 
 <div class="panel-content-wrapper">
   <%= form_for [list, tree], html: { id: tree_form_id } do |f| %>
-    <%= f.hidden_field :name, id: "tree-name-#{list.id}" %>
+    <%= f.hidden_field :name, id: "tree-name-#{list_id}" %>
 
     <%= f.hidden_field :list_from_service, value: @from_service %>
     
@@ -13,6 +15,7 @@
         <tr> 
           <th class="species-heading-row">#</th> 
           <th class="species-heading-row">Species</th> 
+          <th class="species-heading-row">Common name</th> 
           <th class="species-cb-column species-heading-row">
             <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
           </th> 
@@ -22,8 +25,9 @@
           <% names.each_with_index do |s, i| %>
             <tr class="species-row success">
               <td class=""><%= i + 1 %></td>
-              <% n = s["matched_results"][0]["matched_name"] %>
+              <% n = s["scientific_name"] %>
               <td class=""><em><%= n %></em></td>
+              <td class=""><%= s["vernacular_name"] %></td>
               <td class="species-cb-column">           
                 <%= check_box_tag("tree[species][#{n}]", 1, true, class: "species-cb") %>
                 <%= check_box_tag("tree[species][#{n}]", 0, false, class: "hidden") %>

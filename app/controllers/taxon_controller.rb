@@ -1,7 +1,16 @@
 class TaxonController < ApplicationController
+  include ListsHelper
+  
   def show
-    @list = List.find(params[:list_id])
-    @resolved_names = @list.species_names
+    if params[:from_service].nil?
+      @from_service = false
+      @list = List.find(params[:list_id])
+      @resolved_names = @list.species_names
+    else
+      @from_service = true
+      @list = get_a_list_from_service(params[:id])
+    end
+    
     respond_to do |format|
       format.pdf do
         render pdf: "taxon_matching_report",

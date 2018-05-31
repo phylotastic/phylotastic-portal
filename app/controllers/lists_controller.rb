@@ -7,6 +7,7 @@ class ListsController < ApplicationController
   def show
     @from_service = false
     @is_private   = false
+    @tree = current_or_guest_user.trees.build
     
     if params[:from_service]
       @from_service = true
@@ -26,6 +27,7 @@ class ListsController < ApplicationController
         # @uploaded_list.update_attributes(name: @list["list"]["list_title"])
         
         @list_name = @list["list"]["list_title"]
+        @names = @list["list"]["list_species"]
         respond_to do |format|
           format.js
           format.html {
@@ -64,7 +66,6 @@ class ListsController < ApplicationController
       @list = @list.first
       @list_name = @list.name
       
-      @tree = current_or_guest_user.trees.build
       @names = @list.species_names
       @unmatched_names = @list.unmatched_names
       

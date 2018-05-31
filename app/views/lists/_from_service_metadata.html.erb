@@ -1,0 +1,66 @@
+<% data = list["list"] %>
+
+<div class="panel-content-wrapper">
+
+  <table class="table table-hover">
+    <!-- <caption>First Way</caption> -->
+    <tr>
+      <th>Title</th>
+      <td><%= data["list_title"] %></td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td><%= data["list_description"] %></td>
+    </tr>
+    <tr>
+      <th>Keywords</th>
+      <td>
+        <ul>
+          <% data["list_keywords"].each do |d| %>
+            <li><%= d %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <th>Author</th>
+      <td>
+        <% data["list_author"].each do |d| %>
+          <p><%= d %></p>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>Curation date</th>
+      <td><%= data["list_curation_date"] %></td>
+    </tr>
+    <tr>
+      <th>Date published</th>
+      <td><%= data["list_date_published"] %></td>
+    </tr>
+    <tr>
+      <th>Extra info</th>
+      <td><%= data["list_extra_info"] %></td>
+    </tr>
+    <tr>
+      <th>Focal clade</th>
+      <td><%= data["list_focal_clade"] %></td>
+    </tr>
+    <tr>
+      <th>List source</th>
+      <td><%= data["list_source"] %></td>
+    </tr>
+    <tr>
+      <th>Tree(s) associated with this list</th>
+      <td>
+        <ul>
+          <% associate_trees = Tree.of_service_list(data["list_id"]).select {|t| t.user == current_or_guest_user } %>
+          <% associate_trees.each do |t| %>
+            <li><%= link_to t.name, t %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+    
+  </table>
+</div>

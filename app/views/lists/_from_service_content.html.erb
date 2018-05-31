@@ -1,0 +1,40 @@
+<div class="list-content-wrapper">
+  <p class="list-title"><%= list_name %></p>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active">
+    <a href="#content" aria-controls="content" role="tab" data-toggle="tab" id="tab-name">
+      <%= fa_icon "list-ol", text: "Species" %>
+    </a>
+  </li>
+  <li role="presentation">
+    <a href="#taxon-matching" aria-controls="taxon-matching" role="tab" data-toggle="tab">
+      <%= fa_icon "check-square-o", text: "Taxon matching" %>
+    </a>
+  </li>
+  <li role="presentation">
+    <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">
+      <%= fa_icon "info-circle", text: "List metadata" %>
+    </a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="content">
+    <%= render partial: "from_service_species_names", locals: { names: names, list: list, tree: @tree } %>
+    <!-- End of tab species names   -->
+  </div>
+
+  <div role="tabpanel" class="tab-pane" id="taxon-matching">
+    <%= render partial: "lists/from_service_taxon_matching", locals: { list: list, names: names } %>
+  <!-- End of tab metadata   -->
+  </div>
+
+  <div role="tabpanel" class="tab-pane" id="metadata">
+    <%= render partial: "lists/from_service_metadata", locals: { list: list, names: names } %>
+  <!-- End of tab metadata   -->
+  </div>
+
+<!-- End of tab panel -->
+</div>

@@ -1,5 +1,6 @@
 class TreesController < ApplicationController
   include TreesHelper
+  include ListsHelper
   
   before_action :find_tree, only: [:destroy, :edit, :update, :show, :download]
   
@@ -12,9 +13,12 @@ class TreesController < ApplicationController
     end
     
     if @tree.list_from_service
+      @list = get_a_list_from_service(@tree.list_id)
+      @list_name = @list["list"]["list_title"]
       @link_to_list = list_path(@tree.list_id, from_service: true)
     else
       @list = List.find(@tree.list_id)
+      @list_name = @list.name
       if @list.nil?
         @link_to_list = nil
       else
