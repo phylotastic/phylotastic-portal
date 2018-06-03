@@ -23,7 +23,7 @@ class OnplsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_select "a.list-group-item", text: lists(:one).name
-    assert_response :success
+    assert_select "li", text: lists(:one).name + " list is created!"
   end
 
 end

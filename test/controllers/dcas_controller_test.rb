@@ -15,12 +15,12 @@ class DcasControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "should be created" do
-    post "/dcas", params: { dca: { file: fixture_file_upload('t.zip') } }
+    post "/dcas", params: { dca: { file: fixture_file_upload('files/study1.zip') } }
     assert_response :redirect
     follow_redirect!
     assert_response :success
-    assert_select "a.list-group-item", text: "t.zip"
-    assert_response :success
+    assert_select "a.list-group-item", text: "study1.zip"
+    assert_select "li", text: "study1.zip list is created!"
   end
 
 end

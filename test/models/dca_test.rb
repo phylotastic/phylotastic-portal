@@ -3,7 +3,7 @@ require 'test_helper'
 class DcaTest < ActiveSupport::TestCase
   def setup
     @user = users(:one)
-    @dca = @user.dcas.build(file: File.new("test/fixtures/t.zip"))
+    @dca = @user.dcas.build(file: File.new("test/fixtures/files/study1.zip"))
   end
   
   test "should save dca" do
