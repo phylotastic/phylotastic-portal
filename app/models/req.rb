@@ -4,7 +4,7 @@ class Req < ActiveRecord::Base
   # return a Hash anyway
   
   
-  def self.post(url, data, header)
+  def self.post(url, data, header, return_response=false)
     begin
       res = RestClient.post( url, data, header)
       JSON.parse(res)
@@ -12,7 +12,11 @@ class Req < ActiveRecord::Base
       puts e.response
       logger.info "Error: POST #{url}\n#{data}\n#{header}"
       logger.info e.backtrace
-      return {}
+      if return_response
+        return e.response
+      else
+        return {}
+      end
     end
   end
   

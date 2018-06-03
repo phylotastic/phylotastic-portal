@@ -1,6 +1,10 @@
 class List < ApplicationRecord
   belongs_to :resource, polymorphic: true
   
+  def dca_source?
+    self.resource_type == "Dca"
+  end
+  
   def extracted_names
     begin
       n = JSON.parse(self.extracted)["scientificNames"]

@@ -20,7 +20,12 @@ Rails.application.routes.draw do
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]
   resources :onpls, only: [:new, :create]
-  resources :dcas, only: [:new, :create]
+  resources :dcas, only: [:new, :create] do
+    member do
+      get 'publish'
+    end
+  end
+  
   resources :taxonomies, only: [:new, :create]
 
   get 'static_pages/help'

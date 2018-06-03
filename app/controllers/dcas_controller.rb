@@ -1,6 +1,8 @@
 require 'zip'
 
 class DcasController < ApplicationController
+  before_action :authenticate_user!, :except => [:new, :create]
+
   def new
     @dca = Dca.new
   end
@@ -47,6 +49,76 @@ class DcasController < ApplicationController
     else
       render action: "new"
     end
+  end
+  
+  def publish
+    @dca = current_or_guest_user.dcas.find(params[:id])
+    
+    if @dca.nil?
+      redirect_to root_path
+      return
+    end
+    
+    list_data = Dca.process(@dca)
+    list_data["is_list_public"] = true
+    data = {}
+    data["user_id"] = current_user.email
+    data["list"] = list_data
+    response = Req.post( Rails.configuration.x.sv_Add_new_list,
+                         data.to_json,
+                         {:content_type => :json},
+                         true )
+                         
+    if response.empty?
+      flash[:alert] = "Please try again later, there is problem publishing your list."
+    elsif response.class.to_s == "RestClient::Response"
+      flash[:alert] = JSON.parse(response.body)["message"]
+    else
+      flash[:notice] = "Your list is public now. Thank you for your contribution."
+      @dca.update_attributes(publish_list_id: response["list_id"])
+    end
+    redirect_to list_path(@dca.list)
+    # {
+#       "user_id": "hdail.laughinghouse@gmail.com",
+#       "list": {
+#         "list_extra_info": "",
+#         "list_description": "A list of the bird species and their endangered, threatened or invasive status",
+#         "list_keywords": ["Bird", "Endangered species", "Everglades"],
+#         "list_curator": "HD Laughinghouse",
+#         "list_origin": "script",
+#         "list_curation_date": "02-24-2016",
+#         "list_source": "Des",
+#         "list_focal_clade": "Aves",
+#         "list_title": "Bird Species List for Everglades National Park",
+#         "list_author": ["Bass, O.", "Cunningham, R."],
+#         "is_list_public": true,
+#         "list_species": [
+#           {
+#             "family": "Anatidae",
+#             "scientific_name": "Aix sponsa",
+#             "vernacular_name": "Wood Duck",
+#             "nomenclature_code": "ICZN",
+#             "order": "Anseriformes"
+#           },
+#           {
+#             "family": "Anatidae",
+#             "scientific_name":
+#             "Anas strepera",
+#             "vernacular_name": "Gadwall",
+#             "nomenclature_code": "ICZN",
+#             "order": "Anseriformes"
+#           },
+#           {
+#             "family": "Caprimulgidae",
+#             "scientific_name": "Caprimulgus vociferus",
+#             "scientific_name_authorship": "",
+#             "vernacular_name": "Whip-poor-will",
+#             "nomenclature_code": "ICZN",
+#             "order": "Caprimulgiformes"
+#           }
+#         ]
+#       }
+#     }
   end
   
   private

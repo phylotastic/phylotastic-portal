@@ -19,6 +19,20 @@
         <% end %>
       </td>
     </tr>
+    
+    <% if list.resource_type == "Dca" %>
+      <tr>
+        <th>Publish</th>
+        <td>
+          <% if list.resource.publish? %>
+            <%= link_to "Online list", list_path(id: list.resource.publish_list_id, from_service: true )%>
+          <% else %>
+            no
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    
     <tr>
       <th>Created at</th>
       <td><%= list.created_at %></td>

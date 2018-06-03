@@ -16,6 +16,10 @@ class Dca < ApplicationRecord
 
   validates_attachment_presence :file
   
+  def publish?
+    !self.publish_list_id.nil?
+  end
+  
   def self.process(ul)
     dir = File.dirname(ul.file.path)
     data = {}
@@ -136,23 +140,6 @@ class Dca < ApplicationRecord
         end
       end
     end
-
-    # response = Req.post( APP_CONFIG["sv_create_list"]["url"],
-    #                      { "user_id" => user_name,
-    #                        "list" => data
-    #                      }.to_json,
-    #                      {:content_type => :json} )
-                         
-    # if response.empty? || JSON.parse(response)["status_code"] != 200
-    #   ul.update_attributes(status: false, reason: JSON.parse(response)["message"])
-    #   return {}
-    # else
-    #   ul.update_attributes(status: true, lid: JSON.parse(response)["list_id"])
-    #   # create a raw extraction
-    #   t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
-    #   found = Req.get( APP_CONFIG["sv_find_names_in_text"]["url"] + t )
-    #   return found
-    # end
     
     return data
   end
@@ -174,7 +161,7 @@ class Dca < ApplicationRecord
       "NA"
     else
       begin
-        date = Date.parse(d).to_s
+        date = Date.parse(d).strftime("%m-%d-%Y") 
       rescue ArgumentError
         logger.info "#{d} can not be parsed"
         false

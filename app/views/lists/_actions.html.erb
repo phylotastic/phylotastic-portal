@@ -5,12 +5,17 @@
     </h3>
   </div> -->
   <div class="list-group center">
-    <% if is_private %>
-      <%= link_to "Edit", edit_list_path(list), class:"list-group-item" %>
-    <% end %>
-    
     <%= link_to "Download", "#", class:"list-group-item", id: "download-selected-species" %>
     
+    <% if is_private %>
+      <%= link_to "Edit", edit_list_path(list), class:"list-group-item" %>
+    
+      <% if list.dca_source? %>
+        <% if !list.resource.publish? && !list.species_names.empty? %>
+          <%= link_to "Publish", publish_dca_path(list.resource), class:"list-group-item" %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 </div>
 
