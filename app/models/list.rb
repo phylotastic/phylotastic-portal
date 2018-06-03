@@ -3,7 +3,8 @@ class List < ApplicationRecord
   
   def extracted_names
     begin
-      JSON.parse(self.extracted)["scientificNames"]
+      n = JSON.parse(self.extracted)["scientificNames"]
+      return n.nil? ? [] : n
     rescue
       []
     end
@@ -11,15 +12,21 @@ class List < ApplicationRecord
 
   def species_names
     begin
-      JSON.parse(self.resolved)["resolvedNames"]
+      n = JSON.parse(self.resolved)["resolvedNames"]
+      return n.nil? ? [] : n
     rescue
-      nil
+      []
     end
   end
   
   def unmatched_names
-    species = self.species_names.map {|data| data["matched_results"][0]["matched_name"]}
-    extracted = self.extracted_names
+    begin
+      species = self.species_names.map {|data| data["matched_results"][0]["matched_name"]}
+    rescue
+      species = []
+    end
+    
+    extracted = self.extracted_names    
     extracted.select {|e| !species.include?(e) }
   end
   

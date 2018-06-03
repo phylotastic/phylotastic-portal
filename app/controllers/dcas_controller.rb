@@ -28,6 +28,7 @@ class DcasController < ApplicationController
         rescue Exception => e
           puts e
           puts e.backtrace
+          data["list_species"] = []
         end      
       end
       

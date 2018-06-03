@@ -42,7 +42,8 @@ class Dca < ApplicationRecord
       begin
         header = spreadsheet.row(1)
       rescue ArgumentError => e
-        ul.update_attributes(status: false, reason: e.message)
+        # ul.update_attributes(status: false, reason: e.message)
+        puts e.message
         return
       end
 
@@ -65,7 +66,8 @@ class Dca < ApplicationRecord
             if parse_date(row[k])
               data["list_curation_date"] = parse_date(row[k])
             else
-              ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              # ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              puts "#{row[k]} is not in YYYY-MM-DD format"
               return
             end
           when "Curator"
@@ -74,7 +76,8 @@ class Dca < ApplicationRecord
             if parse_date(row[k])
               data["list_date_published"] = parse_date(row[k])
             else
-              ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              # ul.update_attributes(status: false, reason: "#{row[k]} is not in YYYY-MM-DD format")
+              puts "#{row[k]} is not in YYYY-MM-DD format"
               return
             end
           when "Description"
