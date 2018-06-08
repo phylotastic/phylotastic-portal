@@ -44,9 +44,6 @@ class TreesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def update
     @tree.update_attributes(tree_params)
     respond_to do |format|

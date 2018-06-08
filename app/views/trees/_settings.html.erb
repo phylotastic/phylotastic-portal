@@ -2,9 +2,9 @@
     <div class="boxed-group" style="margin-top: 15px;">
       <h3>Features</h3>
       <div class="boxed-group-inner">
-        <%= form_for tree do |f| %>
-          <div class="row">
-            <%= f.label :name, class: "col-sm-3 " %>
+        <%= form_for tree, html: {class: "form-horizontal"} do |f| %>
+          <div class="row form-group">
+            <%= f.label :name, class: "col-sm-3 control-label" %>
             <div class="col-sm-9">
               <%= f.text_field :name, value: tree.name, class: "form-control" %>
             </div>
