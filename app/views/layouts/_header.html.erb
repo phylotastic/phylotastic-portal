@@ -50,7 +50,7 @@
           <ul class="dropdown-menu">
             <% current_or_guest_user.trees.each do |t| %>
               <li>
-                <%= link_to t.name, tree_path(t) %>
+                <%= link_to t.name, tree_path(t) unless t.id.nil? %>
               </li>
             <% end %>
           </ul>    

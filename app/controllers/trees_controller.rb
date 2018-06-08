@@ -32,6 +32,17 @@ class TreesController < ApplicationController
     species = params[:tree][:species]
     @tree.species = species.to_json
     chosen_species = species.select { |x| species[x] == "1" }.keys
+    
+    if chosen_species.count < 2
+      flash[:danger] = "We need at least 2 names for tree extraction"
+      if tree_params[:list_from_service] == "true"
+        redirect_to list_path(id: params[:list_id], from_service: true)
+      else
+        redirect_to list_path(id: params[:list_id])
+      end
+      return
+    end
+    
     extracted_response = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {"taxa": chosen_species}.to_json,
                                      :content_type => :json,
