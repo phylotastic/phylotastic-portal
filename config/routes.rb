@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get 'workflows/scale_sdm'
 
-  resources :trees, only: [:show, :edit, :update, :destroy] do
+  resources :trees, only: [:show, :update, :destroy] do
     member do
       get 'download'
     end
