@@ -99,7 +99,6 @@ class ListsController < ApplicationController
 
     @public_lists = get_lists_from_service()
     @public_lists.sort_by! {|m| m["list_title"].downcase }
-    binding.pry
     respond_to do |format|
       # format.js
       format.html
