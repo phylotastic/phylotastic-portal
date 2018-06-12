@@ -15,14 +15,12 @@
         <tr> 
           <th class="species-heading-row">#</th> 
           <th class="species-heading-row">
-            <div>
-              Species
-              <%= select_tag 'show', options_for_select([["all", 1], ["species only", 2], ["higher taxa only", 3]], "all"), id: "show-names" %>
-            </div>
+            Species
           </th> 
           <th class="species-heading-row">Common name</th> 
           <th class="species-cb-column species-heading-row">
-            <%= check_box_tag("toggle", 1, false, id: "species-toggle-all-cb") %> 
+            Select
+            <%= select_tag 'show', options_for_select([["all", 1], ["species only", 2], ["higher taxa only", 3], ["none", 4]], "all"), id: "show-names" %>
           </th> 
         </tr> 
       </thead>
@@ -77,7 +75,7 @@
     if($(this).is(':checked')) {
       $(this).siblings("input[type='checkbox']").attr('checked', false);
       $(this).parents(".species-row").addClass("success");
-    } else {
+    } else {          
       $(this).siblings("input[type='checkbox']").attr('checked', true);
       $(this).parents(".species-row").removeClass("success");
     }
@@ -87,41 +85,35 @@
     $(this).find('.species-cb').click();
   });
   
-  $("#species-toggle-all-cb").click(function() {
-    if($(this).is(':checked')) {
+  $('#show-names').change(function() {
+    if( $(this).val() == 1 ) {
       for(i=0; i<$(".species-cb").length; i++) {
-        if( $($(".species-cb")[i]).parents(".species-row").css("display") == "none" ) {
-          continue;
-        }
         if( !$($(".species-cb")[i]).is(':checked') ) {
           $($(".species-cb")[i]).click();
         }
       }
-    } else {
-      for(i=0; i<$(".species-cb").length; i++) {
-        if( $($(".species-cb")[i]).parents(".species-row").css("display") == "none" ) {
-          continue;
+    } else if ( $(this).val() == 2 ) {
+      for(i=0; i<$(".species-row.binominal").length; i++) {
+        if( !$($(".species-row.binominal")[i]).hasClass("success") ) {
+          $($(".species-row.binominal")[i]).click();
         }
+      }
+      $(".species-row.higher-taxa").find("input[type='checkbox']").attr('checked', false);
+      $(".species-row.higher-taxa").removeClass("success");
+    } else if ( $(this).val() == 3 ) {
+      for(i=0; i<$(".species-row.higher-taxa").length; i++) {
+        if( !$($(".species-row.higher-taxa")[i]).hasClass("success") ) {
+          $($(".species-row.higher-taxa")[i]).click();
+        }
+      }
+      $(".species-row.binominal").find("input[type='checkbox']").attr('checked', false);
+      $(".species-row.binominal").removeClass("success");
+    } else if ( $(this).val() == 4 ) {
+      for(i=0; i<$(".species-cb").length; i++) {
         if( $($(".species-cb")[i]).is(':checked') ) {
           $($(".species-cb")[i]).click();
         }
       }
-    }
-  })
-  
-  $('#show-names').change(function() {
-    if( $(this).val() == 1 ) {
-      $(".species-row").show();
-    } else if ( $(this).val() == 2 ) {
-      $(".species-row.binominal").show();
-      $(".species-row.higher-taxa").hide();
-      $(".species-row.higher-taxa").find("input[type='checkbox']").attr('checked', false);
-      $(".species-row.higher-taxa").removeClass("success");
-    } else if ( $(this).val() == 3 ) {
-      $(".species-row.higher-taxa").show();
-      $(".species-row.binominal").hide();
-      $(".species-row.binominal").find("input[type='checkbox']").attr('checked', false);
-      $(".species-row.binominal").removeClass("success");
     }
   })
 </script>
