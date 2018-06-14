@@ -1,0 +1,270 @@
+Acacia cornigera
+Acromyrmex
+Acromyrmex versicolor
+Aculeata
+Adetomyrma venatrix
+Aenictinae
+Aenictogitoninae
+Aenictus
+Agaonidae
+Agaricaceae
+Agelaia
+Agroecomyrmecinae
+Allomerus decemarticulatus
+Amblyoponinae
+Ampulicidae
+Anaxyelidae
+Andrenidae
+Aneuretinae
+Aneuretus simoni
+Animalia
+Anochetus
+Anthophila
+Aphaenogaster cockerelli
+Aphelinidae
+Aphididae
+Apidae
+Apoidea
+Apomyrminae
+Araneae
+Argidae
+Arthropoda
+Aspalathus linearis
+Atta cephalotes
+Atta colombica
+Atta laevigata
+Atta mexicana
+Attini
+Aulacidae
+Austrocynipidae
+Austroniidae
+Austroplatypus incompertus
+Barbara
+Basa
+Bengalia
+Bethylidae
+Blasticotomidae
+Blattodea
+Blochmannia
+Braconidae
+Bradynobaenidae
+Calliphoridae
+Camponotus anderseni
+Camponotus cylindricus
+Camponotus nearcticus
+Camponotus sericeus
+Cardiocondyla wroughtonii
+Cataglyphis
+Cataglyphis bicolor
+Cataglyphis fortis
+Cataulacus muticus
+Cephalotes atratus
+Cephalotes atratus
+Cephidae
+Cephoidea
+Cerapachyinae
+Cerapachys biroi
+Ceraphronidae
+Ceraphronoidea
+Chalcididae
+Chrysididae
+Chrysidoidea
+Chrysobalanaceae
+Cimbicidae
+Clubionidae
+Coleoptera
+Colletidae
+Cordyceps
+Crabronidae
+Crematogaster
+Crustacea
+Cynipidae
+Cynipoidea
+Dacetini
+Daceton armigerum
+Dendrobates
+Dendrobatidae
+Diapriidae
+Dinoponera
+Dinoponera gigantea
+Diprionidae
+Diptera
+Dolichoderinae
+Dorylinae
+Dorylini
+Dryinidae
+Duroia
+Duroia hirsuta
+Dysmicoccus neobrevipes
+Eciton burchellii
+Ecitoninae
+Ectatomminae
+Embolemidae
+Encyrtidae
+Endopterygota
+Eucharitidae
+Eulophidae
+Eupelmidae
+Europaea
+Eurytomidae
+Evaniidae
+Evanioidea
+Figitidae
+Formica japonica
+Formica montana
+Formica polyctena
+Formica rufa
+Formicidae
+Formicinae
+Formicoidea
+Gasteruptiidae
+Haidomyrmex
+Halictidae
+Harpegnathos saltator
+Heloridae
+Hemiptera
+Heterogynaidae
+Heteroponerinae
+Hirtella physophora
+Homoptera
+Hyeronima alchorneoides
+Hymenoptera
+Ibaliidae
+Ichneumonoidea
+Insecta
+Isoptera
+Kladothrips
+Latina
+Lepidoptera
+Leptanillinae
+Leptanilloidinae
+Leucoagaricus
+Leucocoprinus
+Leucospidae
+Linepithema humile
+Linnaeus
+Liopteridae
+Lycaenidae
+Lycaenidae
+Maamingidae
+Macaranga
+Mammalia
+Martialinae
+Megachilidae
+Megalodontesidae
+Megalyridae
+Megalyroidea
+Megaponera
+Megaspilidae
+Melipona
+Melittidae
+Mischocyttarus drewseni
+Monomachidae
+Monomorium pharaonis
+Mutillidae
+Mymaridae
+Mymarommatidae
+Mymarommatoidea
+Myrmarachne plataleoides
+Myrmecia
+Myrmecia nigriceps
+Myrmecia pilosula
+Myrmeciinae
+Myrmecocystus
+Myrmecocystus mexicanus
+Myrmelachista schumanni
+Myrmicinae
+Nasutitermes
+Nasutitermes corniger
+Neoptera
+Nothomyrmeciinae
+Odontomachus
+Odontomachus bauri
+Oecophylla
+Oecophylla smaragdina
+Ophiocordyceps
+Orectognathus
+Ormyridae
+Orussidae
+Orussoidea
+Pachycondyla verenae
+Pamphiliidae
+Pamphilioidea
+Paraponera
+Paraponerinae
+Pelecinidae
+Peradeniidae
+Pergidae
+Perilampidae
+Pheidole
+Pheidole megacephala
+Pheidole sitarches
+Pheidologeton diversus
+Platygastridae
+Platygastroidea
+Plectroctena
+Plumariidae
+Pogonomyrmex badius
+Polybia occidentalis
+Polyrhachis
+Polyrhachis sokolova
+Pompilidae
+Ponerinae
+Proceratiinae
+Proctorenyxidae
+Proctotrupidae
+Proctotrupoidea
+Protomognathus americanus
+Pseudococcidae
+Pseudomyrmecinae
+Pseudomyrmex
+Pteromalidae
+Pterygota
+Rhopalosomatidae
+Roproniidae
+Rotoitidae
+Salticidae
+Sapygidae
+Scelionidae
+Sclerogibbidae
+Scolebythidae
+Signiphoridae
+Siricidae
+Siricoidea
+Solenopsis invicta
+Sphecidae
+Sphecomyrma
+Stenotritidae
+Stephanidae
+Stephanoidea
+Strumigenys
+Strumigenys perplexa
+Strumigenys xenos
+Sylvia
+Synalpheus
+Tanaostigmatidae
+Temnothorax
+Tenthredinidae
+Tenthredinoidea
+Termitidae
+Termitopone
+Tetracampidae
+Tetramorium caespitum
+Thysanoptera
+Tiphiidae
+Torymidae
+Trichogrammatidae
+Trigona
+Trigonalidae
+Trigonaloidea
+Ursus arctos
+Vanhorniidae
+Vespidae
+Vespoidea
+Vestigipoda myrmolarvoidea
+Vicia faba
+Wasmannia auropunctata
+Xiphydriidae
+Xiphydrioidea
+Xyelidae
+Xyeloidea

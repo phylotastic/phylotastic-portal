@@ -1,0 +1,23 @@
+Canis lupus familiaris
+Felis catus
+Oryctolagus cuniculus
+Cricetus cricetus
+Phodopus campbelli
+Eublepharis macularius
+Iguana iguana
+Serinus canaria
+Nymphicus hollandicus
+Agapornis fischeri
+Melopsittacus undulatus
+Mustela putorius furo
+Trachemys scripta elegans
+Terrapene carolina carolina
+Cavia porcellus
+Betta splendens
+Carassius auratus
+Chinchilla chinchilla
+Pantherophis guttatus
+Python regius
+Coenobita clypeatus
+Brachypelma smithi
+Grammostola rosea
