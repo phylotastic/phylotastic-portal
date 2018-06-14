@@ -36,6 +36,7 @@ public/system/
 # Ignore config
 config/config.yml
 config/initializers/devise.rb
+.env
 
 # Ignore solr files
 solr/data
