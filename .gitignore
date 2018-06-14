@@ -18,6 +18,7 @@
 dump.rdb
 public/system/con_files/
 Gemfile.lock
+v1/Gemfile.lock
 
 # Ignore Spring files.
 /spring/*.pid
@@ -37,6 +38,7 @@ public/system/
 config/config.yml
 config/initializers/devise.rb
 .env
+config/secret.yml
 
 # Ignore solr files
 solr/data
