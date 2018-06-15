@@ -180,6 +180,29 @@
           </div>
         </div>
 
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 id="gettreefromlist" class="panel-title">
+              <a role="button" data-toggle="collapse" href="#gettreefromlist">
+                Getting a tree and scaling it by time
+              </a>
+            </h4>
+          </div>
+          <div id="gettreefromlist" class="panel-collapse collapse in">
+            <div class="panel-body">
+            <p>When viewing a list created by any method, pressing the "Get tree" button (bottom of screen) will extract a tree for the selected list items.  The relationships are extracted from Open Tree's synthetic tree, and the tree lacks branch lengths.  To add a geologic timescale to the tree, choose "Add time-scale" and then choose a method 
+        	<ul>
+        	<li><b>Median</b>: Assign branch lengths proportional to time with DateLife's median summary method (very fast)
+        	<li><b>OpenTree</b>: Assign branch lengths proportional to time from a dated version of the Open Tree of Life (fast)
+        	<li><b>SDM</b>: Assign branch lengths proportional to time using DateLife's Supertree Distance Matrix method.  This is very slow, and not practical for > 10 tips. 
+        	</ul>
+        	All of these methods are implemented by DateLife, although the last one is just a wrapper around an OpenTree service. </p>
+      	
+            </div>
+          </div>
+        </div>
+
+
       </div> <!-- end of instructions accordion --> 
     </div>
     
