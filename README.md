@@ -1,27 +1,75 @@
-# README
+## Ruby version
+ruby 2.5.0p0 (2017-12-25 revision 61468)* System dependencies
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## How to run the test suite
 
-Things you may want to cover:
+* For run all model and controller tests
 
-* Ruby version
+```
+rake test
+``` 
 
-* System dependencies
+* For run tests in a file
 
-* Configuration
+```
+rake test <file>
+```
 
-* Database creation
+* For run system tests
 
-* Database initialization
+```
+rails test:system
+```
 
-* How to run the test suite
+## Deployment for dev
 
-* Services (job queues, cache servers, search engines, etc.)
+* clone project
 
-* Deployment instructions
+```
+git clone git@github.com:phylotastic/phylotastic-portal.git
+```
 
-Deploy by kubernetes:
+```
+cd phylotastic-portal
+```
+
+* install Gem
+
+```
+bundle install
+```
+
+* create `config/initializers/devise.rb`
+
+* create `config/database.yml` (see `config/database.yml.sample`)
+
+* create `config/secrets.yml` (see `config/secrets.yml.sample`)
+
+* create database
+
+```
+rake db:create
+```
+
+```
+rake db:migrate
+```
+
+* initialize database
+
+```
+rake import:countries
+```
+
+* start server
+
+```
+rails s -b 0.0.0.0
+```
+
+## Deployment by docker and kubernetes instructions
+
+* Deploy by kubernetes:
 
 ```
 docker stack deploy --namespace portal --compose-file docker-compose.yml portal
@@ -41,7 +89,7 @@ redis     1         1         1            1           22m
 web       1         1         1            1           22m
 ```
 
-To scale a deployment to 3 Pods:
+* To scale a deployment to 3 Pods:
 
 ```
 kubectl scale --replicas=3 deployment/web
@@ -53,7 +101,7 @@ Kubernetes dashboard:
 kubectl port-forward kubernetes-dashboard-5569448c6d-tb7mj 8443:8443 -n kube-system
 ```
 
-To check Kubernetes events:
+* To check Kubernetes events:
 
 ```
 kubectl get events
