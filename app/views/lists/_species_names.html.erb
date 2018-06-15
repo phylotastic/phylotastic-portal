@@ -47,7 +47,7 @@
     
     <div class="center sticky-btn-wrapper">
       <!-- Button trigger modal -->
-      <a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#give-tree-name" href="#">Extract tree</a>
+      <a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#give-tree-name" href="#">Get tree</a>
     </div>
     
     <!--Modal -->
@@ -62,7 +62,7 @@
               <%= f.text_field :name, class: "form-control" %>
           </div>
           <div class="modal-footer">
-            <%= f.submit "Extract tree", class: "btn btn-lg btn-primary" %>
+            <%= f.submit "Get tree", class: "btn btn-lg btn-primary", id: "submit-get-tree-btn" %>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>

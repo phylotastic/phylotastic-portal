@@ -44,6 +44,19 @@ class GuestsTest < ApplicationSystemTestCase
     assert_selector "a.list-group-item", text: lists(:one).name  
   end
   
+  test "getting a tree" do
+    visit root_path
+    
+    click_on "Finding Nemo"
+    click_on "Get tree"
+    
+    fill_in "tree_name", with: "tree from system test"
+    click_on "submit-get-tree-btn"
+    sleep 5
+    assert_text "Retrieved a tree with"
+    take_screenshot
+  end
+  
   teardown do
     Warden.test_reset!
   end
