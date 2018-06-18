@@ -48,7 +48,7 @@
               <%= fa_icon "tree", text: "Tree Viewer" %>
               <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="for-tree-viewer">
               <% current_or_guest_user.trees.each do |t| %>
                 <li>
                   <%= link_to t.name, tree_path(t) unless t.id.nil? %>

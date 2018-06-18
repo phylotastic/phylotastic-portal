@@ -9,7 +9,7 @@ class MedianScalingWorker
     sleep 2
     
     scaled_response = Req.post( Rails.configuration.x.sv_Datelife_scale_tree,
-                                {"newick": sanitize_newick(tree), method: "median"}.to_json,
+                                {"newick": sanitize_newick(tree.unscaled), method: "median"}.to_json,
                                 {
                                   :content_type => :json, 
                                   :accept => :json 

@@ -85,3 +85,8 @@
 .scaled-tree-context-wrapper {
   display: inline;
 }
+
+#for-tree-viewer {
+  max-height: 500px;
+  overflow-y: scroll;
+}

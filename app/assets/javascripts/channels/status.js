@@ -8,18 +8,24 @@ App.messages = App.cable.subscriptions.create ({ channel: 'StatusChannel',
     received: function(data) {
       parsed = JSON.parse(data);
 
-      html = "<input type='radio' name='tree-version' id='" + parsed["method"] + "' value='" + parsed["method"] + "'>"
+      html = "<input type='radio' name='tree-version' id='" + parsed["method"] + "' value='" + parsed["method"] + "'><a href='/trees/" + tree_id + "?method=" + parsed["method"] + "'></a>"
       if ( !this.success_scaled(parsed["response"]) ) {
         html = "<div class='alert alert-danger alert-dismissible' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>"
       }
       
       console.log(parsed);
       console.log(html);
+      
       if (parsed["method"] == "scaled_sdm") {
-        return $("#sdm-scaled-tree .scaled-tree-context-wrapper").html(html);
+        $("#sdm-scaled-tree .scaled-tree-context-wrapper").html(html);
       } else if (parsed["method"] == "scaled_median") {
-        return $("#median-scaled-tree .scaled-tree-context-wrapper").html(html);
+        $("#median-scaled-tree .scaled-tree-context-wrapper").html(html);
       }
+      $( "#" + parsed["method"] ).change(function() {
+        window.location.href = $(this).siblings("a").attr("href");
+      });
+      
+      $( "#" + parsed["method"] ).siblings('label').append(" (10)");      
     },
 
     success_scaled: function(response) {

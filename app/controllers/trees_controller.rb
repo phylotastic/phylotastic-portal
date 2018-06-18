@@ -9,6 +9,17 @@ class TreesController < ApplicationController
       cookies[:view_hint] = { :value => "true", :expires => 1.month.from_now }
     end
     
+    if params[:method] == "scaled_sdm"
+      @newick = @tree.sdm_scaled
+    elsif params[:method] == "scaled_median"
+      @newick = @tree.median_scaled
+    elsif params[:method] == "scaled_ot"
+      @newick = @tree.ot_scaled
+    else
+      @newick = @tree.unscaled
+    end
+    
+    puts @newick
     if @tree.list_from_service
       @list = get_a_list_from_service(@tree.list_id)
       @list_name = @list["list"]["list_title"]
@@ -91,7 +102,7 @@ class TreesController < ApplicationController
       if params[:ott] == "true"
         send_data @tree.unscaled, :filename => @tree.name + "_newick.txt"
       else
-        send_data sanitize_newick(@tree), :filename => @tree.name + "_newick.txt"
+        send_data sanitize_newick(@tree.unscaled), :filename => @tree.name + "_newick.txt"
       end
     end
   end

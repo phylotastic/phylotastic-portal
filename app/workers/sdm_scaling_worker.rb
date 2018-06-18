@@ -9,7 +9,7 @@ class SdmScalingWorker
     sleep 2
 
     scaled_response = Req.post( Rails.configuration.x.sv_Datelife_scale_tree,
-                                {"newick": sanitize_newick(tree), method: "sdm"}.to_json,
+                                {"newick": sanitize_newick(tree.unscaled), method: "sdm"}.to_json,
                                 {
                                   :content_type => :json, 
                                   :accept => :json

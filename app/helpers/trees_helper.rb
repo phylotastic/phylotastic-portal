@@ -1,9 +1,11 @@
+require "Newick"
+
 module TreesHelper
-  def sanitize_newick(tree)
-    tree.unscaled.gsub(/_ott\d*/, '').gsub(/_/, ' ') 
+  def sanitize_newick(nw)
+    nw.gsub(/_ott\d*/, '').gsub(/_/, ' ') 
   end
   
-  def scaled_tree_state(field_data, parsed, field_name)
+  def scaled_tree_state(tree, field_data, parsed, field_name)
     if parsed.empty?
       if field_data.nil?
         # processing
@@ -12,9 +14,13 @@ module TreesHelper
         # error
         html = "<span class='center'>#{fa_icon "exclamation-triangle"}</span>"
       end
-    else      
-      html = "<input type=\"radio\" name=\"tree-version\" id=\"#{field_name}\" value=\"#{field_name}\">"
+    else
+      html = "<input type=\"radio\" name=\"tree-version\" id=\"#{field_name}\" value=\"#{field_name}\"><a href=\"/trees/#{tree.id}?method=#{field_name}\"></a>"
     end
     return "<div class='scaled-tree-context-wrapper'>#{html}</div>".html_safe
+  end
+  
+  def tips(nw)
+    NewickTree.new(nw.to_s).root.leaves.count rescue 'undetermined'
   end
 end

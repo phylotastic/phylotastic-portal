@@ -42,7 +42,7 @@
           We could not extract the tree. Please leave us a message at <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further.
         </p>
       <% else %>        
-        <%= render partial: "visualization", locals: { tree: @tree } %>
+        <%= render partial: "visualization", locals: { tree: @tree, newick: @newick } %>
       <% end %>
     </div>
   
@@ -60,57 +60,57 @@
 </div>
 
 <script type="text/javascript">
-  <% if @tree.action_sequence.nil? %>
-  
-    var node_actions_list = '{}';
-    var tree_actions = '{}';
+<% if @tree.action_sequence.nil? %>
 
+  var node_actions_list = '{}';
+  var tree_actions = '{}';
+
+  $('#internal').prop('checked', false);
+  $('#ladderize').prop('checked', false);
+  $('#branch').prop('checked', false);
+  $('#line-color').val('#787878');
+
+<% else %>
+
+  <% tree_data = JSON.parse(@tree.action_sequence) %>
+  var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
+  var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
+
+  if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
+    $('#internal').prop('checked', true);
+  } else {
     $('#internal').prop('checked', false);
+  }
+
+  if ('<%= tree_data["tree_actions"]["ladderize"] %>' == "true") {    
+    $('#ladderize').prop('checked', true);
+  } else {    
     $('#ladderize').prop('checked', false);
+  }
+
+  if ('<%= tree_data["tree_actions"]["branch"] %>' == "true") {    
+    $('#branch').prop('checked', true);
+  } else {    
     $('#branch').prop('checked', false);
+  }
+
+  if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
     $('#line-color').val('#787878');
+  } else {
+    $('#line-color').val('<%= tree_data["tree_actions"]["line_color"] %>');
+  }
 
-  <% else %>
-  
-    <% tree_data = JSON.parse(@tree.action_sequence) %>
-    var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
-    var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
-  
-    if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
-      $('#internal').prop('checked', true);
-    } else {
-      $('#internal').prop('checked', false);
-    }
+  if ('<%= tree_data["tree_actions"]["line_width"] %>' == "") {
+    $('#line-weight').val("1");
+  } else {
+    $('#line-weight').val('<%= tree_data["tree_actions"]["line_width"] %>');
+  }
 
-    if ('<%= tree_data["tree_actions"]["ladderize"] %>' == "true") {    
-      $('#ladderize').prop('checked', true);
-    } else {    
-      $('#ladderize').prop('checked', false);
-    }
-
-    if ('<%= tree_data["tree_actions"]["branch"] %>' == "true") {    
-      $('#branch').prop('checked', true);
-    } else {    
-      $('#branch').prop('checked', false);
-    }
-
-    if ('<%= tree_data["tree_actions"]["line_color"] %>' == '') {    
-      $('#line-color').val('#787878');
-    } else {
-      $('#line-color').val('<%= tree_data["tree_actions"]["line_color"] %>');
-    }
-
-    if ('<%= tree_data["tree_actions"]["line_width"] %>' == "") {
-      $('#line-weight').val("1");
-    } else {
-      $('#line-weight').val('<%= tree_data["tree_actions"]["line_width"] %>');
-    }
-
-    var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
-  <% end %>
+  var latest_action_node_id = '<%= raw tree_data["latest_node_id"].to_json %>';
+<% end %>
 
 try {
-  get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@tree) %>", "#img1", 0, 0);
+  get_tree_image("<%= @tree.id %>" , "<%= sanitize_newick(@newick) %>", "#img1", 0, 0);
   run_tree_action();
 }
 catch(err) {
@@ -119,8 +119,8 @@ catch(err) {
 }
 
 $( window ).on('beforeunload', function() {
-  if(tree_state_changed) {      
-    save_tree_state(node_actions_list, tree_actions, latest_action_node_id);
+  if(tree_state_changed) {
+    // save_tree_state(node_actions_list, tree_actions, latest_action_node_id);
   }
 });
 

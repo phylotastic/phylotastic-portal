@@ -1,3 +1,5 @@
+<% leaves = NewickTree.new(newick.to_s).root.leaves.count rescue 'undetermined' %>
+
 <div>
   <!-- <div id="tree-in-newick"></div> -->
 
@@ -8,18 +10,19 @@
     <div class="row">
       <div class="col-sm-3" id="original-tree">
         <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree</label>
+        <a href="/trees/<%= tree.id %>"></a>
       </div>
       
       <div class="col-sm-3" id="median-scaled-tree">        
-        <%= scaled_tree_state(tree.scaled_median, tree.median_scaled, "scaled_median") %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled</label>
+        <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median") %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
       </div>
       
       <div class="col-sm-3" id="ot-scaled-tree">
-        <%= scaled_tree_state(tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled</label>
+        <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
       </div>
       
       <div class="col-sm-3" id="sdm-scaled-tree">
-        <%= scaled_tree_state(tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled</label>
+        <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>
       </div>
     </div>
     
@@ -105,7 +108,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-              <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= sanitize_newick(tree) %></textarea>
+              <textarea style="word-break: break-all; min-height: 300px;" id="tree-in-string-format" class="form-control"><%= sanitize_newick(newick) %></textarea>
               <div style="text-align: right; margin-top: 10px;">
                 <div style="display: inline; margin-right: 20px;">
                   <%= check_box_tag 'show_ott', '1' %> 
@@ -174,11 +177,10 @@
   <% end %>
   
   <!-- Display information -->
-  <% leaves = NewickTree.new(@tree.unscaled.to_s).root.leaves.count rescue 'undetermined' %>
   <div class="row">
     <div class="alert alert-warning alert-dismissible col-md-6 col-md-offset-3" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= @tree.chosen_species.count %></strong> of <strong><%= JSON.parse(@tree.species).count %></strong> taxa in the input list were matched.
+      Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= tree.chosen_species.count %></strong> of <strong><%= JSON.parse(tree.species).count %></strong> taxa in the input list were matched.
     </div>
   </div>
   
@@ -257,6 +259,11 @@ $(document).ready(function() {
     $('#apply-customization').click();
   })
 
+  $( "input[name='tree-version']" ).on("change", function() {
+    window.location.href = $(this).siblings("a").attr("href");
+  });
+  
+  $( "#" + "<%= params[:method] %>" ).prop('checked',true);
   // $('#display-scaled-tree').click(function() {
   //   <% if @tree.sdm_scaled.empty? %>
   //     $('#scale-tree').modal();
@@ -290,10 +297,10 @@ $(document).ready(function() {
 
   $('#show_ott').change(function() {
     if($(this).is(':checked')) {
-      $('#tree-in-string-format').val("<%= tree.unscaled %>");
+      $('#tree-in-string-format').val("<%= newick %>");
       $('#save-tree-text').html('<%= link_to "Save", download_tree_path(format: :txt, id: tree.id, ott: true), class: "btn btn-primary" %>');
     } else {
-      $('#tree-in-string-format').val("<%= sanitize_newick(tree) %>");
+      $('#tree-in-string-format').val("<%= sanitize_newick(newick) %>");
       $('#save-tree-text').html('<%= link_to "Save", download_tree_path(format: :txt, id: tree.id, ott: false), class: "btn btn-primary" %>');   
     }
   })
