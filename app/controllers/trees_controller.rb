@@ -9,6 +9,10 @@ class TreesController < ApplicationController
       cookies[:view_hint] = { :value => "true", :expires => 1.month.from_now }
     end
     
+    if @tree.nil?
+      redirect_to root_path
+    end
+    
     if params[:method] == "scaled_sdm"
       @newick = @tree.sdm_scaled
     elsif params[:method] == "scaled_median"

@@ -39,7 +39,7 @@
     <div role="tabpanel" class="tab-pane active" id="tree-viewer">
       <% if @tree.unscaled.empty? %>
         <p class="bg-danger">
-          We could not extract the tree. Please leave us a message at <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further.
+          Tree retrieval failed, possibly due to a temporary interruption in back-end services. Please try again in an hour, and if that doesn't work, leave us <%= link_to "feedback", static_pages_feedback_path %>.
         </p>
       <% else %>        
         <%= render partial: "visualization", locals: { tree: @tree, newick: @newick } %>
