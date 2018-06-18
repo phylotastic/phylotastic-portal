@@ -3,9 +3,6 @@ class TreesController < ApplicationController
   include ListsHelper
   
   before_action :find_tree, only: [:destroy, :edit, :update, :show, :download]
-  
-  def index
-  end
 
   def show
     if cookies[:view_hint].nil?
@@ -24,7 +21,21 @@ class TreesController < ApplicationController
       else
         @link_to_list = list_path(@list)
       end
-    end    
+    end
+    
+    # scale tree
+    if @tree.scaled_sdm.nil?
+      sdm_job_id = SdmScalingWorker.perform_async(@tree.id)
+      @tree.update_attributes(scaled_sdm_job_id: sdm_job_id)
+    end
+    if @tree.scaled_median.nil?
+      median_job_id = MedianScalingWorker.perform_async(@tree.id)
+      @tree.update_attributes(scaled_median_job_id: median_job_id)
+    end
+    if @tree.scaled_ot.nil?
+      ot_job_id = OtScalingWorker.perform_async(@tree.id)
+      @tree.update_attributes(scaled_ot_job_id: ot_job_id)
+    end
   end
 
   def create

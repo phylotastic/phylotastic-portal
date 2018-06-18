@@ -15,4 +15,5 @@
 //= require jquery-ui/widgets/draggable
 //= require bootstrap
 //= require js.cookie
+//= require_tree ./channels
 //= require_tree .

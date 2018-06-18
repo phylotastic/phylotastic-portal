@@ -6,6 +6,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <%= action_cable_meta_tag %>
     
     <%= stylesheet_link_tag 'http://phylo.cs.nmsu.edu:8080/TreeViewer/demo/ete.css' %>
   </head>
@@ -20,6 +21,7 @@
     <%= yield %>
 
     <%= render 'layouts/footer' %>
+    
   </body>
 </html>
 

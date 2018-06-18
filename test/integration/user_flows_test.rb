@@ -13,7 +13,6 @@ class UserFlowsTest < ActionDispatch::IntegrationTest
     get "/"
     assert_select "a.dropdown-toggle", "Hello, " + users(:one).email
     # user = User.create(email: "t@m.c", password: "123456")
-    # binding.pry
     # assert_select "a.dropdown-toggle", "Hello, Guest"
     # sign_in user
     # sign_out user

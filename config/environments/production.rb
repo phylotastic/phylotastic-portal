@@ -86,6 +86,8 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.action_cable.url = "ws://128.123.63.10:3000/cable"
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   

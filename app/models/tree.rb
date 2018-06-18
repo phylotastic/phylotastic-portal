@@ -15,7 +15,25 @@ class Tree < ApplicationRecord
   
   def sdm_scaled
     begin
-      n = JSON.parse(self.scaled_sdm)["newick"]
+      n = JSON.parse(self.scaled_sdm)["scaled_tree"]
+      return n.nil? ? "" : n 
+    rescue
+      ""
+    end
+  end
+  
+  def median_scaled
+    begin
+      n = JSON.parse(self.scaled_median)["scaled_tree"]
+      return n.nil? ? "" : n 
+    rescue
+      ""
+    end
+  end
+  
+  def ot_scaled
+    begin
+      n = JSON.parse(self.scaled_ot)["scaled_tree"]
       return n.nil? ? "" : n 
     rescue
       ""

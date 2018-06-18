@@ -5,28 +5,25 @@
 
   <div class="tree-options-wrapper">
     <!-- First row in tree options -->
-    <div>
-      <div class="tree-view-options">
-        <button class="btn btn-default" id="display-scaled-tree">Switch to scaled tree</button>
-        <button class="btn btn-default hide" id="display-original-tree">Switch to original tree</button>
+    <div class="row">
+      <div class="col-sm-3" id="original-tree">
+        <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree</label>
       </div>
       
-      <div class="tree-view-options scaled-tree-options hide">
-        <!-- Button dropdown -->
-        <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" id="display-scaled-tree-by-method" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span data-toggle="tooltip" data-placement="top" title="Click to switch between methods">Displaying scaled tree</span>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <%= link_to workflows_scale_sdm_path(id: tree.id), remote: true do %> 
-                by sdm method<i class="spinner fa fa-spinner fa-spin"></i>
-              <% end %>
-            </li>
-          </ul>
-        </div>
+      <div class="col-sm-3" id="median-scaled-tree">        
+        <%= scaled_tree_state(tree.scaled_median, tree.median_scaled, "scaled_median") %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled</label>
       </div>
+      
+      <div class="col-sm-3" id="ot-scaled-tree">
+        <%= scaled_tree_state(tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled</label>
+      </div>
+      
+      <div class="col-sm-3" id="sdm-scaled-tree">
+        <%= scaled_tree_state(tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled</label>
+      </div>
+    </div>
+    
+    <div class="row">
       
       <div class="tree-view-options scaled-tree-options hide">
         <span class="cb-tree-viewer">
@@ -241,75 +238,6 @@
 </div>
 
 
-<div class="modal fade" id="scale-tree" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <p>No scaled tree found. Which method do you want to scale the tree?</p>
-        <ul>
-          <li>
-            <%= link_to workflows_scale_sdm_path(id: tree.id), remote: true do %> 
-              sdm method
-            <% end %>
-          </li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <div class="btn-group" role="group" aria-label="...">
-          <div class="btn-wrapper">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="tree-scaling-failed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        Sorry! We could not scale the tree. Please leave us a <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further.
-      </div>
-      <div class="modal-footer">
-        <div class="btn-group" role="group" aria-label="...">
-          <div class="btn-wrapper">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <%= link_to "Feedback", static_pages_feedback_path, class: "btn btn-default btn-primary" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--
-<div class="modal fade" id="tree-updated" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        Tree information updated
-      </div>
-      <div class="modal-footer">
-        <div class="btn-group" role="group" aria-label="...">
-          <div class="btn-wrapper">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <script type="text/javascript">
 $(document).ready(function() {
   
@@ -329,26 +257,26 @@ $(document).ready(function() {
     $('#apply-customization').click();
   })
 
-  $('#display-scaled-tree').click(function() {
-    <% if @tree.sdm_scaled.empty? %>
-      $('#scale-tree').modal();
-    <% else %>
-      current_tree_newick = "<%= @tree.sdm_scaled %>";
-      run_tree_action();
-      $('#display-original-tree').removeClass('hide');
-      $('.scaled-tree-options').removeClass('hide');
-      $(this).addClass('hide');
-    <% end %>
-  });
-
-  $('#display-original-tree').click(function() {
-    current_tree_newick = "<%= @tree.unscaled %>";
-    $('#branch').prop('checked', false);
-    run_tree_action();
-    $('#display-scaled-tree').removeClass('hide');
-    $('.scaled-tree-options').addClass('hide');
-    $(this).addClass('hide');
-  });
+  // $('#display-scaled-tree').click(function() {
+  //   <% if @tree.sdm_scaled.empty? %>
+  //     $('#scale-tree').modal();
+  //   <% else %>
+  //     current_tree_newick = "<%= @tree.sdm_scaled %>";
+  //     run_tree_action();
+  //     $('#display-original-tree').removeClass('hide');
+  //     $('.scaled-tree-options').removeClass('hide');
+  //     $(this).addClass('hide');
+  //   <% end %>
+  // });
+  //
+  // $('#display-original-tree').click(function() {
+  //   current_tree_newick = "<%= @tree.unscaled %>";
+  //   $('#branch').prop('checked', false);
+  //   run_tree_action();
+  //   $('#display-scaled-tree').removeClass('hide');
+  //   $('.scaled-tree-options').addClass('hide');
+  //   $(this).addClass('hide');
+  // });
   
   $('#revert').click(function() {
     $('#internal').prop('checked', false);
@@ -372,13 +300,5 @@ $(document).ready(function() {
   
 })
 
-//
-// $(".spinner").hide();
-//
-// $(document).ajaxStart(function() {
-//   $(".spinner").fadeIn('slow');
-// }).ajaxStop(function() {
-//     $(".spinner").hide();
-// });
 
 </script>

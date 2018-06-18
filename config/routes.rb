@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-
-  get 'workflows/scale_sdm'
-
+  
+  mount ActionCable.server => '/cable'
+  
   resources :trees, only: [:show, :update, :destroy] do
     member do
       get 'download'
