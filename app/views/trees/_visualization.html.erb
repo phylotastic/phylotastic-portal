@@ -1,4 +1,4 @@
-<% leaves = NewickTree.new(newick.to_s).root.leaves.count rescue 'undetermined' %>
+<% leaves = tips(newick) %>
 
 <div>
   <!-- <div id="tree-in-newick"></div> -->
@@ -9,7 +9,7 @@
     <!-- First row in tree options -->
     <div class="row">
       <div class="col-sm-3" id="original-tree">
-        <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree</label>
+        <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree (<%= leaves %>)</label>
         <a href="/trees/<%= tree.id %>"></a>
       </div>
       

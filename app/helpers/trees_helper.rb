@@ -21,6 +21,7 @@ module TreesHelper
   end
   
   def tips(nw)
-    NewickTree.new(nw.to_s).root.leaves.count rescue 'undetermined'
+    number = NewickTree.new(nw.to_s).root.leaves.count rescue '?'
+    number.to_s + " tips"
   end
 end
