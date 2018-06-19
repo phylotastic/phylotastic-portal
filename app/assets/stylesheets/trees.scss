@@ -19,12 +19,16 @@
   .tree-view-options {
     display: inline-block;
     margin-right: 20px;
-    .minicolors, .minicolors-theme-bootstrap {
-      display: inline-block;
-      width: 30px;
-    }
     select {
       font-size: 20px;
+    }
+  }
+  
+  .row {
+    .col-sm-3 {
+      div ~ div {
+        padding-left: 20px;
+      }
     }
   }
 }
