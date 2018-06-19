@@ -29,7 +29,7 @@
       
       <!-- Second block -->
       <div class="col-sm-3">
-        <div>Customize view</div>
+        <div>Customize view (<%= link_to "Revert", "#", id: "revert" %>)</div>
         <div class="tree-view-options">
           <span class="cb-tree-viewer">
             <input type="checkbox" id="ladderize" class="custom-tree-fields">
@@ -77,11 +77,7 @@
           <button class="btn btn-default" onclick="load_tip_images();">Load all images</button>
           <span id="tree_image_message"></span>
         </div>
-        
-        <div class="">
-          <%= link_to "Revert", "#", class: "btn btn-default", id: "revert" %>
-        </div>
-        
+                
         <div class="">
           <!-- Button dropdown -->
           <div class="dropdown">
