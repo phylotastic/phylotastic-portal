@@ -37,4 +37,10 @@ class List < ApplicationRecord
   def trees
     Tree.where(list_id: self.id, list_from_service: false)
   end
+  
+  def destroy_trees
+    self.trees.each do |t|
+      t.destroy
+    end
+  end
 end

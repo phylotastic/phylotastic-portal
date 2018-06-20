@@ -29,7 +29,15 @@ class TreesController < ApplicationController
       @list_name = @list["list"]["list_title"]
       @link_to_list = list_path(@tree.list_id, from_service: true)
     else
-      @list = List.find(@tree.list_id)
+      # remove trees associated with deleted list
+      begin
+        @list = List.find(@tree.list_id)
+      rescue
+        @tree.destroy
+        redirect_to root_path
+        return
+      end
+      
       @list_name = @list.name
       if @list.nil?
         @link_to_list = nil

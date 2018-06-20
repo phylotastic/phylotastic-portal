@@ -107,6 +107,7 @@ class ListsController < ApplicationController
 
   def destroy
     unless @list.nil?
+      @list.destroy_trees
       @list.resource.destroy
       flash[:success] = @list.name + " is removed!"
     end
