@@ -12,7 +12,7 @@ class TreesController < ApplicationController
     if @tree.nil?
       redirect_to root_path
     end
-    
+        
     if params[:method] == "scaled_sdm"
       @newick = @tree.sdm_scaled
     elsif params[:method] == "scaled_median"
@@ -20,10 +20,13 @@ class TreesController < ApplicationController
     elsif params[:method] == "scaled_ot"
       @newick = @tree.ot_scaled
     else
-      @newick = @tree.unscaled
+      begin
+        @newick = @tree.unscaled
+      rescue
+        redirect_to root_path
+      end
     end
     
-    puts @newick
     if @tree.list_from_service
       @list = get_a_list_from_service(@tree.list_id)
       @list_name = @list["list"]["list_title"]
