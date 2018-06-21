@@ -13,9 +13,7 @@ class TaxonomiesController < ApplicationController
       location = @taxonomy.location.nil? ? false : true
       ncbi = @taxonomy.has_genome_in_ncbi.nil? ? false : true
       nb_species = @taxonomy.number_species.nil? ? false : true
-      
-      binding.pry
-      
+            
       if (location && ncbi)
         res_loc = Req.get(Rails.configuration.x.sv_Taxon_country_species + @taxonomy.taxon + "&country=" + Country.find(@taxonomy.country_id).name)
         res_ncbi = Req.get(Rails.configuration.x.sv_Taxon_genome_species + @taxonomy.taxon)
