@@ -7,7 +7,7 @@
     <div class="row">
       
       <!-- First block -->
-      <div class="col-sm-3">
+      <div class="col-sm-3" id="tree-version-wrapper">
         <div>Tree version</div>
         <div id="original-tree">
           <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree (<%= leaves %>)</label>
@@ -17,14 +17,17 @@
         <div id="median-scaled-tree">        
           <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median") %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
         </div>
+        
+        <% if Rails.env == "development" %>
+          <div id="ot-scaled-tree">
+            <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
+          </div>
       
-        <div id="ot-scaled-tree">
-          <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
-        </div>
-      
-        <div id="sdm-scaled-tree">
-          <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>
-        </div>
+          <div id="sdm-scaled-tree">
+            <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>
+          </div>
+        <% end %>
+        
       </div>
       
       <!-- Second block -->

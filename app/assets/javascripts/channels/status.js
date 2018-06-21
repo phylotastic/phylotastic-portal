@@ -63,7 +63,9 @@ App.messages = App.cable.subscriptions.create (
         // console.log(leaves);
         // console.log(tips);
       } else {
-        html = "<div class='alert alert-danger alert-dismissible' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>";
+        $('#tree-version-wrapper').removeClass("col-sm-3").addClass("col-sm-6");
+        html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>";
+        tips = "?";
       }
       
       // console.log(parsed);
