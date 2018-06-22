@@ -78,7 +78,12 @@ App.messages = App.cable.subscriptions.create (
       } else if (parsed["method"] == "scaled_median") {
         $("#median-scaled-tree .scaled-tree-context-wrapper").html(html);
         $("#median-scaled-tree label").text("Median scaled (" + tips + " tips)");
+      
+      } else if (parsed["method"] == "scaled_ot") {
+        $("#ot-scaled-tree .scaled-tree-context-wrapper").html(html);
+        $("#ot-scaled-tree label").text("OT scaled (" + tips + " tips)");
       }
+      
       $( "#" + parsed["method"] ).change(function() {
         window.location.href = $(this).siblings("a").attr("href");
       });
