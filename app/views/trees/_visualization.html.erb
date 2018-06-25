@@ -11,20 +11,20 @@
         <div>Tree version</div>
         <div id="original-tree">
           <input type="radio" name="tree-version" id="original" value="original" checked> <label for="original">Unscaled tree (<%= leaves %>)</label>
-          <a href="/trees/<%= tree.id %>"></a>
+          <a href="/trees/<%= tree.id %>?x=2"></a>
         </div>
       
         <div id="median-scaled-tree">        
-          <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median") %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
+          <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median", @x) %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
         </div>
         
         <% if Rails.env == "development" %>
           <div id="ot-scaled-tree">
-            <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot") %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
+            <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot", @x) %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
           </div>
       
           <div id="sdm-scaled-tree">
-            <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm") %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>
+            <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm", @x) %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>
           </div>
         <% end %>
         
@@ -185,13 +185,15 @@
     <%= f.hidden_field :action_sequence, id: "tree_state" %><br />
   <% end %>
   
-  <!-- Display information -->
-  <div class="row">
-    <div class="alert alert-warning alert-dismissible col-md-6 col-md-offset-3" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= tree.chosen_species.count %></strong> of <strong><%= JSON.parse(tree.species).count %></strong> taxa in the input list were matched.
+  <% if @x == "1" || @x.nil? %>
+    <!-- Display information -->
+    <div class="row">
+      <div class="alert alert-warning alert-dismissible col-md-6 col-md-offset-3" role="alert" id="tips-information-alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= tree.chosen_species.count %></strong> of <strong><%= JSON.parse(tree.species).count %></strong> taxa in the input list were matched.
+      </div>
     </div>
-  </div>
+  <% end %>
   
   <div id='img1' class="ete_image"></div>
 
@@ -314,6 +316,10 @@ $(document).ready(function() {
     }
   })
   
+  $("#tips-information-alert").fadeTo(5000, 500).slideUp(500, function(){
+    $("#tips-information-alert").slideUp(500);
+    $("#tips-information-alert").remove();
+  });
 })
 
 

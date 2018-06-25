@@ -5,6 +5,8 @@ class TreesController < ApplicationController
   before_action :find_tree, only: [:destroy, :edit, :update, :show, :download]
 
   def show
+    @x = params[:x]
+    
     if cookies[:view_hint].nil?
       cookies[:view_hint] = { :value => "true", :expires => 1.month.from_now }
     end
