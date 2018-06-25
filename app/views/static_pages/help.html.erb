@@ -12,7 +12,7 @@
   <div id="help-content">
     <div class="center">
       <div id="video">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/S7rGIlFo03o" frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/8Q5m0ldaGIg" frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
     
@@ -146,13 +146,14 @@
           </div>
           <div id="createlistfromweb-content" class="panel-collapse collapse in">
             <div class="panel-body">
-            <p>From <b>Home</b>, choose <b>Extract from web</b> from the menu at right, then enter a URL.  The resource will be processed in 3 steps: 
-        	<ol>
-        	<li>text will be extracted
-        	<li>name-like strings will be identified
-        	<li>the name-like strings will be matched against GlobalNames resources
-        	</ol>
-        	and the new list will appear in <b>My Lists</b>. </p>
+              <p>From <b>Home</b>, choose <b>Extract from web</b> from the menu at right, then enter a URL.  The resource will be processed in 3 steps: 
+              	<ol>
+                	<li>text will be extracted
+                	<li>name-like strings will be identified
+                	<li>the name-like strings will be matched against GlobalNames resources
+              	</ol>
+          	and the new list will appear in <b>My Lists</b>.
+              </p>
             </div>
           </div>
         </div>
@@ -168,18 +169,42 @@
           <div id="createlistfromtaxon-content" class="panel-collapse collapse in">
             <div class="panel-body">
             <p>From <b>Home</b>, choose <b>Choose taxon</b> from the menu at right, then enter a scientific name for a higher taxon such as a genus or family ("Canidae", "Felidae", "Passerina"). If desired, choose one of the options to get a subset of that taxon
-        	<ul>
-        	<li>location - checks iNaturalist for occurrence records in designated country
-        	<li>has genome in NCBI - checks NCBI for species with genome record
-        	<li>random subset - picks a random subset of species from the named taxon
-        	</ul>
-        	The new list will appear in <b>My Lists</b>. </p>
+          	<ul>
+            	<li>location - checks iNaturalist for occurrence records in designated country
+            	<li>has genome in NCBI - checks NCBI for species with genome record
+            	<li>random subset - picks a random subset of species from the named taxon
+          	</ul>
+          	The new list will appear in <b>My Lists</b>. </p>
       	
-        	<p><b>Important note</b>: You can choose a taxon of any size if you subset by "has genome in NCBI", but if you try to enter the name of a taxon with > 1000 species (e.g., "Aves", "Mammalia") and you are not subsetting by genome, <b>you will be disappointed</b>-- we just don't have the capacity for that yet.  </p>
+        	  <p><b>Important note</b>: You can choose a taxon of any size if you subset by "has genome in NCBI", but if you try to enter the name of a taxon with > 1000 species (e.g., "Aves", "Mammalia") and you are not subsetting by genome, <b>you will be disappointed</b>-- we just don't have the capacity for that yet.  </p>
             </div>
           </div>
         </div>
-
+        
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab">
+            <h4 id="gettreefromlist" class="panel-title">
+              <a role="button" data-toggle="collapse" href="#gettreefromlist-content">
+                Getting a tree and scaling it by time
+              </a>
+            </h4>
+          </div>
+          <div id="gettreefromlist-content" class="panel-collapse collapse in">
+            <div class="panel-body">
+              <p>
+                When viewing a list created by any method, pressing the "Get tree" button (bottom of screen) will extract a tree for the selected list items.  The relationships are extracted from Open Tree's synthetic tree, and the tree lacks branch lengths.  To add a geologic timescale to the tree, choose "Add time-scale" and then choose a method 
+              	<ul>
+              	  <li><b>Median</b>: Assign branch lengths proportional to time with DateLife's median summary method (very fast)</li>
+              	  <li><b>OpenTree</b>: Assign branch lengths proportional to time from a dated version of the Open Tree of Life (fast)</li>
+              	  <li><b>SDM</b>: Assign branch lengths proportional to time using DateLife's Supertree Distance Matrix method. This is very slow, and not practical for > 10 tips.</li>
+              	</ul>
+                All of these methods are implemented by DateLife, although the last one is just a wrapper around an OpenTree service. 
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        
       </div> <!-- end of instructions accordion --> 
     </div>
     
