@@ -108,5 +108,6 @@ Rails.application.configure do
     config.x.sv_Datelife_scale_tree = "http://phylo.cs.nmsu.edu:5009/phylotastic_ws/sc/scale"
     config.x.sv_Add_new_list = "http://phylo.cs.nmsu.edu:5007/phylotastic_ws/sls/insert_list"
     config.x.sv_OToL_scale_tree = "http://phylo.cs.nmsu.edu:5009/phylotastic_ws/sc/ot/scale"
+    config.x.sv_Taxon_popular_species = "http://phylo.cs.nmsu.edu:5006/phylotastic_ws/ts/popular_species?taxon="
   end
 end

@@ -33,6 +33,23 @@
       </tr>
     <% end %>
     
+    <% if list.resource_type == "Taxonomy" %>
+      <tr>
+        <th>Subset</th>
+        <td>
+          <% if !list.resource.location.nil? %>
+            Country: <%= list.resource.country.name %>
+          <% elsif !list.resource.has_genome_in_ncbi.nil? %>
+            Has genome in NCBI
+          <% elsif !list.resource.quantity.nil? %>
+            At random
+          <% elsif !list.resource.population.nil? %>
+            By popularity
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    
     <tr>
       <th>Created at</th>
       <td><%= list.created_at %></td>

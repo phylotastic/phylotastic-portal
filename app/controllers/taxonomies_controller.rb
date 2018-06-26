@@ -9,35 +9,22 @@ class TaxonomiesController < ApplicationController
       name = params[:name].empty? ? @taxonomy.taxon : params[:name]
       @list = @taxonomy.create_list(name: name, description: params[:description])
       flash[:success] = @list.name + " list is created!"
-
+      
       location = @taxonomy.location.nil? ? false : true
       ncbi = @taxonomy.has_genome_in_ncbi.nil? ? false : true
       nb_species = @taxonomy.number_species.nil? ? false : true
-            
-      if (location && ncbi)
-        res_loc = Req.get(Rails.configuration.x.sv_Taxon_country_species + @taxonomy.taxon + "&country=" + Country.find(@taxonomy.country_id).name)
-        res_ncbi = Req.get(Rails.configuration.x.sv_Taxon_genome_species + @taxonomy.taxon)
-            
-        new_res = JSON.parse(res_loc.to_s)
-        loc_species = new_res["species"]
-        mapping = []
-        
-        begin
-          JSON.parse(res_ncbi.to_s)["species"].each do |n|
-            if loc_species.include? n
-              mapping << n
-            end
-          end
-        rescue
-          mapping = []
-        end
-        
-        new_res["species"] = mapping
-        response = new_res
-      elsif location
+      population = @taxonomy.population.nil? ? false : true
+      
+      if location
         response = Req.get(Rails.configuration.x.sv_Taxon_country_species + @taxonomy.taxon + "&country=" + Country.find(@taxonomy.country_id).name)
       elsif ncbi
         response = Req.get(Rails.configuration.x.sv_Taxon_genome_species + @taxonomy.taxon)
+      elsif population
+        if @taxonomy.number_population <= 0
+          response = Req.get(Rails.configuration.x.sv_Taxon_popular_species + @taxonomy.taxon)
+        else
+          response = Req.get(Rails.configuration.x.sv_Taxon_popular_species + @taxonomy.taxon + "&num_species=" + @taxonomy.number_population.to_s)
+        end
       else
         response = Req.get(Rails.configuration.x.sv_Taxon_all_species + @taxonomy.taxon)
       end
@@ -63,7 +50,18 @@ class TaxonomiesController < ApplicationController
       when 404, 204
         extracted_response = {}
       when 200
-        species = response["species"] rescue []
+        if population
+          species = response["popular_species"].map{|a| a["name"]}
+        else
+          species = response["species"] rescue []
+        end
+        
+        if species.empty?
+          flash[:warning] = "No species found from provided taxon and subset"
+          redirect_to list_path(@list)
+          return
+        end
+        
         faker = {scientificNames: []}
         faker[:scientificNames].concat species
         extracted_response = faker
@@ -87,6 +85,6 @@ class TaxonomiesController < ApplicationController
   
     def taxonomy_params
       params.require(:taxonomy).permit(
-        :taxon, :location, :country_id, :has_genome_in_ncbi, :quantity, :number_species)
+        :taxon, :location, :country_id, :has_genome_in_ncbi, :quantity, :number_species, :population, :number_population)
     end
 end
