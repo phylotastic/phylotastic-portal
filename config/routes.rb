@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :trees, only: [:show, :update, :destroy] do
     member do
       get 'download'
+      get 'wf'
+      post "wf_update"
     end
   end
   

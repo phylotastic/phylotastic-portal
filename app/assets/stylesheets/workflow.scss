@@ -1,0 +1,17 @@
+// Place all the styles related to the Workflow controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.service-navigator, .o-navigator, .i-navigator, .d-navigator {
+  opacity: 0.4;
+  &:hover {
+    opacity: 0.95;
+    cursor: pointer;
+  }
+}
+
+#explanation {
+  right: 0;
+  font-family: "Oxygen", sans-serif;
+  font-size: 15px;
+}

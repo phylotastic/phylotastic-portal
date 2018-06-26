@@ -1,0 +1,10 @@
+$("#explanation").html('<%=h @explanation["paragraph"] %>');
+$('#navigator-form').html("<%= escape_javascript( render :partial => 'trees/workflow_navigator_form', :locals => { explanation: @explanation, tree: @tree } ) %>");
+$('#diagram').html("");
+
+explanation = JSON.parse("<%= @explanation.to_json %>".replace(/&quot;/g,'"'));
+console.log(explanation);
+
+draw_flowchart(explanation);
+add_navigator(explanation);
+$('#diagram svg').css("width", "100%");

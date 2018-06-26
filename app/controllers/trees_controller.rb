@@ -124,6 +124,34 @@ class TreesController < ApplicationController
     end
   end
   
+  def wf
+    @tree = Tree.first
+    workflow = File.new( Rails.root.join('app', 'views', 'trees', "workflow_plan_1.json"), 'rb' )
+    
+    response = RestClient.post( "0.0.0.0:5000/ontology_generate",
+      {
+        :file => workflow        
+      }
+    )
+    @explanation = JSON.parse(response)
+  end
+  
+  def wf_update
+    @tree = Tree.first
+    workflow = File.new( Rails.root.join('app', 'views', 'trees', "workflow_plan_1.json"), 'rb' )
+    
+    response = RestClient.post( "0.0.0.0:5000/traversing_ontology_generate",
+      {
+        :file => workflow        
+      }.merge(params.permit!)
+    )
+    @explanation = JSON.parse(response)
+    respond_to do |format|
+      format.js 
+    end
+    
+  end
+  
   private 
   
   def find_tree

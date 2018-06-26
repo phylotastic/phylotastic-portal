@@ -68,6 +68,10 @@ gem 'newick-ruby', '1.0.4'
 gem 'sidekiq', '5.1.3'
 gem 'sidekiq-status', '1.0.1'
 
+
+gem 'raphaeljs-rails'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

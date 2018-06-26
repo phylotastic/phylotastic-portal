@@ -1,0 +1,30 @@
+<%= form_tag("/trees/1/wf_update", method: :post, id: "traverser", remote: true) do %>
+  <%= text_field_tag('tree', tree.id) %>
+  <% explanation["steps"].each_with_index do |e, i| %>
+    <%= field_name = "step[" + i.to_s + "]" %>
+    <%= field_id   = "step-" + i.to_s %>
+    <%= text_field_tag field_name + "[name]", e.keys[0], id: field_id %>
+    <%= radio_button_tag field_name + "[direction]", "up", false, id: field_id + '-up' %>
+    <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
+    <br>
+  
+    <% e.values[0]["input"].each_with_index do |inp, idx| %>
+      <%= field_name = "input[" + i.to_s + "][" + idx.to_s + "]" %>
+      <%= field_id   = "input-" + i.to_s +  "-" + idx.to_s %>
+      <%= text_field_tag field_name + "[name]", inp, id: field_id %>
+      <%= radio_button_tag field_name + "[direction]", "up", false, id: field_id + '-up' %>
+      <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
+    <% end %>
+    <br>
+  
+    <% e.values[0]["output"].each_with_index do |outp, idx| %>
+      <%= field_name = "output[" + i.to_s + "][" + idx.to_s + "]" %>
+      <%= field_id   = "output-" + i.to_s +  "-" + idx.to_s %>
+      <%= text_field_tag field_name + "[name]", outp, id: field_id %>
+      <%= radio_button_tag field_name + "[direction]", "up", false, id: field_id + '-up' %>
+      <%= radio_button_tag field_name + "[direction]", "down", false, id: field_id + '-down' %>
+    <% end %>
+    <br>
+  <% end %>
+  <%= submit_tag("Submit") %>
+<% end %>
