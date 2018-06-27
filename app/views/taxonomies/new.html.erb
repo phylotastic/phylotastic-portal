@@ -51,12 +51,12 @@
 
         <div class="row subset-options">
           <div class="col-sm-1">
-            <%= f.check_box :population, {}, true, false %>
+            <%= f.check_box :popularity, {}, true, false %>
           </div>
           <div class="col-sm-3">
-            <%= f.number_field :number_population, in: 5..100, value: 20, class: "form-control" %>
+            <%= f.number_field :number_popularity, in: 5..100, value: 20, class: "form-control" %>
           </div>
-          <div class="col-sm-5"><span data-toggle="tooltip" title="If the number is unfilled, the default number of queried species is 20">species by population</span></div>
+          <div class="col-sm-5"><span data-toggle="tooltip" title="If the number is unfilled, the default number of queried species is 20">species by popularity</span></div>
         </div>
         
         <div class="row subset-options">

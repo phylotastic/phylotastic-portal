@@ -13,17 +13,17 @@ class TaxonomiesController < ApplicationController
       location = @taxonomy.location.nil? ? false : true
       ncbi = @taxonomy.has_genome_in_ncbi.nil? ? false : true
       nb_species = @taxonomy.number_species.nil? ? false : true
-      population = @taxonomy.population.nil? ? false : true
+      popularity = @taxonomy.popularity.nil? ? false : true
       
       if location
         response = Req.get(Rails.configuration.x.sv_Taxon_country_species + @taxonomy.taxon + "&country=" + Country.find(@taxonomy.country_id).name)
       elsif ncbi
         response = Req.get(Rails.configuration.x.sv_Taxon_genome_species + @taxonomy.taxon)
-      elsif population
-        if @taxonomy.number_population <= 0
+      elsif popularity
+        if @taxonomy.number_popularity <= 0
           response = Req.get(Rails.configuration.x.sv_Taxon_popular_species + @taxonomy.taxon)
         else
-          response = Req.get(Rails.configuration.x.sv_Taxon_popular_species + @taxonomy.taxon + "&num_species=" + @taxonomy.number_population.to_s)
+          response = Req.get(Rails.configuration.x.sv_Taxon_popular_species + @taxonomy.taxon + "&num_species=" + @taxonomy.number_popularity.to_s)
         end
       else
         response = Req.get(Rails.configuration.x.sv_Taxon_all_species + @taxonomy.taxon)
@@ -50,7 +50,7 @@ class TaxonomiesController < ApplicationController
       when 404, 204
         extracted_response = {}
       when 200
-        if population
+        if popularity
           species = response["popular_species"].map{|a| a["name"]}
         else
           species = response["species"] rescue []
@@ -85,6 +85,6 @@ class TaxonomiesController < ApplicationController
   
     def taxonomy_params
       params.require(:taxonomy).permit(
-        :taxon, :location, :country_id, :has_genome_in_ncbi, :quantity, :number_species, :population, :number_population)
+        :taxon, :location, :country_id, :has_genome_in_ncbi, :quantity, :number_species, :popularity, :number_popularity)
     end
 end
