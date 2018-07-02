@@ -17,7 +17,9 @@
           </div>
           <div>
             <small>
-              <%= p["popular_species"].map {|n| n["name"]}.take(3).join(", ") + ", ..."%>
+              <i>
+                <%= p["popular_species"].map {|n| n["name"]}.take(3).join(", ") + ", ..."%>
+              </i>
             </small>
           </div>
         </div>
