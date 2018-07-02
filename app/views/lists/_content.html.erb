@@ -1,11 +1,18 @@
 <div class="list-content-wrapper">
   <p class="list-title"><%= list_name %></p>
-
+    
   <% if names.empty? %>
+
     <% extracted_names = list.extracted_names %>
     <% if extracted_names.empty? %>
-      <p class="bg-danger">We could not extract any names from your provided resource</p>
-      <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% popularity = list.resource.popularity rescue false %>
+      <% if popularity %>
+        <% extracted = JSON.parse(list.extracted) rescue [] %>
+        <%= render partial: "taxonomies/select", locals: {taxonomy: list.resource} %>
+      <% else %>
+        <p class="bg-danger">We could not extract any names from your provided resource</p>
+        <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
+      <% end %>
     <% else %>
       <p class="bg-danger">We extracted names from the source but taxon name resolution failed. Please try again in an hour, and if the problem persists, leave us <%= link_to "feedback", static_pages_feedback_path %>.</p>
     <% end %>

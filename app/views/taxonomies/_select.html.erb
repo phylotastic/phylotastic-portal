@@ -1,0 +1,28 @@
+<% provide(:title, "Select a taxonomy") %>
+
+<div class="container">
+  We found more than 1 matches for the taxonomy <b><%= taxonomy.taxon %></b>. Select the taxonomy you want:
+  <%= form_tag(choose_taxonomy_path, html: {class: "form-horizontal"}) do %>
+    <% popularity_matches = JSON.parse(taxonomy.list.extracted)["result"] rescue [] %>
+    <% popularity_matches.each_with_index do |p, i| %>
+      <% next if p["popular_species"].count == 0 %>
+      <div class="row" style="margin: 10px 0 20px 0;">
+        <div class="col-sm-1" style="text-align: right;">
+          <% checked = i == 0 ? true : false %>
+          <%= radio_button_tag 'choose', i, checked %>
+        </div>
+        <div class="col-sm-7">
+          <div>
+            <%= label_tag "choose_" + i.to_s, p["matched_taxon"] %>
+          </div>
+          <div>
+            <small>
+              <%= p["popular_species"].map {|n| n["name"]}.take(3).join(", ") + ", ..."%>
+            </small>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%= submit_tag "Select", class: "btn btn-lg btn-primary" %>
+  <% end %>
+</div>

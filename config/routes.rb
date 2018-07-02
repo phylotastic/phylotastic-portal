@@ -28,7 +28,11 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :taxonomies, only: [:new, :create]
+  resources :taxonomies, only: [:new, :create] do
+    member do
+      post 'choose'
+    end
+  end
 
   get 'static_pages/help'
   get 'static_pages/feedback'

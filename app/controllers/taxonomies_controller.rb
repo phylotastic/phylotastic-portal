@@ -8,7 +8,6 @@ class TaxonomiesController < ApplicationController
     if @taxonomy.save
       name = params[:name].empty? ? @taxonomy.taxon : params[:name]
       @list = @taxonomy.create_list(name: name, description: params[:description])
-      flash[:success] = @list.name + " list is created!"
       
       location = @taxonomy.location.nil? ? false : true
       ncbi = @taxonomy.has_genome_in_ncbi.nil? ? false : true
@@ -51,7 +50,13 @@ class TaxonomiesController < ApplicationController
         extracted_response = {}
       when 200
         if popularity
-          species = response["popular_species"].map{|a| a["name"]}
+          if response["result"].count == 1
+            species = response["result"][0]["popular_species"].map{|a| a["name"]} rescue []
+          else
+            @list.update_attributes(extracted: response.to_json)
+            redirect_to list_path(@list)
+            return
+          end
         else
           species = response["species"] rescue []
         end
@@ -75,10 +80,30 @@ class TaxonomiesController < ApplicationController
                                   
       @list.update_attributes(resolved: resolved_response.to_json)
       
+      flash[:success] = @list.name + " list is created!"
       redirect_to list_path(@list)
     else
       render action: "new"
     end
+  end
+    
+  def choose
+    @list = current_or_guest_user.lists.select{ |l| l.id == params[:id].to_i }.first
+    choose = params[:choose].to_i
+    taxon = JSON.parse(@list.extracted)["result"][choose]
+    species = taxon["popular_species"].map{|a| a["name"]} rescue []
+    faker = {scientificNames: []}
+    faker[:scientificNames].concat species
+    extracted_response = faker
+    @list.update_attributes(extracted: extracted_response.to_json)
+    
+    resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
+                                  extracted_response.to_json,
+                                  :content_type => :json )
+                                
+    @list.update_attributes(resolved: resolved_response.to_json)
+    flash[:success] = @list.name + " list is created!"
+    redirect_to list_path(@list)
   end
   
   private

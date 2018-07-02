@@ -1,7 +1,7 @@
 <% provide(:title, "Create trees from taxonomy") %>
 
 <div class="container">
-  <h1>Extract names from online sources</h1>
+  <h1>Get a sample of species from a group</h1>
   <%= form_for @taxonomy, html: {class: "form-horizontal"} do |f| %>
 
     <div class="row">
@@ -53,10 +53,10 @@
           <div class="col-sm-1">
             <%= f.check_box :popularity, {}, true, false %>
           </div>
+          <div class="col-sm-4"><span data-toggle="tooltip" title="If the number is unfilled, the default number of queried species is 20">by popularity</span></div>
           <div class="col-sm-3">
             <%= f.number_field :number_popularity, in: 5..100, value: 20, class: "form-control" %>
           </div>
-          <div class="col-sm-5"><span data-toggle="tooltip" title="If the number is unfilled, the default number of queried species is 20">species by popularity</span></div>
         </div>
         
         <div class="row subset-options">
