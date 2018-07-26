@@ -86,7 +86,7 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.action_cable.url = "ws://localhost:3033/cable"
+  config.action_cable.url = "ws://phylo.cs.nmsu.edu:3033/cable"
   
 
   # Do not dump schema after migrations.
