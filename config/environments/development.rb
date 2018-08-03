@@ -61,7 +61,7 @@ Rails.application.configure do
   Rails.application.configure do
     config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5005/phylotastic_ws/sls/get_list"
     config.x.wct = "http://104.197.8.189/WCT/"
-    config.x.ete_js = "http://phylo.cs.nmsu.edu:8080/TreeViewer/demo/ete_dev2.js"
+    config.x.ete_js = "http://phylo.cs.nmsu.edu:8080/ete_dev2.js"
     config.x.ot_tree_uri = "https://tree.opentreeoflife.org/curator/study/view/"
     config.x.sv_GNRD_wrapper_URL = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
     config.x.sv_OToL_TNRS_wrapper = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/tnrs/ot/names"
