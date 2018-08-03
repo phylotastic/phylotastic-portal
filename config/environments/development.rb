@@ -54,7 +54,7 @@ Rails.application.configure do
   
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   
-  config.action_cable.url = "ws://localhost:3000/cable"
+  config.action_cable.url = "ws://localhost:3001/cable"
   
   Paperclip.options[:command_path] = "/usr/local/bin/"
   
