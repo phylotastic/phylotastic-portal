@@ -52,17 +52,19 @@ class TreesController < ApplicationController
     end
     
     # scale tree
-    if @tree.scaled_sdm.nil?
-      sdm_job_id = SdmScalingWorker.perform_async(@tree.id)
-      @tree.update_attributes(scaled_sdm_job_id: sdm_job_id)
-    end
-    if @tree.scaled_median.nil?
-      median_job_id = MedianScalingWorker.perform_async(@tree.id)
-      @tree.update_attributes(scaled_median_job_id: median_job_id)
-    end
-    if @tree.scaled_ot.nil?
-      ot_job_id = OtScalingWorker.perform_async(@tree.id)
-      @tree.update_attributes(scaled_ot_job_id: ot_job_id)
+    unless @tree.unscaled.empty?
+      if @tree.scaled_sdm.nil?
+        sdm_job_id = SdmScalingWorker.perform_async(@tree.id)
+        @tree.update_attributes(scaled_sdm_job_id: sdm_job_id)
+      end
+      if @tree.scaled_median.nil?
+        median_job_id = MedianScalingWorker.perform_async(@tree.id)
+        @tree.update_attributes(scaled_median_job_id: median_job_id)
+      end
+      if @tree.scaled_ot.nil?
+        ot_job_id = OtScalingWorker.perform_async(@tree.id)
+        @tree.update_attributes(scaled_ot_job_id: ot_job_id)
+      end
     end
   end
 
@@ -86,6 +88,20 @@ class TreesController < ApplicationController
                                      {"taxa": chosen_species}.to_json,
                                      :content_type => :json,
                                      :accept => :json )
+    
+    if extracted_response.empty?
+     error = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
+                                     {"taxa": chosen_species}.to_json,
+                                     { 
+                                       :content_type => :json,
+                                       :accept => :json
+                                     },
+                                     true )
+     fail_record = Failure.last.id
+    end     
+
+    @tree.update_attributes(error: error, possible_failure_record: fail_record)   
+
     @tree.tree = extracted_response.to_json
     if @tree.save
       redirect_to @tree

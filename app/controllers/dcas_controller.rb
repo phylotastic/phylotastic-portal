@@ -42,8 +42,18 @@ class DcasController < ApplicationController
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,
                                     :content_type => :json )
-                                  
-      @list.update_attributes(resolved: resolved_response.to_json)
+      
+      if resolved_response.empty?
+        error = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
+                          extracted_response.to_json,
+                          {:content_type => :json},
+                          true )
+        fail_record = Failure.last.id
+      end     
+
+      @list.update_attributes(resolved: resolved_response.to_json, 
+                              resolving_error: error, 
+                              possible_failure_record: fail_record)   
       
       redirect_to list_path(@list)
     else

@@ -14,7 +14,10 @@
         <p class="bg-danger">Please leave us a message in <%= link_to "feedback", static_pages_feedback_path %> so we can investigate your case further. We appreciate your help. </p>
       <% end %>
     <% else %>
-      <p class="bg-danger">We extracted names from the source but taxon name resolution failed. Please try again in an hour, and if the problem persists, leave us <%= link_to "feedback", static_pages_feedback_path %>.</p>
+      <p class="bg-danger">
+        We extracted names from the source but we can not resolve the names. </br>
+        <%= JSON.parse(list.resolving_error)["message"] %>.</br>
+        <%= link_to "Feedback", static_pages_feedback_path %>.</p>
     <% end %>
   <% else %>
     <ul class="nav nav-tabs" role="tablist">

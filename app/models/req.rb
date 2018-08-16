@@ -9,7 +9,7 @@ class Req < ActiveRecord::Base
       res = RestClient.post( url, data, header)
       JSON.parse(res)
     rescue RestClient::ExceptionWithResponse => e
-      Failure.create(url: url, data: data, response: e.response)
+      f = Failure.create(url: url, data: data, response: e.response)
       puts e.response
       logger.info "Error: POST #{url}\n#{data}\n#{header}"
       logger.info e.backtrace
