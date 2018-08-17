@@ -39,9 +39,12 @@
     <div role="tabpanel" class="tab-pane active" id="tree-viewer">
       <% if @tree.unscaled.empty? %>
         <p class="bg-danger">
-          Tree retrieval failed.</br>
-          <%= @tree.error %></br>
-          <%= link_to "Feedback", static_pages_feedback_path %>.
+          <% if @tree.error.include? "Not enough valid node ids provided to construct a subtree" %>
+            Getting a tree from this list failed because we could not find enough taxa in OpenTree's synthetic tree (at least 2 are needed). This usually means that your list includes taxa that are extinct or have an uncertain placement. Try another source of names.</br>
+          <% else %>
+            <%= JSON.parse(@tree.error)["message"] rescue "" %></br>
+          <% end %>
+          <%= link_to "Feedback", static_pages_feedback_path %>
         </p>
       <% else %>        
         <%= render partial: "visualization", locals: { tree: @tree, newick: @newick } %>

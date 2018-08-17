@@ -15,9 +15,12 @@
       <% end %>
     <% else %>
       <p class="bg-danger">
-        We extracted names from the source but we can not resolve the names. </br>
-        <%= JSON.parse(list.resolving_error)["message"] %>.</br>
-        <%= link_to "Feedback", static_pages_feedback_path %>.</p>
+        <% if list.resolving_error.include? "Currently more than 1000 names is not supported" %>
+          Your source has > 1000 names. To maintain performance, we currently do not process lists this large. Please find another source with fewer names.</br>
+        <% else %>
+          <%= JSON.parse(list.resolving_error)["message"] rescue "" %></br>
+        <% end %>
+        <%= link_to "Feedback", static_pages_feedback_path %></p>
     <% end %>
   <% else %>
     <ul class="nav nav-tabs" role="tablist">
