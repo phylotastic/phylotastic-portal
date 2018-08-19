@@ -90,6 +90,13 @@ class TreesController < ApplicationController
                                      :accept => :json )
     
     if extracted_response.empty?
+      extracted_response = Req.post( Rails.configuration.x.sv_Phylomatic_wrapper_Tree,
+                                       {"taxa": chosen_species}.to_json,
+                                       :content_type => :json,
+                                       :accept => :json )
+    end
+    
+    if extracted_response.empty?
      error = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {"taxa": chosen_species}.to_json,
                                      { 
