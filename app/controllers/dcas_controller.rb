@@ -37,11 +37,25 @@ class DcasController < ApplicationController
       t = data["list_species"].map {|s| s["scientific_name"]}.join(", ")
       
       extracted_response = Req.get( Rails.configuration.x.sv_GNRD_wrapper_text + t )
+      
+      if extracted_response.empty?
+        extracted_response = Req.get(Rails.configuration.x.sv_TaxonFinder_wrapper_text + t)
+      end
+      
       @list.update_attributes(extracted: extracted_response.to_json)
       
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,
                                     :content_type => :json )
+      
+      if resolved_response.empty?
+        extracted_for_gnr = extracted_response
+        extracted_for_gnr["fuzzy_match"]    = true
+        extracted_for_gnr["multiple_match"] = false
+        resolved_response = Req.post( Rails.configuration.x.sv_GNR_TNRS_wrapper,
+                                      extracted_for_gnr.to_json,
+                                      :content_type => :json )
+      end
       
       if resolved_response.empty?
         error = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
