@@ -18,7 +18,7 @@
         <% if list.resolving_error.include? "Currently more than 1000 names is not supported" %>
           Your source has > 1000 names. To maintain performance, we currently do not process lists this large. Please find another source with fewer names.</br>
         <% else %>
-          <%= JSON.parse(list.resolving_error)["message"] rescue "" %></br>
+          <%= JSON.parse(list.resolving_error)["message"] rescue "Try again later" %></br>
         <% end %>
         <%= link_to "Feedback", static_pages_feedback_path %></p>
     <% end %>
