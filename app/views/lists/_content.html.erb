@@ -15,7 +15,9 @@
       <% end %>
     <% else %>
       <p class="bg-danger">
-        <% if list.resolving_error.include? "Currently more than 1000 names is not supported" %>
+        <% if list.resolving_error.nil? %>
+          Please try again.
+        <% elsif list.resolving_error.include? "Currently more than 1000 names is not supported" %>
           Your source has > 1000 names. To maintain performance, we currently do not process lists this large. Please find another source with fewer names.</br>
         <% else %>
           <%= JSON.parse(list.resolving_error)["message"] rescue "Try again later" %></br>
