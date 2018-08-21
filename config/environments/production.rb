@@ -96,6 +96,7 @@ Rails.application.configure do
     config.x.public_lists_sv.url = "http://phylo.cs.nmsu.edu:5007/phylotastic_ws/sls/get_list"
     config.x.wct = "http://104.197.8.189/WCT/"
     config.x.ete_js = "http://phylo.cs.nmsu.edu:8080/ete.js"
+    config.x.ete_css = "http://phylo.cs.nmsu.edu:8080/ete.css"
     config.x.ot_tree_uri = "https://tree.opentreeoflife.org/curator/study/view/"
     config.x.sv_GNRD_wrapper_URL = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_url?url="
     config.x.sv_TaxonFinder_wrapper_URL = "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/tf/names_url?url="
