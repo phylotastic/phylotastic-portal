@@ -13,6 +13,7 @@ class TreesController < ApplicationController
     
     if @tree.nil?
       redirect_to root_path
+      return
     end
         
     if params[:method] == "scaled_sdm"
@@ -26,6 +27,7 @@ class TreesController < ApplicationController
         @newick = @tree.unscaled
       rescue
         redirect_to root_path
+        return
       end
     end
     
