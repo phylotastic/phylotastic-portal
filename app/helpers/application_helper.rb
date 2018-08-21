@@ -90,8 +90,8 @@ module ApplicationHelper
   # creates guest user by adding a record to the DB
   # with a guest name and email
   def create_guest_user
-    email_prov = ["example.com", "goo.com", "yah.com", "xfi.com", "nau.com", "pri.com"]
-    u = User.create(:email => "guest_#{Time.now.to_i}#{rand(99)}@#{email_prov.sample}")
+    email_prov = ["example.com", "goo.com", "yah.com", "xfi.com", "nau.com", "pri.com", "ste.com", "wal.com", "bre.com", "pho.com"]
+    u = User.create(:email => "guest_#{Time.now.to_i}#{rand(9999)}@#{email_prov.sample}")
     # u.skip_confirmation!
     u.save!(:validate => false)
     u
