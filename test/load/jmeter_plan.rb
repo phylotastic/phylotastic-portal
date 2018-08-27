@@ -45,8 +45,10 @@ test do
           'authenticity_token'                  => '${__urlencode(${authenticity_token})}',
           'tree[list_from_service]'             => 'false',
           'tree[name]'                          => 'lt',
-          'tree[species][Puijila darwini]'      => '1',
+          'tree[species][Elephas maximus]'      => '1',
           'tree[species][Osmotherium spelaeum]' => '1',
+          'tree[species][Sus scrofa domestica]' => '1',
+          'tree[species][Canis lupus pallipes]' => '1',
           'commit'                              => 'Get tree'
         }
       } do

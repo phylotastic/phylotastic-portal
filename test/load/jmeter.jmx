@@ -47,8 +47,8 @@
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">1</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1534862741000</longProp>
-        <longProp name="ThreadGroup.end_time">1534862741000</longProp>
+        <longProp name="ThreadGroup.start_time">1534863399000</longProp>
+        <longProp name="ThreadGroup.end_time">1534863399000</longProp>
         <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.duration">120</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
@@ -231,12 +231,12 @@
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">tree[name]</stringProp>
                 </elementProp>
-                <elementProp name="tree[species][Puijila darwini]" elementType="HTTPArgument">
+                <elementProp name="tree[species][Elephas maximus]" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.value">1</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">tree[species][Puijila darwini]</stringProp>
+                  <stringProp name="Argument.name">tree[species][Elephas maximus]</stringProp>
                 </elementProp>
                 <elementProp name="tree[species][Osmotherium spelaeum]" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
@@ -244,6 +244,20 @@
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">tree[species][Osmotherium spelaeum]</stringProp>
+                </elementProp>
+                <elementProp name="tree[species][Sus scrofa domestica]" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">tree[species][Sus scrofa domestica]</stringProp>
+                </elementProp>
+                <elementProp name="tree[species][Canis lupus pallipes]" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">1</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">tree[species][Canis lupus pallipes]</stringProp>
                 </elementProp>
                 <elementProp name="commit" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>

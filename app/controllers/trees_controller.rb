@@ -99,19 +99,18 @@ class TreesController < ApplicationController
     end
     
     if extracted_response.empty?
-     error = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
+     @tree.error = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {"taxa": chosen_species}.to_json,
                                      { 
                                        :content_type => :json,
                                        :accept => :json
                                      },
                                      true )
-     fail_record = Failure.last.id
-    end     
-
-    @tree.update_attributes(error: error, possible_failure_record: fail_record)   
+     @tree.possible_failure_record = Failure.last.id
+    end
 
     @tree.tree = extracted_response.to_json
+    
     if @tree.save
       redirect_to @tree
     else
