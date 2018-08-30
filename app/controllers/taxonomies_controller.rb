@@ -74,6 +74,11 @@ class TaxonomiesController < ApplicationController
       
       @list.update_attributes(extracted: extracted_response.to_json)
       
+      if extracted_response[:scientificNames].empty?
+        redirect_to list_path(@list)
+        return
+      end
+      
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,
                                     :content_type => :json )
