@@ -7,6 +7,8 @@ class ListsController < ApplicationController
   include ListsHelper
   
   def show
+    response.set_header("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+        
     @from_service = false
     @is_private   = false
     @tree = current_or_guest_user.trees.build
@@ -94,6 +96,8 @@ class ListsController < ApplicationController
   end
 
   def index
+    response.set_header("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+    
     @my_lists = current_or_guest_user.lists
     @my_lists.sort_by!{ |m| m.name.downcase }
 
