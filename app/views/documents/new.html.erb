@@ -27,7 +27,7 @@
         <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "Method" %></span>
       <% end %>
       <div class="col-sm-3">
-        <%= select_tag("document[method]", options_for_select([['NetiNeti', "NetiNeti"], ['TaxonFinder', "TaxonFinder"], ["NetiNeti & TaxonFinder", "NetiNeti & TaxonFinder"]]), class: "form-control" ) %>
+        <%= select_tag("document[method]", options_for_select([["NetiNeti & TaxonFinder", "NetiNeti & TaxonFinder"], ['TaxonFinder', "TaxonFinder"], ['NetiNeti', "NetiNeti"]]), class: "form-control" ) %>
       </div>
     </div>
     

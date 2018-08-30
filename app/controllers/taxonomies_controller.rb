@@ -74,7 +74,7 @@ class TaxonomiesController < ApplicationController
       
       @list.update_attributes(extracted: extracted_response.to_json)
       
-      if extracted_response[:scientificNames].empty?
+      if extracted_response.nil?
         redirect_to list_path(@list)
         return
       end
