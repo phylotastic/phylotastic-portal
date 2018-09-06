@@ -192,6 +192,10 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         Retrieved a tree with <strong><%= leaves %></strong> tips. <strong><%= tree.chosen_species.count %></strong> of <strong><%= JSON.parse(tree.species).count %></strong> taxa in the input list were matched.
       </div>
+      <div class="alert alert-warning alert-dismissible col-md-6 col-md-offset-3" role="alert" id="">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        You can get the Newick string from <b>Export as: Text</b>. A graphical view will appear below.</br>
+      </div>
     </div>
   <% end %>
   

@@ -48,7 +48,7 @@
           <% end %>
           <%= link_to "Feedback", static_pages_feedback_path %>
         </p>
-      <% else %>        
+      <% else %>
         <%= render partial: "visualization", locals: { tree: @tree, newick: @newick } %>
       <% end %>
     </div>
