@@ -79,6 +79,9 @@ module ApplicationHelper
     guest_user.onpls.each do |d|
       d.update_attributes(user_id: current_user.id)
     end
+    guest_user.cns.each do |d|
+      d.update_attributes(user_id: current_user.id)
+    end
     guest_user.taxonomies.each do |d|
       d.update_attributes(user_id: current_user.id)
     end
