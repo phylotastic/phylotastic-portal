@@ -1,0 +1,9 @@
+cattle
+cat
+goat
+pig
+sheep
+duck
+chicken
+horse
+domestic dog

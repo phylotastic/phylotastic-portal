@@ -27,7 +27,8 @@
       <div class="modal-body">
         <div class="panel panel-primary emphasize-panel">
           <div class="list-group">
-            <%= link_to "I have a text file with one name per line", new_onpl_path, class:"list-group-item" %>
+            <%= link_to raw("I have a text file with one <strong>scientific name</strong> per line"), new_onpl_path, class:"list-group-item" %>
+            <%= link_to raw("I have a text file with one <strong>common name</strong> per line"), new_cn_path, class:"list-group-item" %>
             <%= link_to "I have a Darwin Core Archive (.zip)", new_dca_path, class:"list-group-item" %>
           </div>
         </div>

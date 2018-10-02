@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   mount ActionCable.server => '/cable'
   
   resources :trees, only: [:show, :update, :destroy] do
@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]
   resources :onpls, only: [:new, :create]
+  resources :cns, only: [:new, :create]
   resources :dcas, only: [:new, :create] do
     member do
       get 'publish'

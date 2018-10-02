@@ -115,5 +115,8 @@ Rails.application.configure do
     config.x.sv_Add_new_list = "http://phylo.cs.nmsu.edu:5007/phylotastic_ws/sls/insert_list"
     config.x.sv_OToL_scale_tree = "http://phylo.cs.nmsu.edu:5009/phylotastic_ws/sc/ot/scale"
     config.x.sv_Taxon_popular_species = "http://phylo.cs.nmsu.edu:5006/phylotastic_ws/ts/popular_species?taxon="
+    config.x.sv_NCBI_common_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/ncbi/scientific_names"
+    config.x.sv_ITIS_common_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/itis/scientific_names"
+    config.x.sv_TROPICOS_commmon_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/tpcs/scientific_names"
   end
 end

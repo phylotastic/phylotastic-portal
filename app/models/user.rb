@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many  :links, dependent: :destroy
   has_many  :documents, dependent: :destroy
   has_many  :onpls, dependent: :destroy
+  has_many  :cns, dependent: :destroy
   has_many  :dcas, dependent: :destroy
   has_many  :taxonomies, dependent: :destroy
   has_many  :trees, dependent: :destroy
@@ -24,6 +25,9 @@ class User < ApplicationRecord
     
     onpl_resource_lists = self.onpls.map {|l| l.list}
     lists.concat onpl_resource_lists
+
+    cn_resource_lists = self.cns.map {|l| l.list}
+    lists.concat cn_resource_lists
 
     dca_resource_lists = self.dcas.map {|l| l.list}
     lists.concat dca_resource_lists
