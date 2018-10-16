@@ -120,7 +120,7 @@ try {
   var common_name_tips = "<%=j @tree.common_name_tips.to_json.html_safe %>";
   var tree_id = "<%= @tree.id %>";
   var tree_newick = "<%= sanitize_newick(@newick) %>";
-  get_tree_image( tree_id, tree_newick, "#img1", common_name_tips, 0, 0);
+  get_tree_image(tree_id, tree_newick, "#img1", common_name_tips, 0, 0);
   run_tree_action();
 }
 catch(err) {

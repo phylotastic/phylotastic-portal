@@ -70,7 +70,11 @@ class TreesController < ApplicationController
     end
     
     # get common names for tree tips
-    if @tree.list.resource.class.name != "Cn" && @tree.common_name_tips[:tip_list].empty?
+    if @tree.list.nil? || @tree.list.resource.class.name == "Cn"
+      return
+    end
+    
+    if @tree.common_name_tips[:tip_list].empty?
       cn_id = CommonNameWorker.perform_async(@tree.id)
       @tree.update_attributes(common_name_mapping_job_id: cn_id)
     end

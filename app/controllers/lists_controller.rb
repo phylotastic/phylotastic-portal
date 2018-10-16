@@ -2,8 +2,7 @@ class ListsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:download]
   
   before_action :find_list, only: [:destroy, :edit, :update, :resolve_names, :download]
-  
-  
+    
   include ListsHelper
   
   def show

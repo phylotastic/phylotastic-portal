@@ -56,22 +56,17 @@ App.messages = App.cable.subscriptions.create (
       
       if (parsed["method"] == "common_names") {
         if (this.success_get_common_names(parsed["response"])) {
-          console.log(parsed["response"]);
+          // console.log(parsed["response"]);
           tip_list = [];
           tips = parsed["response"]["result"]["tip_list"];
           for (i=0; i<tips.length; i++) {
             x = {};
             x["common_name"] = tips[i]["common_names"];
-            if (tips[i]["scientific_name"][0] === null) {
-              x["scientific_names"] = [];
-            } else {
-              x["scientific_names"] = [tips[i]["scientific_name"]];
-            }            
+            x["scientific_names"] = [tips[i]["scientific_name"]];
             tip_list.push(x);
           }
           common_name_tips = {"tip_list": tip_list};
-          console.log(common_name_tips);
-          get_tree_image( tree_id, tree_newick, "#img1", common_name_tips, 0, 0);
+          get_tree_image(tree_id, tree_newick, "#img1", JSON.stringify(common_name_tips), 0, 0);
           $('#common_name_checkbox_holder .loading').addClass("hide");
           $('#common_name_checkbox_holder #common').removeClass("hide");
         } else {

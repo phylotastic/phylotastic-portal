@@ -1,10 +1,36 @@
 class Tree < ApplicationRecord
+  include ListsHelper
+  
   belongs_to :user
   
   has_attached_file :image, styles: { large: "800x600>", medium: "400x300>", thumb: "120x90>" }, default_url: "/missing.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
   
   def common_name_tips
+    # get tree from public list
+    if self.list.nil?
+      if self.common_name_mapping.nil?
+        list = get_a_list_from_service(self.list_id)
+        req = {}
+        req["result"] = {}
+        req["result"]["tip_list"] = []
+        tip_list = list["list"]["list_species"].map do |r|
+          a = {}
+          a["common_name"] = r["vernacular_name"].empty? ? [""] : [r["vernacular_name"]]
+          a["scientific_names"] = [r["scientific_name"]]
+          b = {}
+          b["common_names"] = r["vernacular_name"].empty? ? [""] : [r["vernacular_name"]]
+          b["scientific_name"] = r["scientific_name"]
+          req["result"]["tip_list"].append(b)
+          a
+        end
+        self.update_attributes(common_name_mapping: req.to_json)
+        return {"tip_list": tip_list}
+      else
+        return convert_common_name
+      end
+    end
+    
     resource = self.list.resource
     case resource.class.name
     when "Cn"
@@ -20,23 +46,30 @@ class Tree < ApplicationRecord
       rescue
         return {"tip_list": []}
       end
+    when "Dca"
+      # TODO
+      return {"tip_list": []}
     else
       if self.common_name_mapping.nil?
         return {"tip_list": []}
       else
-        begin
-          mapping = JSON.parse(self.common_name_mapping)
-          tip_list = mapping["result"]["tip_list"].map do |r|
-            a = {}
-            a["common_name"] = r["common_names"]
-            a["scientific_names"] = r["scientific_name"].nil? ? [] : [r["scientific_name"]]
-            a
-          end
-          return {"tip_list": tip_list}
-        rescue
-          return {"tip_list": []}
-        end
+        return convert_common_name
       end
+    end
+  end
+  
+  def convert_common_name
+    begin
+      mapping = JSON.parse(self.common_name_mapping)
+      tip_list = mapping["result"]["tip_list"].map do |r|
+        a = {}
+        a["common_name"] = r["common_names"]
+        a["scientific_names"] = r["scientific_name"].nil? ? [] : [r["scientific_name"]]
+        a
+      end
+      return {"tip_list": tip_list}
+    rescue
+      return {"tip_list": []}
     end
   end
   
