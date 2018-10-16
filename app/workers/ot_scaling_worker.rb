@@ -6,8 +6,6 @@ class OtScalingWorker
   def perform(id)
     tree = Tree.find(id)
 
-    sleep 2
-
     scaled_response = Req.post( Rails.configuration.x.sv_OToL_scale_tree,
                                 {"newick": sanitize_newick(tree.unscaled)}.to_json,
                                 {

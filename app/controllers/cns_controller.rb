@@ -37,6 +37,8 @@ class CnsController < ApplicationController
                                      loaded_from_file.to_json,
                                      :content_type => :json )
       end
+
+      @cn.update_attributes(common_name_mapping: mapping_response.to_json)
       
       extracted_response = {}
       begin 
@@ -49,7 +51,7 @@ class CnsController < ApplicationController
         extracted_response["scientificNames"] = []
       end
       
-      @list.update_attributes(extracted: extracted_response.to_json)
+      @list.update_attributes(extracted: extracted_response.to_json)      
       
       resolved_response = Req.post( Rails.configuration.x.sv_OToL_TNRS_wrapper,
                                     extracted_response.to_json,

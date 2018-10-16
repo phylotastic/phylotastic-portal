@@ -23,6 +23,16 @@ module TreesHelper
     return "<div class='scaled-tree-context-wrapper'>#{html}</div>".html_safe
   end
   
+  def common_name_state(tree)
+    common_name_tips = tree.common_name_tips
+    if common_name_tips[:tip_list].empty?
+      html = "<input type=\"checkbox\" id=\"common\" class=\"custom-tree-fields hide\"><span class='center loading'><i class=\"fa fa-spin fa-spinner\" aria-hidden=\"true\"></i></span>"
+    else
+      html = "<input type=\"checkbox\" id=\"common\" class=\"custom-tree-fields\"><span class='center loading hide'><i class=\"fa fa-spin fa-spinner\" aria-hidden=\"true\"></i></span>"
+    end
+    return "<span id='common_name_checkbox_holder'>#{html}</span>".html_safe
+  end
+  
   def tips(nw)
     number = NewickTree.new(nw.to_s).root.leaves.count rescue '?'
     number.to_s + " tips"

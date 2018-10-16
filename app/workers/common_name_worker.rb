@@ -1,4 +1,4 @@
-class SdmScalingWorker
+class CommonNameWorker
   include Sidekiq::Worker
   include Sidekiq::Status::Worker
   include TreesHelper
@@ -6,20 +6,20 @@ class SdmScalingWorker
   def perform(id)
     tree = Tree.find(id)
 
-    scaled_response = Req.post( Rails.configuration.x.sv_Datelife_scale_tree,
-                                {"newick": sanitize_newick(tree.unscaled), method: "sdm"}.to_json,
+    mapping_response = Req.post( Rails.configuration.x.sv_tc,
+                                {"newick_tree": sanitize_newick(tree.unscaled)}.to_json,
                                 {
                                   :content_type => :json, 
                                   :accept => :json
                                 },
                                 true )
     
-    tree.update_attributes(scaled_sdm: scaled_response.to_json)
+    tree.update_attributes(common_name_mapping: mapping_response.to_json)
     
     ActionCable.server.broadcast "status_channel_#{tree.id}", 
     {
-      method: "scaled_sdm",
-      response: scaled_response
+      method: "common_names",
+      response: mapping_response
     }.to_json
     
   end

@@ -118,5 +118,6 @@ Rails.application.configure do
     config.x.sv_NCBI_common_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/ncbi/scientific_names"
     config.x.sv_ITIS_common_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/itis/scientific_names"
     config.x.sv_TROPICOS_commmon_name = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/cs/tpcs/scientific_names"
+    config.x.sv_tc = "http://phylo.cs.nmsu.edu:5013/phylotastic_ws/tc/common_names"
   end
 end

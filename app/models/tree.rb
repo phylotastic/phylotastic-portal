@@ -4,6 +4,42 @@ class Tree < ApplicationRecord
   has_attached_file :image, styles: { large: "800x600>", medium: "400x300>", thumb: "120x90>" }, default_url: "/missing.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
   
+  def common_name_tips
+    resource = self.list.resource
+    case resource.class.name
+    when "Cn"
+      begin
+        common_name_mapping = JSON.parse(resource.common_name_mapping)
+        tip_list = common_name_mapping["result"].map do |r|
+          a = {}
+          a["common_name"] = [r["searched_name"]]
+          a["scientific_names"] = r["matched_names"].map {|b| b["scientific_name"]}
+          a
+        end
+        return {"tip_list": tip_list}
+      rescue
+        return {"tip_list": []}
+      end
+    else
+      if self.common_name_mapping.nil?
+        return {"tip_list": []}
+      else
+        begin
+          mapping = JSON.parse(self.common_name_mapping)
+          tip_list = mapping["result"]["tip_list"].map do |r|
+            a = {}
+            a["common_name"] = r["common_names"]
+            a["scientific_names"] = r["scientific_name"].nil? ? [] : [r["scientific_name"]]
+            a
+          end
+          return {"tip_list": tip_list}
+        rescue
+          return {"tip_list": []}
+        end
+      end
+    end
+  end
+  
   def unscaled
     begin
       n = JSON.parse(self.tree)["newick"]
