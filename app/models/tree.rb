@@ -19,7 +19,7 @@ class Tree < ApplicationRecord
           a["common_name"] = r["vernacular_name"].empty? ? [""] : [r["vernacular_name"]]
           a["scientific_names"] = [r["scientific_name"]]
           b = {}
-          b["common_names"] = r["vernacular_name"].empty? ? [""] : [r["vernacular_name"]]
+          b["common_names"] = a["common_name"]
           b["scientific_name"] = r["scientific_name"]
           req["result"]["tip_list"].append(b)
           a
@@ -47,8 +47,22 @@ class Tree < ApplicationRecord
         return {"tip_list": []}
       end
     when "Dca"
-      # TODO
-      return {"tip_list": []}
+      data = Dca.process(resource)
+      req = {}
+      req["result"] = {}
+      req["result"]["tip_list"] = []
+      tip_list = data["list_species"].map do |r|
+        a = {}
+        a["common_name"] = r["vernacular_name"].empty? ? [""] : [r["vernacular_name"]]
+        a["scientific_names"] = [r["scientific_name"]]
+        b = {}
+        b["common_names"] = a["common_name"]
+        b["scientific_name"] = r["scientific_name"]
+        req["result"]["tip_list"].append(b)
+        a
+      end
+      self.update_attributes(common_name_mapping: req.to_json)
+      return {"tip_list": tip_list}
     else
       if self.common_name_mapping.nil?
         return {"tip_list": []}
