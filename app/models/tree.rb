@@ -58,11 +58,13 @@ class Tree < ApplicationRecord
         b = {}
         b["common_names"] = a["common_name"]
         b["scientific_name"] = r["scientific_name"]
-        req["result"]["tip_list"].append(b)
-        a
+        if b["common_names"][0] != ""
+          req["result"]["tip_list"].append(b) 
+          a
+        end
       end
       self.update_attributes(common_name_mapping: req.to_json)
-      return {"tip_list": tip_list}
+      return {"tip_list": tip_list.compact}
     else
       if self.common_name_mapping.nil?
         return {"tip_list": []}
