@@ -87,9 +87,9 @@ App.messages = App.cable.subscriptions.create (
       } else {
         $('#tree-version-wrapper').removeClass("col-sm-3").addClass("col-sm-6");
         if (parsed["method"] == "scaled_ot") {
-          html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>";
+          html = "<span class='alert alert-danger' role='alert'><i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='" + parsed["response"] + "'></i></span>";
         } else {              
-          html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>There is not enough time information in databases to get a summary chronogram for this set of taxa.</div>";
+          html = "<span class='alert alert-danger' role='alert'><i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='There is not enough time information in databases to get a summary chronogram for this set of taxa.'></i></span>";
         }
         tips = "?";
       }
