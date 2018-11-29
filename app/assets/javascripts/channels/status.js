@@ -86,7 +86,11 @@ App.messages = App.cable.subscriptions.create (
         // console.log(tips);
       } else {
         $('#tree-version-wrapper').removeClass("col-sm-3").addClass("col-sm-6");
-        html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>";
+        if (parsed["method"] == "scaled_ot") {
+          html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>" + parsed["response"] + "</div>";
+        } else {              
+          html = "<div class='alert alert-danger alert-dismissible width60' role='alert'><i class='fa fa-exclamation-triangle'></i>There is not enough time information in databases to get a summary chronogram for this set of taxa.</div>";
+        }
         tips = "?";
       }
       
