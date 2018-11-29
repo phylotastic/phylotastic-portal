@@ -85,11 +85,10 @@ App.messages = App.cable.subscriptions.create (
         // console.log(leaves);
         // console.log(tips);
       } else {
-        $('#tree-version-wrapper').removeClass("col-sm-3").addClass("col-sm-6");
         if (parsed["method"] == "scaled_ot") {
-          html = "<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='" + parsed["response"] + "'></i>";
+          html = "<i class='fa fa-exclamation-triangle alert alert-danger' data-toggle='tooltip' title='" + parsed["response"] + "'></i>";
         } else {              
-          html = "<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='There is not enough time information in databases to get a summary chronogram for this set of taxa.'></i>";
+          html = "<i class='fa fa-exclamation-triangle alert alert-danger' data-toggle='tooltip' title='There is not enough time information in databases to get a summary chronogram for this set of taxa.'></i>";
         }
         tips = "?";
       }
