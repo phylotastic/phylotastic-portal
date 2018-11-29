@@ -87,9 +87,9 @@ App.messages = App.cable.subscriptions.create (
       } else {
         $('#tree-version-wrapper').removeClass("col-sm-3").addClass("col-sm-6");
         if (parsed["method"] == "scaled_ot") {
-          html = "<span class='alert alert-danger' role='alert'><i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='" + parsed["response"] + "'></i></span>";
+          html = "<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='" + parsed["response"] + "'></i>";
         } else {              
-          html = "<span class='alert alert-danger' role='alert'><i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='There is not enough time information in databases to get a summary chronogram for this set of taxa.'></i></span>";
+          html = "<i class='fa fa-exclamation-triangle' data-toggle='tooltip' title='There is not enough time information in databases to get a summary chronogram for this set of taxa.'></i>";
         }
         tips = "?";
       }
@@ -109,6 +109,10 @@ App.messages = App.cable.subscriptions.create (
         $("#ot-scaled-tree .scaled-tree-context-wrapper").html(html);
         $("#ot-scaled-tree label").text("OT scaled (" + tips + " tips)");
       }
+      
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
       
       $( "#" + parsed["method"] ).change(function() {
         window.location.href = $(this).siblings("a").attr("href");
