@@ -2,6 +2,7 @@
 
 <div class="container">
   We found more than 1 matches for the taxonomy <b><%= taxonomy.taxon %></b>. Select the taxonomy you want:
+  <% binding.pry %>
   <%= form_tag(choose_taxonomy_path, html: {class: "form-horizontal"}) do %>
     <% popularity_matches = JSON.parse(taxonomy.list.extracted)["result"] rescue [] %>
     <% popularity_matches.each_with_index do |p, i| %>
