@@ -99,12 +99,11 @@
 
 <script type="text/javascript">
   $(".subset-options input[type='checkbox']").click(function() {
-    if ($(this).prop('checked') == true) {      
-      $(".subset-options input[type='checkbox']").prop('checked', false);
-    } else {
+    if ($(this).prop('checked') == true) {
       $(".subset-options input[type='checkbox']").prop('checked', false);
       $(this).prop('checked', true);
+    } else {
+      $(".subset-options input[type='checkbox']").prop('checked', false);
     }
-    
   });
 </script>
