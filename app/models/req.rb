@@ -54,7 +54,7 @@ class Req < ActiveRecord::Base
       print_in_logger([
         "GET #{url}", 
         "JSON parsing error",
-        resp
+        res
       ])
       return {}
     rescue
@@ -62,7 +62,7 @@ class Req < ActiveRecord::Base
       print_in_logger([
         "GET #{url}", 
         "New exception!!!",
-        resp
+        res
       ])
       return {}
     end
