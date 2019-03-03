@@ -2,7 +2,7 @@ require "Newick"
 
 module TreesHelper
   def sanitize_newick(nw)
-    nw.gsub(/_ott\d*/, '').gsub(/_/, ' ') 
+    nw.gsub(/_ott\d*/, '').gsub(/_/, ' ').gsub(/\sott\d*/, '')
   end
   
   def scaled_tree_state(tree, field_data, parsed, field_name, x)
