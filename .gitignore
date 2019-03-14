@@ -35,6 +35,7 @@ public/assets/
 public/system/
 
 # Ignore config
+config/secrets.yml
 config/config.yml
 config/initializers/devise.rb
 .env
