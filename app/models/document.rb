@@ -19,7 +19,7 @@ class Document < ApplicationRecord
   validates_attachment_presence :file
   validates :method, inclusion: { in: ["NetiNeti", "TaxonFinder", "NetiNeti & TaxonFinder"] },
                      presence: true
-    
+      
   def meta_origin
     file.original_filename
   end
