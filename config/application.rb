@@ -18,6 +18,6 @@ module PhylotasticPortal
     
     # add custom validators path
     config.autoload_paths += %W["#{config.root}/app/validators/"]
-    
+    config.assets.enabled = true
   end
 end
