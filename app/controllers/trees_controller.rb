@@ -15,13 +15,17 @@ class TreesController < ApplicationController
       redirect_to root_path
       return
     end
-        
+       
+    @display_scale = false 
     if params[:method] == "scaled_sdm"
       @newick = @tree.sdm_scaled
+      @display_scale = true
     elsif params[:method] == "scaled_median"
       @newick = @tree.median_scaled
+      @display_scale = true
     elsif params[:method] == "scaled_ot"
       @newick = @tree.ot_scaled
+      @display_scale = true
     else
       begin
         @newick = @tree.unscaled

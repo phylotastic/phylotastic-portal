@@ -67,10 +67,13 @@
 </div>
 
 <script type="text/javascript">
+var node_actions_list;
+var tree_actions;
+
 <% if @tree.action_sequence.nil? %>
 
-  var node_actions_list = '{}';
-  var tree_actions = '{}';
+  node_actions_list = '{}';
+  tree_actions = '{}';
 
   $('#internal').prop('checked', false);
   $('#ladderize').prop('checked', false);
@@ -80,9 +83,14 @@
 <% else %>
 
   <% tree_data = JSON.parse(@tree.action_sequence) %>
-  var node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
-  var tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
-
+  <% if @display_scale %>
+    node_actions_list = '{}';
+    tree_actions = '{}';
+  <% else %>
+    node_actions_list = '<%= raw tree_data["node_actions"].to_json %>';
+    tree_actions = '<%= raw tree_data["tree_actions"].to_json %>';
+  <% end %>
+    
   if ('<%= tree_data["tree_actions"]["show_internal_node"] %>' == "true") {    
     $('#internal').prop('checked', true);
   } else {
