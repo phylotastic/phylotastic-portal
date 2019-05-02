@@ -14,15 +14,13 @@
           <a href="/trees/<%= tree.id %>?x=2"></a>
         </div>
         
-        <% if Rails.env == "production" %>
-          <div id="median-scaled-tree">        
-            <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median", @x) %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
-          </div>
-        
-          <div id="ot-scaled-tree">
-            <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot", @x) %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
-          </div>
-        <% end %>
+        <div id="median-scaled-tree">        
+          <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median", @x) %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
+        </div>
+      
+        <div id="ot-scaled-tree">
+          <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot", @x) %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
+        </div>
       
         <!-- <% if Rails.env == "development" %>
           <div id="sdm-scaled-tree">
