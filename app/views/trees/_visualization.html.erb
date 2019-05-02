@@ -14,9 +14,13 @@
           <a href="/trees/<%= tree.id %>?x=2"></a>
         </div>
         
-        <!-- <% if Rails.env == "development" %>
-          The scaling feature is only available in production server because
-        <% end %> -->
+        <% if Rails.env == "development" %>
+          The scaling feature is only available in production server because 
+          - We don't have permission to create subdomain dev.phylo.cs.nmsu.edu, so the dev server has to run on regex location phylo.cs.nmsu.edu/dev/*
+          - Nginx is not allowed to configure nested location when the parent location is a regex location while the nested locations are prefix locations.
+          - ActionCable is configured in Nginx as a prefix location
+          => only 1 ActionCable can be run for both production and dev server. 
+        <% end %>
         
         <% if Rails.env == "production" %>
           <div id="median-scaled-tree">        
