@@ -194,7 +194,8 @@ class TreesController < ApplicationController
   private 
   
   def find_tree
-    @tree = current_or_guest_user.trees.select{ |l| l.id == params[:id].to_i }.first
+    @tree = Tree.select{ |l| l.id == params[:id].to_i }.first
+    # @tree = current_or_guest_user.trees.select{ |l| l.id == params[:id].to_i }.first
   end
   
   def tree_params
