@@ -7,6 +7,7 @@ class User < ApplicationRecord
    # :trackable, :validatable
          
   validates :email, presence: true
+  has_many  :text_entries, dependent: :destroy
   has_many  :links, dependent: :destroy
   has_many  :documents, dependent: :destroy
   has_many  :onpls, dependent: :destroy
@@ -17,6 +18,10 @@ class User < ApplicationRecord
   
   def lists
     lists = []
+    
+    text_entry_resource_lists = self.text_entries.map {|l| l.list}
+    lists.concat text_entry_resource_lists
+    
     online_resource_lists = self.links.map {|l| l.list}
     lists.concat online_resource_lists
 

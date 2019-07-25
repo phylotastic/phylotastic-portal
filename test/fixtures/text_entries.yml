@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  corpus: MyText
+  user: one
+
+two:
+  corpus: MyText
+  user: two

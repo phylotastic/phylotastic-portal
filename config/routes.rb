@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :text_entries, only: [:new, :create]
   resources :links, only: [:new, :create]
   resources :documents, only: [:new, :create]
   resources :onpls, only: [:new, :create]
