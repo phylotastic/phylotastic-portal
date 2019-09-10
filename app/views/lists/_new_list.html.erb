@@ -6,9 +6,9 @@
       </h3>
     </div>
     <div class="list-group center">
-      <%= link_to "Extract from text entry", new_text_entry_path, class:"list-group-item" %>
       <%= link_to "Extract from web", new_link_path, class:"list-group-item" %>
       <%= link_to "Extract from doc", new_document_path, class:"list-group-item" %>
+      <%= link_to "Enter my list", new_text_entry_path, class:"list-group-item" %>
       <!-- Button trigger modal -->
       <%= link_to "Upload my list", "#", class:"list-group-item", data: { toggle:"modal", target:"#uploadListModal"} %>
       <%= link_to "Choose taxon", new_taxonomy_path, class:"list-group-item" %>

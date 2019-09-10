@@ -1,7 +1,10 @@
-<% provide(:title, "Create trees from text entry") %>
+<% provide(:title, "Enter list manually") %>
 
 <div class="container">
-  <h1>Extract species names from text entry</h1>
+  <h1>Enter list manually</h1>
+  <p class="center">
+    Enter a list of names into the text box below. For best results, add a separator such as a comma or semi-colon after each name.
+  </p>
   <%= form_for @text_entry, html: {class: "form-horizontal"} do |f| %>
 
     <div class="row">
@@ -15,7 +18,7 @@
         <span data-toggle="tooltip" title="Required field"><%= fa_icon "asterisk", text: "Input text" %></span>
       <% end %>
       <div class="col-sm-7">
-        <%= f.text_area :corpus, placeholder: "For better accuracy, use colon or space for seperator. E.g. Canis lupus pallipes, Panthera pardus, Melursus ursinus, Macaca mulatta", class: "form-control", rows: 8 %>
+        <%= f.text_area :corpus, placeholder: "e.g., Canis lupus, Panthera pardus, Melursus ursinus, Macaca mulatta", class: "form-control", rows: 8 %>
       </div>
     </div>
     
