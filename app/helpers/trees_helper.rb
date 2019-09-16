@@ -26,7 +26,7 @@ module TreesHelper
   def common_name_state(tree)
     common_name_tips = tree.common_name_tips
     if common_name_tips[:tip_list].empty?
-      cn_id = CommonNameWorker.perform_async(@tree.id)
+      cn_id = CommonNameWorker.perform_async(tree.id)
       tree.update_attributes(common_name_mapping_job_id: cn_id)
       html = "<input type=\"checkbox\" id=\"common\" class=\"custom-tree-fields hide\"><span class='center loading'><i class=\"fa fa-spin fa-spinner\" aria-hidden=\"true\"></i></span>"
     else
