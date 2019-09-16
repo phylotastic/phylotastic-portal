@@ -76,7 +76,7 @@
                   <span class="small"><%= link_to "View OT tree", Rails.configuration.x.ot_tree_uri + s["PublicationIdentifier"], target: "_blank" %></span>
                 </div>
                 <div class="text-right">
-                  <span class="small">Curator: <%= s["Curator"]%></span>
+                  <span class="small">Curator: <%= [s["Curator"]].flatten.join(", ") %></span>
                 </div>
               </div>
             </div>
