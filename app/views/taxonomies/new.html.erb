@@ -67,7 +67,7 @@
             at random
           </div> 
           <div class="col-sm-4">
-            <%= f.select :number_species, options_for_select([10, 20, 30]), {}, class: "form-control" %>
+            <%= f.select :number_species, options_for_select([10, 20, 30]), {:include_blank => true}, class: "form-control" %>
           </div>
         </div>
       </div>
