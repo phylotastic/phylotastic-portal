@@ -67,6 +67,9 @@ module ApplicationHelper
     # put all your processing for transferring
     # from a guest user to a registered user
     # i.e. update votes, update comments, etc.
+    guest_user.text_entries.each do |d|
+      d.update_attributes(user_id: current_user.id)
+    end
     guest_user.links.each do |d|
       d.update_attributes(user_id: current_user.id)
     end
