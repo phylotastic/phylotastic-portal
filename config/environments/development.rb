@@ -85,5 +85,6 @@ Rails.application.configure do
     config.x.sv_ITIS_common_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/itis/scientific_names"
     config.x.sv_TROPICOS_commmon_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/tpcs/scientific_names"
     config.x.sv_tc = "https://phylo.cs.nmsu.edu/phylotastic_ws/tc/common_names"
+    config.x.sv_OToL_supported_studies = "https://phylo.cs.nmsu.edu/phylotastic_ws/md/get_studies?list_type=ottids&list="
   end
 end

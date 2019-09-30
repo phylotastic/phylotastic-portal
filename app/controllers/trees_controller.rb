@@ -2,7 +2,7 @@ class TreesController < ApplicationController
   include TreesHelper
   include ListsHelper
   
-  before_action :find_tree, only: [:destroy, :edit, :update, :show, :download]
+  before_action :find_tree, only: [:destroy, :edit, :update, :show, :download, :metadata]
 
   def show
     @x = params[:x]
@@ -103,8 +103,9 @@ class TreesController < ApplicationController
     
     extracted_response = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {
-                                       "taxa": chosen_species,
-                                       "metadata": true
+                                       "taxa": chosen_species
+                                       # ,
+                                       # "metadata": true
                                      }.to_json,
                                      :content_type => :json,
                                      :accept => :json )
@@ -112,8 +113,9 @@ class TreesController < ApplicationController
     if extracted_response.empty?
       extracted_response = Req.post( Rails.configuration.x.sv_Phylomatic_wrapper_Tree,
                                     {
-                                      "taxa": chosen_species,
-                                      "metadata": true
+                                      "taxa": chosen_species
+                                      # ,
+                                      # "metadata": true
                                     }.to_json,
                                        :content_type => :json,
                                        :accept => :json )
@@ -122,8 +124,9 @@ class TreesController < ApplicationController
     if extracted_response.empty?
      @tree.error = Req.post( Rails.configuration.x.sv_OToL_wrapper_Tree,
                                      {
-                                       "taxa": chosen_species,
-                                       "metadata": true
+                                       "taxa": chosen_species
+                                       # ,
+                                       # "metadata": true
                                      }.to_json,
                                      { 
                                        :content_type => :json,
@@ -196,6 +199,43 @@ class TreesController < ApplicationController
     @explanation = JSON.parse(response)
     respond_to do |format|
       format.js 
+    end
+  end
+  
+  def metadata
+    if @tree.studies.nil?
+      begin
+        otts = JSON.parse(@tree.tree)["newick"].scan(/ott\d+/)
+      rescue
+        respond_to do |format|
+          format.js { 
+            render template: "metadata_fail.js.erb" 
+            return
+          }
+        end
+      end
+      ids = otts.map {|o| o.match(/\d+/)[0]}
+      response = RestClient.get( Rails.configuration.x.sv_OToL_supported_studies + ids.join('|'))
+      @tree.update_attributes(studies: response)
+    end
+
+    @tree_metadata = JSON.parse(@tree.studies)
+    respond_to do |format|
+      format.js 
+    end
+  end
+  
+  def download_studies
+    return if params["p"].nil?
+    @bib = params["p"].keys().map do |doi|
+      begin
+        RestClient.get( doi, {accept: "text/bibliography; style=bibtex"}).body
+      rescue
+        ""
+      end
+    end
+    respond_to do |format|
+      format.js
     end
     
   end

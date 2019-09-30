@@ -1,0 +1,7 @@
+<% if @bib.nil? %>
+  Please select at least one study
+<% else %>
+  <% @bib.each do |b| %>
+    <%= b.to_s.force_encoding("UTF-8") %><br><br>
+  <% end %>
+<% end %>

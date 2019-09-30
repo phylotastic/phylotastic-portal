@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get 'download'
       get 'wf'
       post "wf_update"
+      get 'metadata'
     end
   end
   
@@ -40,7 +41,8 @@ Rails.application.routes.draw do
   get 'static_pages/help'
   get 'static_pages/feedback'
   get 'static_pages/about'
-
+  post 'trees/download_studies'
+  
   devise_for :users, controllers: { sessions:      "users/sessions", 
                                     passwords:     "users/passwords",
                                     registrations: "users/registrations",

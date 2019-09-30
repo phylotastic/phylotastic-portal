@@ -127,8 +127,8 @@ class Tree < ApplicationRecord
   
   def metadata
     begin
-      n = JSON.parse(self.tree)["tree_metadata"]
-      return n.nil? ? "" : n 
+      n = JSON.parse(self.studies)
+      return n.nil? ? "" : n
     rescue
       ""
     end

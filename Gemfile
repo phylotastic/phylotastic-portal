@@ -52,7 +52,7 @@ gem "paperclip", "6.0.0"
 gem 'pg', '0.18.4'
 
 # unzip files
-gem 'rubyzip', '1.2.1'
+gem 'rubyzip', ">= 1.3.0"
 
 # read sheet
 gem 'roo', '2.3.2'
@@ -74,6 +74,8 @@ gem 'raphaeljs-rails'
 gem 'redis-namespace', '1.6.0'
 
 gem 'rails_admin', '~> 1.3'
+
+gem 'bibtex-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -24,7 +24,7 @@
       </a>
     </li>
     <li role="presentation">
-      <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab">
+      <a href="#metadata" aria-controls="metadata" role="tab" data-toggle="tab" id="metatab">
         <%= fa_icon "info-circle", text: "Metadata" %>
       </a>
     </li>
@@ -153,6 +153,12 @@ function save_tree_state(node_actions_list, tree_actions, latest_action_node_id)
   $('#tree_state').val(JSON.stringify(tree_action_metadata));
   $('#tree_state_form').submit();
   tree_state_changed = false;
-}
+};
+
+$('#metatab').on('click', function (e) {
+  $.get( "<%= metadata_tree_path(@tree) %>" );
+  e.preventDefault();
+  $(this).tab('show');
+});
 
 </script>
