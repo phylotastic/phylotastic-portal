@@ -2,7 +2,7 @@ class TreesController < ApplicationController
   include TreesHelper
   include ListsHelper
   
-  before_action :find_tree, only: [:destroy, :edit, :update, :show, :download, :metadata]
+  before_action :find_tree, only: [:destroy, :edit, :update, :show, :download, :metadata, :download_tree_info]
 
   def show
     @x = params[:x]
@@ -237,7 +237,10 @@ class TreesController < ApplicationController
     respond_to do |format|
       format.js
     end
-    
+  end
+  
+  def download_tree_info
+    send_data @tree.info.to_json, :filename => @tree.name + "_info.json"
   end
   
   private 

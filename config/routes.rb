@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get 'wf'
       post "wf_update"
       get 'metadata'
+      get 'download_tree_info'
     end
   end
   

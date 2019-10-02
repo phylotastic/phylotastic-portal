@@ -1,27 +1,87 @@
-<% tree_metadata = tree.metadata %>
-
 <div class="container">
   <div class="row min-page-height">
     <div class="col-md-4">
-      <h3>Tree info</h3>
-      
-      <div id="info-wrapper">
-        <% if tree_metadata.empty? %>
-          <div class='center loading w-100'><i class="fa fa-spin fa-4x fa-spinner" aria-hidden="true"></i></div>
-        <% else %>
-          <%= render partial: "info", locals: { tree_metadata: tree_metadata } %>
-        <% end %>
+      <div class="row">
+        <div class="col-md-8">
+          <h3>Tree info</h3>
+        </div>
+        <div class="col-md-4">
+          <div id="download-tree-info-link">
+            <%= link_to "Save", download_tree_info_tree_path(tree, format: :txt), class: "btn btn-primary" %> 
+          </div>
+        </div>
       </div>
+            
+      <% tree_info = tree.info %>
+      <% tree_data = tree.data %>
+
+      <table class="table table-hover">
+        <tbody>
+          <tr>
+            <th>Topology ID</th>
+            <td><%= tree_info["topology_id"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Gene or species</th>
+            <td><%= tree_info["gene_or_species"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Rooted</th>
+            <td><%= tree_info["rooted"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Anastomosing</th>
+            <td><%= tree_info["anastomosing"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Consensus type</th>
+            <td><%= tree_info["consensus_type"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Branch length type</th>
+            <td><%= tree_info["branch_length_type"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Branch support type</th>
+            <td><%= tree_info["branch_support_type"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Character matrix</th>
+            <td><%= tree_info["character_matrix"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Alignment method</th>
+            <td><%= tree_info["alignment_method"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Inference method</th>
+            <td><%= tree_info["inference_method"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Number of tips</th>
+            <td><%= tree_info["num_tips"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Creation time</th>
+            <td><%= tree_data["creation_time"] rescue "NA" %></td>
+          </tr>
+          <tr>
+            <th>Execution time (second)</th>
+            <td><%= tree_data["execution_time"] rescue "NA" %></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   
     <div class="col-md-8">
       <h3>Supporting studies  <a href="#" data-toggle="tooltip" title="Published studies with trees relevant to deriving your Phylotastic tree (trees from OpenTree may lack supporting studies if they are based solely on taxonomy)."><i class="fa fa-question-circle" aria-hidden="true"></i></a></h3>
       
       <div id="studies-wrapper">
-        <% if tree_metadata.empty? %>
+        <% tree_studies = tree.supporting_studies %>
+        <% if tree_studies.empty? %>
           <div class='center loading w-100'><i class="fa fa-spin fa-4x fa-spinner" aria-hidden="true"></i></div>
         <% else %>
-          <%= render partial: "support_studies", locals: { tree_metadata: tree_metadata } %>
+          <%= render partial: "support_studies", locals: { tree_studies: tree_studies } %>
         <% end %>
       </div>
     </div>

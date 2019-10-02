@@ -1,4 +1,4 @@
-<% if tree_metadata.empty? || tree_metadata["studies"].empty? %>
+<% if tree_studies.empty? || tree_studies["studies"].empty? %>
   <p>No supporting studies were found. This typically happens when a tree is derived from the OpenTree taxonomy without phylogenetic refinement.</p>
 <% else %>
 
@@ -9,11 +9,15 @@
   <hr>
   
   <%= form_tag trees_download_studies_path, method: :post, remote: true do %>
-    <% tree_metadata["studies"].each_with_index do |s, i| %>
+    <% tree_studies["studies"].each_with_index do |s, i| %>
       <div class="study">
         <div class="study-title">
-          <div class="checkbox-wrapper">  
-            <%= check_box_tag("p[#{s["PublicationDOI"]}]", 1, checked = false, class: "select_pub") %>
+          <div class="checkbox-wrapper">
+            <% if s["PublicationDOI"].include? "dx.doi.org" %>
+              <%= check_box_tag("p[#{s["PublicationDOI"]}]", 1, checked = false, class: "select_pub") %>
+            <% else %>
+              <i class='fa fa-exclamation-triangle ' data-toggle='tooltip' title='Bibtex entry not found'></i>
+            <% end %>
           </div>
           <%= s["Publication"] %>
         </div>
@@ -51,7 +55,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-primary" download="citation.txt" id="citation-download">Save</a>
+        <a type="button" class="btn btn-primary" download="citation.bib" id="citation-download">Save</a>
       </div>
     </div>
   </div>
@@ -72,7 +76,10 @@
   });
   
   $("#citation-download").click(function() {
-    console.log("aaa");
     this.href = "data:text/plain;charset=UTF-8," + $('#citation-modal-content').text();
   });
+  
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 </script>
