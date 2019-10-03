@@ -2,12 +2,12 @@
   <div class="row min-page-height">
     <div class="col-md-4">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
           <h3>Tree info</h3>
         </div>
-        <div class="col-md-4">
+        <div class="right">
           <div id="download-tree-info-link">
-            <%= link_to "Save", download_tree_info_tree_path(tree, format: :txt), class: "btn btn-primary" %> 
+            <%= link_to "Save metadata (JSON)", download_tree_info_tree_path(tree, format: :txt), class: "btn btn-primary", data: {toggle:"tooltip"}, title: "Save metadata with study IDs. For bibliographic sources, use the Export feature" %> 
           </div>
         </div>
       </div>

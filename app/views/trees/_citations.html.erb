@@ -1,7 +1,12 @@
 <% if @bib.nil? %>
   Please select at least one study
 <% else %>
-  <% @bib.each do |b| %>
-    <%= b.to_s.force_encoding("UTF-8") %><br><br>
-  <% end %>
+  <textarea id="citation-text" class="form-control" rows="20">
+    <% @bib.each do |b| %>
+      <% str = b.to_s.force_encoding("UTF-8").strip() %>
+      <% atts = str.scan(/\w+\s=\s\{[^\}]*\}/) %>
+      <% head = str.match(/\@\w+\{\w*/)[0] %>
+<%= head + ",\n\t" + atts.join(",\n\t") + "}\n" %>
+    <% end %>
+  </textarea>
 <% end %>

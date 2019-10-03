@@ -2,10 +2,21 @@
   <p>No supporting studies were found. This typically happens when a tree is derived from the OpenTree taxonomy without phylogenetic refinement.</p>
 <% else %>
 
-  <span class="checkbox-wrapper">  
-    <%= check_box_tag("select_all", 1, checked = false, id: "select_all_pub") %> 
-  </span>
-  <a id="show-citation-button" href="#" data-toggle="modal" data-target="#citation">Show citations for selected studies</a>
+  <div class='row'>
+    <div class="col-md-6">
+      <span class="checkbox-wrapper">  
+        <%= check_box_tag("select_all", 1, checked = false, id: "select_all_pub") %> 
+      </span>
+      check (uncheck) all 
+    </div>
+    <div class="col-md-6">
+      <div class="align-right">
+        <span data-toggle="modal" data-target="#citation">
+          <a class="btn btn-primary" id="show-citation-button" href="#" data-toggle='tooltip' title='Generate BibTeX entries for these studies in a pop-up'>Export citations (BibTeX)</a>
+        </span>
+      </div>
+    </div>
+  </div>
   <hr>
   
   <%= form_tag trees_download_studies_path, method: :post, remote: true do %>
@@ -23,11 +34,11 @@
         </div>
         <div class="study-info">
           <div class="row">
-            <div class="col-md-2">
-              <span class="small"><%= link_to "Read paper", s["PublicationDOI"], target: "_blank" %></span>
+            <div class="col-md-4">
+              <span class="small"><%= link_to "Find this paper (via DOI)", s["PublicationDOI"], target: "_blank" %></span>
             </div>
-            <div class="col-md-2">
-              <span class="small"><%= link_to "View OT tree", Rails.configuration.x.ot_tree_uri + s["PublicationIdentifier"], target: "_blank" %></span>
+            <div class="col-md-4">
+              <span class="small"><%= link_to "View tree at OpenTree", Rails.configuration.x.ot_tree_uri + s["PublicationIdentifier"], target: "_blank" %></span>
             </div>
             <div class="text-right">
               <span class="small">Curator: <%= [s["Curator"]].flatten.join(", ") %></span>
@@ -63,7 +74,6 @@
 
 <script type="text/javascript">
   $("#show-citation-button").click(function() {
-    $('#citation-modal-content').html('<div class="center loading w-100"><i class="fa fa-spin fa-2x fa-spinner" aria-hidden="true"></i></div>');
     $('#studies-form-submit').submit();
   });
   
@@ -76,7 +86,7 @@
   });
   
   $("#citation-download").click(function() {
-    this.href = "data:text/plain;charset=UTF-8," + $('#citation-modal-content').text();
+    this.href = "data:text/plain;charset=UTF-8," + $('#citation-text').text().replace(/\n/g, "%0A");
   });
   
   $(function () {

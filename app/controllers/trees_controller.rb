@@ -229,7 +229,9 @@ class TreesController < ApplicationController
     return if params["p"].nil?
     @bib = params["p"].keys().map do |doi|
       begin
-        RestClient.get( doi, {accept: "text/bibliography; style=bibtex"}).body
+        b = RestClient.get( doi, {accept: "text/bibliography; style=bibtex"}).body
+        b.gsub!("}, ", "},\n").gsub!("=", " = ").strip!()
+        b
       rescue
         ""
       end
