@@ -55,3 +55,5 @@ production
 staging
 site.yml
 .DS_Store
+
+changes-to-use-docker.txt
