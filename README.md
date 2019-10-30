@@ -69,11 +69,20 @@ rails s -b 0.0.0.0
 
 ## Deployment by docker and kubernetes instructions
 
-* Deploy by kubernetes:
+* init swarm
 
+```
+docker swarm init
+```
+
+* install Postgre
+
+* deploy
 ```
 docker stack deploy --namespace portal --compose-file docker-compose.yml portal
 ```
+
+* check deployment
 
 ```
 $ kubectl get services

@@ -49,6 +49,7 @@ services:
       - redis
   sidekiq:
     # build: .
+    restart: always
     image: ducvan0212/portal:2.1
     command: 'bundle exec sidekiq'
     # volumes:
