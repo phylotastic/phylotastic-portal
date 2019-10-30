@@ -47,3 +47,14 @@ services:
     depends_on:
       - db
       - redis
+  sidekiq:
+    # build: .
+    image: ducvan0212/portal:2.1
+    command: 'bundle exec sidekiq'
+    # volumes:
+    #   - ../../:/myapp
+    # environment:
+    #   RAILS_ENV: "docker_development"
+    #   REDIS_URL: "redis://redis:6379/12"
+    depends_on:
+      - redis
