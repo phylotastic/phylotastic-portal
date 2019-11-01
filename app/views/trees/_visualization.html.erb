@@ -14,15 +14,7 @@
           <a href="/trees/<%= tree.id %>?x=2"></a>
         </div>
         
-        <% if Rails.env == "development" %>
-          The scaling feature is only available in production server because 
-          - We don't have permission to create subdomain dev.phylo.cs.nmsu.edu, so the dev server has to run on regex location phylo.cs.nmsu.edu/dev/*
-          - Nginx is not allowed to configure nested location when the parent location is a regex location while the nested locations are prefix locations.
-          - ActionCable is configured in Nginx as a prefix location
-          => only 1 ActionCable can be run for both production and dev server. 
-        <% end %>
         
-        <% if Rails.env == "production" %>
           <div id="median-scaled-tree">        
             <%= scaled_tree_state(tree, tree.scaled_median, tree.median_scaled, "scaled_median", @x) %> <label for="scaled_median" data-toggle="tooltip" title="Get tree branch lengths proportional to time with DateLife's median summary method (very fast)">Median scaled (<%= tips(tree.median_scaled) %>)</label>
           </div>
@@ -30,8 +22,7 @@
           <div id="ot-scaled-tree">
             <%= scaled_tree_state(tree, tree.scaled_ot, tree.ot_scaled, "scaled_ot", @x) %> <label for="scaled_ot" data-toggle="tooltip" title="Get tree branch lengths proportional to time from a dated Open Tree of Life (fast)">OT scaled (<%= tips(tree.ot_scaled) %>)</label>
           </div>
-        <% end %>
-      
+        
         <!-- <% if Rails.env == "development" %>
           <div id="sdm-scaled-tree">
             <%= scaled_tree_state(tree, tree.scaled_sdm, tree.sdm_scaled, "scaled_sdm", @x) %> <label for="scaled_sdm" data-toggle="tooltip" title="Get tree branch lengths proportional to time with SDM method (very slow, not practical for > 10 tips)">SDM scaled (<%= tips(tree.sdm_scaled) %>)</label>

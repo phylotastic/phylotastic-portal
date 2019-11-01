@@ -27,19 +27,23 @@
 version: '3'
 services:
   db:
-    image: postgres
+    image: postgres:9.4.1
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ""
       POSTGRES_DB: portal_development
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+    # change /Users/... to location of the database file if you want to persist data
+    # volumes:
+#       - ./tmp/db:/Users/ndvan/Library/Application Support/Postgres/var-9.4
+    ports:
+      - "5432:5432"
   redis:
     image: redis
   web:
     # build: .
     image: ducvan0212/portal:2.1
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    entrypoint: ./lib/init_db.sh
+    command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/phylotastic-portal
     ports:
@@ -49,7 +53,7 @@ services:
       - redis
   sidekiq:
     # build: .
-    restart: always
+    # restart: always
     image: ducvan0212/portal:2.1
     command: 'bundle exec sidekiq'
     # volumes:
