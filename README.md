@@ -102,7 +102,7 @@ docker service ls
 docker stack rm portal
 ```
 
-[comment]: <> (* check deployment
+<!---* check deployment
 
 ```
 $ kubectl get services
@@ -136,4 +136,4 @@ kubectl port-forward kubernetes-dashboard-5569448c6d-tb7mj 8443:8443 -n kube-sys
 kubectl get events
 ```
 
-* ...)
+* ...-->
