@@ -69,6 +69,16 @@ rails s -b 0.0.0.0
 
 ## Deployment by docker and kubernetes
 
+* clone project
+
+```
+git clone git@github.com:phylotastic/phylotastic-portal.git
+```
+
+```
+cd phylotastic-portal
+```
+
 * init swarm
 
 ```
