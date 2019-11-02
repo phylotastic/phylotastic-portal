@@ -39,6 +39,8 @@ services:
       - "5432:5432"
   redis:
     image: redis
+    ports:
+      - "6379:6379"
   web:
     # build: .
     image: ducvan0212/portal:2.1
@@ -50,16 +52,16 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      - redis
+      - sidekiq
   sidekiq:
     # build: .
     # restart: always
     image: ducvan0212/portal:2.1
-    command: 'bundle exec sidekiq'
+    env_file:
+      - .sidekiq_env
+    command: bundle exec sidekiq
     # volumes:
     #   - ../../:/myapp
-    # environment:
-    #   RAILS_ENV: "docker_development"
-    #   REDIS_URL: "redis://redis:6379/12"
     depends_on:
+      - db
       - redis
