@@ -7,7 +7,7 @@ ruby 2.5.0p0 (2017-12-25 revision 61468)* System dependencies
 
 ```
 rake test
-``` 
+```
 
 * For run tests in a file
 
@@ -79,7 +79,7 @@ docker swarm init
 
 * deploy
 ```
-docker stack deploy --namespace portal --compose-file docker-compose.yml portal
+docker stack deploy --compose-file docker-compose.yml portal
 ```
 
 * check deployment
@@ -116,4 +116,13 @@ kubectl port-forward kubernetes-dashboard-5569448c6d-tb7mj 8443:8443 -n kube-sys
 kubectl get events
 ```
 
-* ...
+* take down deployment:
+
+```
+docker stack rm portal
+```
+
+* Visit localhost:3000 from your browser to open the portal. If the first try isn't successful, wait a little bit then try again. Probably the db is initialized, so it is not ready to serve you in the first try.
+
+## Service changes
+Change corresponding service url in docker-composer file (in both web and sidekiq)

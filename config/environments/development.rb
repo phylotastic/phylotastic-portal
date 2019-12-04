@@ -51,40 +51,68 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-  
+
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  
+
   config.action_cable.url = "ws://localhost:3001/dev/cable"
-  
+
   Paperclip.options[:command_path] = "/usr/local/bin/"
-  
+
   Rails.application.configure do
-    config.x.public_lists_sv.url = "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/get_list"
-    config.x.wct = "http://104.197.8.189/WCT/"
-    config.x.ete_js = "https://phylo.cs.nmsu.edu/treeviewer/ete_dev2.js"
-    config.x.ete_css = "https://phylo.cs.nmsu.edu/treeviewer/ete.css"
-    config.x.ot_tree_uri = "https://tree.opentreeoflife.org/curator/study/view/"
-    config.x.sv_GNRD_wrapper_URL = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_url?url="
-    config.x.sv_TaxonFinder_wrapper_URL = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_url?url="
-    config.x.sv_OToL_TNRS_wrapper = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/names"
-    config.x.sv_GNR_TNRS_wrapper = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/gnr/names"
-    config.x.sv_OToL_TNRS_wrapper_get = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/resolve?names="
-    config.x.sv_GNRD_wrapper_file = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_file"
-    config.x.sv_GNRD_wrapper_text = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_text?text="
-    config.x.sv_TaxonFinder_wrapper_text = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_text?text="
-    config.x.sv_Taxon_country_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/country_species?taxon="
-    config.x.sv_Taxon_genome_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ncbi/genome_species?taxon="
-    config.x.sv_Taxon_all_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/all_species?taxon="
-    config.x.sv_OToL_wrapper_Tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/ot/tree"
-    config.x.sv_Phylomatic_wrapper_Tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/pm/tree"
-    config.x.sv_Datelife_scale_tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/scale"
-    config.x.sv_Add_new_list = "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/insert_list"
-    config.x.sv_OToL_scale_tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/ot/scale"
-    config.x.sv_Taxon_popular_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/oz/popular_species?taxon="
-    config.x.sv_NCBI_common_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/ncbi/scientific_names"
-    config.x.sv_ITIS_common_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/itis/scientific_names"
-    config.x.sv_TROPICOS_commmon_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/tpcs/scientific_names"
-    config.x.sv_tc = "https://phylo.cs.nmsu.edu/phylotastic_ws/tc/common_names"
-    config.x.sv_OToL_supported_studies = "https://phylo.cs.nmsu.edu/phylotastic_ws/md/get_studies?list_type=ottids&list="
+    # config.x.public_lists_sv.url = "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/get_list"
+    # config.x.wct = "http://104.197.8.189/WCT/"
+    # config.x.ete_js = "https://phylo.cs.nmsu.edu/treeviewer/ete_dev2.js"
+    # config.x.ete_css = "https://phylo.cs.nmsu.edu/treeviewer/ete.css"
+    # config.x.ot_tree_uri = "https://tree.opentreeoflife.org/curator/study/view/"
+    # config.x.sv_GNRD_wrapper_URL = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_url?url="
+    # config.x.sv_TaxonFinder_wrapper_URL = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_url?url="
+    # config.x.sv_OToL_TNRS_wrapper = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/names"
+    # config.x.sv_GNR_TNRS_wrapper = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/gnr/names"
+    # config.x.sv_OToL_TNRS_wrapper_get = "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/resolve?names="
+    # config.x.sv_GNRD_wrapper_file = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_file"
+    # config.x.sv_GNRD_wrapper_text = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_text?text="
+    # config.x.sv_TaxonFinder_wrapper_text = "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_text?text="
+    # config.x.sv_Taxon_country_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/country_species?taxon="
+    # config.x.sv_Taxon_genome_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ncbi/genome_species?taxon="
+    # config.x.sv_Taxon_all_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/all_species?taxon="
+    # config.x.sv_OToL_wrapper_Tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/ot/tree"
+    # config.x.sv_Phylomatic_wrapper_Tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/pm/tree"
+    # config.x.sv_Datelife_scale_tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/scale"
+    # config.x.sv_Add_new_list = "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/insert_list"
+    # config.x.sv_OToL_scale_tree = "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/ot/scale"
+    # config.x.sv_Taxon_popular_species = "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/oz/popular_species?taxon="
+    # config.x.sv_NCBI_common_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/ncbi/scientific_names"
+    # config.x.sv_ITIS_common_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/itis/scientific_names"
+    # config.x.sv_TROPICOS_commmon_name = "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/tpcs/scientific_names"
+    # config.x.sv_tc = "https://phylo.cs.nmsu.edu/phylotastic_ws/tc/common_names"
+    # config.x.sv_OToL_supported_studies = "https://phylo.cs.nmsu.edu/phylotastic_ws/md/get_studies?list_type=ottids&list="
+
+    config.x.public_lists_sv.url        = ENV["public_lists_sv_url"]
+    config.x.wct                        = ENV["wct"]
+    config.x.ete_js                     = ENV["ete_js"]
+    config.x.ete_css                    = ENV["ete_css"]
+    config.x.ot_tree_uri                = ENV["ot_tree_uri"]
+    config.x.sv_GNRD_wrapper_URL        = ENV["sv_GNRD_wrapper_URL"]
+    config.x.sv_TaxonFinder_wrapper_URL = ENV["sv_TaxonFinder_wrapper_URL"]
+    config.x.sv_OToL_TNRS_wrapper       = ENV["sv_OToL_TNRS_wrapper"]
+    config.x.sv_GNR_TNRS_wrapper        = ENV["sv_GNR_TNRS_wrapper"]
+    config.x.sv_OToL_TNRS_wrapper_get   = ENV["sv_OToL_TNRS_wrapper_get"]
+    config.x.sv_GNRD_wrapper_file       = ENV["sv_GNRD_wrapper_file"]
+    config.x.sv_GNRD_wrapper_text       = ENV["sv_GNRD_wrapper_text"]
+    config.x.sv_TaxonFinder_wrapper_text= ENV["sv_TaxonFinder_wrapper_text"]
+    config.x.sv_Taxon_country_species   = ENV["sv_Taxon_country_species"]
+    config.x.sv_Taxon_genome_species    = ENV["sv_Taxon_genome_species"]
+    config.x.sv_Taxon_all_species       = ENV["sv_Taxon_all_species"]
+    config.x.sv_OToL_wrapper_Tree       = ENV["sv_OToL_wrapper_Tree"]
+    config.x.sv_Phylomatic_wrapper_Tree = ENV["sv_Phylomatic_wrapper_Tree"]
+    config.x.sv_Datelife_scale_tree     = ENV["sv_Datelife_scale_tree"]
+    config.x.sv_Add_new_list            = ENV["sv_Add_new_list"]
+    config.x.sv_OToL_scale_tree         = ENV["sv_OToL_scale_tree"]
+    config.x.sv_Taxon_popular_species   = ENV["sv_Taxon_popular_species"]
+    config.x.sv_NCBI_common_name        = ENV["sv_NCBI_common_name"]
+    config.x.sv_ITIS_common_name        = ENV["sv_ITIS_common_name"]
+    config.x.sv_TROPICOS_commmon_name   = ENV["sv_TROPICOS_commmon_name"]
+    config.x.sv_tc                      = ENV["sv_tc"]
+    config.x.sv_OToL_supported_studies  = ENV["sv_OToL_supported_studies"]
   end
 end

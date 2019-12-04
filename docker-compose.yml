@@ -22,8 +22,8 @@
 #       - redis
 # volumes:
 #   pg:
-  
-  
+
+
 version: '3'
 services:
   db:
@@ -44,8 +44,36 @@ services:
   web:
     # build: .
     image: ducvan0212/portal:2.1
-    entrypoint: ./lib/init_db.sh
+    entrypoint: ./lib/init_container.sh
     command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    environment:
+      public_lists_sv_url: "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/get_list"
+      wct: "http://104.197.8.189/WCT/"
+      ete_js: "https://phylo.cs.nmsu.edu/treeviewer/ete_dev2.js"
+      ete_css: "https://phylo.cs.nmsu.edu/treeviewer/ete.css"
+      ot_tree_uri: "https://tree.opentreeoflife.org/curator/study/view/"
+      sv_GNRD_wrapper_URL: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_url?url="
+      sv_TaxonFinder_wrapper_URL: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_url?url="
+      sv_OToL_TNRS_wrapper: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/names"
+      sv_GNR_TNRS_wrapper: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/gnr/names"
+      sv_OToL_TNRS_wrapper_get: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/resolve?names="
+      sv_GNRD_wrapper_file: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_file"
+      sv_GNRD_wrapper_text: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_text?text="
+      sv_TaxonFinder_wrapper_tex: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_text?text="
+      sv_Taxon_country_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/country_species?taxon="
+      sv_Taxon_genome_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ncbi/genome_species?taxon="
+      sv_Taxon_all_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/all_species?taxon="
+      sv_OToL_wrapper_Tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/ot/tree"
+      sv_Phylomatic_wrapper_Tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/pm/tree"
+      sv_Datelife_scale_tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/scale"
+      sv_Add_new_list: "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/insert_list"
+      sv_OToL_scale_tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/ot/scale"
+      sv_Taxon_popular_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/oz/popular_species?taxon="
+      sv_NCBI_common_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/ncbi/scientific_names"
+      sv_ITIS_common_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/itis/scientific_names"
+      sv_TROPICOS_commmon_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/tpcs/scientific_names"
+      sv_tc: "https://phylo.cs.nmsu.edu/phylotastic_ws/tc/common_names"
+      sv_OToL_supported_studies: "https://phylo.cs.nmsu.edu/phylotastic_ws/md/get_studies?list_type=ottids&list="
     volumes:
       - .:/phylotastic-portal
     ports:
@@ -56,6 +84,34 @@ services:
   sidekiq:
     # build: .
     # restart: always
+    environment:
+      public_lists_sv_url: "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/get_list"
+      wct: "http://104.197.8.189/WCT/"
+      ete_js: "https://phylo.cs.nmsu.edu/treeviewer/ete_dev2.js"
+      ete_css: "https://phylo.cs.nmsu.edu/treeviewer/ete.css"
+      ot_tree_uri: "https://tree.opentreeoflife.org/curator/study/view/"
+      sv_GNRD_wrapper_URL: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_url?url="
+      sv_TaxonFinder_wrapper_URL: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_url?url="
+      sv_OToL_TNRS_wrapper: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/names"
+      sv_GNR_TNRS_wrapper: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/gnr/names"
+      sv_OToL_TNRS_wrapper_get: "https://phylo.cs.nmsu.edu/phylotastic_ws/tnrs/ot/resolve?names="
+      sv_GNRD_wrapper_file: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_file"
+      sv_GNRD_wrapper_text: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/names_text?text="
+      sv_TaxonFinder_wrapper_tex: "https://phylo.cs.nmsu.edu/phylotastic_ws/fn/tf/names_text?text="
+      sv_Taxon_country_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/country_species?taxon="
+      sv_Taxon_genome_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ncbi/genome_species?taxon="
+      sv_Taxon_all_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/ot/all_species?taxon="
+      sv_OToL_wrapper_Tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/ot/tree"
+      sv_Phylomatic_wrapper_Tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/gt/pm/tree"
+      sv_Datelife_scale_tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/scale"
+      sv_Add_new_list: "https://phylo.cs.nmsu.edu/phylotastic_ws/sls/insert_list"
+      sv_OToL_scale_tree: "https://phylo.cs.nmsu.edu/phylotastic_ws/sc/ot/scale"
+      sv_Taxon_popular_species: "https://phylo.cs.nmsu.edu/phylotastic_ws/ts/oz/popular_species?taxon="
+      sv_NCBI_common_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/ncbi/scientific_names"
+      sv_ITIS_common_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/itis/scientific_names"
+      sv_TROPICOS_commmon_name: "https://phylo.cs.nmsu.edu/phylotastic_ws/cs/tpcs/scientific_names"
+      sv_tc: "https://phylo.cs.nmsu.edu/phylotastic_ws/tc/common_names"
+      sv_OToL_supported_studies: "https://phylo.cs.nmsu.edu/phylotastic_ws/md/get_studies?list_type=ottids&list="
     image: ducvan0212/portal:2.1
     env_file:
       - .sidekiq_env

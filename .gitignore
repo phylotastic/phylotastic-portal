@@ -56,4 +56,4 @@ staging
 site.yml
 .DS_Store
 
-changes-to-use-docker.txt
+docker-handbook.txt

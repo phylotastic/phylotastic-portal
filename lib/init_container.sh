@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # https://stackoverflow.com/a/38732187/1935918
 set -e
 
@@ -8,6 +8,6 @@ fi
 
 bundle exec rake db:migrate 2>/dev/null || bundle exec rake db:setup
 
-bundle exec rake import:countries 
+bundle exec rake import:countries
 
 exec bundle exec "$@"
