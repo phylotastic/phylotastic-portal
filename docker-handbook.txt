@@ -1,0 +1,27 @@
+thay doi cac gia tri cua redis trong sidekiq.rb, cable.yml, database.yml
+
+
+* to build image:
+
+docker build -t ducvan0212/portal .
+
+* to tag image:
+
+docker tag ducvan0212/portal ducvan0212/portal:2.1
+
+* to push image:
+
+docker push ducvan0212/portal
+
+* to test:
+
+docker-compose up --build
+docker-compose up
+
+* to take down
+
+docker-compose down
+
+* check services
+
+docker container ls

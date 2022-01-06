@@ -24,6 +24,7 @@ class Req < ActiveRecord::Base
   def self.get(url)
     begin
       res = RestClient.get url, {accept: :json}
+      puts res
       JSON.parse(res)
     rescue RestClient::Unauthorized, RestClient::Forbidden => err
       puts Time.current.to_s + ": Access denied"
