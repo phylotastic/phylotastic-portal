@@ -47,7 +47,8 @@ gem "jquery-ui-rails", '6.0.1'
 
 gem 'rest-client', '2.0.2'
 
-gem "paperclip", "6.0.0"
+gem 'paperclip', git: 'https://github.com/sd/paperclip', branch: 'remove-mimemagic'
+#gem "paperclip", "6.0.0"
 
 gem 'pg', '0.18.4'
 
