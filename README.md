@@ -1,6 +1,8 @@
 ## Ruby version
 ruby 2.5.0p0 (2017-12-25 revision 61468)* System dependencies
 
+Install ruby 2.5.0 in Ubuntu 22.04 openssl issue: https://github.com/rbenv/ruby-build/discussions/1940
+
 ## How to run the test suite
 
 * For run all model and controller tests
